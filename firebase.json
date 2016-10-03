@@ -1,0 +1,87 @@
+{
+  "rules": {
+
+    "queue": {
+
+    },
+
+    "players": {
+      "$playerID": {
+        ".read": "auth != null",
+        ".write": "auth != null && ( auth.uid === $playerID || !data.exists() )",
+        /*"mask": { ".validate": "newData.isString()" },*/
+        "$other": { ".validate": "false" },
+      },
+    },
+
+    "games": {
+      "$gameID": {
+        ".read": "auth != null",
+        ".write": "auth != null && ( auth.uid === $gameID || !data.exists() )",
+        "started": { ".validate": "newData.isNumber()" },
+        "$other": { ".validate": "false" },
+      },
+    },
+
+    "gameTeamRequests": {
+      "$gameID": {
+        ".read": "auth != null",
+        ".write": "auth != null",
+        "$teamID": {
+          ".validate": "$teamID === 1 || $teamID === 2",
+          "$playerID": {
+            ".validate": "auth != null && ( auth.uid === $playerID)",
+            "$other": { ".validate": "false" },
+          },
+        },
+      },
+    },
+
+    "gameTeams": {
+      "$gameID": {
+        ".read": "auth != null",
+        "$teamID": {
+          ".validate": "$teamID === 1 || $teamID === 2",
+          "$playerID": {
+            ".write": "auth != null && ( auth.uid === $gameID || !data.exists() )",
+            /* && player has requested to join */
+            "$other": { ".validate": "false" },
+          },
+        },
+      },
+    },
+
+    "gamePlayers": {
+      "$gameID": {
+        "$playerID": {
+          ".read": "auth != null",
+          /* && (not stealthed || auth.uid === $playerID || is teammate) */
+          /*"stealthed": { ".validate": "newData.isBoolean()" },*/
+          /*"downed": { ".validate": "newData.isBoolean()" },*/
+          /*"gear": {
+            "$item": {},
+          },*/
+        }
+      },
+    },
+
+    "gameInventories": {
+      "$gameID": {
+        "$playerID": {
+          ".read": "auth != null",
+          /* && (auth.uid === $playerID || is teammate) */
+          /*"$item": { ".validate": "newData.isBoolean()" },*/
+        },
+      },
+    },
+
+    "gameStatuses": {
+      "$gameID": {
+        /*"turn": { ".validate": "newData.isNumber()" },*/
+        /*"turnStarted": { ".validate": "newData.isNumber()" },*/
+        /*"turnOf": { ".validate": "newData.isNumber()" },*/
+      },
+    },
+
+  },
+}
