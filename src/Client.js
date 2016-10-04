@@ -13,7 +13,7 @@ export default class Client extends Component {
       playerID: null,
       anonymous: null,
       connected: false,
-      haveConnectedOnce: true,
+      haveConnectedOnce: false,
     };
   }
 
@@ -58,7 +58,6 @@ export default class Client extends Component {
     return (
       <BrowserRouter>
         <div id="client">
-          <h1>Client</h1>
           {
             this.state.playerID
             ? <Redirect to={{pathname: `/${this.state.playerID}`}}/>

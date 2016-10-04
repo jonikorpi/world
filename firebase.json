@@ -18,7 +18,7 @@
       "$gameID": {
         ".read": "auth != null",
         ".write": "auth != null && ( auth.uid === $gameID || !data.exists() )",
-        "started": { ".validate": "newData.isNumber()" },
+        "started": { ".validate": "newData.isBoolean()" },
         "$other": { ".validate": "false" },
       },
     },

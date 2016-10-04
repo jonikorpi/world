@@ -4,6 +4,8 @@ import reactMixin from "react-mixin";
 import ReactFire from "reactfire";
 
 import Game from "./Game";
+import ArenaOwnerUI from "./ArenaOwnerUI";
+import ArenaVisitorUI from "./ArenaVisitorUI";
 
 export default class Arena extends Component {
   constructor(props) {
@@ -45,19 +47,40 @@ export default class Arena extends Component {
     );
   }
 
+  createGame() {
+    const arenaID = this.props.params.arenaID;
+    firebase.database().ref("games").update({
+      [arenaID]: {
+        started: false,
+      }
+    });
+  }
+
   render() {
     const arenaID = this.props.params.arenaID;
     const game = this.state.game;
+    const IDs = {
+      arenaID: arenaID,
+      playerID: this.props.playerID,
+    }
 
     return (
       <div>
-        <h2>Arena</h2>
-        <pre>{this.props.params.arenaID}</pre>
-
         {
-          game && game[arenaID]
-          ? <Game arenaID={arenaID} game={game[arenaID]} playerID={this.props.playerID}/>
-          : <p>Owner game starting controls / profile visitor controls</p>
+          game ? (
+            typeof game.started !== "undefined" ? (
+              <Game
+                game={game[arenaID]}
+                {...IDs}
+              />
+            ) : (
+              arenaID === this.props.playerID
+              ? <ArenaOwnerUI {...IDs} createGame={this.createGame.bind(this)}/>
+              : <ArenaVisitorUI/>
+            )
+          ) : (
+            <p>Connecting to arena…</p>
+          )
         }
       </div>
     );
