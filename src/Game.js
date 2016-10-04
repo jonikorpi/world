@@ -7,10 +7,6 @@ import InGame from "./InGame";
 export default class Game extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      started: false,
-    };
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -25,7 +21,7 @@ export default class Game extends Component {
         <p>Game board</p>
 
         {
-          this.state.started
+          this.props.game.started
           ? <InGame  {...this.props}/>
           : <PreGame {...this.props}/>
         }
