@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import firebase from "firebase";
 import shallowCompare from "react-addons-shallow-compare";
-import Router from "react-router/BrowserRouter";
-import Match from "react-router/Match";
+import { BrowserRouter, Match, Redirect } from "react-router";
 
 import Arena from "./Arena";
 
@@ -57,16 +56,21 @@ export default class Client extends Component {
 
   render() {
     return (
-      <div className="client">
-        <h1>Client</h1>
-        <pre>{this.state.playerID}</pre>
-        <Router>
+      <BrowserRouter>
+        <div id="client">
+          <h1>Client</h1>
+          {
+            this.state.playerID
+            ? <Redirect to={{pathname: `/${this.state.playerID}`}}/>
+            : <div>Signing in…</div>
+          }
+
           <Match
             pattern="/:arenaID"
             render={(props) => <Arena {...props} playerID={this.state.playerID}/>}
           />
-        </Router>
-      </div>
+        </div>
+      </BrowserRouter>
     );
   }
 }
