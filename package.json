@@ -19,6 +19,7 @@
     "compression": "^1.6.2",
     "express": "^4.14.0",
     "morgan": "^1.7.0",
+    "rollbar": "^0.6.2",
     "universal-analytics": "^0.4.6"
   },
   "scripts": {
@@ -26,7 +27,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "deploy": "npm run build && now -e NODE_ENV=production",
+    "deploy": "npm run build && now -e NODE_ENV=production && curl https://api.rollbar.com/api/1/deploy/ -F access_token=22fca22d3936434eb8b69cc0c453d040 -F environment=production -F revision=`git log -n 1 --pretty=format:'%H'` -F local_username=`whoami`",
     "server": "node server",
     "now-start": "node server",
     "now-build": ""
