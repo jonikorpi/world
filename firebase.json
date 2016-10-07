@@ -44,7 +44,11 @@
         "$teamID": {
           ".validate": "$teamID === 1 || $teamID === 2",
           "$playerID": {
-            ".validate": "auth != null && ( auth.uid === $playerID)",
+            ".validate": "
+                 auth != null && auth.uid === $playerID
+              && !data.parent().parent().child('1').hasChild($playerID)
+              && !data.parent().parent().child('2').hasChild($playerID)
+            ",
             "$other": { ".validate": "false" },
           },
         },
