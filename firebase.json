@@ -21,10 +21,11 @@
         "started": { ".validate": "newData.isBoolean()" },
         "teams": {
           "$teamID": {
-            ".validate": "$teamID === 1 || $teamID === 2",
+            ".validate": "$teamID === '1' || $teamID === '2'",
             "$playerID": {
               ".validate": "
-                   root.child('games').child($gameID).child('started').val() != true
+                   !newData.exists()
+                || root.child('games').child($gameID).child('started').val() != true
                 && root.child('players').hasChild(newData.val())
                 && root.child('gameTeamRequests').child($gameID).child($teamID).hasChild(newData.val())
               ",

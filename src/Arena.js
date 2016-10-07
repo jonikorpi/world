@@ -52,6 +52,10 @@ export default class Arena extends Component {
     firebase.database().ref("games").update({
       [arenaID]: {
         started: false,
+        teams: {
+          1: {},
+          2: {},
+        }
       }
     });
   }
