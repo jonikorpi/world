@@ -56,6 +56,11 @@ export default class Arena extends Component {
     });
   }
 
+  endGame() {
+    const arenaID = this.props.params.arenaID;
+    firebase.database().ref("games").child(arenaID).remove();
+  }
+
   render() {
     const arenaID = this.props.params.arenaID;
     const playerID = this.props.playerID;
@@ -70,6 +75,7 @@ export default class Arena extends Component {
                 arenaID={arenaID}
                 playerID={playerID}
                 game={game}
+                endGame={this.endGame.bind(this)}
               />
             ) : (
               arenaID === playerID ? (

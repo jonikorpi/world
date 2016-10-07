@@ -14,9 +14,21 @@ export default class Game extends Component {
   }
 
   render() {
+    const isOwner = this.props.arenaID === this.props.playerID;
+
     return (
       <div>
         <h3>Game</h3>
+
+        {
+          isOwner
+          ? (
+            <button type="button" onClick={this.props.endGame}>End game</button>
+          )
+          : (
+            null
+          )
+        }
 
         <p>Game board</p>
 
