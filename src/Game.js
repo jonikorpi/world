@@ -1,24 +1,17 @@
 import React, { Component } from "react";
-import shallowCompare from "react-addons-shallow-compare";
 
 import PreGame from "./PreGame";
 import InGame from "./InGame";
 
 export default class Game extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState);
-  }
-
   render() {
     const isOwner = this.props.isOwner;
 
     return (
       <div>
         <h3>Game</h3>
+
+        <p>Game board</p>
 
         {
           isOwner ? (
@@ -28,12 +21,17 @@ export default class Game extends Component {
           )
         }
 
-        <p>Game board</p>
-
         {
-          this.props.game.started
-          ? <InGame  {...this.props} isOwner={isOwner}/>
-          : <PreGame {...this.props} isOwner={isOwner}/>
+          this.props.game.started ? (
+            <InGame
+              // isOwner={isOwner}
+            />
+          ) : (
+            <PreGame
+              isOwner={isOwner}
+              gameID={this.props.game[".key"]}
+            />
+          )
         }
       </div>
     );

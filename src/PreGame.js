@@ -1,16 +1,46 @@
 import React, { Component } from "react";
-import shallowCompare from "react-addons-shallow-compare";
+import firebase from "firebase";
+import reactMixin from "react-mixin";
+import ReactFire from "reactfire";
 
 export default class PreGame extends Component {
-  // constructor(props) {
-  //   super(props);
-  //
-  //   this.state = {
-  //   };
-  // }
+  constructor(props) {
+    super(props);
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState);
+    this.state = {
+      gameTeamRequests: undefined,
+    }
+
+    this.bindFirebase = this.bindFirebase.bind(this);
+  }
+
+  componentDidMount() {
+    if (this.props.gameID) {
+      this.bindFirebase(this.props.gameID);
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.gameID !== this.props.gameID) {
+      if (this.firebaseRefs.firebase) {
+        this.unbind("gameTeamRequests");
+      }
+      if (nextProps.gameID) {
+        this.bindFirebase(nextProps.gameID);
+      }
+    }
+  }
+
+  bindFirebase(gameID) {
+    this.bindAsObject(
+      firebase.database().ref(`gameTeamRequests/${gameID}`),
+      "gameTeamRequests",
+      function(error) {
+        console.log("Firebase subscription cancelled:")
+        console.log(error);
+        this.setState({firebase: undefined})
+      }.bind(this)
+    );
   }
 
   render() {
@@ -31,3 +61,5 @@ export default class PreGame extends Component {
     );
   }
 }
+
+reactMixin(PreGame.prototype, ReactFire);
