@@ -10,12 +10,20 @@
         ".read": "auth != null",
         ".write": "auth != null && auth.uid === $playerID",
         /*"mask": { ".validate": "newData.isString()" },*/
-        "friends": {
-          "$friendID": {
-            ".validate": "root.child('players').hasChild(newData.val())",
-          },
-        },
         "$other": { ".validate": "false" },
+      },
+    },
+
+    "playerFriends": {
+      "$playerID": {
+        ".read": "auth != null && auth.uid === $playerID",
+        ".write": "auth != null && auth.uid === $playerID",
+        "$friendID": {
+          ".validate": "
+               root.child('players').hasChild($friendID)
+            && newData.isBoolean()
+          ",
+        },
       },
     },
 
@@ -31,8 +39,9 @@
               ".validate": "
                    !newData.exists()
                 || root.child('games').child($gameID).child('started').val() != true
-                && root.child('players').hasChild(newData.val())
-                && root.child('gameTeamRequests').child($gameID).child($teamID).hasChild(newData.val())
+                && root.child('players').hasChild($playerID)
+                && root.child('gameTeamRequests').child($gameID).child($teamID).hasChild($playerID)
+                && newData.isBoolean()
               ",
               "$other": { ".validate": "false" },
             },
@@ -53,6 +62,7 @@
                  auth != null && auth.uid === $playerID
               && !data.parent().parent().child('1').hasChild($playerID)
               && !data.parent().parent().child('2').hasChild($playerID)
+              && newData.isBoolean()
             ",
             "$other": { ".validate": "false" },
           },
