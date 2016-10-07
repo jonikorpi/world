@@ -12,8 +12,7 @@ export default class Home extends Component {
 
     if (playerID) {
       return <Redirect to={{pathname: `/${playerID}`}}/>;
-    }
-    else {
+    } else {
       return <div>Signing in…</div>;
     }
   }

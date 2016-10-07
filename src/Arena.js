@@ -27,9 +27,9 @@ export default class Arena extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.params.arenaID !== this.props.params.arenaID) {
       if (this.firebaseRefs.firebase) {
-        this.unbind("firebase");
+        this.unbind("game");
       }
-      if (nextProps.uid) {
+      if (nextProps.params.arenaID) {
         this.bindFirebase(nextProps.params.arenaID);
       }
     }
@@ -42,7 +42,7 @@ export default class Arena extends Component {
       function(error) {
         console.log("Firebase subscription cancelled:")
         console.log(error);
-        this.setState({firebase: undefined})
+        this.setState({game: undefined})
       }.bind(this)
     );
   }
