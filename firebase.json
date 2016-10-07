@@ -19,6 +19,19 @@
         ".read": "auth != null",
         ".write": "auth != null && auth.uid === $gameID", /* && newData.exists() */
         "started": { ".validate": "newData.isBoolean()" },
+        "teams": {
+          "$teamID": {
+            ".validate": "$teamID === 1 || $teamID === 2",
+            "$playerID": {
+              ".validate": "
+                   root.child('games').child($gameID).child('started').val() != true
+                && root.child('players').hasChild(newData.val())
+                && root.child('gameTeamRequests').child($gameID).child($teamID).hasChild(newData.val())
+              ",
+              "$other": { ".validate": "false" },
+            },
+          },
+        },
         "$other": { ".validate": "false" },
       },
     },
@@ -31,20 +44,6 @@
           ".validate": "$teamID === 1 || $teamID === 2",
           "$playerID": {
             ".validate": "auth != null && ( auth.uid === $playerID)",
-            "$other": { ".validate": "false" },
-          },
-        },
-      },
-    },
-
-    "gameTeams": {
-      "$gameID": {
-        ".read": "auth != null",
-        "$teamID": {
-          ".validate": "$teamID === 1 || $teamID === 2",
-          "$playerID": {
-            ".write": "auth != null && auth.uid === $gameID",
-            /* && player has requested to join */
             "$other": { ".validate": "false" },
           },
         },
