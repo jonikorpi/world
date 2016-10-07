@@ -14,18 +14,16 @@ export default class Game extends Component {
   }
 
   render() {
-    const isOwner = this.props.arenaID === this.props.playerID;
+    const isOwner = this.props.isOwner;
 
     return (
       <div>
         <h3>Game</h3>
 
         {
-          isOwner
-          ? (
+          isOwner ? (
             <button type="button" onClick={this.props.endGame}>End game</button>
-          )
-          : (
+          ) : (
             null
           )
         }
@@ -34,8 +32,8 @@ export default class Game extends Component {
 
         {
           this.props.game.started
-          ? <InGame  {...this.props}/>
-          : <PreGame {...this.props}/>
+          ? <InGame  {...this.props} isOwner={isOwner}/>
+          : <PreGame {...this.props} isOwner={isOwner}/>
         }
       </div>
     );

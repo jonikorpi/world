@@ -64,6 +64,7 @@ export default class Arena extends Component {
   render() {
     const arenaID = this.props.params.arenaID;
     const playerID = this.props.playerID;
+    const isOwner = arenaID === playerID;
     const game = this.state.game;
 
     return (
@@ -72,16 +73,13 @@ export default class Arena extends Component {
           game ? (
             typeof game.started !== "undefined" ? (
               <Game
-                arenaID={arenaID}
-                playerID={playerID}
                 game={game}
+                isOwner={isOwner}
                 endGame={this.endGame.bind(this)}
               />
             ) : (
-              arenaID === playerID ? (
+              isOwner ? (
                 <ArenaOwnerUI
-                  arenaID={arenaID}
-                  playerID={playerID}
                   createGame={this.createGame.bind(this)}
                 />
               ) : (
