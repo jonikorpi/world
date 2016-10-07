@@ -18,9 +18,12 @@ export default class InGame extends Component {
       <div>
         <h4>Ingame</h4>
 
-        <p>Inventory</p>
-        <p>Team inventories</p>
-        <p>Opposing team turn ending button or personal turn UI</p>
+        <p>gamePlayers</p>
+        <p>gameStatus</p>
+
+        <p>Reticles for own team</p>
+        <p>Own turn controls</p>
+        <p>Button for ending opponent turn</p>
       </div>
     );
   }

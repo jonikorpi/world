@@ -49,10 +49,11 @@ export default class PreGame extends Component {
     return (
       <div>
         <h4>Pregame</h4>
+        <p>Accepted players</p>
 
         {
           isOwner ? (
-            <p>Game owner controls</p>
+            <p>List of gameTeamRequests</p>
           ) : (
             <p>Team 1 or 2 join requesting controls</p>
           )
