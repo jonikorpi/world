@@ -89,7 +89,9 @@
         "$playerID": {
           ".read": "auth != null",
           /* && (auth.uid === $playerID || is teammate) */
-          /*"$item": { ".validate": "newData.isBoolean()" },*/
+          /*"$item": {
+            "used": { ".validate": "newData.isBoolean()" },
+          },*/
         },
       },
     },
