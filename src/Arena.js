@@ -49,20 +49,13 @@ export default class Arena extends Component {
 
   createGame() {
     const arenaID = this.props.params.arenaID;
-    firebase.database().ref("games").update({
-      [arenaID]: {
-        started: false,
-        teams: {
-          1: {},
-          2: {},
-        }
+    firebase.database().ref(`games/${arenaID}`).set({
+      started: false,
+      teams: {
+        1: { [this.props.playerID]: true},
+        2: {},
       }
     });
-  }
-
-  endGame() {
-    const arenaID = this.props.params.arenaID;
-    firebase.database().ref("games").child(arenaID).remove();
   }
 
   render() {
@@ -74,18 +67,6 @@ export default class Arena extends Component {
 
     return (
       <div className="arena">
-        {game ? (
-          hasGame && (
-            <Game
-              game={game}
-              isOwner={isOwner}
-              endGame={this.endGame.bind(this)}
-            />
-          )
-        ) : (
-          <p>Connecting to arena…</p>
-        )}
-
         {game && isOwner && (
           <ArenaOwnerUI
             createGame={this.createGame.bind(this)}
@@ -95,6 +76,19 @@ export default class Arena extends Component {
 
         {game && !isOwner && (
           <ArenaVisitorUI/>
+        )}
+
+        {game ? (
+          hasGame && (
+            <Game
+              gameID={game[".key"]}
+              game={game}
+              isOwner={isOwner}
+              playerID={playerID}
+            />
+          )
+        ) : (
+          <p>Connecting to arena…</p>
         )}
       </div>
     );

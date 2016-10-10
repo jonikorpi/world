@@ -5,27 +5,20 @@ import InGame from "./InGame";
 
 export default class Game extends Component {
   render() {
-    const isOwner = this.props.isOwner;
-
     return (
       <div>
-        <h3>Game</h3>
-
-        <p>Game board</p>
-
-        {isOwner && (
-          <button type="button" onClick={this.props.endGame}>End game</button>
-        )}
+        <pre>&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;<br/>
+&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;<br/>
+&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;<br/>
+&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;<br/>
+&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;<br/>
+&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;<br/>
+&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;&#x25A2;</pre>
 
         {this.props.game.started ? (
-          <InGame
-            isOwner={isOwner}
-          />
+          <InGame {...this.props} />
         ) : (
-          <PreGame
-            isOwner={isOwner}
-            gameID={this.props.game[".key"]}
-          />
+          <PreGame {...this.props} />
         )}
       </div>
     );

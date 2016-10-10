@@ -51,12 +51,30 @@ export default class Client extends Component {
     }.bind(this));
   }
 
+  signIn() {
+    firebase.auth().signInAnonymously().catch(function(error) {
+      console.log(error);
+    });
+  }
+
+  signOut() {
+    firebase.auth().signOut().catch(function(error) {
+      console.log(error);
+    });
+  }
+
   render() {
     const playerID = this.state.playerID;
 
     return (
       <BrowserRouter>
         <div id="client">
+          {playerID ? (
+            <button onClick={this.signOut.bind(this)}>Sign out</button>
+          ) : (
+            <button onClick={this.signIn.bind(this)}>Sign up anonymously</button>
+          )}
+
           <Match
             exactly
             pattern="/"

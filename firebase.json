@@ -30,18 +30,16 @@
     "games": {
       "$gameID": {
         ".read": "true",
-        ".write": "auth != null && auth.uid === $gameID", /* && newData.exists() */
+        ".write": "auth != null && auth.uid === $gameID",
         "started": { ".validate": "newData.isBoolean()" },
         "teams": {
           "$teamID": {
             ".validate": "$teamID === '1' || $teamID === '2'",
             "$playerID": {
               ".validate": "
-                   !newData.exists()
-                || root.child('games').child($gameID).child('started').val() != true
-                && root.child('players').hasChild($playerID)
-                && root.child('gameTeamRequests').child($gameID).child($teamID).hasChild($playerID)
-                && newData.isBoolean()
+                   root.child('games').child($gameID).child('started').val() != true
+                && (auth.uid === $gameID || root.child('gameTeamRequests').child($gameID).child($teamID).hasChild($playerID))
+                && (newData.isBoolean() || !newData.exists())
               ",
               "$other": { ".validate": "false" },
             },
@@ -53,18 +51,23 @@
 
     "gameTeamRequests": {
       "$gameID": {
-        ".read": "auth != null && auth.uid === $gameID",
+        ".read": "auth != null",
         ".write": "auth != null",
         "$teamID": {
           ".validate": "$teamID === 1 || $teamID === 2",
           "$playerID": {
             ".validate": "
-                 auth != null && auth.uid === $playerID
-              && !data.parent().parent().child('1').hasChild($playerID)
-              && !data.parent().parent().child('2').hasChild($playerID)
-              && newData.isBoolean()
+              (auth.uid === $playerID || auth.uid === $gameID)
+              && (
+                (
+                  !newData.exists()
+                ) || (
+                     !data.parent().parent().child('1').hasChild($playerID)
+                  && !data.parent().parent().child('2').hasChild($playerID)
+                  && newData.isBoolean()
+                )
+              )
             ",
-            "$other": { ".validate": "false" },
           },
         },
       },

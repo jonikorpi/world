@@ -1,64 +1,57 @@
 import React, { Component } from "react";
-import firebase from "firebase";
-import reactMixin from "react-mixin";
-import ReactFire from "reactfire";
+
+import PreGameOwnerUI from "./PreGameOwnerUI";
+import PreGamePlayerUI from "./PreGamePlayerUI";
 
 export default class PreGame extends Component {
-  constructor(props) {
-    super(props);
+  listPlayers(team) {
+    let requests = [];
 
-    this.state = {
-      gameTeamRequests: undefined,
-    }
-
-    this.bindFirebase = this.bindFirebase.bind(this);
-  }
-
-  componentDidMount() {
-    if (this.props.gameID) {
-      this.bindFirebase(this.props.gameID);
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.gameID !== this.props.gameID) {
-      if (this.firebaseRefs.firebase) {
-        this.unbind("gameTeamRequests");
-      }
-      if (nextProps.gameID) {
-        this.bindFirebase(nextProps.gameID);
+    for (let key in team) {
+      if (team.hasOwnProperty(key) && !key.startsWith(".")) {
+        requests.push(key);
       }
     }
-  }
 
-  bindFirebase(gameID) {
-    this.bindAsObject(
-      firebase.database().ref(`gameTeamRequests/${gameID}`),
-      "gameTeamRequests",
-      function(error) {
-        console.log("Firebase subscription cancelled:")
-        console.log(error);
-        this.setState({firebase: undefined})
-      }.bind(this)
-    );
+    return requests;
   }
 
   render() {
     const isOwner = this.props.isOwner;
+    const teamOne = this.props.game.teams["1"];
+    const teamTwo = this.props.game.teams["2"];
 
     return (
       <div>
         <h4>Pregame</h4>
         <p>Accepted players with removal buttons if owner or self</p>
 
-        {isOwner ? (
-          <p>List of gameTeamRequests and accepting buttons</p>
-        ) : (
-          <p>Team 1 or 2 join requesting controls if authed, or request canceling controls if request has been made</p>
+        <div>
+          <h5>Team 1</h5>
+          {teamOne && this.listPlayers(teamOne).map((player, index) => {
+            return (
+              <div key={index}>Player {player}</div>
+            )
+          })}
+        </div>
+
+        <div>
+          <h5>Team 2</h5>
+          {teamOne && this.listPlayers(teamTwo).map((player, index) => {
+            return (
+              <div key={index}>Player {player}</div>
+            )
+          })}
+        </div>
+
+        {isOwner && (
+          <PreGameOwnerUI {...this.props}/>
+        )}
+
+        {this.props.playerID && (
+          <PreGamePlayerUI {...this.props}/>
         )}
       </div>
     );
   }
 }
-
-reactMixin(PreGame.prototype, ReactFire);
