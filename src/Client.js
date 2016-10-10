@@ -24,7 +24,6 @@ export default class Client extends Component {
 
   componentDidMount() {
     firebase.auth().onAuthStateChanged(function(user) {
-      console.log(user);
       if (user) {
         this.setState({
           playerID: user.uid,
