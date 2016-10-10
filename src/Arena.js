@@ -70,30 +70,32 @@ export default class Arena extends Component {
     const playerID = this.props.playerID;
     const isOwner = arenaID === playerID;
     const game = this.state.game;
+    const hasGame = game && typeof game.started !== "undefined";
 
     return (
       <div className="arena">
-        {
-          game ? (
-            typeof game.started !== "undefined" ? (
-              <Game
-                game={game}
-                isOwner={isOwner}
-                endGame={this.endGame.bind(this)}
-              />
-            ) : (
-              isOwner ? (
-                <ArenaOwnerUI
-                  createGame={this.createGame.bind(this)}
-                />
-              ) : (
-                <ArenaVisitorUI/>
-              )
-            )
-          ) : (
-            <p>Connecting to arena…</p>
+        {game ? (
+          hasGame && (
+            <Game
+              game={game}
+              isOwner={isOwner}
+              endGame={this.endGame.bind(this)}
+            />
           )
-        }
+        ) : (
+          <p>Connecting to arena…</p>
+        )}
+
+        {game && isOwner && (
+          <ArenaOwnerUI
+            createGame={this.createGame.bind(this)}
+            hasGame={hasGame}
+          />
+        )}
+
+        {game && !isOwner && (
+          <ArenaVisitorUI/>
+        )}
       </div>
     );
   }

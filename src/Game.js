@@ -13,26 +13,20 @@ export default class Game extends Component {
 
         <p>Game board</p>
 
-        {
-          isOwner ? (
-            <button type="button" onClick={this.props.endGame}>End game</button>
-          ) : (
-            null
-          )
-        }
+        {isOwner && (
+          <button type="button" onClick={this.props.endGame}>End game</button>
+        )}
 
-        {
-          this.props.game.started ? (
-            <InGame
-              // isOwner={isOwner}
-            />
-          ) : (
-            <PreGame
-              isOwner={isOwner}
-              gameID={this.props.game[".key"]}
-            />
-          )
-        }
+        {this.props.game.started ? (
+          <InGame
+            isOwner={isOwner}
+          />
+        ) : (
+          <PreGame
+            isOwner={isOwner}
+            gameID={this.props.game[".key"]}
+          />
+        )}
       </div>
     );
   }

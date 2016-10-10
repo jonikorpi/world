@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import shallowCompare from "react-addons-shallow-compare";
+import { Link } from "react-router";
 
 export default class ArenaVisitorUI extends Component {
   // constructor(props) {
@@ -16,7 +17,7 @@ export default class ArenaVisitorUI extends Component {
   render() {
     return (
       <div>
-        <p>Hello there arena visitor</p>
+        <Link to={{pathname: "/"}}>Home</Link>
       </div>
     );
   }

@@ -15,13 +15,7 @@ export default class ArenaOwnerUI extends Component {
   }
 
   signOut() {
-    firebase.auth().signOut().then(function(){
-      // this.setState({
-      //   uid: null,
-      //   anonymous: null,
-      // });
-      // this.goToToday();
-    }.bind(this)).catch(function(error) {
+    firebase.auth().signOut().catch(function(error) {
       console.log(error);
     });
   }
@@ -29,8 +23,10 @@ export default class ArenaOwnerUI extends Component {
   render() {
     return (
       <div>
-        <p>Arena owner UI</p>
-        <button onClick={this.props.createGame}>Create a game</button>
+        {!this.props.hasGame && (
+          <button onClick={this.props.createGame}>Create a game</button>
+        )}
+
         <button onClick={this.signOut.bind(this)}>Sign out</button>
       </div>
     );

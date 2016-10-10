@@ -49,15 +49,13 @@ export default class PreGame extends Component {
     return (
       <div>
         <h4>Pregame</h4>
-        <p>Accepted players</p>
+        <p>Accepted players with removal buttons if owner or self</p>
 
-        {
-          isOwner ? (
-            <p>List of gameTeamRequests</p>
-          ) : (
-            <p>Team 1 or 2 join requesting controls if authed</p>
-          )
-        }
+        {isOwner ? (
+          <p>List of gameTeamRequests and accepting buttons</p>
+        ) : (
+          <p>Team 1 or 2 join requesting controls if authed, or request canceling controls if request has been made</p>
+        )}
       </div>
     );
   }
