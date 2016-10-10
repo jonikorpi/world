@@ -24,6 +24,7 @@ export default class Client extends Component {
 
   componentDidMount() {
     firebase.auth().onAuthStateChanged(function(user) {
+      console.log(user);
       if (user) {
         this.setState({
           playerID: user.uid,
@@ -34,10 +35,6 @@ export default class Client extends Component {
         this.setState({
           playerID: null,
           anonymous: null,
-        });
-
-        firebase.auth().signInAnonymously().catch(function(error) {
-          console.log(error);
         });
       }
     }.bind(this));
@@ -56,17 +53,19 @@ export default class Client extends Component {
   }
 
   render() {
+    const playerID = this.state.playerID;
+
     return (
       <BrowserRouter>
         <div id="client">
           <Match
             exactly
             pattern="/"
-            render={(props) => <Home playerID={this.state.playerID}/>}
+            render={(props) => <Home {...props} playerID={playerID}/>}
           />
           <Match
             pattern="/:arenaID"
-            render={(props) => <Arena {...props} playerID={this.state.playerID}/>}
+            render={(props) => <Arena {...props} playerID={playerID}/>}
           />
         </div>
       </BrowserRouter>

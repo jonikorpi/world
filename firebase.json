@@ -7,7 +7,7 @@
 
     "players": {
       "$playerID": {
-        ".read": "auth != null",
+        ".read": "true",
         ".write": "auth != null && auth.uid === $playerID",
         /*"mask": { ".validate": "newData.isString()" },*/
         "$other": { ".validate": "false" },
@@ -29,7 +29,7 @@
 
     "games": {
       "$gameID": {
-        ".read": "auth != null",
+        ".read": "true",
         ".write": "auth != null && auth.uid === $gameID", /* && newData.exists() */
         "started": { ".validate": "newData.isBoolean()" },
         "teams": {
@@ -53,7 +53,7 @@
 
     "gameTeamRequests": {
       "$gameID": {
-        ".read": "auth != null",
+        ".read": "auth != null && auth.uid === $gameID",
         ".write": "auth != null",
         "$teamID": {
           ".validate": "$teamID === 1 || $teamID === 2",
@@ -72,8 +72,8 @@
 
     "gamePlayers": {
       "$gameID": {
+        ".read": "true",
         "$playerID": {
-          ".read": "auth != null",
           /* && (not stealthed || auth.uid === $playerID || is teammate) */
           /*"stealthed": { ".validate": "newData.isBoolean()" },*/
           /*"downed": { ".validate": "newData.isBoolean()" },*/
@@ -86,8 +86,8 @@
 
     "gameInventories": {
       "$gameID": {
+        ".read": "true",
         "$playerID": {
-          ".read": "auth != null",
           /* && (auth.uid === $playerID || is teammate) */
           /*"$item": {
             "used": { ".validate": "newData.isBoolean()" },
@@ -98,6 +98,7 @@
 
     "gameStatuses": {
       "$gameID": {
+        ".read": "true",
         /*"turn": { ".validate": "newData.isNumber()" },*/
         /*"turnStarted": { ".validate": "newData.isNumber()" },*/
         /*"turnOf": { ".validate": "newData.isNumber()" },*/

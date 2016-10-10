@@ -55,7 +55,7 @@ export default class PreGame extends Component {
           isOwner ? (
             <p>List of gameTeamRequests</p>
           ) : (
-            <p>Team 1 or 2 join requesting controls</p>
+            <p>Team 1 or 2 join requesting controls if authed</p>
           )
         }
       </div>

@@ -21,6 +21,7 @@ export default class InGame extends Component {
         <p>gamePlayers</p>
         <p>gameStatus</p>
 
+        <p>if part of game:</p>
         <p>Reticles for own team</p>
         <p>Own turn controls</p>
         <p>Button for ending opponent turn</p>
