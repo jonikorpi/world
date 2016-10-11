@@ -23,7 +23,32 @@ export default class PreGameTeam extends Component {
   }
 
   requestInvite() {
+    const gameID = this.props.gameID;
+    const teamID = this.props.teamID;
+    const playerID = this.props.playerID;
 
+    firebase.database().ref(`gameTeamRequests/${gameID}/${teamID}`).update({
+      [playerID]: true,
+    });
+  }
+
+  cancelRequest() {
+    const gameID = this.props.gameID;
+    const teamID = this.props.teamID;
+    const playerID = this.props.playerID;
+
+    firebase.database().ref(`gameTeamRequests/${gameID}/${teamID}/${playerID}`).remove();
+  }
+
+  acceptRequest(playerID) {
+    const gameID = this.props.gameID;
+    const teamID = this.props.teamID;
+
+    firebase.database().ref(`games/${gameID}/teams/${teamID}`).update({
+      [playerID]: true
+    });
+
+    firebase.database().ref(`gameTeamRequests/${gameID}/${teamID}/${playerID}`).remove();
   }
 
   render() {
@@ -31,6 +56,7 @@ export default class PreGameTeam extends Component {
     const requests = this.props.requests;
     const players = this.props.players;
     const teamID = this.props.teamID;
+    const playerID = this.props.playerID;
     const hasJoined = this.props.hasJoined;
     const hasRequested = this.props.hasRequested;
 
@@ -51,22 +77,32 @@ export default class PreGameTeam extends Component {
             <PreGamePlayer
               key={index}
               playerID={player}
-              isSelf={player === this.props.playerID}
-              removable={isOwner || (hasJoined && player === this.props.playerID)}
+              isSelf={player === playerID}
+              removable={isOwner || (hasJoined && player === playerID)}
               removePlayer={this.removePlayer.bind(this)}
             />
           )
         })}
 
-        {requests && isOwner && requests.map((request, index) => {
-          return (
-            <TeamRequest
-              key={index}
-              teamID={1}
-              requesterID={request}
-              isOwner={isOwner}
-            />
-          )
+        {requests && requests.map((requesterID, index) => {
+          if (isOwner || requesterID === playerID) {
+            return (
+              <TeamRequest
+                key={index}
+                teamID={1}
+                requesterID={requesterID}
+                isOwner={isOwner}
+                acceptRequest={this.acceptRequest.bind(this)}
+              >
+                {playerID === requesterID && (
+                  <button onClick={this.cancelRequest.bind(this)}>Cancel</button>
+                )}
+              </TeamRequest>
+            )
+          }
+          else {
+            return null;
+          }
         })}
       </div>
     );

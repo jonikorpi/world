@@ -30,7 +30,7 @@
     "games": {
       "$gameID": {
         ".read": "true",
-        ".write": "auth != null && auth.uid === $gameID",
+        ".write": "auth != null",
         "started": { ".validate": "newData.isBoolean()" },
         "teams": {
           "$teamID": {
@@ -38,10 +38,14 @@
             "$playerID": {
               ".validate": "
                    root.child('games').child($gameID).child('started').val() != true
-                && (auth.uid === $gameID || root.child('gameTeamRequests').child($gameID).child($teamID).hasChild($playerID))
+                && (
+                     auth.uid === $gameID
+                  || root.child('gameTeamRequests').child($gameID).child($teamID).hasChild($playerID)
+                  || ($playerID === auth.uid && !newData.exists())
+                )
                 && (newData.isBoolean() || !newData.exists())
-                && !data.parent().parent().child('1').hasChild($playerID)
-                && !data.parent().parent().child('2').hasChild($playerID)
+                && (!data.parent().parent().child('1').hasChild($playerID) || !newData.exists())
+                && (!data.parent().parent().child('2').hasChild($playerID) || !newData.exists())
               ",
               "$other": { ".validate": "false" },
             },
@@ -56,7 +60,7 @@
         ".read": "auth != null",
         ".write": "auth != null",
         "$teamID": {
-          ".validate": "$teamID === 1 || $teamID === 2",
+          ".validate": "$teamID === '1' || $teamID === '2'",
           "$playerID": {
             ".validate": "
               (auth.uid === $playerID || auth.uid === $gameID)

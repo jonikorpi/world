@@ -57,8 +57,9 @@ export default class PreGame extends Component {
     return array;
   }
 
-  endGame() {
-    firebase.database().ref("games").child(this.props.gameID).remove();
+  cancelGame() {
+    firebase.database().ref(`games/${this.props.gameID}`).remove();
+    firebase.database().ref(`gameTeamRequests/${this.props.gameID}`).remove();
   }
 
   render() {
@@ -85,7 +86,7 @@ export default class PreGame extends Component {
         <h4>Pregame</h4>
 
         {isOwner && (
-          <button type="button" onClick={this.endGame.bind(this)}>Cancel game (temp.)</button>
+          <button type="button" onClick={this.cancelGame.bind(this)}>Cancel game (temp.)</button>
         )}
 
         {["1", "2"].map((teamID) => {
