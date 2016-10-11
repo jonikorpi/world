@@ -40,6 +40,8 @@
                    root.child('games').child($gameID).child('started').val() != true
                 && (auth.uid === $gameID || root.child('gameTeamRequests').child($gameID).child($teamID).hasChild($playerID))
                 && (newData.isBoolean() || !newData.exists())
+                && !data.parent().parent().child('1').hasChild($playerID)
+                && !data.parent().parent().child('2').hasChild($playerID)
               ",
               "$other": { ".validate": "false" },
             },
