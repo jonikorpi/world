@@ -62,6 +62,17 @@ export default class PreGame extends Component {
     firebase.database().ref(`gameTeamRequests/${this.props.gameID}`).remove();
   }
 
+  startGame() {
+    const tasks = firebase.database().ref(`queue/tasks`);
+    tasks.push({
+      request: {
+        playerID: this.props.playerID,
+        gameID: this.props.gameID,
+        action: "START_GAME",
+      }
+    });
+  }
+
   render() {
     const isOwner = this.props.isOwner;
     const playerID = this.props.playerID;
@@ -87,6 +98,10 @@ export default class PreGame extends Component {
 
         {isOwner && (
           <button type="button" onClick={this.cancelGame.bind(this)}>Cancel game (temp.)</button>
+        )}
+
+        {isOwner && (
+          <button type="button" onClick={this.startGame.bind(this)}>Start game</button>
         )}
 
         {["1", "2"].map((teamID) => {
