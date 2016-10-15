@@ -81,26 +81,14 @@
       "$gameID": {
         ".read": "true",
         ".write": "auth.lootmaster === true",
-        "$playerID": {
-          /* && (not stealthed || auth.uid === $playerID || is teammate) */
-          /*"stealthed": { ".validate": "newData.isBoolean()" },*/
-          /*"downed": { ".validate": "newData.isBoolean()" },*/
-          /*"gear": {
-            "$item": {},
-          },*/
-        }
       },
     },
 
     "gameInventories": {
       "$gameID": {
-        ".read": "true",
         ".write": "auth.lootmaster === true",
         "$playerID": {
-          /* && (auth.uid === $playerID || is teammate) */
-          /*"$item": {
-            "used": { ".validate": "newData.isBoolean()" },
-          },*/
+          ".read": "auth.uid === $playerID", /* || isTeamMate */
         },
       },
     },
@@ -109,9 +97,6 @@
       "$gameID": {
         ".read": "true",
         ".write": "auth.lootmaster === true",
-        /*"turn": { ".validate": "newData.isNumber()" },*/
-        /*"turnStarted": { ".validate": "newData.isNumber()" },*/
-        /*"turnOf": { ".validate": "newData.isNumber()" },*/
       },
     },
 
