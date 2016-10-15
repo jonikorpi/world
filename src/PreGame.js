@@ -69,6 +69,7 @@ export default class PreGame extends Component {
         playerID: this.props.playerID,
         gameID: this.props.gameID,
         action: "startGame",
+        time: firebase.database.ServerValue.TIMESTAMP,
       }
     });
   }

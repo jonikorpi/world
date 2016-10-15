@@ -11,6 +11,7 @@ export default class InGame extends Component {
         playerID: this.props.playerID,
         gameID: this.props.gameID,
         action: "endGame",
+        time: firebase.database.ServerValue.TIMESTAMP,
       }
     });
   }

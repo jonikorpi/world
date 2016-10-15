@@ -131,10 +131,11 @@
           ",
 
           "request": {
-            ".validate": "newData.hasChildren(['playerID', 'gameID', 'action']) || auth.lootmaster === true",
+            ".validate": "newData.hasChildren(['playerID', 'gameID', 'action', 'time']) || auth.lootmaster === true",
             "playerID": { ".validate": "newData.val() === auth.uid || auth.lootmaster === true", },
             "gameID": { ".validate": "root.child('games').hasChild(newData.val())", },
             "action": { ".validate": "newData.isString()" },
+            "time":   { ".validate": "newData.val() === now || auth.lootmaster === true" },
             "$other": { ".validate": "false" },
           },
 
