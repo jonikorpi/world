@@ -68,7 +68,7 @@ export default class PreGame extends Component {
       request: {
         playerID: this.props.playerID,
         gameID: this.props.gameID,
-        action: "START_GAME",
+        action: "startGame",
       }
     });
   }
@@ -78,6 +78,7 @@ export default class PreGame extends Component {
     const playerID = this.props.playerID;
     const requests = this.state.teamRequests;
     const teams = this.props.game.teams;
+    const hasStarted = this.props.game.started;
 
     const hasJoined = (teams &&
       (
@@ -96,11 +97,11 @@ export default class PreGame extends Component {
       <div>
         <h4>Pregame</h4>
 
-        {isOwner && (
+        {isOwner && !hasStarted && (
           <button type="button" onClick={this.cancelGame.bind(this)}>Cancel game (temp.)</button>
         )}
 
-        {isOwner && (
+        {isOwner && !hasStarted && (
           <button type="button" onClick={this.startGame.bind(this)}>Start game</button>
         )}
 
