@@ -64,11 +64,11 @@ export default class PreGameTeam extends Component {
       <div>
         <h5>Team {teamID}</h5>
 
-        {isOwner && !hasJoined && (
+        {playerID && isOwner && !hasJoined && (
           <button onClick={this.joinTeam.bind(this)}>Join</button>
         )}
 
-        {!isOwner && !hasJoined && !hasRequested && (
+        {playerID && !isOwner && !hasJoined && !hasRequested && (
           <button onClick={this.requestInvite.bind(this)}>Request invite</button>
         )}
 
