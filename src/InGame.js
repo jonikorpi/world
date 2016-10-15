@@ -5,7 +5,7 @@ export default class InGame extends Component {
   // Register all 3 firebase references
 
   endGame() {
-    const tasks = firebase.database().ref(`queue/tasks`);
+    const tasks = firebase.database().ref(`gameQueue/tasks`);
     tasks.push({
       request: {
         playerID: this.props.playerID,

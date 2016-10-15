@@ -63,7 +63,7 @@ export default class PreGame extends Component {
   }
 
   startGame() {
-    const tasks = firebase.database().ref(`queue/tasks`);
+    const tasks = firebase.database().ref(`gameQueue/tasks`);
     tasks.push({
       request: {
         playerID: this.props.playerID,
