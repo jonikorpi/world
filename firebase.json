@@ -182,24 +182,12 @@
         ".write": "auth.lootmaster === true",
         "$specId": {
           ".validate": "newData.hasChild('in_progress_state')",
-          "start_state": {
-            ".validate": "newData.isString()"
-          },
-          "in_progress_state": {
-            ".validate": "newData.isString()"
-          },
-          "finished_state": {
-            ".validate": "newData.isString()"
-          },
-          "error_state": {
-            ".validate": "newData.isString()"
-          },
-          "timeout": {
-            ".validate": "newData.isNumber() && newData.val() > 0"
-          },
-          "$other": {
-            ".validate": false
-          },
+          "start_state":       { ".validate": "newData.isString()" },
+          "in_progress_state": { ".validate": "newData.isString()" },
+          "finished_state":    { ".validate": "newData.isString()" },
+          "error_state":       { ".validate": "newData.isString()" },
+          "timeout":           { ".validate": "newData.isNumber() && newData.val() > 0" },
+          "$other":            { ".validate": false },
         },
       },
 
