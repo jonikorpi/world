@@ -80,6 +80,7 @@ export default class PreGame extends Component {
     const requests = this.state.teamRequests;
     const teams = this.props.game.teams;
     const hasStarted = this.props.game.started;
+    const hasTeams = this.listKeys(teams[1]).length > 0 && this.listKeys(teams[2]).length > 0;
 
     const hasJoined = (teams &&
       (
@@ -102,7 +103,7 @@ export default class PreGame extends Component {
           <button type="button" onClick={this.cancelGame.bind(this)}>Cancel game (temp.)</button>
         )}
 
-        {isOwner && !hasStarted && (
+        {isOwner && !hasStarted && hasTeams && (
           <button type="button" onClick={this.startGame.bind(this)}>Start game</button>
         )}
 
