@@ -72,7 +72,7 @@ export default class Timer extends Component {
 
   render() {
     const timeLeft = this.state.timeLeft;
-    const turnNumber = this.state.turnNumber;
+    // const turnNumber = this.state.turnNumber;
     const isBufferTime = this.state.isBufferTime;
     const turnStatus = this.state.turnStatus;
     let turnLabel;
