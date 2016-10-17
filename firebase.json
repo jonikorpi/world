@@ -30,7 +30,10 @@
           auth.lootmaster === true
           || (auth != null && newData.child('started').val() != true)
         ",
-        "started": { ".validate": "newData.isBoolean()" },
+        "started": { ".validate": "
+          (newData.isBoolean() && auth.uid === $gameID)
+          || auth.lootmaster === true
+        " },
         "teams": {
           "$teamID": {
             ".validate": "$teamID === '1' || $teamID === '2'",
