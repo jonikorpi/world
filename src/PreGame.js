@@ -2,8 +2,10 @@ import React, { Component } from "react";
 import firebase from "firebase";
 import reactMixin from "react-mixin";
 import ReactFire from "reactfire";
+import { Entity } from "aframe-react";
 
 import PreGameTeam from "./PreGameTeam";
+import Button from "./Button";
 
 export default class PreGame extends Component {
   constructor(props) {
@@ -80,7 +82,7 @@ export default class PreGame extends Component {
     const requests = this.state.teamRequests;
     const teams = this.props.game.teams;
     const hasStarted = this.props.game.started;
-    const hasTeams = this.listKeys(teams[1]).length > 0 && this.listKeys(teams[2]).length > 0;
+    const hasTeams = teams && this.listKeys(teams[1]).length > 0 && this.listKeys(teams[2]).length > 0;
 
     const hasJoined = (teams &&
       (
@@ -96,15 +98,21 @@ export default class PreGame extends Component {
     );
 
     return (
-      <div>
-        <h4>Pregame</h4>
-
+      <Entity>
         {isOwner && !hasStarted && (
-          <button type="button" onClick={this.cancelGame.bind(this)}>Cancel game (temp.)</button>
+          <Button
+            onClick={this.cancelGame.bind(this)}
+            color="red"
+            position={[-1, 0.5, 0]}
+          />
         )}
 
         {isOwner && !hasStarted && hasTeams && (
-          <button type="button" onClick={this.startGame.bind(this)}>Start game</button>
+          <Button
+            onClick={this.startGame.bind(this)}
+            color="green"
+            position={[1, 0.5, 0]}
+          />
         )}
 
         {["1", "2"].map((teamID) => {
@@ -123,7 +131,7 @@ export default class PreGame extends Component {
             />
           )
         })}
-      </div>
+      </Entity>
     );
   }
 }

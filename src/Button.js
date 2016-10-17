@@ -12,9 +12,10 @@ export default class Button extends Component {
       <Entity
         className="button"
         onClick={this.props.onClick}
+        position={this.props.position || [0,0,0]}
         geometry={{
           primitive: "circle",
-          radius: 0.3,
+          radius: 0.15,
           segments: 6,
         }}
         material={{

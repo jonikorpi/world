@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import firebase from "firebase";
+import { Entity } from "aframe-react";
 
 import PreGamePlayer from "./PreGamePlayer";
 import TeamRequest from "./TeamRequest";
+import Button from "./Button";
 
 export default class PreGameTeam extends Component {
   joinTeam() {
@@ -60,22 +62,25 @@ export default class PreGameTeam extends Component {
     const hasJoined = this.props.hasJoined;
     const hasRequested = this.props.hasRequested;
 
+    const position = teamID === "1" ? -1 : 1;
+
     return (
-      <div>
+      <Entity position={[position, 0, 0]}>
         <h5>Team {teamID}</h5>
 
         {playerID && isOwner && !hasJoined && (
-          <button onClick={this.joinTeam.bind(this)}>Join</button>
+          <Button onClick={this.joinTeam.bind(this)} color="blue"/>
         )}
 
         {playerID && !isOwner && !hasJoined && !hasRequested && (
-          <button onClick={this.requestInvite.bind(this)}>Request invite</button>
+          <Button onClick={this.requestInvite.bind(this)} color="turquoise"/>
         )}
 
         {players && players.map((player, index) => {
           return (
             <PreGamePlayer
               key={index}
+              index={index}
               playerID={player}
               isSelf={player === playerID}
               removable={isOwner || (hasJoined && player === playerID)}
@@ -89,13 +94,14 @@ export default class PreGameTeam extends Component {
             return (
               <TeamRequest
                 key={index}
+                index={index}
                 teamID={1}
                 requesterID={requesterID}
                 isOwner={isOwner}
                 acceptRequest={this.acceptRequest.bind(this)}
               >
                 {playerID === requesterID && (
-                  <button onClick={this.cancelRequest.bind(this)}>Cancel</button>
+                  <Button onClick={this.cancelRequest.bind(this)} color="pink"/>
                 )}
               </TeamRequest>
             )
@@ -104,7 +110,7 @@ export default class PreGameTeam extends Component {
             return null;
           }
         })}
-      </div>
+      </Entity>
     );
   }
 }

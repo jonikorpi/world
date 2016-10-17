@@ -12,10 +12,10 @@ export default class ArenaVisitorUI extends Component {
 
   render() {
     return (
-      <Entity>
+      <Entity position={[0, 0.5, 0]}>
         <Link to={{pathname: "/"}}>{
             ({isActive, location, href, onClick, transition}) =>
-              <Button onClick={onClick} color={"cyan"}/>
+              <Button onClick={onClick} color="grey"/>
         }</Link>
       </Entity>
     );

@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import shallowCompare from "react-addons-shallow-compare";
+import { Entity } from "aframe-react";
+
+import Button from "./Button";
 
 export default class TeamRequest extends Component {
   shouldComponentUpdate(nextProps, nextState) {
@@ -12,15 +15,13 @@ export default class TeamRequest extends Component {
 
   render() {
     return (
-      <li>
-        Requester {this.props.requesterID} for team {this.props.teamID}
-
+      <Entity position={[0, this.props.index * 0.5, 0]}>
         {this.props.isOwner && (
-          <button onClick={this.acceptRequest.bind(this)}>Accept</button>
+          <Button onClick={this.acceptRequest.bind(this)} color="green"/>
         )}
 
         {this.props.children}
-      </li>
+      </Entity>
     );
   }
 }
