@@ -57,6 +57,18 @@ export default class InGame extends Component {
     return array;
   }
 
+  endGame() {
+    const tasks = firebase.database().ref(`gameQueue/tasks`);
+    tasks.push({
+      request: {
+        playerID: this.props.playerID,
+        gameID: this.props.gameID,
+        action: "endGame",
+        time: firebase.database.ServerValue.TIMESTAMP,
+      }
+    })
+  }
+
   render() {
     const players = this.state.gamePlayers;
     const allPlayers = players && this.listKeys(players[1]).concat(this.listKeys(players[2]))
@@ -64,6 +76,10 @@ export default class InGame extends Component {
     return (
       <div>
         <h4>Ingame</h4>
+
+        {this.props.isOwner && (
+          <button type="button" onClick={this.endGame.bind(this)}>End game</button>
+        )}
 
         {allPlayers && allPlayers.map((player, index) => {
           return (
