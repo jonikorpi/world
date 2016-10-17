@@ -48,10 +48,11 @@ export default class Client extends Component {
         });
       }
       else {
-        this.setState({
-          playerID: null,
-          anonymous: null,
-        });
+        // this.setState({
+        //   playerID: null,
+        //   anonymous: null,
+        // });
+        this.signIn();
       }
     }.bind(this));
 
@@ -119,11 +120,11 @@ export default class Client extends Component {
           stats={{ enabled: process.env.NODE_ENV === "development" }}
           vr-mode-ui={{ enabled: false }}
         >
-          {playerID ? (
+          {/* {playerID && (
             <button onClick={this.signOut.bind(this)}>Sign out</button>
           ) : (
             <button onClick={this.signIn.bind(this)}>Sign in anonymously</button>
-          )}
+          )} */}
 
           <Entity
             id="camera"
@@ -141,11 +142,7 @@ export default class Client extends Component {
               // rotationSensitivity:  0.05,
               // fly: true,
             }}
-          >
-
-            {this.props.children}
-
-          </Entity>
+          />
 
           <Entity
             id="skybox"
