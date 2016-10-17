@@ -31,7 +31,7 @@ export default class Timer extends Component {
   }
 
   componentWillUnmount() {
-    clearInterval(this.updateTimer);
+    clearInterval(this.timer);
   }
 
   updateTimer() {
@@ -48,7 +48,7 @@ export default class Timer extends Component {
     const turnNumber = Math.floor(secondsPassed / turnDuration);
     let turnStatus;
 
-    if (turnNumber === 1) {
+    if (turnNumber === 0) {
       turnStatus = 0;
     }
     else if (turnNumber % 2 === 0) {
@@ -61,6 +61,7 @@ export default class Timer extends Component {
     this.setState({
       timeLeft: isBufferTime ? timeLeft : turnTimeLeft,
       isBufferTime: isBufferTime,
+      turnNumber: turnNumber,
       turnStatus: turnStatus,
     })
 

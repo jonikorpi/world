@@ -16,8 +16,12 @@
     "reactfire": "^1.0.0"
   },
   "dependencies": {
+    "aframe": "^0.3.2",
+    "aframe-extras": "^2.6.0",
+    "aframe-react": "^3.2.0",
     "compression": "^1.6.2",
     "express": "^4.14.0",
+    "jonikorpi-base-files": "^5.0.1",
     "morgan": "^1.7.0",
     "rollbar": "^0.6.2",
     "universal-analytics": "^0.4.6"

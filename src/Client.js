@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import firebase from "firebase";
 import shallowCompare from "react-addons-shallow-compare";
 import { BrowserRouter, Match } from "react-router";
+import aframe from "aframe";
+import { Scene, Entity } from "aframe-react";
+import extras from "aframe-extras";
+extras.controls.registerAll();
 
 import Home from "./Home";
 import Arena from "./Arena";
@@ -15,7 +19,15 @@ export default class Client extends Component {
       anonymous: null,
       connected: false,
       haveConnectedOnce: false,
+
+      inVR: false,
+      width: window.innerWidth,
+      height: window.innerHeight,
     };
+
+    this.handleResize = this.handleResize.bind(this);
+    this.startVR      = this.startVR.bind(this);
+    this.stopVR       = this.stopVR.bind(this);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -23,6 +35,11 @@ export default class Client extends Component {
   }
 
   componentDidMount() {
+    window.addEventListener("enter-vr", this.startVR);
+    window.addEventListener("exit-vr", this.stopVR);
+    window.addEventListener('resize', this.handleResize);
+    this.handleResize();
+
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
         this.setState({
@@ -51,6 +68,35 @@ export default class Client extends Component {
     }.bind(this));
   }
 
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.handleResize);
+    window.removeEventListener("enter-vr", this.startVR);
+    window.removeEventListener("exit-vr", this.stopVR);
+  }
+
+  handleResize() {
+    this.setState({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+  }
+
+  startVR() {
+    this.setState({
+      inVR: true,
+    });
+
+    console.log("Setting inVR to " + this.state.inVR);
+  }
+
+  stopVR() {
+    this.setState({
+      inVR: false,
+    });
+
+    console.log("Setting inVR to " + this.state.inVR);
+  }
+
   signIn() {
     firebase.auth().signInAnonymously().catch(function(error) {
       console.log(error);
@@ -68,12 +114,75 @@ export default class Client extends Component {
 
     return (
       <BrowserRouter>
-        <div id="client">
+        <Scene
+          id="client"
+          stats={{ enabled: process.env.NODE_ENV === "development" }}
+          vr-mode-ui={{ enabled: false }}
+        >
           {playerID ? (
             <button onClick={this.signOut.bind(this)}>Sign out</button>
           ) : (
-            <button onClick={this.signIn.bind(this)}>Sign up anonymously</button>
+            <button onClick={this.signIn.bind(this)}>Sign in anonymously</button>
           )}
+
+          <Entity
+            id="camera"
+            camera={{
+              far: 1100,
+              near: 0.1,
+              fov: this.state.inVR ? 80 : 90,
+              userHeight: 1.75,
+            }}
+            universal-controls={{
+              movementEnabled: this.props.inVR === false,
+              movementSpeed:        20,
+              movementEasing:       25,
+              movementAcceleration: 20,
+              // rotationSensitivity:  0.05,
+              // fly: true,
+            }}
+          >
+
+            {this.props.children}
+
+          </Entity>
+
+          <Entity
+            id="skybox"
+            geometry={{
+              primitive: "box",
+              width: 1000,
+              height: 1000,
+              depth: 1000,
+            }}
+            material={{
+              shader: "flat",
+              color: "#000",
+            }}
+            scale={[1, 1, -1]}
+          />
+
+          <Entity
+            id="ambientLight"
+            light={{
+              type: "ambient",
+              color: "#222",
+            }}
+          />
+
+          <Entity
+            id="directionalLight"
+            light={{
+              type: "directional",
+              color: "white",
+              intensity: 1.5,
+            }}
+            position={[
+              -0.75,
+              1,
+              0.5,
+            ]}
+          />
 
           <Match
             exactly
@@ -84,7 +193,7 @@ export default class Client extends Component {
             pattern="/:arenaID"
             render={(props) => <Arena {...props} playerID={playerID}/>}
           />
-        </div>
+        </Scene>
       </BrowserRouter>
     );
   }

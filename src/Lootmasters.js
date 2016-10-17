@@ -34,7 +34,7 @@ export default class Lootmasters extends Component {
 
     return (
       <div>
-        <h4>Lootmasters: {count}</h4>
+        <h4>Game servers online: {count}</h4>
       </div>
     );
   }
