@@ -2,8 +2,17 @@ import React, { Component } from "react";
 import firebase from "firebase";
 
 import Player from "./Player";
+import Timer from "./Timer";
 
 export default class InGame extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      turnStatus: 0,
+    }
+  }
+
   listKeys(object) {
     let array = [];
 
@@ -28,6 +37,10 @@ export default class InGame extends Component {
     })
   }
 
+  setTurnStatus(turnStatus) {
+    this.setState({turnStatus: turnStatus})
+  }
+
   render() {
     const players = this.props.game.teams;
     const allPlayers = players && this.listKeys(players[1]).concat(this.listKeys(players[2]))
@@ -35,6 +48,12 @@ export default class InGame extends Component {
     return (
       <div>
         <h4>Ingame</h4>
+
+        <Timer
+          started={this.props.game.started}
+          setTurnStatus={this.setTurnStatus.bind(this)}
+          turnStatus={this.state.turnStatus}
+        />
 
         {this.props.isOwner && (
           <button type="button" onClick={this.endGame.bind(this)}>End game</button>
@@ -51,9 +70,6 @@ export default class InGame extends Component {
             />
           )
         })}
-
-        <p>gamePlayers</p>
-        <p>gameInventories</p>
 
         <p>if part of game:</p>
         <p>Reticles for own team</p>
