@@ -67,7 +67,10 @@ export default class Arena extends Component {
     const hasGame = game && typeof game.started !== "undefined";
 
     return (
-      <div className="arena">
+      <Entity
+        id="arena"
+        position={[0, 0, -2]}
+      >
         {game && isOwner && (
           <ArenaOwnerUI
             createGame={this.createGame.bind(this)}
@@ -79,19 +82,15 @@ export default class Arena extends Component {
           <ArenaVisitorUI/>
         )}
 
-        {game ? (
-          hasGame && (
-            <Game
-              gameID={game[".key"]}
-              game={game}
-              isOwner={isOwner}
-              playerID={playerID}
-            />
-          )
-        ) : (
-          <p>Connecting to arena…</p>
+        {game && hasGame && (
+          <Game
+            gameID={game[".key"]}
+            game={game}
+            isOwner={isOwner}
+            playerID={playerID}
+          />
         )}
-      </div>
+      </Entity>
     );
   }
 }

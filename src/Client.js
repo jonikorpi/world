@@ -120,29 +120,6 @@ export default class Client extends Component {
           stats={{ enabled: process.env.NODE_ENV === "development" }}
           vr-mode-ui={{ enabled: false }}
         >
-          {/* {playerID && (
-            <button onClick={this.signOut.bind(this)}>Sign out</button>
-          ) : (
-            <button onClick={this.signIn.bind(this)}>Sign in anonymously</button>
-          )} */}
-
-          <Entity
-            id="camera"
-            camera={{
-              far: 1100,
-              near: 0.1,
-              fov: this.state.inVR ? 80 : 90,
-              userHeight: 1.75,
-            }}
-            universal-controls={{
-              movementEnabled: this.props.inVR === false,
-              movementSpeed:        20,
-              movementEasing:       25,
-              movementAcceleration: 20,
-              // rotationSensitivity:  0.05,
-              // fly: true,
-            }}
-          />
 
           <Entity
             id="skybox"
@@ -154,7 +131,7 @@ export default class Client extends Component {
             }}
             material={{
               shader: "flat",
-              color: "#000",
+              color: "hsl(200, 62%, 9%)",
             }}
             scale={[1, 1, -1]}
           />
@@ -163,7 +140,7 @@ export default class Client extends Component {
             id="ambientLight"
             light={{
               type: "ambient",
-              color: "#222",
+              color: "hsl(200, 62%, 24%)",
             }}
           />
 
@@ -171,7 +148,7 @@ export default class Client extends Component {
             id="directionalLight"
             light={{
               type: "directional",
-              color: "white",
+              color: "hsl(40, 62%, 91%)",
               intensity: 1.5,
             }}
             position={[
@@ -195,15 +172,42 @@ export default class Client extends Component {
             }}
           />
 
-          <Match
-            exactly
-            pattern="/"
-            render={(props) => <Home {...props} playerID={playerID}/>}
+          <Entity
+            id="player"
+            camera={{
+              far: 1100,
+              near: 0.1,
+              fov: this.state.inVR ? 80 : 90,
+              userHeight: 1.75,
+            }}
+            universal-controls={{
+              movementEnabled: this.state.inVR === false,
+              movementSpeed:        20,
+              movementEasing:       25,
+              movementAcceleration: 20,
+              // rotationSensitivity:  0.05,
+              // fly: true,
+            }}
           />
-          <Match
-            pattern="/:arenaID"
-            render={(props) => <Arena {...props} playerID={playerID}/>}
-          />
+
+          <Entity id="UI" position={[0, 1.75, 0]}>
+            {/* {playerID && (
+              <button onClick={this.signOut.bind(this)}>Sign out</button>
+            ) : (
+              <button onClick={this.signIn.bind(this)}>Sign in anonymously</button>
+            )} */}
+
+            <Match
+              exactly
+              pattern="/"
+              render={(props) => <Home {...props} playerID={playerID}/>}
+            />
+            <Match
+              pattern="/:arenaID"
+              render={(props) => <Arena {...props} playerID={playerID}/>}
+            />
+          </Entity>
+
         </Scene>
       </BrowserRouter>
     );
