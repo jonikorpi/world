@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import firebase from "firebase";
 import shallowCompare from "react-addons-shallow-compare";
 
 export default class TeamRequest extends Component {
