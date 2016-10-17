@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import shallowCompare from "react-addons-shallow-compare";
+import { Entity } from "aframe-react";
+
+import Button from "./Button";
 
 export default class ArenaOwnerUI extends Component {
   shouldComponentUpdate(nextProps, nextState) {
@@ -8,11 +11,11 @@ export default class ArenaOwnerUI extends Component {
 
   render() {
     return (
-      <div>
+      <Entity>
         {!this.props.hasGame && (
-          <button onClick={this.props.createGame}>Create a game</button>
+          <Button onClick={this.props.createGame}/>
         )}
-      </div>
+      </Entity>
     );
   }
 }

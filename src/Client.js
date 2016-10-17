@@ -173,7 +173,7 @@ export default class Client extends Component {
           />
 
           <Entity
-            id="player"
+            id="camera"
             camera={{
               far: 1100,
               near: 0.1,
@@ -188,7 +188,26 @@ export default class Client extends Component {
               // rotationSensitivity:  0.05,
               // fly: true,
             }}
-          />
+          >
+            <Entity
+              id="cusor"
+              cursor={{
+                fuse: false,
+              }}
+              geometry={{
+                primitive: "ring",
+                radiusInner: 0.0236,
+                radiusOuter: 0.0382,
+                segmentsTheta: 16,
+                segmentsPhi: 1,
+              }}
+              position={[0, 0, -1]}
+              material={{
+                shader: "flat",
+                color: "white",
+              }}
+            />
+          </Entity>
 
           <Entity id="UI" position={[0, 1.75, 0]}>
             {/* {playerID && (
