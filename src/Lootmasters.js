@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import firebase from "firebase";
 import reactMixin from "react-mixin";
 import ReactFire from "reactfire";
+import { Entity } from "aframe-react";
 
 export default class Lootmasters extends Component {
   constructor(props) {
@@ -30,12 +31,32 @@ export default class Lootmasters extends Component {
 
   render() {
     const lootmasters = this.state.lootmasters;
-    const count = (lootmasters && lootmasters.length) || 0;
 
     return (
-      <div>
-        <h4>Game servers online: {count}</h4>
-      </div>
+      <Entity>
+        {lootmasters && lootmasters.map((lootmaster, index) => {
+          return (
+            <Entity
+              key={index}
+              geometry={{
+                primitive: "circle",
+                radius: 0.05,
+                segments: 3,
+              }}
+              material={{
+                shader: "flat",
+                color: "white",
+              }}
+              rotation={[0, 0, 90]}
+              position={[
+                0.75 * index,
+                1,
+                0,
+              ]}
+            />
+          )
+        })}
+      </Entity>
     );
   }
 }

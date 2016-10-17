@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Entity } from "aframe-react";
 
 import Lootmasters from "./Lootmasters";
 import PreGame from "./PreGame";
@@ -7,7 +8,7 @@ import InGame from "./InGame";
 export default class Game extends Component {
   render() {
     return (
-      <div>
+      <Entity>
         <Lootmasters/>
 
         {this.props.game.started ? (
@@ -15,7 +16,7 @@ export default class Game extends Component {
         ) : (
           <PreGame {...this.props} />
         )}
-      </div>
+      </Entity>
     );
   }
 }
