@@ -8,11 +8,11 @@
     "now": "^0.25.1",
     "react": "^15.3.2",
     "react-addons-perf": "^15.3.2",
-    "react-scripts": "^0.6.1",
     "react-addons-shallow-compare": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-mixin": "^3.0.5",
     "react-router": "^4.0.0-alpha.4",
+    "react-scripts": "^0.6.1",
     "reactfire": "^1.0.0"
   },
   "dependencies": {
