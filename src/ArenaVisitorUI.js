@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import shallowCompare from "react-addons-shallow-compare";
+import { Entity } from "aframe-react";
 import { Link } from "react-router";
+
+import Button from "./Button";
 
 export default class ArenaVisitorUI extends Component {
   shouldComponentUpdate(nextProps, nextState) {
@@ -9,9 +12,12 @@ export default class ArenaVisitorUI extends Component {
 
   render() {
     return (
-      <div>
-        <Link to={{pathname: "/"}}>Home</Link>
-      </div>
+      <Entity>
+        <Link to={{pathname: "/"}}>{
+            ({isActive, location, href, onClick, transition}) =>
+              <Button onClick={onClick} color={"cyan"}/>
+        }</Link>
+      </Entity>
     );
   }
 }
