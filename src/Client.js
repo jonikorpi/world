@@ -181,6 +181,20 @@ export default class Client extends Component {
             ]}
           />
 
+          <Entity
+            id="ground"
+            geometry={{
+              primitive: "plane",
+              width: 1000,
+              height: 1000,
+            }}
+            rotation={[-90, 0, 0]}
+            material={{
+              // shader: "flat",
+              color: "#333",
+            }}
+          />
+
           <Match
             exactly
             pattern="/"
