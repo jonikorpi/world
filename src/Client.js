@@ -196,8 +196,8 @@ export default class Client extends Component {
               }}
               geometry={{
                 primitive: "ring",
-                radiusInner: 0.0236,
-                radiusOuter: 0.0382,
+                radiusInner: 0.0091,
+                radiusOuter: 0.0146,
                 segmentsTheta: 16,
                 segmentsPhi: 1,
               }}
