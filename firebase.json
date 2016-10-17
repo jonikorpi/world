@@ -93,13 +93,6 @@
       },
     },
 
-    "gameStatuses": {
-      "$gameID": {
-        ".read": "true",
-        ".write": "auth.lootmaster === true",
-      },
-    },
-
     "lootmasters": {
       ".read": "true",
       ".write": "auth.lootmaster === true",
