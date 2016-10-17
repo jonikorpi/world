@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import firebase from "firebase";
 import shallowCompare from "react-addons-shallow-compare";
 import { BrowserRouter, Match } from "react-router";
-import aframe from "aframe";
+import "aframe";
 import { Scene, Entity } from "aframe-react";
 import extras from "aframe-extras";
 extras.controls.registerAll();

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import firebase from "firebase";
 import reactMixin from "react-mixin";
 import ReactFire from "reactfire";
+import { Entity } from "aframe-react";
 
 import Game from "./Game";
 import ArenaOwnerUI from "./ArenaOwnerUI";
