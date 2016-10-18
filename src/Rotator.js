@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import "aframe";
 import {Entity} from "aframe-react";
 import shallowCompare from "react-addons-shallow-compare";
 
