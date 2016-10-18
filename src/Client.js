@@ -144,7 +144,7 @@ export default class Client extends Component {
             }}
           />
 
-          <Entity
+          {/* <Entity
             id="directionalLight"
             light={{
               type: "directional",
@@ -156,7 +156,7 @@ export default class Client extends Component {
               1,
               -0.5,
             ]}
-          />
+          /> */}
 
           <Entity
             id="ground"
@@ -167,7 +167,7 @@ export default class Client extends Component {
             }}
             rotation={[-90, 0, 0]}
             material={{
-              // shader: "flat",
+              shader: "flat",
               color: "#333",
             }}
           />
