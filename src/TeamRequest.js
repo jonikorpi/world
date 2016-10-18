@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import shallowCompare from "react-addons-shallow-compare";
-import { Entity } from "aframe-react";
+// import { Entity } from "aframe-react";
 
 import Button from "./Button";
 import Rotator from "./Rotator";

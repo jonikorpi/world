@@ -76,10 +76,6 @@ export default class Button extends Component {
             letterSpacing: 0,
             align: "center",
           }}
-          material={{
-            shader: "flat",
-            color: currentColor,
-          }}
         />
 
         {this.props.children}
