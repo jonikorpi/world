@@ -46,10 +46,7 @@ export default class Button extends Component {
 
     return (
       <Entity
-        className="button clickable"
-        onClick={this.props.onClick}
-        onStateadded={this.handleStateAdded.bind(this)}
-        onStateremoved={this.handleStateRemoved.bind(this)}
+        className="button"
         position={this.props.position || [0,0,0]}
         geometry={{
           primitive: "plane",
@@ -66,8 +63,6 @@ export default class Button extends Component {
         <Entity
           className="button-text"
           position={[width * -0.5, lineHeight * -0.5, 0.01]}
-          onStateadded={this.handleStateAdded.bind(this)}
-          onStateremoved={this.handleStateRemoved.bind(this)}
           bmfont-text={{
             text: this.props.text || "Quick brown fox",
             color: this.props.textColor || "white",
@@ -75,6 +70,24 @@ export default class Button extends Component {
             width: width * textSizeMultiplier,
             letterSpacing: 0,
             align: "center",
+          }}
+        />
+
+        <Entity
+          className="clickable"
+          position={[0, 0, 0.02]}
+          onClick={this.props.onClick}
+          onStateadded={this.handleStateAdded.bind(this)}
+          onStateremoved={this.handleStateRemoved.bind(this)}
+          geometry={{
+            primitive: "plane",
+            width: width,
+            height: height,
+          }}
+          material={{
+            shader: "flat",
+            opacity: 0,
+            transparent: true,
           }}
         />
 
