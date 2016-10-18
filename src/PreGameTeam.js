@@ -5,6 +5,7 @@ import { Entity } from "aframe-react";
 import PreGamePlayer from "./PreGamePlayer";
 import TeamRequest from "./TeamRequest";
 import Button from "./Button";
+import Rotator from "./Rotator";
 
 export default class PreGameTeam extends Component {
   joinTeam() {
@@ -62,32 +63,37 @@ export default class PreGameTeam extends Component {
     const hasJoined = this.props.hasJoined;
     const hasRequested = this.props.hasRequested;
 
-    const position = teamID === "1" ? -1 : 1;
+    const rotation = teamID === "1" ? 25 : -25;
 
     return (
-      <Entity position={[position, 0, 0]}>
-        <h5>Team {teamID}</h5>
-
+      <Entity>
         {playerID && isOwner && !hasJoined && (
-          <Button onClick={this.joinTeam.bind(this)} text="Join"/>
+          <Rotator rotation={[5, rotation, 0]}>
+            <Button onClick={this.joinTeam.bind(this)} text="Join"/>
+          </Rotator>
         )}
 
         {playerID && !isOwner && !hasJoined && !hasRequested && (
-          <Button onClick={this.requestInvite.bind(this)} text="Request invite"/>
+          <Rotator rotation={[5, rotation, 0]}>
+            <Button onClick={this.requestInvite.bind(this)} text="Request invite"/>
+          </Rotator>
         )}
 
-        {players && players.map((player, index) => {
-          return (
-            <PreGamePlayer
-              key={index}
-              index={index}
-              playerID={player}
-              isSelf={player === playerID}
-              removable={isOwner || (hasJoined && player === playerID)}
-              removePlayer={this.removePlayer.bind(this)}
-            />
-          )
-        })}
+        <Rotator rotation={[-5, rotation, 0]}>
+          {players && players.map((player, index) => {
+            return (
+              <PreGamePlayer
+                key={index}
+                index={index}
+                playerID={player}
+                teamID={teamID}
+                isSelf={player === playerID}
+                removable={isOwner || (hasJoined && player === playerID)}
+                removePlayer={this.removePlayer.bind(this)}
+              />
+            )
+          })}
+        </Rotator>
 
         {requests && requests.map((requesterID, index) => {
           if (isOwner || requesterID === playerID) {
@@ -95,7 +101,7 @@ export default class PreGameTeam extends Component {
               <TeamRequest
                 key={index}
                 index={index}
-                teamID={1}
+                teamID={teamID}
                 requesterID={requesterID}
                 isOwner={isOwner}
                 acceptRequest={this.acceptRequest.bind(this)}

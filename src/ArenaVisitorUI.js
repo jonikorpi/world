@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import shallowCompare from "react-addons-shallow-compare";
-import { Entity } from "aframe-react";
+// import { Entity } from "aframe-react";
 import { Link } from "react-router";
 
 import Button from "./Button";
+import Rotator from "./Rotator";
 
 export default class ArenaVisitorUI extends Component {
   shouldComponentUpdate(nextProps, nextState) {
@@ -12,12 +13,12 @@ export default class ArenaVisitorUI extends Component {
 
   render() {
     return (
-      <Entity position={[0, 0.5, 0]}>
+      <Rotator rotation={[15, 0, 0]}>
         <Link to={{pathname: "/"}}>{
             ({isActive, location, href, onClick, transition}) =>
               <Button onClick={onClick} text="Home"/>
         }</Link>
-      </Entity>
+      </Rotator>
     );
   }
 }

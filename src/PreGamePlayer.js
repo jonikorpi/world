@@ -14,9 +14,11 @@ export default class PreGamePlayer extends Component {
   }
 
   render() {
+    const direction = this.props.teamID === "1" ? -1 : 1;
+
     return (
       <Entity
-        position={[0.5 * this.props.index, -0.25, 0.5]}
+        position={[0.75 * this.props.index * direction, -0.25, 0.5]}
         geometry={{
           primitive: "box",
           height: 0.25,

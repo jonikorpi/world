@@ -4,6 +4,8 @@ import reactMixin from "react-mixin";
 import ReactFire from "reactfire";
 import { Entity } from "aframe-react";
 
+import Rotator from "./Rotator";
+
 export default class Lootmasters extends Component {
   constructor(props) {
     super(props);
@@ -33,7 +35,7 @@ export default class Lootmasters extends Component {
     const lootmasters = this.state.lootmasters;
 
     return (
-      <Entity>
+      <Rotator rotation={[15, 0, 0]}>
         {lootmasters && lootmasters.map((lootmaster, index) => {
           return (
             <Entity
@@ -56,7 +58,7 @@ export default class Lootmasters extends Component {
             />
           )
         })}
-      </Entity>
+      </Rotator>
     );
   }
 }

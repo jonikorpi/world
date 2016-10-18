@@ -6,6 +6,7 @@ import { Entity } from "aframe-react";
 
 import PreGameTeam from "./PreGameTeam";
 import Button from "./Button";
+import Rotator from "./Rotator";
 
 export default class PreGame extends Component {
   constructor(props) {
@@ -100,19 +101,21 @@ export default class PreGame extends Component {
     return (
       <Entity>
         {isOwner && !hasStarted && (
-          <Button
-            onClick={this.cancelGame.bind(this)}
-            text="Cancel game"
-            position={[-1, 0.5, 0]}
-          />
+          <Rotator rotation={[15, 15, 0]}>
+            <Button
+              onClick={this.cancelGame.bind(this)}
+              text="Cancel game"
+            />
+          </Rotator>
         )}
 
         {isOwner && !hasStarted && hasTeams && (
-          <Button
-            onClick={this.startGame.bind(this)}
-            text="Start game"
-            position={[1, 0.5, 0]}
-          />
+          <Rotator rotation={[15, -15, 0]}>
+            <Button
+              onClick={this.startGame.bind(this)}
+              text="Start game"
+            />
+          </Rotator>
         )}
 
         {["1", "2"].map((teamID) => {

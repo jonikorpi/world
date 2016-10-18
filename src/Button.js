@@ -40,7 +40,7 @@ export default class Button extends Component {
     const width = (this.props.width || 1.25) + padding*2;
     const height = lineHeight + padding*2;
     const color = this.props.color || "grey";
-    const scale = this.props.scale || 0.75;
+    const scale = this.props.scale || 0.5;
 
     const currentColor = this.state["cursor-hovered"] ? "black" : color;
 

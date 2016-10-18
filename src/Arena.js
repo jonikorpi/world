@@ -67,10 +67,7 @@ export default class Arena extends Component {
     const hasGame = game && typeof game.started !== "undefined";
 
     return (
-      <Entity
-        id="arena"
-        position={[0, 0, -2]}
-      >
+      <Entity id="arena">
         {game && isOwner && (
           <ArenaOwnerUI
             createGame={this.createGame.bind(this)}

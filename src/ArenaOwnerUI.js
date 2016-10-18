@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import shallowCompare from "react-addons-shallow-compare";
-import { Entity } from "aframe-react";
+// import { Entity } from "aframe-react";
 
 import Button from "./Button";
+import Rotator from "./Rotator";
 
 export default class ArenaOwnerUI extends Component {
   shouldComponentUpdate(nextProps, nextState) {
@@ -11,11 +12,11 @@ export default class ArenaOwnerUI extends Component {
 
   render() {
     return (
-      <Entity>
+      <Rotator rotation={[15, 0, 0]}>
         {!this.props.hasGame && (
           <Button onClick={this.props.createGame} text="Open a game"/>
         )}
-      </Entity>
+      </Rotator>
     );
   }
 }
