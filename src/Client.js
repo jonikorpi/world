@@ -201,12 +201,12 @@ export default class Client extends Component {
               }}
               geometry={{
                 primitive: "ring",
-                radiusInner: 0.0091,
-                radiusOuter: 0.0146,
+                radiusInner: 0.0056,
+                radiusOuter: 0.0091,
                 segmentsTheta: 16,
                 segmentsPhi: 1,
               }}
-              position={[0, 0, -1]}
+              position={[0, 0, -0.5]}
               material={{
                 shader: "flat",
                 color: "white",

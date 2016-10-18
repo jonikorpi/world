@@ -30,7 +30,7 @@ export default class PreGamePlayer extends Component {
           <Button
             onClick={this.removePlayer.bind(this)}
             text={this.props.isSelf ? "Leave" : "Kick"}
-            position={[0, 0.25, 0]}
+            position={[0, 0.375, 0]}
           />
         )}
 

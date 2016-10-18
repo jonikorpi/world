@@ -14,30 +14,38 @@ export default class Button extends Component {
     return shallowCompare(this, nextProps, nextState);
   }
 
-  handleStateAdded(event) {
+  handleStateEvent(event) {
     const name = event.detail.state;
+    const type = event.type;
+    let boolean;
 
-    if (name) {
-      this.setState({[name]: true});
+    switch (type) {
+      case "stateadded":
+        boolean = true;
+        break;
+      case "stateremoved":
+        boolean = false;
+        break;
+      default:
+        console.log("Bad event in Button");
+        return;
     }
-  }
 
-  handleStateRemoved(event) {
-    const name = event.detail.state;
-
-    if (name) {
-      this.setState({[name]: false});
+    if (name && type && this._reactInternalInstance) {
+      this.setState({[name]: boolean});
     }
   }
 
   render() {
+    const text = this.props.text || "Quick brown fox";
     const baseLineHeight = 0.12;
     const textSizeMultiplier = 200;
+    const computedWidth = text.length * 0.1;
 
     const padding = this.props.padding || 0.1;
     const lineHeight = this.props.lineHeight ? this.props.lineHeight * baseLineHeight : baseLineHeight;
 
-    const width = (this.props.width || 1.25) + padding*2;
+    const width = (this.props.width || computedWidth) + padding*2;
     const height = lineHeight + padding*2;
     const color = this.props.color || "grey";
     const scale = this.props.scale || 0.5;
@@ -60,11 +68,13 @@ export default class Button extends Component {
         }}
       >
 
+        {this.props.children}
+
         <Entity
           className="button-text"
-          position={[width * -0.5, lineHeight * -0.5, 0.01]}
+          position={[width * -0.5, lineHeight * -0.5, 0.02]}
           bmfont-text={{
-            text: this.props.text || "Quick brown fox",
+            text: text,
             color: this.props.textColor || "white",
             lineHeight: lineHeight * textSizeMultiplier,
             width: width * textSizeMultiplier,
@@ -75,10 +85,10 @@ export default class Button extends Component {
 
         <Entity
           className="clickable"
-          position={[0, 0, 0.02]}
+          position={[0, 0, 0.05]}
           onClick={this.props.onClick}
-          onStateadded={this.handleStateAdded.bind(this)}
-          onStateremoved={this.handleStateRemoved.bind(this)}
+          onStateadded={this.handleStateEvent.bind(this)}
+          onStateremoved={this.handleStateEvent.bind(this)}
           geometry={{
             primitive: "plane",
             width: width,
@@ -90,8 +100,6 @@ export default class Button extends Component {
             transparent: true,
           }}
         />
-
-        {this.props.children}
 
       </Entity>
     );
