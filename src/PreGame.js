@@ -102,7 +102,7 @@ export default class PreGame extends Component {
         {isOwner && !hasStarted && (
           <Button
             onClick={this.cancelGame.bind(this)}
-            color="red"
+            text="Cancel game"
             position={[-1, 0.5, 0]}
           />
         )}
@@ -110,7 +110,7 @@ export default class PreGame extends Component {
         {isOwner && !hasStarted && hasTeams && (
           <Button
             onClick={this.startGame.bind(this)}
-            color="green"
+            text="Start game"
             position={[1, 0.5, 0]}
           />
         )}

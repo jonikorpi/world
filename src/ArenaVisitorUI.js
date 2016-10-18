@@ -15,7 +15,7 @@ export default class ArenaVisitorUI extends Component {
       <Entity position={[0, 0.5, 0]}>
         <Link to={{pathname: "/"}}>{
             ({isActive, location, href, onClick, transition}) =>
-              <Button onClick={onClick} color="grey"/>
+              <Button onClick={onClick} text="Home"/>
         }</Link>
       </Entity>
     );

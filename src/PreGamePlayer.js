@@ -25,7 +25,11 @@ export default class PreGamePlayer extends Component {
         }}
       >
         {this.props.removable && (
-          <Button onClick={this.removePlayer.bind(this)} color="red" position={[0, 0.25, 0]}/>
+          <Button
+            onClick={this.removePlayer.bind(this)}
+            text={this.props.isSelf ? "Leave" : "Kick"}
+            position={[0, 0.25, 0]}
+          />
         )}
 
         {this.props.children}

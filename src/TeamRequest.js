@@ -17,7 +17,7 @@ export default class TeamRequest extends Component {
     return (
       <Entity position={[0, this.props.index * 0.5, 0]}>
         {this.props.isOwner && (
-          <Button onClick={this.acceptRequest.bind(this)} color="green"/>
+          <Button onClick={this.acceptRequest.bind(this)} text="Accept request"/>
         )}
 
         {this.props.children}

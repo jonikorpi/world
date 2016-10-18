@@ -190,7 +190,12 @@ export default class Client extends Component {
             }}
           >
             <Entity
-              id="cusor"
+              id="cursor"
+              // raycaster={{
+              //   far: 10,
+              //   interval: 80,
+              //   objects: ".clickable",
+              // }}
               cursor={{
                 fuse: false,
               }}

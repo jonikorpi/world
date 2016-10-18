@@ -69,11 +69,11 @@ export default class PreGameTeam extends Component {
         <h5>Team {teamID}</h5>
 
         {playerID && isOwner && !hasJoined && (
-          <Button onClick={this.joinTeam.bind(this)} color="blue"/>
+          <Button onClick={this.joinTeam.bind(this)} text="Join"/>
         )}
 
         {playerID && !isOwner && !hasJoined && !hasRequested && (
-          <Button onClick={this.requestInvite.bind(this)} color="turquoise"/>
+          <Button onClick={this.requestInvite.bind(this)} text="Request invite"/>
         )}
 
         {players && players.map((player, index) => {
@@ -101,7 +101,7 @@ export default class PreGameTeam extends Component {
                 acceptRequest={this.acceptRequest.bind(this)}
               >
                 {playerID === requesterID && (
-                  <Button onClick={this.cancelRequest.bind(this)} color="pink"/>
+                  <Button onClick={this.cancelRequest.bind(this)} text="Cancel request"/>
                 )}
               </TeamRequest>
             )

@@ -13,7 +13,7 @@ export default class ArenaOwnerUI extends Component {
     return (
       <Entity>
         {!this.props.hasGame && (
-          <Button onClick={this.props.createGame} color={"green"}/>
+          <Button onClick={this.props.createGame} text="Open a game"/>
         )}
       </Entity>
     );
