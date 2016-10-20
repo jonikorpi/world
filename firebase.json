@@ -1,29 +1,80 @@
 {
   "rules": {
 
-    "players": {
-      "$playerID": {
-        ".read": "true",
-        ".write": "auth != null && auth.uid === $playerID",
-        /*"mask": { ".validate": "newData.isString()" },*/
-        "$other": { ".validate": "false" },
-      },
-    },
-
-    "playerFriends": {
-      "$playerID": {
-        ".read": "auth != null && auth.uid === $playerID",
-        ".write": "auth != null && auth.uid === $playerID",
-        "$friendID": {
-          ".validate": "
-               root.child('players').hasChild($friendID)
-            && newData.isBoolean()
-          ",
+    "tiles": {
+      ".write": "auth.worldmaster === true",
+      "$x": {
+        "$y": {
+          "$z": {
+            ".read": "true", /* TODO complicated neighbour rules */
+            "playerID": { ".validate": "newData.isString()" },
+            "objectID": { ".validate": "newData.isString()" },
+            "tile": {
+              "rock":  { ".validate": "newData.isNumber()" },
+              "heat":  { ".validate": "newData.isNumber()" },
+              "water": { ".validate": "newData.isNumber()" },
+              "flora": { ".validate": "newData.isNumber()" },
+              "$other": { ".validate": "false" },
+            },
+            "$other": { ".validate": "false" },
+          },
         },
       },
     },
 
-    "games": {
+    "players": {
+      "$playerID": {
+        ".read": "true",
+        ".write": "
+             (auth != null && auth.uid === $playerID && !data.exists())
+          || (auth.worldmaster === true)
+        ",
+        /* TODO public identifying features */
+        "$other": { ".validate": "false" },
+      },
+    },
+
+    "objects": {
+      ".write": "auth.worldmaster === true",
+      "$playerID": {
+        "$objectID": {
+          ".read": "true",
+          "location": {
+            "x": { ".validate": "newData.isNumber()" },
+            "y": { ".validate": "newData.isNumber()" },
+            "z": { ".validate": "newData.isNumber()" },
+            "$other": { ".validate": "false" },
+          },
+          "type":   { ".validate": "newData.isString()" },
+          "health": { ".validate": "newData.isNumber()" },
+          "attack": { ".validate": "newData.isNumber()" },
+          "$other": { ".validate": "false" },
+        },
+      }
+    },
+
+    "inventories": {
+      ".write": "auth.worldmaster === true",
+      "$playerID": {
+        ".read": "
+             (auth.uid === $playerID)
+          || (auth.worldmaster === true)
+        ",
+        "loot": {
+          "$itemID": {
+
+          },
+        },
+        "cards": {
+          "$cardID": {
+
+          }
+        },
+        "$other": { ".validate": "false" },
+      },
+    },
+
+    /*"games": {
       "$gameID": {
         ".read": "true",
         ".write": "
@@ -255,7 +306,7 @@
           "$other":            { ".validate": false },
         },
       },
-    },
+    },*/
 
   },
 }
