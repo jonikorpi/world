@@ -1,17 +1,13 @@
-import React, { Component } from "react";
-import shallowCompare from "react-addons-shallow-compare";
+import React, { PureComponent } from "react";
 import { Entity } from "aframe-react";
-import "aframe-bmfont-text-component";
 
-export default class Button extends Component {
+import Text from "./Text";
+
+export default class Button extends PureComponent {
   constructor(props) {
     super(props);
 
     this.state = {};
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState);
   }
 
   handleStateEvent(event) {
@@ -70,17 +66,12 @@ export default class Button extends Component {
 
         {this.props.children}
 
-        <Entity
-          className="button-text"
+        <Text
           position={[width * -0.5, lineHeight * -0.5, 0.02]}
-          bmfont-text={{
-            text: text,
-            color: this.props.textColor || "white",
-            lineHeight: lineHeight * textSizeMultiplier,
-            width: width * textSizeMultiplier,
-            letterSpacing: 0,
-            align: "center",
-          }}
+          text={text}
+          color={this.props.textColor}
+          lineHeight={lineHeight * textSizeMultiplier}
+          width={width * textSizeMultiplier}
         />
 
         <Entity
