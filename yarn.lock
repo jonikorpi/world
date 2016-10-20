@@ -5671,10 +5671,6 @@ react-addons-perf@^15.3.2:
   version "15.3.2"
   resolved "https://registry.yarnpkg.com/react-addons-perf/-/react-addons-perf-15.3.2.tgz#bbdbebe8649f936f9636a5750ac145bf5c620213"
 
-react-addons-shallow-compare@^15.3.2:
-  version "15.3.2"
-  resolved "https://registry.yarnpkg.com/react-addons-shallow-compare/-/react-addons-shallow-compare-15.3.2.tgz#c9edba49b9eab44d0c59024d289beb1ab97318b5"
-
 react-broadcast@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/react-broadcast/-/react-broadcast-0.1.1.tgz#d8da92dcfada6e666e95e153220f9e5bbb1b42f2"

@@ -1,16 +1,11 @@
-import React, { Component } from "react";
-import shallowCompare from "react-addons-shallow-compare";
+import React, { PureComponent } from "react";
 // import { Entity } from "aframe-react";
 import { Link } from "react-router";
 
 import Button from "./Button";
 import Rotator from "./Rotator";
 
-export default class ArenaVisitorUI extends Component {
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState);
-  }
-
+export default class ArenaVisitorUI extends PureComponent {
   render() {
     return (
       <Rotator rotation={[15, 0, 0]}>

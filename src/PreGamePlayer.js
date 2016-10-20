@@ -1,14 +1,9 @@
-import React, { Component } from "react";
-import shallowCompare from "react-addons-shallow-compare";
+import React, { PureComponent } from "react";
 import { Entity } from "aframe-react";
 
 import Button from "./Button";
 
-export default class PreGamePlayer extends Component {
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState);
-  }
-
+export default class PreGamePlayer extends PureComponent {
   removePlayer() {
     this.props.removePlayer(this.props.playerID);
   }

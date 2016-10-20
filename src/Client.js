@@ -1,6 +1,5 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import firebase from "firebase";
-import shallowCompare from "react-addons-shallow-compare";
 import { BrowserRouter, Match } from "react-router";
 import "aframe";
 import { Scene, Entity } from "aframe-react";
@@ -10,7 +9,7 @@ extras.controls.registerAll();
 import Home from "./Home";
 import Arena from "./Arena";
 
-export default class Client extends Component {
+export default class Client extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -28,10 +27,6 @@ export default class Client extends Component {
     this.handleResize = this.handleResize.bind(this);
     this.startVR      = this.startVR.bind(this);
     this.stopVR       = this.stopVR.bind(this);
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState);
   }
 
   componentDidMount() {

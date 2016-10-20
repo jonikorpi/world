@@ -1,14 +1,9 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import {Entity} from "aframe-react";
-import shallowCompare from "react-addons-shallow-compare";
 
 import constants from "./constants";
 
-export default class Rotator extends Component {
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState);
-  }
-
+export default class Rotator extends PureComponent {
   render() {
     return (
       <Entity
