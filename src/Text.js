@@ -4,7 +4,7 @@ import "aframe-bmfont-text-component";
 
 export default class Text extends PureComponent {
   render() {
-    const className = "text";
+    let className = "text";
 
     if (this.props.className) {
       className += " " + this.props.className;
