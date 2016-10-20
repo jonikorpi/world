@@ -12,7 +12,7 @@ export default class Text extends PureComponent {
 
     return (
       <Entity
-        id={this.props.id || undefined}
+        id={this.props.id}
         className={className}
         position={this.props.position}
         bmfont-text={{
