@@ -7,12 +7,12 @@ export default class Rotator extends PureComponent {
   render() {
     return (
       <Entity
-        class="rotator"
+        className="rotator"
         rotation={this.props.rotation || [0,0,0]}
       >
 
         <Entity
-          class="locator"
+          className="locator"
           position={[
             0,
             0,
