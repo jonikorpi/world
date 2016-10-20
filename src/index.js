@@ -6,9 +6,9 @@ import firebase from "firebase";
 import "jonikorpi-base-files/reset.css";
 
 firebase.initializeApp({
-  apiKey: "AIzaSyAE94bs7-6l_K3Dny2t9Bz2d_Uukc12J6w",
-  authDomain: "loot-9909b.firebaseapp.com",
-  databaseURL: "https://loot-9909b.firebaseio.com",
+  apiKey: "AIzaSyACFgRvXI8-2G9ANckoXhrXFYiXsrguveE",
+  authDomain: "world-15e5d.firebaseapp.com",
+  databaseURL: "https://world-15e5d.firebaseio.com",
 });
 
 if (process.env.NODE_ENV === "development") {
