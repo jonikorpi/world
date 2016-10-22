@@ -1,14 +1,26 @@
 {
   "rules": {
 
+    "motd": {
+      ".read": "auth != null",
+      ".write": "auth.worldmaster === true",
+      ".validate": "newData.isString()",
+    },
+
     "tiles": {
       ".write": "auth.worldmaster === true",
       "$x": {
         "$y": {
           "$z": {
-            ".read": "true", /* TODO complicated neighbour rules */
-            "playerID": { ".validate": "newData.isString()" },
-            "objectID": { ".validate": "newData.isString()" },
+            ".read": "auth != null", /* TODO complicated neighbour rules */
+            "influence": {
+              "$playerID": { ".validate": "newData.isBoolean()" },
+            },
+            "object": {
+              "owner": { ".validate": "newData.isString()" },
+              "ID":    { ".validate": "newData.isString()" },
+              "$other": { ".validate": "false" },
+            },
             "tile": {
               "rock":  { ".validate": "newData.isNumber()" },
               "heat":  { ".validate": "newData.isNumber()" },
@@ -22,23 +34,46 @@
       },
     },
 
-    "players": {
+    "publicPlayers": {
       "$playerID": {
-        ".read": "true",
+        ".read": "auth != null",
         ".write": "
              (auth != null && auth.uid === $playerID && !data.exists())
-          || (auth.worldmaster === true)
+          || auth.worldmaster === true
         ",
         /* TODO public identifying features */
         "$other": { ".validate": "false" },
       },
     },
 
-    "objects": {
+    "privatePlayers": {
       ".write": "auth.worldmaster === true",
       "$playerID": {
+        ".read": "
+             (auth != null && auth.uid === $playerID)
+          || auth.worldmaster === true
+        ",
+        "objects": {
+          "$objectID": { ".validate": "newData.isBoolean()" },
+        },
+        "cards": {
+          "$cardID": {
+            "type":   { ".validate": "newData.isString()" },
+            "amount": { ".validate": "newData.isNumber()" },
+            "$other": { ".validate": "false" },
+          },
+        },
+        "inGame": { ".validate": "newData.isBoolean()" },
+        "message": { ".validate": "newData.isString()" },
+        "$other": { ".validate": "false" },
+      },
+    },
+
+    "objects": {
+      ".write": "auth.worldmaster === true",
+      "$ownerID": {
         "$objectID": {
-          ".read": "true",
+          ".read": "auth != null",
           "location": {
             "x": { ".validate": "newData.isNumber()" },
             "y": { ".validate": "newData.isNumber()" },
@@ -53,126 +88,27 @@
       }
     },
 
-    "inventories": {
-      ".write": "auth.worldmaster === true",
-      "$playerID": {
-        ".read": "
-             (auth.uid === $playerID)
-          || (auth.worldmaster === true)
-        ",
-        "loot": {
-          "$itemID": {
-
-          },
-        },
-        "cards": {
-          "$cardID": {
-
-          }
-        },
-        "$other": { ".validate": "false" },
-      },
-    },
-
-    /*"games": {
-      "$gameID": {
-        ".read": "true",
-        ".write": "
-          auth.lootmaster === true
-          || (auth != null && newData.child('started').val() != true)
-        ",
-        "started": { ".validate": "
-          (newData.isBoolean() && auth.uid === $gameID)
-          || auth.lootmaster === true
-        " },
-        "teams": {
-          "$teamID": {
-            ".validate": "$teamID === '1' || $teamID === '2'",
-            "$playerID": {
-              ".validate": "
-                (
-                     auth.uid === $gameID || auth.lootmaster === true
-                  || root.child('gameTeamRequests').child($gameID).child($teamID).hasChild($playerID)
-                  || ($playerID === auth.uid && !newData.exists())
-                )
-                && (newData.isBoolean() || !newData.exists())
-                && (!data.parent().parent().child('1').hasChild($playerID) || !newData.exists())
-                && (!data.parent().parent().child('2').hasChild($playerID) || !newData.exists())
-              ",
-              "$other": { ".validate": "false" },
-            },
-          },
-        },
-        "$other": { ".validate": "false" },
-      },
-    },
-
-    "gameTeamRequests": {
-      "$gameID": {
-        ".read": "auth != null",
-        ".write": "auth != null",
-        "$teamID": {
-          ".validate": "$teamID === '1' || $teamID === '2'",
-          "$playerID": {
-            ".validate": "
-              (auth.uid === $playerID || auth.uid === $gameID)
-              && (
-                (
-                  !newData.exists()
-                ) || (
-                     !data.parent().parent().child('1').hasChild($playerID)
-                  && !data.parent().parent().child('2').hasChild($playerID)
-                  && newData.isBoolean()
-                )
-              )
-            ",
-          },
-        },
-      },
-    },
-
-    "gamePlayers": {
-      "$gameID": {
-        ".read": "true",
-        ".write": "auth.lootmaster === true",
-      },
-    },
-
-    "gameInventories": {
-      "$gameID": {
-        ".write": "auth.lootmaster === true",
-        "$playerID": {
-          ".read": "auth.uid === $playerID", /* || isTeamMate */
-        },
-      },
-    },
-
-    "lootmasters": {
-      ".read": "true",
-      ".write": "auth.lootmaster === true",
-    },
-
     "actionQueue": {
-      ".read": "auth.lootmaster === true",
+      ".read": "auth.worldmaster === true",
       "tasks": {
         ".indexOn": "_state",
 
         "$taskId": {
-          ".write": " (auth.uid != null && !data.exists()) || auth.lootmaster === true",
+          ".write": " (auth.uid != null && !data.exists()) || auth.worldmaster === true",
           ".validate": "
             newData.hasChildren(['request'])
             || (
-              auth.lootmaster === true
+              auth.worldmaster === true
               && newData.hasChildren(['_state', '_state_changed', '_progress'])
             )
           ",
 
           "request": {
-            ".validate": "newData.hasChildren(['playerID', 'gameID', 'action', 'time']) || auth.lootmaster === true",
-            "playerID": { ".validate": "newData.val() === auth.uid || auth.lootmaster === true", },
+            ".validate": "newData.hasChildren(['playerID', 'gameID', 'action', 'time']) || auth.worldmaster === true",
+            "playerID": { ".validate": "newData.val() === auth.uid || auth.worldmaster === true", },
             "gameID": { ".validate": "root.child('games').hasChild(newData.val())", },
             "action": { ".validate": "newData.isString()" },
-            "time":   { ".validate": "newData.val() === now || auth.lootmaster === true" },
+            "time":   { ".validate": "newData.val() === now || auth.worldmaster === true" },
             "$other": { ".validate": "false" },
           },
 
@@ -216,8 +152,8 @@
       },
 
       "specs" : {
-        ".read": "auth.lootmaster === true",
-        ".write": "auth.lootmaster === true",
+        ".read": "auth.worldmaster === true",
+        ".write": "auth.worldmaster === true",
         "$specId": {
           ".validate": "newData.hasChild('in_progress_state')",
           "start_state":       { ".validate": "newData.isString()" },
@@ -229,84 +165,6 @@
         },
       },
     },
-
-    "gameQueue": {
-      ".read": "auth.lootmaster === true",
-      "tasks": {
-        ".indexOn": "_state",
-
-        "$taskId": {
-          ".write": " (auth.uid != null && !data.exists()) || auth.lootmaster === true",
-          ".validate": "
-            newData.hasChildren(['request'])
-            || (
-              auth.lootmaster === true
-              && newData.hasChildren(['_state', '_state_changed', '_progress'])
-            )
-          ",
-
-          "request": {
-            ".validate": "newData.hasChildren(['playerID', 'gameID', 'action', 'time']) || auth.lootmaster === true",
-            "playerID": { ".validate": "newData.val() === auth.uid || auth.lootmaster === true", },
-            "gameID": { ".validate": "root.child('games').hasChild(newData.val())", },
-            "action": { ".validate": "newData.isString()" },
-            "time":   { ".validate": "newData.val() === now || auth.lootmaster === true" },
-            "$other": { ".validate": "false" },
-          },
-
-          "_state": {
-            ".validate": "newData.isString()"
-          },
-          "_state_changed": {
-            ".validate": "newData.isNumber() && (newData.val() === now
-                          || data.val() === newData.val())"
-          },
-          "_owner": {
-            ".validate": "newData.isString()"
-          },
-          "_progress": {
-            ".validate": "newData.isNumber()
-                          && newData.val() >= 0
-                          && newData.val() <= 100"
-          },
-          "_error_details": {
-              "error": {
-                ".validate": "newData.isString()"
-              },
-              "error_stack": {
-                ".validate": "newData.isString()"
-              },
-              "previous_state": {
-                ".validate": "newData.isString()"
-              },
-              "original_task": {},
-              "attempts": {
-                ".validate": "newData.isNumber() && newData.val() > 0"
-              },
-              "$other": {
-                ".validate": false
-              }
-          },
-          "_id": {
-            ".validate": "newData.isString()"
-          },
-        },
-      },
-
-      "specs" : {
-        ".read": "auth.lootmaster === true",
-        ".write": "auth.lootmaster === true",
-        "$specId": {
-          ".validate": "newData.hasChild('in_progress_state')",
-          "start_state":       { ".validate": "newData.isString()" },
-          "in_progress_state": { ".validate": "newData.isString()" },
-          "finished_state":    { ".validate": "newData.isString()" },
-          "error_state":       { ".validate": "newData.isString()" },
-          "timeout":           { ".validate": "newData.isNumber() && newData.val() > 0" },
-          "$other":            { ".validate": false },
-        },
-      },
-    },*/
 
   },
 }
