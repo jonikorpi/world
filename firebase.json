@@ -88,6 +88,14 @@
       }
     },
 
+    "worldmasters": {
+      ".read": "true",
+      ".write": "auth.worldmaster === true",
+      "$worldmasterID": {
+        ".validate": "newData.isBoolean()",
+      },
+    },
+
     "actionQueue": {
       ".read": "auth.worldmaster === true",
       "tasks": {

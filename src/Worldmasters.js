@@ -6,12 +6,12 @@ import { Entity } from "aframe-react";
 
 import Rotator from "./Rotator";
 
-export default class Lootmasters extends Component {
+export default class Worldmasters extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      lootmasters: undefined,
+      worldmasters: undefined,
     }
   }
 
@@ -21,22 +21,22 @@ export default class Lootmasters extends Component {
 
   bindFirebase() {
     this.bindAsArray(
-      firebase.database().ref(`lootmasters`),
-      "lootmasters",
+      firebase.database().ref(`worldmasters`),
+      "worldmasters",
       function(error) {
         console.log("Firebase subscription cancelled:")
         console.log(error);
-        this.setState({lootmasters: undefined})
+        this.setState({worldmasters: undefined})
       }.bind(this)
     );
   }
 
   render() {
-    const lootmasters = this.state.lootmasters;
+    const worldmasters = this.state.worldmasters;
 
     return (
       <Rotator rotation={[15, 0, 0]}>
-        {lootmasters && lootmasters.map((lootmaster, index) => {
+        {worldmasters && worldmasters.map((worldmaster, index) => {
           return (
             <Entity
               key={index}
@@ -63,4 +63,4 @@ export default class Lootmasters extends Component {
   }
 }
 
-reactMixin(Lootmasters.prototype, ReactFire);
+reactMixin(Worldmasters.prototype, ReactFire);
