@@ -4,7 +4,7 @@ import { Entity } from "aframe-react";
 export default class Lights extends PureComponent {
   render() {
     return (
-      <Entity id="lights">
+      <Entity id="lights" position={[0, 100, 0]}>
         <Entity
           id="directionalLight"
           light={{

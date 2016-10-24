@@ -12,7 +12,9 @@
       "$x": {
         "$y": {
           "$z": {
-            ".read": "auth != null", /* TODO complicated neighbour rules */
+            ".read": "auth != null",
+            /* TODO complicated neighbour rules */
+            /* (pos(playerid).bx + "" == $binx &&  pos(playerid).by + "" == $biny) || //and the other 8 adjacent bin coords */
             "influence": {
               "$playerID": { ".validate": "newData.isBoolean()" },
             },

@@ -102,8 +102,8 @@ export default class Client extends PureComponent {
     return (
       <Scene
         id="client"
-        stats={{ enabled: process.env.NODE_ENV === "development" }}
-        vr-mode-ui={{ enabled: false }}
+        // stats={{ enabled: process.env.NODE_ENV === "development" }}
+        // vr-mode-ui={{ enabled: false }}
       >
 
         <Sky far={this.far}/>
