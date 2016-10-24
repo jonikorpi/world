@@ -8,6 +8,7 @@ extras.controls.registerAll();
 
 import Home from "./Home";
 import Arena from "./Arena";
+import Button from "./Button";
 
 export default class Client extends PureComponent {
   constructor(props) {
@@ -27,6 +28,8 @@ export default class Client extends PureComponent {
     this.handleResize = this.handleResize.bind(this);
     this.startVR      = this.startVR.bind(this);
     this.stopVR       = this.stopVR.bind(this);
+    this.signOut      = this.signOut.bind(this);
+    this.signIn       = this.signIn.bind(this);
   }
 
   componentDidMount() {
@@ -43,11 +46,10 @@ export default class Client extends PureComponent {
         });
       }
       else {
-        // this.setState({
-        //   playerID: null,
-        //   anonymous: null,
-        // });
-        this.signIn();
+        this.setState({
+          playerID: null,
+          anonymous: null,
+        });
       }
     }.bind(this));
 
@@ -94,12 +96,14 @@ export default class Client extends PureComponent {
   }
 
   signIn() {
+    console.log("Signing in anonymously");
     firebase.auth().signInAnonymously().catch(function(error) {
       console.log(error);
     });
   }
 
   signOut() {
+    console.log("Signing out");
     firebase.auth().signOut().catch(function(error) {
       console.log(error);
     });
@@ -186,11 +190,13 @@ export default class Client extends PureComponent {
           >
             <Entity
               id="cursor"
-              // raycaster={{
-              //   far: 10,
-              //   interval: 80,
-              //   objects: ".clickable",
-              // }}
+              raycaster={{
+                far: 1100,
+                near: 0.1,
+                interval: 80,
+                objects: ".interactable",
+                recursive: true,
+              }}
               cursor={{
                 fuse: false,
               }}
@@ -210,13 +216,19 @@ export default class Client extends PureComponent {
           </Entity>
 
           <Entity id="UI" position={[0, 1.75, 0]}>
-            {/* {playerID && (
-              <button onClick={this.signOut.bind(this)}>Sign out</button>
-            ) : (
-              <button onClick={this.signIn.bind(this)}>Sign in anonymously</button>
-            )} */}
+            <Button
+              onClick={this.signOut}
+              text="Sign out"
+              position={[-2,0,-3]}
+            />
+            <Button
+              onClick={this.signIn}
+              text="Sign in anonymously"
+              position={[2,0,-3]}
+            />
 
-            <Match
+
+            {/* <Match
               exactly
               pattern="/"
               render={(props) => <Home {...props} playerID={playerID}/>}
@@ -224,7 +236,7 @@ export default class Client extends PureComponent {
             <Match
               pattern="/:arenaID"
               render={(props) => <Arena {...props} playerID={playerID}/>}
-            />
+            /> */}
           </Entity>
 
         </Scene>

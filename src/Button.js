@@ -23,7 +23,7 @@ export default class Button extends PureComponent {
         boolean = false;
         break;
       default:
-        console.log("Bad event in Button");
+        console.log("Bad state event in Button");
         return;
     }
 
@@ -50,7 +50,10 @@ export default class Button extends PureComponent {
 
     return (
       <Entity
-        className="button"
+        className="button interactable"
+        onClick={this.props.onClick}
+        onStateadded={this.handleStateEvent.bind(this)}
+        onStateremoved={this.handleStateEvent.bind(this)}
         position={this.props.position || [0,0,0]}
         geometry={{
           primitive: "plane",
@@ -74,12 +77,9 @@ export default class Button extends PureComponent {
           width={width * textSizeMultiplier}
         />
 
-        <Entity
+        {/* <Entity
           className="clickable"
           position={[0, 0, 0.05]}
-          onClick={this.props.onClick}
-          onStateadded={this.handleStateEvent.bind(this)}
-          onStateremoved={this.handleStateEvent.bind(this)}
           geometry={{
             primitive: "plane",
             width: width,
@@ -90,7 +90,7 @@ export default class Button extends PureComponent {
             opacity: 0,
             transparent: true,
           }}
-        />
+        /> */}
 
       </Entity>
     );
