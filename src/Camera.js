@@ -7,8 +7,8 @@ export default class Camera extends PureComponent {
       <Entity
         id="camera"
         camera={{
-          far: 1100,
-          near: 0.1,
+          far: this.props.far,
+          near: this.props.near,
           fov: this.props.inVR ? 80 : 90,
           userHeight: 1.75,
         }}

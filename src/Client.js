@@ -1,12 +1,13 @@
 import React, { PureComponent } from "react";
 import firebase from "firebase";
-import { BrowserRouter, Match } from "react-router";
 import "aframe";
 import { Scene, Entity } from "aframe-react";
 import extras from "aframe-extras";
 extras.controls.registerAll();
 
 import Camera from "./Camera";
+import Sky from "./Sky";
+import Lights from "./Lights";
 import Button from "./Button";
 
 export default class Client extends PureComponent {
@@ -23,6 +24,9 @@ export default class Client extends PureComponent {
       // width: window.innerWidth,
       // height: window.innerHeight,
     };
+
+    this.far = 1000;
+    this.near = 0.1;
 
     // this.handleResize = this.handleResize.bind(this);
     this.startVR      = this.startVR.bind(this);
@@ -112,92 +116,30 @@ export default class Client extends PureComponent {
     const playerID = this.state.playerID;
 
     return (
-      <BrowserRouter>
-        <Scene
-          id="client"
-          stats={{ enabled: process.env.NODE_ENV === "development" }}
-          vr-mode-ui={{ enabled: false }}
-        >
+      <Scene
+        id="client"
+        stats={{ enabled: process.env.NODE_ENV === "development" }}
+        vr-mode-ui={{ enabled: false }}
+      >
 
-          <Camera inVR={this.state.inVR}/>
+        <Camera inVR={this.state.inVR} far={this.far} near={this.near}/>
+        <Sky far={this.far}/>
+        <Lights/>
 
-          <Entity
-            id="skybox"
-            geometry={{
-              primitive: "box",
-              width: 1000,
-              height: 1000,
-              depth: 1000,
-            }}
-            material={{
-              shader: "flat",
-              color: "hsl(200, 62%, 9%)",
-            }}
-            scale={[1, 1, -1]}
+        <Entity id="UI" position={[0, 1.75, 0]}>
+          <Button
+            onClick={this.signOut}
+            text="Sign out"
+            position={[-2,0,-3]}
           />
-
-          <Entity
-            id="ambientLight"
-            light={{
-              type: "ambient",
-              color: "hsl(200, 62%, 24%)",
-            }}
+          <Button
+            onClick={this.signIn}
+            text="Sign in anonymously"
+            position={[2,0,-3]}
           />
+        </Entity>
 
-          {/* <Entity
-            id="directionalLight"
-            light={{
-              type: "directional",
-              color: "hsl(40, 62%, 91%)",
-              intensity: 1.5,
-            }}
-            position={[
-              0,
-              1,
-              -0.5,
-            ]}
-          /> */}
-
-          <Entity
-            id="ground"
-            geometry={{
-              primitive: "plane",
-              width: 1000,
-              height: 1000,
-            }}
-            rotation={[-90, 0, 0]}
-            material={{
-              shader: "flat",
-              color: "#333",
-            }}
-          />
-
-          <Entity id="UI" position={[0, 1.75, 0]}>
-            <Button
-              onClick={this.signOut}
-              text="Sign out"
-              position={[-2,0,-3]}
-            />
-            <Button
-              onClick={this.signIn}
-              text="Sign in anonymously"
-              position={[2,0,-3]}
-            />
-
-
-            {/* <Match
-              exactly
-              pattern="/"
-              render={(props) => <Home {...props} playerID={playerID}/>}
-            />
-            <Match
-              pattern="/:arenaID"
-              render={(props) => <Arena {...props} playerID={playerID}/>}
-            /> */}
-          </Entity>
-
-        </Scene>
-      </BrowserRouter>
+      </Scene>
     );
   }
 }
