@@ -35,7 +35,6 @@ export default class Button extends PureComponent {
   render() {
     const text = this.props.text || "Quick brown fox";
     const baseLineHeight = 0.12;
-    const textSizeMultiplier = 200;
     const computedWidth = text.length * 0.1;
 
     const padding = this.props.padding || 0.1;
@@ -73,8 +72,8 @@ export default class Button extends PureComponent {
           position={[width * -0.5, lineHeight * -0.5, 0.02]}
           text={text}
           color={this.props.textColor}
-          lineHeight={lineHeight * textSizeMultiplier}
-          width={width * textSizeMultiplier}
+          lineHeight={lineHeight}
+          width={width}
         />
 
         {/* <Entity

@@ -1,14 +1,14 @@
 import React, { PureComponent } from "react";
 import firebase from "firebase";
 import "aframe";
-import { Scene, Entity } from "aframe-react";
+import { Scene } from "aframe-react";
 import extras from "aframe-extras";
 extras.controls.registerAll();
 
 import Camera from "./Camera";
 import Sky from "./Sky";
-import Lights from "./Lights";
-import Button from "./Button";
+import World from "./World";
+import Bubble from "./Bubble";
 
 export default class Client extends PureComponent {
   constructor(props) {
@@ -31,8 +31,6 @@ export default class Client extends PureComponent {
     // this.handleResize = this.handleResize.bind(this);
     this.startVR      = this.startVR.bind(this);
     this.stopVR       = this.stopVR.bind(this);
-    this.signOut      = this.signOut.bind(this);
-    this.signIn       = this.signIn.bind(this);
   }
 
   componentDidMount() {
@@ -98,20 +96,6 @@ export default class Client extends PureComponent {
     console.log("Setting inVR to " + this.state.inVR);
   }
 
-  signIn() {
-    console.log("Signing in anonymously");
-    firebase.auth().signInAnonymously().catch(function(error) {
-      console.log(error);
-    });
-  }
-
-  signOut() {
-    console.log("Signing out");
-    firebase.auth().signOut().catch(function(error) {
-      console.log(error);
-    });
-  }
-
   render() {
     const playerID = this.state.playerID;
 
@@ -122,22 +106,10 @@ export default class Client extends PureComponent {
         vr-mode-ui={{ enabled: false }}
       >
 
-        <Camera inVR={this.state.inVR} far={this.far} near={this.near}/>
         <Sky far={this.far}/>
-        <Lights/>
-
-        <Entity id="UI" position={[0, 1.75, 0]}>
-          <Button
-            onClick={this.signOut}
-            text="Sign out"
-            position={[-2,0,-3]}
-          />
-          <Button
-            onClick={this.signIn}
-            text="Sign in anonymously"
-            position={[2,0,-3]}
-          />
-        </Entity>
+        <Camera inVR={this.state.inVR} far={this.far} near={this.near}/>
+        <Bubble/>
+        <World/>
 
       </Scene>
     );

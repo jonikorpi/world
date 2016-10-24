@@ -1,8 +1,6 @@
 import React, { PureComponent } from "react";
 import {Entity} from "aframe-react";
 
-import constants from "./constants";
-
 export default class Rotator extends PureComponent {
   render() {
     return (
@@ -16,7 +14,7 @@ export default class Rotator extends PureComponent {
           position={[
             0,
             0,
-            -this.props.distance || -constants.UIRadius,
+            -this.props.distance,
           ]}
         >
 

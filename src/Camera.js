@@ -25,14 +25,14 @@ export default class Camera extends PureComponent {
           camera={{
             far: this.props.far,
             near: this.props.near,
-            fov: this.props.inVR ? 80 : 90,
+            fov: this.props.inVR ? 80 : 80,
             userHeight: 1.75,
           }}
           universal-controls={{
             movementEnabled: this.props.inVR === false,
-            movementSpeed:        20,
-            movementEasing:       25,
-            movementAcceleration: 20,
+            // movementSpeed:        30,
+            // movementEasing:       25,
+            // movementAcceleration: 20,
             // rotationSensitivity:  0.05,
             // fly: true,
           }}
