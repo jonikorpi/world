@@ -6,8 +6,7 @@ import { Scene, Entity } from "aframe-react";
 import extras from "aframe-extras";
 extras.controls.registerAll();
 
-import Home from "./Home";
-import Arena from "./Arena";
+import Camera from "./Camera";
 import Button from "./Button";
 
 export default class Client extends PureComponent {
@@ -21,11 +20,11 @@ export default class Client extends PureComponent {
       haveConnectedOnce: false,
 
       inVR: false,
-      width: window.innerWidth,
-      height: window.innerHeight,
+      // width: window.innerWidth,
+      // height: window.innerHeight,
     };
 
-    this.handleResize = this.handleResize.bind(this);
+    // this.handleResize = this.handleResize.bind(this);
     this.startVR      = this.startVR.bind(this);
     this.stopVR       = this.stopVR.bind(this);
     this.signOut      = this.signOut.bind(this);
@@ -35,8 +34,8 @@ export default class Client extends PureComponent {
   componentDidMount() {
     window.addEventListener("enter-vr", this.startVR);
     window.addEventListener("exit-vr", this.stopVR);
-    window.addEventListener('resize', this.handleResize);
-    this.handleResize();
+    // window.addEventListener('resize', this.handleResize);
+    // this.handleResize();
 
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
@@ -67,17 +66,17 @@ export default class Client extends PureComponent {
   }
 
   componentWillUnmount() {
-    window.removeEventListener("resize", this.handleResize);
+    // window.removeEventListener("resize", this.handleResize);
     window.removeEventListener("enter-vr", this.startVR);
     window.removeEventListener("exit-vr", this.stopVR);
   }
 
-  handleResize() {
-    this.setState({
-      width: window.innerWidth,
-      height: window.innerHeight,
-    });
-  }
+  // handleResize() {
+  //   this.setState({
+  //     width: window.innerWidth,
+  //     height: window.innerHeight,
+  //   });
+  // }
 
   startVR() {
     this.setState({
@@ -119,6 +118,8 @@ export default class Client extends PureComponent {
           stats={{ enabled: process.env.NODE_ENV === "development" }}
           vr-mode-ui={{ enabled: false }}
         >
+
+          <Camera inVR={this.state.inVR}/>
 
           <Entity
             id="skybox"
@@ -170,50 +171,6 @@ export default class Client extends PureComponent {
               color: "#333",
             }}
           />
-
-          <Entity
-            id="camera"
-            camera={{
-              far: 1100,
-              near: 0.1,
-              fov: this.state.inVR ? 80 : 90,
-              userHeight: 1.75,
-            }}
-            universal-controls={{
-              movementEnabled: this.state.inVR === false,
-              movementSpeed:        20,
-              movementEasing:       25,
-              movementAcceleration: 20,
-              // rotationSensitivity:  0.05,
-              // fly: true,
-            }}
-          >
-            <Entity
-              id="cursor"
-              raycaster={{
-                far: 1100,
-                near: 0.1,
-                interval: 80,
-                objects: ".interactable",
-                recursive: true,
-              }}
-              cursor={{
-                fuse: false,
-              }}
-              geometry={{
-                primitive: "ring",
-                radiusInner: 0.0056,
-                radiusOuter: 0.0091,
-                segmentsTheta: 16,
-                segmentsPhi: 1,
-              }}
-              position={[0, 0, -0.5]}
-              material={{
-                shader: "flat",
-                color: "white",
-              }}
-            />
-          </Entity>
 
           <Entity id="UI" position={[0, 1.75, 0]}>
             <Button
