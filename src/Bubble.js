@@ -117,6 +117,11 @@ export default class Bubble extends Component {
           <Rotator distance={wallDistance} rotation={[0, 45, 0]}>
             <Entity id="northWestWall">
               <Text text="NW" width={radius} position={[-radius*0.5, radius*0.5, 0]}/>
+              <Button
+                onClick={this.props.toggleVR}
+                text="Toggle VR"
+                position={[0, 0, 0]}
+              />
             </Entity>
           </Rotator>
 

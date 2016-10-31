@@ -1,7 +1,6 @@
 import React, { PureComponent } from "react";
 import firebase from "firebase";
 import "aframe";
-import { Scene } from "aframe-react";
 import extras from "aframe-extras";
 extras.controls.registerAll();
 
@@ -29,13 +28,14 @@ export default class Client extends PureComponent {
     this.near = 0.1;
 
     // this.handleResize = this.handleResize.bind(this);
-    this.startVR      = this.startVR.bind(this);
-    this.stopVR       = this.stopVR.bind(this);
+    this.handleStartVR = this.handleStartVR.bind(this);
+    this.handleStopVR = this.handleStopVR.bind(this);
+    this.toggleVR = this.toggleVR.bind(this);
   }
 
   componentDidMount() {
-    window.addEventListener("enter-vr", this.startVR);
-    window.addEventListener("exit-vr", this.stopVR);
+    window.addEventListener("enter-vr", this.handleStartVR);
+    window.addEventListener("exit-vr", this.handleStopVR);
     // window.addEventListener('resize', this.handleResize);
     // this.handleResize();
 
@@ -69,8 +69,8 @@ export default class Client extends PureComponent {
 
   componentWillUnmount() {
     // window.removeEventListener("resize", this.handleResize);
-    window.removeEventListener("enter-vr", this.startVR);
-    window.removeEventListener("exit-vr", this.stopVR);
+    window.removeEventListener("enter-vr", this.handleStartVR);
+    window.removeEventListener("exit-vr", this.handleStopVR);
   }
 
   // handleResize() {
@@ -80,38 +80,48 @@ export default class Client extends PureComponent {
   //   });
   // }
 
-  startVR() {
+  handleStartVR() {
+    console.log("Entering VR");
+
     this.setState({
       inVR: true,
     });
-
-    console.log("Setting inVR to " + this.state.inVR);
   }
 
-  stopVR() {
+  handleStopVR() {
+    console.log("Exiting VR");
+
     this.setState({
       inVR: false,
     });
+  }
 
-    console.log("Setting inVR to " + this.state.inVR);
+  toggleVR() {
+    if (this.state.inVR) {
+      this.scene.exitVR();
+    }
+    else {
+      this.scene.enterVR()
+    }
   }
 
   render() {
     const playerID = this.state.playerID;
 
     return (
-      <Scene
+      <a-scene
         id="client"
-        // stats={{ enabled: process.env.NODE_ENV === "development" }}
-        // vr-mode-ui={{ enabled: false }}
+        ref={(ref) => {this.scene = ref}}
+        stats={`enabled: ${process.env.NODE_ENV === "development"}`}
+        vr-mode-ui="enabled: false"
       >
 
         <Sky far={this.far}/>
         <Camera inVR={this.state.inVR} far={this.far} near={this.near}/>
-        <Bubble/>
+        <Bubble toggleVR={this.toggleVR}/>
         <World/>
 
-      </Scene>
+      </a-scene>
     );
   }
 }
