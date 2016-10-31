@@ -32,7 +32,13 @@ export default class Bubble extends Component {
     const height = 3;
     const radius = 2;
     const borderThickness = 0.01;
-    const wallDistance = Math.sqrt(3) / 2 * radius;
+    const wallDistance = 3.696 / 2;
+    const wallCount = 8;
+    let walls = [];
+
+    for (let i = 1; i <= wallCount; i++) {
+      walls.push((360/wallCount*0.5) + 360/wallCount * i);
+    }
 
     return (
       <Entity id="bubble">
@@ -43,14 +49,14 @@ export default class Bubble extends Component {
             primitive: "ring",
             radiusOuter: radius,
             radiusInner: radius - borderThickness,
-            segmentsTheta: 6,
+            segmentsTheta: wallCount,
             segmentsPhi: 1,
           }}
           material={{
             shader: "flat",
             color: "white",
           }}
-          rotation={[-90, 0, 0]}
+          rotation={[-90, 360/wallCount*0.5, 0]}
         />
 
         <Entity
@@ -59,18 +65,18 @@ export default class Bubble extends Component {
             primitive: "ring",
             radiusOuter: radius,
             radiusInner: radius - borderThickness,
-            segmentsTheta: 6,
+            segmentsTheta: wallCount,
             segmentsPhi: 1,
           }}
           material={{
             shader: "flat",
             color: "white",
           }}
-          rotation={[90, 0, 0]}
+          rotation={[90, 360/wallCount*0.5, 0]}
           position={[0, height, 0]}
         />
 
-        {[30, 90, 150, 210, 270, 330].map((angle) => {
+        {walls.map((angle) => {
           return (
             <Rotator distance={radius} rotation={[0, angle, 0]} key={angle}>
               <Entity
@@ -108,13 +114,19 @@ export default class Bubble extends Component {
             </Entity>
           </Rotator>
 
-          <Rotator distance={wallDistance} rotation={[0, 60, 0]}>
+          <Rotator distance={wallDistance} rotation={[0, 45, 0]}>
             <Entity id="northWestWall">
               <Text text="NW" width={radius} position={[-radius*0.5, radius*0.5, 0]}/>
             </Entity>
           </Rotator>
 
-          <Rotator distance={wallDistance} rotation={[0, 120, 0]}>
+          <Rotator distance={wallDistance} rotation={[0, 90, 0]}>
+            <Entity id="westWall">
+              <Text text="W" width={radius} position={[-radius*0.5, radius*0.5, 0]}/>
+            </Entity>
+          </Rotator>
+
+          <Rotator distance={wallDistance} rotation={[0, 135, 0]}>
             <Entity id="southWestWall">
               <Text text="SW" width={radius} position={[-radius*0.5, radius*0.5, 0]}/>
             </Entity>
@@ -126,13 +138,19 @@ export default class Bubble extends Component {
             </Entity>
           </Rotator>
 
-          <Rotator distance={wallDistance} rotation={[0, 240, 0]}>
+          <Rotator distance={wallDistance} rotation={[0, 225, 0]}>
             <Entity id="southEastWall">
               <Text text="SE" width={radius} position={[-radius*0.5, radius*0.5, 0]}/>
             </Entity>
           </Rotator>
 
-          <Rotator distance={wallDistance} rotation={[0, 300, 0]}>
+          <Rotator distance={wallDistance} rotation={[0, 270, 0]}>
+            <Entity id="eastWall">
+              <Text text="E" width={radius} position={[-radius*0.5, radius*0.5, 0]}/>
+            </Entity>
+          </Rotator>
+
+          <Rotator distance={wallDistance} rotation={[0, 315, 0]}>
             <Entity id="northEastWall">
               <Text text="NE" width={radius} position={[-radius*0.5, radius*0.5, 0]}/>
             </Entity>
