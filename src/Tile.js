@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { Entity } from "aframe-react";
 
-import Text from "./Text";
-
 export default class Tile extends Component {
   constructor(props) {
     super(props);
@@ -41,8 +39,6 @@ export default class Tile extends Component {
     const rotation = elevation * 13.5;
     const y = distance * elevation;
 
-    const isOrigo = x===0 && y===0;
-
     return (
       <Entity
         class="tile"
@@ -68,14 +64,11 @@ export default class Tile extends Component {
           }}
           rotation={[-90, 0, 0]}
           material={{
-            // shader: "flat",
             color: this.state["cursor-hovered"] ? "green" : "black",
           }}
           onStateadded={this.handleStateEvent.bind(this)}
           onStateremoved={this.handleStateEvent.bind(this)}
         />
-
-        {/* <Text text={`${x},${y} (${distance})`} rotation={[-90, 0, 0]} width={size}/> */}
 
       </Entity>
     );
