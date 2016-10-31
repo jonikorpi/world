@@ -50,9 +50,11 @@ export default class Button extends PureComponent {
     return (
       <Entity
         className="button interactable"
-        onClick={this.props.onClick}
-        onStateadded={this.handleStateEvent.bind(this)}
-        onStateremoved={this.handleStateEvent.bind(this)}
+        events={{
+          click: this.props.onClick,
+          stateadded: this.handleStateEvent.bind(this),
+          stateremoved: this.handleStateEvent.bind(this),
+        }}
         position={this.props.position || [0,0,0]}
         geometry={{
           primitive: "plane",
