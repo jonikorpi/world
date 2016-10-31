@@ -30,6 +30,7 @@ export default class Camera extends PureComponent {
           }}
           universal-controls={{
             movementEnabled: this.props.inVR === false,
+            movementControls: ["keyboard", "gamepad"],
             // movementSpeed:        30,
             // movementEasing:       25,
             // movementAcceleration: 20,
@@ -56,7 +57,7 @@ export default class Camera extends PureComponent {
               segmentsTheta: 16,
               segmentsPhi: 1,
             }}
-            position={[0, 0, -0.5]}
+            position={[0, 0, -1]}
             material={{
               shader: "flat",
               color: "white",
