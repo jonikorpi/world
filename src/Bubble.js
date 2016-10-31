@@ -29,6 +29,7 @@ export default class Bubble extends Component {
   }
 
   render() {
+    const playerID = this.props.playerID;
     const height = 3;
     const radius = 2;
     const borderThickness = 0.01;
@@ -101,16 +102,6 @@ export default class Bubble extends Component {
           <Rotator distance={wallDistance} rotation={[0, 0, 0]}>
             <Entity id="northWall">
               <Text text="N" width={radius} position={[-radius*0.5, radius*0.5, 0]}/>
-              <Button
-                onClick={this.signOut}
-                text="Sign out"
-                position={[0, 0.5, 0]}
-              />
-              <Button
-                onClick={this.signIn}
-                text="Sign in anonymously"
-                position={[0, -0.5, 0]}
-              />
             </Entity>
           </Rotator>
 
@@ -158,6 +149,20 @@ export default class Bubble extends Component {
           <Rotator distance={wallDistance} rotation={[0, 315, 0]}>
             <Entity id="northEastWall">
               <Text text="NE" width={radius} position={[-radius*0.5, radius*0.5, 0]}/>
+              {playerID && (
+                <Button
+                  onClick={this.signOut}
+                  text="Sign out"
+                  position={[0, 0.5, 0]}
+                />
+              )}
+              {!playerID && (
+                <Button
+                  onClick={this.signIn}
+                  text="Sign in anonymously"
+                  position={[0, -0.5, 0]}
+                />
+              )}
             </Entity>
           </Rotator>
 

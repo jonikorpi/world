@@ -116,9 +116,19 @@ export default class Client extends PureComponent {
         vr-mode-ui="enabled: false"
       >
 
-        <Sky far={this.far}/>
-        <Camera inVR={this.state.inVR} far={this.far} near={this.near}/>
-        <Bubble toggleVR={this.toggleVR}/>
+        <Sky
+          far={this.far}
+        /
+        >
+        <Camera
+          inVR={this.state.inVR}
+          far={this.far}
+          near={this.near}
+        />
+        <Bubble
+          toggleVR={this.toggleVR}
+          playerID={playerID}
+        />
         <World/>
 
       </a-scene>
