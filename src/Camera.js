@@ -10,10 +10,12 @@ export default class Camera extends PureComponent {
       x: 0,
       z: 0,
     };
+
   }
 
   render() {
-    const position = this.props.inVR ? [0,0,0] : [this.state.x, 0, this.state.z];
+    const userHeight = 1.75;
+    const position = this.props.inVR ? [0, userHeight, 0] : [this.state.x, userHeight, this.state.z];
 
     return (
       <Entity
@@ -26,7 +28,7 @@ export default class Camera extends PureComponent {
             far: this.props.far,
             near: this.props.near,
             fov: this.props.inVR ? 80 : 80,
-            userHeight: 1.75,
+            // userHeight: userHeight,
           }}
           universal-controls={{
             movementEnabled: this.props.inVR === false,
