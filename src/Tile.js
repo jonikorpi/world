@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Entity } from "aframe-react";
 
+import Text from "./Text";
+
 export default class Tile extends Component {
   constructor(props) {
     super(props);
@@ -31,10 +33,15 @@ export default class Tile extends Component {
   }
 
   render() {
-    const size = 1;
-    const x = this.props.loc.x;
-    const z = this.props.loc.y;
-    const distance = Math.pow(Math.abs(x), 2) + Math.pow(Math.abs(z), 2);
+    const size = 2;
+    const height = size * 2;
+    const width = Math.sqrt(3) / 2 * height;
+    const x = size * Math.sqrt(3) * (this.props.loc.x + this.props.loc.y/2)
+    const z = size * 3/2 * this.props.loc.y
+
+    const comparisonLoc = [0, 0];
+    const distance = (Math.abs(comparisonLoc[0] - this.props.loc.x) + Math.abs(comparisonLoc[0] + comparisonLoc[1] - this.props.loc.x - this.props.loc.y) + Math.abs(comparisonLoc[1] - this.props.loc.y)) / 2;
+
     const elevation = size / 200;
     const rotation = 0; // elevation * (125 / size);
     const y = 0; // distance * elevation;
@@ -43,9 +50,9 @@ export default class Tile extends Component {
       <Entity
         class="tile"
         position={[
-          x * size,
+          x,
           y,
-          z * size,
+          z,
         ]}
         rotation={[
           z * -rotation,
@@ -58,16 +65,24 @@ export default class Tile extends Component {
           id={`x${x}y${z}`}
           className="interactable"
           geometry={{
-            primitive: "plane",
-            width: size,
-            height: size,
+            primitive: "circle",
+            segments: 6,
+            radius: size * 0.944,
           }}
-          rotation={[-90, 0, 0]}
+          rotation={[-90, 90, 0]}
           material={{
             color: this.state["cursor-hovered"] ? "rgb(209, 205, 167)" : "rgb(45, 119, 246)",
           }}
           onStateadded={this.handleStateEvent.bind(this)}
           onStateremoved={this.handleStateEvent.bind(this)}
+        />
+
+        <Text
+          text={`${this.props.loc.x},${this.props.loc.y} (${distance})`}
+          width={size}
+          rotation={[-90, 0, 0]}
+          position={[-size, 0.05, 0]}
+          scale={2}
         />
 
       </Entity>

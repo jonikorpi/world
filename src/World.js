@@ -6,7 +6,7 @@ import Tile from "./Tile";
 
 export default class World extends Component {
   render() {
-    const range = 25;
+    const range = 15;
     let tiles = [];
 
     for (let x=-range; x<range; x++) {
