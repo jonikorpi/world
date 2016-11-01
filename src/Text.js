@@ -25,6 +25,7 @@ export default class Text extends PureComponent {
           letterSpacing: this.props.letterSpacing || undefined,
           align: this.props.align || "center",
         }}
+        scale={[this.props.scale, this.props.scale, this.props.scale]}
       />
     );
   }

@@ -128,6 +128,7 @@ export default class Client extends PureComponent {
         <Bubble
           toggleVR={this.toggleVR}
           playerID={playerID}
+          far={this.far}
         />
 
         <World
