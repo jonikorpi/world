@@ -6,7 +6,7 @@ import Tile from "./Tile";
 
 export default class World extends Component {
   render() {
-    const range = 20;
+    const range = 25;
     let tiles = [];
 
     for (let x=-range; x<range; x++) {
@@ -26,7 +26,20 @@ export default class World extends Component {
       <Entity id="world">
         <Lights/>
 
-        <Entity id="tiles" position={[0, -20, 0]}>
+        <Entity
+          id="ground"
+          geometry={{
+            primitive: "plane",
+            width: this.props.far,
+            height: this.props.far,
+          }}
+          rotation={[-90, 0, 0]}
+          material={{
+            color: "brown",
+          }}
+        />
+
+        <Entity id="tiles" position={[0, 0.05, 0]} rotation={[0, 0, 0]}>
           {tiles.map((tile) => {
             return <Tile loc={tile.loc} key={`x${tile.loc.x}y${tile.loc.y}`}/>;
           })}

@@ -31,13 +31,13 @@ export default class Tile extends Component {
   }
 
   render() {
-    const size = 10;
+    const size = 1;
     const x = this.props.loc.x;
     const z = this.props.loc.y;
     const distance = Math.pow(Math.abs(x), 2) + Math.pow(Math.abs(z), 2);
-    const elevation = size / 30;
-    const rotation = elevation * 13.5;
-    const y = distance * elevation;
+    const elevation = size / 200;
+    const rotation = 0; // elevation * (125 / size);
+    const y = 0; // distance * elevation;
 
     return (
       <Entity
@@ -64,7 +64,7 @@ export default class Tile extends Component {
           }}
           rotation={[-90, 0, 0]}
           material={{
-            color: this.state["cursor-hovered"] ? "green" : "black",
+            color: this.state["cursor-hovered"] ? "rgb(209, 205, 167)" : "rgb(45, 119, 246)",
           }}
           onStateadded={this.handleStateEvent.bind(this)}
           onStateremoved={this.handleStateEvent.bind(this)}

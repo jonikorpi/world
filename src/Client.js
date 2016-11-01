@@ -129,7 +129,10 @@ export default class Client extends PureComponent {
           toggleVR={this.toggleVR}
           playerID={playerID}
         />
-        <World/>
+
+        <World
+          far={this.far}
+        />
 
       </a-scene>
     );
