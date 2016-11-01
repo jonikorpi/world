@@ -66,7 +66,7 @@ export default class Tile extends Component {
           geometry={{
             primitive: "circle",
             segments: 6,
-            radius: size,
+            radius: size * 0.956,
           }}
           rotation={[-90, 90, 0]}
           material={{
@@ -75,6 +75,21 @@ export default class Tile extends Component {
           onStateadded={this.handleStateEvent.bind(this)}
           onStateremoved={this.handleStateEvent.bind(this)}
         />
+
+        {Math.random() < 0.2 && (
+          <Entity
+            geometry={{
+              primitive: "box",
+              width: size*0.5,
+              depth: size*0.5,
+              height: size*0.5,
+            }}
+            material={{
+              shader: "standard",
+            }}
+            position={[0, size*0.25, 0]}
+          />
+        )}
 
         {/* <Text
           text={`${this.props.loc.x},${this.props.loc.y} (${distance})`}
