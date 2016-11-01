@@ -75,7 +75,7 @@ export default class Bubble extends Component {
               <Button
                 onClick={this.props.toggleVR}
                 text="Toggle VR"
-                position={[0, -1, 0]}
+                position={[0, -0.5, 0]}
                 scale={UIscale}
               />
             </Entity>

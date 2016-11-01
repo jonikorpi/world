@@ -33,7 +33,7 @@ export default class Tile extends Component {
   }
 
   render() {
-    const size = 2;
+    const size = 1;
     const height = size * 2;
     const width = Math.sqrt(3) / 2 * height;
     const x = size * Math.sqrt(3) * (this.props.loc.x + this.props.loc.y/2)
@@ -42,9 +42,8 @@ export default class Tile extends Component {
     const comparisonLoc = [0, 0];
     const distance = (Math.abs(comparisonLoc[0] - this.props.loc.x) + Math.abs(comparisonLoc[0] + comparisonLoc[1] - this.props.loc.x - this.props.loc.y) + Math.abs(comparisonLoc[1] - this.props.loc.y)) / 2;
 
-    const elevation = size / 200;
-    const rotation = 0; // elevation * (125 / size);
-    const y = 0; // distance * elevation;
+    const y = 0; //distance * size / 13;
+    const rotation = 0; //distance / 16;
 
     return (
       <Entity
@@ -67,7 +66,7 @@ export default class Tile extends Component {
           geometry={{
             primitive: "circle",
             segments: 6,
-            radius: size * 0.944,
+            radius: size,
           }}
           rotation={[-90, 90, 0]}
           material={{
@@ -77,13 +76,13 @@ export default class Tile extends Component {
           onStateremoved={this.handleStateEvent.bind(this)}
         />
 
-        <Text
+        {/* <Text
           text={`${this.props.loc.x},${this.props.loc.y} (${distance})`}
           width={size}
           rotation={[-90, 0, 0]}
           position={[-size, 0.05, 0]}
           scale={2}
-        />
+        /> */}
 
       </Entity>
     );

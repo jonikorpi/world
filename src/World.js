@@ -6,19 +6,17 @@ import Tile from "./Tile";
 
 export default class World extends Component {
   render() {
-    const range = 15;
+    const range = 20;
     let tiles = [];
 
-    for (let x=-range; x<range; x++) {
-      for (let y=-range; y<range; y++) {
-        if (Math.abs(x) + Math.abs(y) < range) {
-          tiles.push({
-            loc: {
-              x: x,
-              y: y,
-            }
-          });
-        }
+    for (let x = -range; x <= range; x++) {
+      for (let y = Math.max(-range, -x-range); y <= Math.min(range, -x+range); y++) {
+        tiles.push({
+          loc: {
+            x: x,
+            y: y,
+          }
+        });
       }
     }
 
@@ -35,7 +33,7 @@ export default class World extends Component {
           }}
           rotation={[-90, 0, 0]}
           material={{
-            color: "brown",
+            color: "black",
           }}
         />
 
