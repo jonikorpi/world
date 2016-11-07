@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Entity } from "aframe-react";
+import "aframe-look-at-billboard-component";
 
 export default class Tile extends Component {
   constructor(props) {
@@ -86,6 +87,23 @@ export default class Tile extends Component {
               shader: "standard",
             }}
             position={[0, size*0.25, 0]}
+          />
+        )}
+
+        {this.state["cursor-hovered"] && (
+          <Entity
+            geometry={{
+              primitive: "plane",
+              width: "1",
+              height: "1",
+            }}
+            material={{
+              shader: "flat",
+              color: "white",
+            }}
+            position={[0, 1, 0]}
+            rotation={[0, 0, 0]}
+            billboard
           />
         )}
 
