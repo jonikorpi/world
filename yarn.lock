@@ -2521,9 +2521,9 @@ fined@^1.0.1:
     lodash.pick "^4.2.1"
     parse-filepath "^1.0.1"
 
-firebase@^3.5.2:
-  version "3.5.2"
-  resolved "https://registry.yarnpkg.com/firebase/-/firebase-3.5.2.tgz#c7ab9ab0ad30bc4d4b8499c1778180a451b54653"
+firebase@^3.5.3:
+  version "3.5.3"
+  resolved "https://registry.yarnpkg.com/firebase/-/firebase-3.5.3.tgz#53cd5f669025d0aeb4a8278328e62eca8d9b9849"
   dependencies:
     dom-storage "2.0.2"
     faye-websocket "0.9.3"
