@@ -5,6 +5,24 @@ import Lights from "./Lights";
 import Tile from "./Tile";
 
 export default class World extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      activeTileID: ""
+    };
+
+    this.setActiveTileID = this.setActiveTileID.bind(this);
+  }
+
+  setActiveTileID(x, y) {
+    const tileID = `x${x}y${y}`;
+
+    if (this.state.activeTileID !== tileID) {
+      this.setState({activeTileID: tileID})
+    }
+  }
+
   render() {
     const range = 20;
     let tiles = [];
@@ -39,7 +57,17 @@ export default class World extends Component {
 
         <Entity id="tiles" position={[0, 0.05, 0]} rotation={[0, 0, 0]}>
           {tiles.map((tile) => {
-            return <Tile loc={tile.loc} key={`x${tile.loc.x}y${tile.loc.y}`}/>;
+            const tileID = `x${tile.loc.x}y${tile.loc.y}`;
+
+            return (
+              <Tile
+                x={tile.loc.x}
+                y={tile.loc.y}
+                key={tileID}
+                isActive={this.state.activeTileID === tileID}
+                setActiveTileID={this.setActiveTileID}
+              />
+            );
           })}
         </Entity>
       </Entity>

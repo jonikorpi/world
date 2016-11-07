@@ -1,33 +1,37 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import { Entity } from "aframe-react";
 import "aframe-look-at-billboard-component";
 
-export default class Tile extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {};
-  }
+export default class Tile extends PureComponent {
+  // constructor(props) {
+  //   super(props);
+  //
+  //   this.state = {};
+  // }
 
   handleStateEvent(event) {
     const name = event.detail.state;
     const type = event.type;
-    let boolean;
+    // let boolean;
+    //
+    // switch (type) {
+    //   case "stateadded":
+    //     boolean = true;
+    //     break;
+    //   case "stateremoved":
+    //     boolean = false;
+    //     break;
+    //   default:
+    //     console.log("Bad state event in Button");
+    //     return;
+    // }
+    //
+    // if (name && type && this._reactInternalInstance) {
+    //   this.setState({[name]: boolean});
+    // }
 
-    switch (type) {
-      case "stateadded":
-        boolean = true;
-        break;
-      case "stateremoved":
-        boolean = false;
-        break;
-      default:
-        console.log("Bad state event in Button");
-        return;
-    }
-
-    if (name && type && this._reactInternalInstance) {
-      this.setState({[name]: boolean});
+    if (!this.props.isActive && type === "stateadded" && name === "cursor-hovered") {
+      this.props.setActiveTileID(this.props.x, this.props.y);
     }
   }
 
@@ -35,11 +39,11 @@ export default class Tile extends Component {
     const size = 1;
     const height = size * 2;
     const width = Math.sqrt(3) / 2 * height;
-    const x = size * Math.sqrt(3) * (this.props.loc.x + this.props.loc.y/2)
-    const z = size * 3/2 * this.props.loc.y
+    const x = size * Math.sqrt(3) * (this.props.x + this.props.y/2)
+    const z = size * 3/2 * this.props.y
 
     const comparisonLoc = [0, 0];
-    const distance = (Math.abs(comparisonLoc[0] - this.props.loc.x) + Math.abs(comparisonLoc[0] + comparisonLoc[1] - this.props.loc.x - this.props.loc.y) + Math.abs(comparisonLoc[1] - this.props.loc.y)) / 2;
+    const distance = (Math.abs(comparisonLoc[0] - this.props.x) + Math.abs(comparisonLoc[0] + comparisonLoc[1] - this.props.x - this.props.y) + Math.abs(comparisonLoc[1] - this.props.y)) / 2;
 
     const y = 0; //distance * size / 13;
     const rotation = 0; //distance / 16;
@@ -69,10 +73,10 @@ export default class Tile extends Component {
           }}
           rotation={[-90, 90, 0]}
           material={{
-            color: this.state["cursor-hovered"] ? "rgb(209, 205, 167)" : `hsl(${distance*10}, 50%, 50%)`,
+            color: this.props.isActive ? "rgb(209, 205, 167)" : `hsl(${distance*10}, 50%, 50%)`,
           }}
           onStateadded={this.handleStateEvent.bind(this)}
-          onStateremoved={this.handleStateEvent.bind(this)}
+          // onStateremoved={this.handleStateEvent.bind(this)}
         />
 
         {Math.random() < 0.2 && (
@@ -90,8 +94,9 @@ export default class Tile extends Component {
           />
         )}
 
-        {this.state["cursor-hovered"] && (
+        {this.props.isActive && (
           <Entity
+            className="interactable"
             geometry={{
               primitive: "plane",
               width: "1",
