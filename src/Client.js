@@ -112,7 +112,7 @@ export default class Client extends PureComponent {
       <a-scene
         id="client"
         ref={(ref) => {this.scene = ref}}
-        stats={`enabled: ${process.env.NODE_ENV === "development"}`}
+        stats={process.env.NODE_ENV === "development" ? true : undefined}
         vr-mode-ui="enabled: false"
       >
 

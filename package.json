@@ -2,6 +2,9 @@
   "name": "world",
   "version": "0.1.0",
   "private": true,
+  "now": {
+    "alias": "world-dev"
+  },
   "devDependencies": {
     "aframe": "^0.3.2",
     "aframe-extras": "^2.6.0",
@@ -31,7 +34,7 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "deploy": "npm run build && now -e NODE_ENV=production && curl https://api.rollbar.com/api/1/deploy/ -F access_token=22fca22d3936434eb8b69cc0c453d040 -F environment=production -F revision=`git log -n 1 --pretty=format:'%H'` -F local_username=`whoami`",
-    "server": "node server",
+    "server": "npm run build && node server",
     "now-start": "node server",
     "now-build": ""
   }
