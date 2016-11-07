@@ -36,7 +36,7 @@ export default class Tile extends PureComponent {
   }
 
   render() {
-    const size = 1;
+    const size = 0.618;
     const height = size * 2;
     const width = Math.sqrt(3) / 2 * height;
     const x = size * Math.sqrt(3) * (this.props.x + this.props.y/2)
