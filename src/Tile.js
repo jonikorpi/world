@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { Entity } from "aframe-react";
 
-import Text from "./Text";
-
 export default class Tile extends Component {
   constructor(props) {
     super(props);
@@ -90,14 +88,6 @@ export default class Tile extends Component {
             position={[0, size*0.25, 0]}
           />
         )}
-
-        {/* <Text
-          text={`${this.props.loc.x},${this.props.loc.y} (${distance})`}
-          width={size}
-          rotation={[-90, 0, 0]}
-          position={[-size, 0.05, 0]}
-          scale={2}
-        /> */}
 
       </Entity>
     );

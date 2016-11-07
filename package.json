@@ -4,7 +4,6 @@
   "private": true,
   "devDependencies": {
     "aframe": "^0.3.2",
-    "aframe-bmfont-text-component": "^0.1.4",
     "aframe-extras": "^2.6.0",
     "aframe-react": "^3.4.0",
     "classnames": "^2.2.5",

@@ -1,8 +1,6 @@
 import React, { PureComponent } from "react";
 import { Entity } from "aframe-react";
 
-import Text from "./Text";
-
 export default class Button extends PureComponent {
   constructor(props) {
     super(props);
@@ -33,14 +31,12 @@ export default class Button extends PureComponent {
   }
 
   render() {
-    const text = this.props.text || "Quick brown fox";
     const baseLineHeight = 0.12;
-    const computedWidth = text.length * 0.1;
 
     const padding = this.props.padding || 0.1;
     const lineHeight = this.props.lineHeight ? this.props.lineHeight * baseLineHeight : baseLineHeight;
 
-    const width = (this.props.width || computedWidth) + padding*2;
+    const width = (this.props.width || 0.1) + padding*2;
     const height = lineHeight + padding*2;
     const color = this.props.color || "grey";
     const scale = this.props.scale || 0.5;
@@ -69,14 +65,6 @@ export default class Button extends PureComponent {
       >
 
         {this.props.children}
-
-        <Text
-          position={[width * -0.5, lineHeight * -0.5, 0.02]}
-          text={text}
-          color={this.props.textColor}
-          lineHeight={lineHeight}
-          width={width}
-        />
 
         {/* <Entity
           className="clickable"

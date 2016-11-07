@@ -4,7 +4,6 @@ import firebase from "firebase";
 
 import Button from "./Button";
 import Rotator from "./Rotator";
-import Text from "./Text";
 
 export default class Bubble extends Component {
   constructor(props) {
@@ -65,16 +64,26 @@ export default class Bubble extends Component {
 
           <Rotator distance={wallDistance} rotation={[0, 0, 0]}>
             <Entity id="northWall">
-              <Text scale={UIscale} text="N" width={radius}/>
+              <Entity
+                geometry={{
+                  primitive: "box",
+                  height: 0.1,
+                  width: 0.1,
+                  depth: 0.1,
+                }}
+                material={{
+                  shader: "flat",
+                  color: "red",
+                }}
+              />
             </Entity>
           </Rotator>
 
           <Rotator distance={wallDistance} rotation={[0, 45, 0]}>
             <Entity id="northWestWall">
-              <Text scale={UIscale} text="NW" width={radius}/>
               <Button
                 onClick={this.props.toggleVR}
-                text="Toggle VR"
+                color="purple"
                 position={[0, -0.5, 0]}
                 scale={UIscale}
               />
@@ -83,41 +92,35 @@ export default class Bubble extends Component {
 
           <Rotator distance={wallDistance} rotation={[0, 90, 0]}>
             <Entity id="westWall">
-              <Text scale={UIscale} text="W" width={radius}/>
             </Entity>
           </Rotator>
 
           <Rotator distance={wallDistance} rotation={[0, 135, 0]}>
             <Entity id="southWestWall">
-              <Text scale={UIscale} text="SW" width={radius}/>
             </Entity>
           </Rotator>
 
           <Rotator distance={wallDistance} rotation={[0, 180, 0]}>
             <Entity id="southWall">
-              <Text scale={UIscale} text="S" width={radius}/>
             </Entity>
           </Rotator>
 
           <Rotator distance={wallDistance} rotation={[0, 225, 0]}>
             <Entity id="southEastWall">
-              <Text scale={UIscale} text="SE" width={radius}/>
             </Entity>
           </Rotator>
 
           <Rotator distance={wallDistance} rotation={[0, 270, 0]}>
             <Entity id="eastWall">
-              <Text scale={UIscale} text="E" width={radius}/>
             </Entity>
           </Rotator>
 
           <Rotator distance={wallDistance} rotation={[0, 315, 0]}>
             <Entity id="northEastWall">
-              <Text scale={UIscale} text="NE" width={radius}/>
               {playerID && (
                 <Button
                   onClick={this.signOut}
-                  text="Sign out"
+                  color="red"
                   position={[0, 1, 0]}
                   scale={UIscale}
                 />
@@ -125,7 +128,7 @@ export default class Bubble extends Component {
               {!playerID && (
                 <Button
                   onClick={this.signIn}
-                  text="Sign in anonymously"
+                  color="green"
                   position={[0, -1, 0]}
                   scale={UIscale}
                 />
