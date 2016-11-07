@@ -64,11 +64,11 @@ export default class Tile extends Component {
           geometry={{
             primitive: "circle",
             segments: 6,
-            radius: size * 0.956,
+            radius: size,
           }}
           rotation={[-90, 90, 0]}
           material={{
-            color: this.state["cursor-hovered"] ? "rgb(209, 205, 167)" : "rgb(45, 119, 246)",
+            color: this.state["cursor-hovered"] ? "rgb(209, 205, 167)" : `hsl(${distance*10}, 50%, 50%)`,
           }}
           onStateadded={this.handleStateEvent.bind(this)}
           onStateremoved={this.handleStateEvent.bind(this)}
