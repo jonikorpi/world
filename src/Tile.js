@@ -48,18 +48,25 @@ export default class Tile extends PureComponent {
     const comparisonLoc = [0, 0];
     const distance = (Math.abs(comparisonLoc[0] - x) + Math.abs(comparisonLoc[0] + comparisonLoc[1] - x - y) + Math.abs(comparisonLoc[1] - y)) / 2;
 
-    const elevation = hexSize / 5;
+    const elevation = hexSize / 4;
     const height = rock * elevation;
     const rotation = 0;
 
     const neighbourHeights = Object.keys(neighbours).map((index) => {
       if (neighbours[index]) {
-        return neighbours[index].rock * elevation * 0;
+        return neighbours[index].rock * elevation;
       }
       else {
         return 0;
       }
     });
+
+    const heightN  = (height + neighbourHeights[5] + neighbourHeights[0]) / 3;
+    const heightNE = (height + neighbourHeights[0] + neighbourHeights[1]) / 3;
+    const heightSE = (height + neighbourHeights[1] + neighbourHeights[2]) / 3;
+    const heightS  = (height + neighbourHeights[2] + neighbourHeights[3]) / 3;
+    const heightSW = (height + neighbourHeights[3] + neighbourHeights[4]) / 3;
+    const heightNW = (height + neighbourHeights[4] + neighbourHeights[5]) / 3;
 
     return (
       <Entity
@@ -78,23 +85,12 @@ export default class Tile extends PureComponent {
             vertices: [
               [0, height, 0],
 
-              [0, neighbourHeights[5], -hexHeight/2],
-              [0, neighbourHeights[0], -hexHeight/2],
-
-              [ hexWidth/2, neighbourHeights[0], -hexHeight/4],
-              [ hexWidth/2, neighbourHeights[1], -hexHeight/4],
-
-              [ hexWidth/2, neighbourHeights[1],  hexHeight/4],
-              [ hexWidth/2, neighbourHeights[2],  hexHeight/4],
-
-              [0, neighbourHeights[2],  hexHeight/2],
-              [0, neighbourHeights[3],  hexHeight/2],
-
-              [-hexWidth/2, neighbourHeights[3],  hexHeight/4],
-              [-hexWidth/2, neighbourHeights[4],  hexHeight/4],
-
-              [-hexWidth/2, neighbourHeights[4], -hexHeight/4],
-              [-hexWidth/2, neighbourHeights[5], -hexHeight/4],
+              [0,           heightN,  -hexHeight/2],
+              [ hexWidth/2, heightNE, -hexHeight/4],
+              [ hexWidth/2, heightSE,  hexHeight/4],
+              [0,           heightS,   hexHeight/2],
+              [-hexWidth/2, heightSW,  hexHeight/4],
+              [-hexWidth/2, heightNW, -hexHeight/4],
             ],
           }}
           position={[
@@ -105,6 +101,7 @@ export default class Tile extends PureComponent {
           material={{
             color: this.props.isActive ? "rgb(209, 205, 167)" : `hsl(${100 - rock*15}, 50%, 38%)`,
             flatShading: true,
+            side: "double",
           }}
           // onStateadded={this.handleStateEvent.bind(this)}
           // onStateremoved={this.handleStateEvent.bind(this)}

@@ -70,12 +70,12 @@ export default class World extends Component {
             let neighbours = [];
 
             // Clockwise from top-right
-            neighbours.push(this.tileExists(+x+1, +y-1, tiles) ? tiles[x][y].attributes: null);
-            neighbours.push(this.tileExists(+x+1, +y,   tiles) ? tiles[x][y].attributes: null);
-            neighbours.push(this.tileExists(+x,   +y+1, tiles) ? tiles[x][y].attributes: null);
-            neighbours.push(this.tileExists(+x-1, +y+1, tiles) ? tiles[x][y].attributes: null);
-            neighbours.push(this.tileExists(+x-1, +y,   tiles) ? tiles[x][y].attributes: null);
-            neighbours.push(this.tileExists(+x,   +y-1, tiles) ? tiles[x][y].attributes: null);
+            neighbours.push(this.tileExists(+x+1, +y-1, tiles) ? tiles[+x+1][+y-1].attributes: null);
+            neighbours.push(this.tileExists(+x+1, +y,   tiles) ? tiles[+x+1][+y  ].attributes: null);
+            neighbours.push(this.tileExists(+x,   +y+1, tiles) ? tiles[+x  ][+y+1].attributes: null);
+            neighbours.push(this.tileExists(+x-1, +y+1, tiles) ? tiles[+x-1][+y+1].attributes: null);
+            neighbours.push(this.tileExists(+x-1, +y,   tiles) ? tiles[+x-1][+y  ].attributes: null);
+            neighbours.push(this.tileExists(+x,   +y-1, tiles) ? tiles[+x  ][+y-1].attributes: null);
 
             neighbours.map((neighbour) => {
               tiles[x][y].neighbours.push(neighbour);
