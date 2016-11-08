@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
 import { Entity } from "aframe-react";
 import "aframe-look-at-billboard-component";
+import "aframe-faceset-component";
 
 export default class Tile extends PureComponent {
   // constructor(props) {
@@ -36,57 +37,69 @@ export default class Tile extends PureComponent {
   }
 
   render() {
+    const {x, y, rock, water, flora, heat, neighbours} = this.props;
+
     const size = 0.5;
     const height = size * 2;
     const width = Math.sqrt(3) / 2 * height;
-    const x = size * Math.sqrt(3) * (this.props.x + this.props.y/2);
-    const z = size * 3/2 * this.props.y;
+    const xPosition = size * Math.sqrt(3) * (x + y/2);
+    const zPosition = size * 3/2 * y;
 
     const comparisonLoc = [0, 0];
-    const distance = (Math.abs(comparisonLoc[0] - this.props.x) + Math.abs(comparisonLoc[0] + comparisonLoc[1] - this.props.x - this.props.y) + Math.abs(comparisonLoc[1] - this.props.y)) / 2;
+    const distance = (Math.abs(comparisonLoc[0] - x) + Math.abs(comparisonLoc[0] + comparisonLoc[1] - x - y) + Math.abs(comparisonLoc[1] - y)) / 2;
 
     const elevation = size / 5;
-    const y = (1 + this.props.rock) * elevation; //distance * size / 13;
+    const yPosition = (rock) * elevation; //distance * size / 13;
     const rotation = 0; //distance / 16;
 
     return (
       <Entity
-        class="tile"
+        id={`x${x}y${y}`}
+        className="tile"
         position={[
-          x,
+          xPosition,
           0,
-          z,
-        ]}
-        rotation={[
-          z * -rotation,
-          0,
-          x * rotation,
+          zPosition,
         ]}
       >
 
-        <Entity
-          id={`x${x}y${z}`}
-          className="interactable"
-          geometry={{
-            primitive: "cylinder",
-            segmentsRadial: 6,
-            segmentsHeight: 0,
-            radius: size,
-            height: y,
-          }}
-          position={[
-            0,
-            y * 0.5,
-            0,
-          ]}
-          material={{
-            color: this.props.isActive ? "rgb(209, 205, 167)" : `hsl(${distance*8}, 50%, 38%)`,
-          }}
-          onStateadded={this.handleStateEvent.bind(this)}
-          // onStateremoved={this.handleStateEvent.bind(this)}
-        />
+        {/* {Object.keys(neighbours).map((index) => {
+          const coneHeight = width/2;
 
-        {Math.random() < 0.2 && (
+          return (
+
+          );
+        })} */}
+
+        <Entity key={null} rotation={[0, 0, 0]}>
+          <Entity
+            className="interactable"
+            faceset={{
+              vertices: [
+                [0, 0, -height/2],
+                [ width/2, 0, -height/4],
+                [ width/2, 0,  height/4],
+                [0, 0,  height/2],
+                [-width/2, 0,  height/4],
+                [-width/2, 0, -height/4],
+                [0, yPosition, 0],
+              ],
+            }}
+            position={[
+              0,
+              0.5,
+              0,
+            ]}
+            material={{
+              color: this.props.isActive ? "rgb(209, 205, 167)" : `hsl(${distance*8}, 50%, 38%)`,
+              flatShading: true,
+            }}
+            // onStateadded={this.handleStateEvent.bind(this)}
+            // onStateremoved={this.handleStateEvent.bind(this)}
+          />
+        </Entity>
+
+        {/* {Math.random() < 0.2 && (
           <Entity
             geometry={{
               primitive: "box",
@@ -99,11 +112,11 @@ export default class Tile extends PureComponent {
             }}
             position={[
               0,
-              y + size*0.25,
+              yPosition + size*0.25,
               0.
             ]}
           />
-        )}
+        )} */}
 
         {this.props.isActive && (
           <Entity

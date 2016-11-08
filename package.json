@@ -22,6 +22,7 @@
     "reactfire": "^1.0.0"
   },
   "dependencies": {
+    "aframe-faceset-component": "^0.3.1",
     "compression": "^1.6.2",
     "express": "^4.14.0",
     "morgan": "^1.7.0",
