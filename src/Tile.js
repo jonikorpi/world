@@ -32,14 +32,23 @@ export default class Tile extends PureComponent {
     // }
 
     if (!this.props.isActive && type === "stateadded" && name === "cursor-hovered") {
-      // this.props.setActiveTileID(this.props.x, this.props.y);
+      this.props.setActiveTileID(this.props.x, this.props.y);
+    }
+  }
+
+  getCornerHeight(a, b, c) {
+    if (a && b && c) {
+      return (a + b + c) / 3;
+    }
+    else {
+      return 0;
     }
   }
 
   render() {
     const {x, y, rock, water, flora, heat, neighbours} = this.props;
 
-    const hexSize = 0.618;
+    const hexSize = 1;
     const hexHeight = hexSize * 2;
     const hexWidth = Math.sqrt(3) / 2 * hexHeight;
     const xPosition = hexSize * Math.sqrt(3) * (x + y/2);
@@ -49,24 +58,25 @@ export default class Tile extends PureComponent {
     const distance = (Math.abs(comparisonLoc[0] - x) + Math.abs(comparisonLoc[0] + comparisonLoc[1] - x - y) + Math.abs(comparisonLoc[1] - y)) / 2;
 
     const elevation = hexSize / 4;
-    const height = rock * elevation;
+    const baseHeight = 0.5;
+    const height = (rock + baseHeight) * elevation;
     const rotation = 0;
 
     const neighbourHeights = Object.keys(neighbours).map((index) => {
       if (neighbours[index]) {
-        return neighbours[index].rock * elevation;
+        return (neighbours[index].rock + baseHeight) * elevation;
       }
       else {
-        return 0;
+        return null;
       }
     });
 
-    const heightN  = (height + neighbourHeights[5] + neighbourHeights[0]) / 3;
-    const heightNE = (height + neighbourHeights[0] + neighbourHeights[1]) / 3;
-    const heightSE = (height + neighbourHeights[1] + neighbourHeights[2]) / 3;
-    const heightS  = (height + neighbourHeights[2] + neighbourHeights[3]) / 3;
-    const heightSW = (height + neighbourHeights[3] + neighbourHeights[4]) / 3;
-    const heightNW = (height + neighbourHeights[4] + neighbourHeights[5]) / 3;
+    const heightN  = this.getCornerHeight(height, neighbourHeights[5], neighbourHeights[0]);
+    const heightNE = this.getCornerHeight(height, neighbourHeights[0], neighbourHeights[1]);
+    const heightSE = this.getCornerHeight(height, neighbourHeights[1], neighbourHeights[2]);
+    const heightS  = this.getCornerHeight(height, neighbourHeights[2], neighbourHeights[3]);
+    const heightSW = this.getCornerHeight(height, neighbourHeights[3], neighbourHeights[4]);
+    const heightNW = this.getCornerHeight(height, neighbourHeights[4], neighbourHeights[5]);
 
     return (
       <Entity
@@ -83,7 +93,12 @@ export default class Tile extends PureComponent {
           className="interactable"
           faceset={{
             vertices: [
-              [0, height, 0],
+              [0,           height, -hexHeight/4],
+              [ hexWidth/4, height, -hexHeight/8],
+              [ hexWidth/4, height,  hexHeight/8],
+              [0,           height,  hexHeight/4],
+              [-hexWidth/4, height,  hexHeight/8],
+              [-hexWidth/4, height, -hexHeight/8],
 
               [0,           heightN,  -hexHeight/2],
               [ hexWidth/2, heightNE, -hexHeight/4],
@@ -99,11 +114,10 @@ export default class Tile extends PureComponent {
             0,
           ]}
           material={{
-            color: this.props.isActive ? "rgb(209, 205, 167)" : `hsl(${100 - rock*15}, 50%, 38%)`,
+            color: this.props.isActive ? "hsl(0, 50%, 50%)" : `hsl(${100 - rock*15}, 50%, 38%)`,
             flatShading: true,
-            side: "double",
           }}
-          // onStateadded={this.handleStateEvent.bind(this)}
+          onStateadded={this.handleStateEvent.bind(this)}
           // onStateremoved={this.handleStateEvent.bind(this)}
         />
 
@@ -138,7 +152,7 @@ export default class Tile extends PureComponent {
               shader: "flat",
               color: "white",
             }}
-            position={[0, 1, 0]}
+            position={[0, height + 2, 0]}
             rotation={[0, 0, 0]}
             billboard
           />

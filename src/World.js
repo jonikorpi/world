@@ -8,32 +8,7 @@ export default class World extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      activeTileID: "",
-    };
-
-    this.setActiveTileID = this.setActiveTileID.bind(this);
-  }
-
-  setActiveTileID(x, y) {
-    const tileID = `x${x}y${y}`;
-
-    if (this.state.activeTileID !== tileID) {
-      this.setState({activeTileID: tileID})
-    }
-  }
-
-  tileExists(x, y, tiles) {
-    if (tiles[x] && tiles[x][y]) {
-      return true;
-    }
-    else {
-      return false;
-    }
-  }
-
-  render() {
-    const range = 20;
+    const range = 15;
     let tiles = {};
 
     // Create tiles
@@ -84,6 +59,34 @@ export default class World extends Component {
         }
       }
     }
+
+    this.state = {
+      activeTileID: "",
+      tiles: tiles,
+    };
+
+    this.setActiveTileID = this.setActiveTileID.bind(this);
+  }
+
+  setActiveTileID(x, y) {
+    const tileID = `x${x}y${y}`;
+
+    if (this.state.activeTileID !== tileID) {
+      this.setState({activeTileID: tileID})
+    }
+  }
+
+  tileExists(x, y, tiles) {
+    if (tiles[x] && tiles[x][y]) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  render() {
+    const tiles = this.state.tiles;
 
     return (
       <Entity id="world">
