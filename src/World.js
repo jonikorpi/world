@@ -69,12 +69,13 @@ export default class World extends Component {
           if (tiles[x].hasOwnProperty(y)) {
             let neighbours = [];
 
-            this.tileExists(+x+1, +y+0, tiles) && neighbours.push(tiles[x][y].attributes);
-            this.tileExists(+x-1, +y+0, tiles) && neighbours.push(tiles[x][y].attributes);
-            this.tileExists(+x+1, +y-1, tiles) && neighbours.push(tiles[x][y].attributes);
-            this.tileExists(+x-1, +y+1, tiles) && neighbours.push(tiles[x][y].attributes);
-            this.tileExists(+x+0, +y-1, tiles) && neighbours.push(tiles[x][y].attributes);
-            this.tileExists(+x+0, +y+1, tiles) && neighbours.push(tiles[x][y].attributes);
+            // Clockwise from top-right
+            neighbours.push(this.tileExists(+x+1, +y-1, tiles) ? tiles[x][y].attributes: null);
+            neighbours.push(this.tileExists(+x+1, +y,   tiles) ? tiles[x][y].attributes: null);
+            neighbours.push(this.tileExists(+x,   +y+1, tiles) ? tiles[x][y].attributes: null);
+            neighbours.push(this.tileExists(+x-1, +y+1, tiles) ? tiles[x][y].attributes: null);
+            neighbours.push(this.tileExists(+x-1, +y,   tiles) ? tiles[x][y].attributes: null);
+            neighbours.push(this.tileExists(+x,   +y-1, tiles) ? tiles[x][y].attributes: null);
 
             neighbours.map((neighbour) => {
               tiles[x][y].neighbours.push(neighbour);
