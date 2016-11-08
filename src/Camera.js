@@ -15,7 +15,8 @@ export default class Camera extends PureComponent {
 
   render() {
     const userHeight = 1.75;
-    const position = this.props.inVR ? [0, userHeight, 0] : [this.state.x, userHeight, this.state.z];
+    const inVR = this.props.inVR;
+    const position = inVR ? [0, userHeight, 0] : [this.state.x, userHeight, this.state.z];
 
     return (
       <Entity
@@ -27,11 +28,11 @@ export default class Camera extends PureComponent {
           camera={{
             far: this.props.far,
             near: this.props.near,
-            fov: this.props.inVR ? 80 : 80,
+            fov: inVR ? 80 : 80,
             // userHeight: userHeight,
           }}
           universal-controls={{
-            movementEnabled: this.props.inVR === false,
+            movementEnabled: inVR === false,
             movementControls: ["keyboard", "gamepad"],
             // movementSpeed:        30,
             // movementEasing:       25,
@@ -52,15 +53,13 @@ export default class Camera extends PureComponent {
             cursor={{
               fuse: false,
             }}
-            geometry={{
-              primitive: "ring",
-              radiusInner: 0.0056,
-              radiusOuter: 0.0091,
-              segmentsTheta: 16,
-              segmentsPhi: 1,
+            geometry={!inVR && {
+              primitive: "circle",
+              radius: 0.000618,
+              segments: 6,
             }}
-            position={[0, 0, -1]}
-            material={{
+            position={[0, 0, -this.props.near - 0.01]}
+            material={!inVR && {
               shader: "flat",
               color: "white",
             }}
