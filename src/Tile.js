@@ -39,18 +39,27 @@ export default class Tile extends PureComponent {
   render() {
     const {x, y, rock, water, flora, heat, neighbours} = this.props;
 
-    const size = 0.5;
-    const height = size * 2;
-    const width = Math.sqrt(3) / 2 * height;
-    const xPosition = size * Math.sqrt(3) * (x + y/2);
-    const zPosition = size * 3/2 * y;
+    const hexSize = 0.618;
+    const hexHeight = hexSize * 2;
+    const hexWidth = Math.sqrt(3) / 2 * hexHeight;
+    const xPosition = hexSize * Math.sqrt(3) * (x + y/2);
+    const zPosition = hexSize * 3/2 * y;
 
     const comparisonLoc = [0, 0];
     const distance = (Math.abs(comparisonLoc[0] - x) + Math.abs(comparisonLoc[0] + comparisonLoc[1] - x - y) + Math.abs(comparisonLoc[1] - y)) / 2;
 
-    const elevation = size / 5;
-    const yPosition = (rock) * elevation; //distance * size / 13;
-    const rotation = 0; //distance / 16;
+    const elevation = hexSize / 5;
+    const height = rock * elevation;
+    const rotation = 0;
+
+    const neighbourHeights = Object.keys(neighbours).map((index) => {
+      if (neighbours[index]) {
+        return neighbours[index].rock * elevation * 0;
+      }
+      else {
+        return 0;
+      }
+    });
 
     return (
       <Entity
@@ -63,56 +72,58 @@ export default class Tile extends PureComponent {
         ]}
       >
 
-        {/* {Object.keys(neighbours).map((index) => {
-          const coneHeight = width/2;
+        <Entity
+          className="interactable"
+          faceset={{
+            vertices: [
+              [0, height, 0],
 
-          return (
+              [0, neighbourHeights[5], -hexHeight/2],
+              [0, neighbourHeights[0], -hexHeight/2],
 
-          );
-        })} */}
+              [ hexWidth/2, neighbourHeights[0], -hexHeight/4],
+              [ hexWidth/2, neighbourHeights[1], -hexHeight/4],
 
-        <Entity key={null} rotation={[0, 0, 0]}>
-          <Entity
-            className="interactable"
-            faceset={{
-              vertices: [
-                [0, 0, -height/2],
-                [ width/2, 0, -height/4],
-                [ width/2, 0,  height/4],
-                [0, 0,  height/2],
-                [-width/2, 0,  height/4],
-                [-width/2, 0, -height/4],
-                [0, yPosition, 0],
-              ],
-            }}
-            position={[
-              0,
-              0.5,
-              0,
-            ]}
-            material={{
-              color: this.props.isActive ? "rgb(209, 205, 167)" : `hsl(${distance*8}, 50%, 38%)`,
-              flatShading: true,
-            }}
-            // onStateadded={this.handleStateEvent.bind(this)}
-            // onStateremoved={this.handleStateEvent.bind(this)}
-          />
-        </Entity>
+              [ hexWidth/2, neighbourHeights[1],  hexHeight/4],
+              [ hexWidth/2, neighbourHeights[2],  hexHeight/4],
+
+              [0, neighbourHeights[2],  hexHeight/2],
+              [0, neighbourHeights[3],  hexHeight/2],
+
+              [-hexWidth/2, neighbourHeights[3],  hexHeight/4],
+              [-hexWidth/2, neighbourHeights[4],  hexHeight/4],
+
+              [-hexWidth/2, neighbourHeights[4], -hexHeight/4],
+              [-hexWidth/2, neighbourHeights[5], -hexHeight/4],
+            ],
+          }}
+          position={[
+            0,
+            0,
+            0,
+          ]}
+          material={{
+            color: this.props.isActive ? "rgb(209, 205, 167)" : `hsl(${100 - rock*15}, 50%, 38%)`,
+            flatShading: true,
+          }}
+          // onStateadded={this.handleStateEvent.bind(this)}
+          // onStateremoved={this.handleStateEvent.bind(this)}
+        />
 
         {/* {Math.random() < 0.2 && (
           <Entity
             geometry={{
               primitive: "box",
-              width: size*0.5,
-              depth: size*0.5,
-              height: size*0.5,
+              width: hexSize*0.5,
+              depth: hexSize*0.5,
+              height: hexSize*0.5,
             }}
             material={{
               shader: "standard",
             }}
             position={[
               0,
-              yPosition + size*0.25,
+              height + hexSize*0.25,
               0.
             ]}
           />
