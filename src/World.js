@@ -52,10 +52,10 @@ export default class World extends Component {
             y: +y,
           },
           attributes: {
-            rock: Math.ceil(Math.random() * 4),
-            heat: Math.ceil(Math.random() * 4),
-            water: Math.ceil(Math.random() * 4),
-            flora: Math.ceil(Math.random() * 4),
+            rock: Math.floor(Math.random() * 5),
+            heat: Math.floor(Math.random() * 5),
+            water: Math.floor(Math.random() * 5),
+            flora: Math.floor(Math.random() * 5),
           },
           neighbours: [],
         };
@@ -97,7 +97,7 @@ export default class World extends Component {
           }}
           rotation={[-90, 0, 0]}
           material={{
-            color: "black",
+            color: "rgb(45,118,245)",
           }}
         />
 

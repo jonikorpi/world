@@ -36,16 +36,17 @@ export default class Tile extends PureComponent {
   }
 
   render() {
-    const size = 0.618;
+    const size = 0.5;
     const height = size * 2;
     const width = Math.sqrt(3) / 2 * height;
-    const x = size * Math.sqrt(3) * (this.props.x + this.props.y/2)
-    const z = size * 3/2 * this.props.y
+    const x = size * Math.sqrt(3) * (this.props.x + this.props.y/2);
+    const z = size * 3/2 * this.props.y;
 
     const comparisonLoc = [0, 0];
     const distance = (Math.abs(comparisonLoc[0] - this.props.x) + Math.abs(comparisonLoc[0] + comparisonLoc[1] - this.props.x - this.props.y) + Math.abs(comparisonLoc[1] - this.props.y)) / 2;
 
-    const y = 0; //distance * size / 13;
+    const elevation = size / 5;
+    const y = (1 + this.props.rock) * elevation; //distance * size / 13;
     const rotation = 0; //distance / 16;
 
     return (
@@ -53,7 +54,7 @@ export default class Tile extends PureComponent {
         class="tile"
         position={[
           x,
-          y,
+          0,
           z,
         ]}
         rotation={[
@@ -67,13 +68,19 @@ export default class Tile extends PureComponent {
           id={`x${x}y${z}`}
           className="interactable"
           geometry={{
-            primitive: "circle",
-            segments: 6,
+            primitive: "cylinder",
+            segmentsRadial: 6,
+            segmentsHeight: 0,
             radius: size,
+            height: y,
           }}
-          rotation={[-90, 90, 0]}
+          position={[
+            0,
+            y * 0.5,
+            0,
+          ]}
           material={{
-            color: this.props.isActive ? "rgb(209, 205, 167)" : `hsl(${distance*10}, 50%, 50%)`,
+            color: this.props.isActive ? "rgb(209, 205, 167)" : `hsl(${distance*8}, 50%, 38%)`,
           }}
           onStateadded={this.handleStateEvent.bind(this)}
           // onStateremoved={this.handleStateEvent.bind(this)}
@@ -90,7 +97,11 @@ export default class Tile extends PureComponent {
             material={{
               shader: "standard",
             }}
-            position={[0, size*0.25, 0]}
+            position={[
+              0,
+              y + size*0.25,
+              0.
+            ]}
           />
         )}
 

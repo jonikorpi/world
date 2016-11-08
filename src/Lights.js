@@ -13,9 +13,9 @@ export default class Lights extends PureComponent {
             intensity: 1,
           }}
           position={[
-            -0.5,
+            -1.5,
             1,
-            1,
+            2,
           ]}
         />
 
