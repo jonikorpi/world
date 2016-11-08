@@ -38,7 +38,7 @@ export default class Tile extends PureComponent {
 
   getCornerHeight(a, b, c) {
     if (a && b && c) {
-      return (a + b + c) / 3;
+      return Math.min(a, b, c);
     }
     else {
       return 0;
@@ -114,7 +114,7 @@ export default class Tile extends PureComponent {
             0,
           ]}
           material={{
-            color: this.props.isActive ? "hsl(0, 50%, 50%)" : `hsl(${100 - rock*15}, 50%, 38%)`,
+            color: this.props.isActive ? `hsl(${100 - rock*15}, 62%, 50%)` : `hsl(${100 - rock*15}, 50%, 38%)`,
             flatShading: true,
           }}
           onStateadded={this.handleStateEvent.bind(this)}
