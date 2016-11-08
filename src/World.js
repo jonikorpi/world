@@ -9,7 +9,7 @@ export default class World extends Component {
     super(props);
 
     this.state = {
-      activeTileID: ""
+      activeTileID: "",
     };
 
     this.setActiveTileID = this.setActiveTileID.bind(this);
@@ -23,18 +23,64 @@ export default class World extends Component {
     }
   }
 
+  tileExists(x, y, tiles) {
+    if (tiles[x] && tiles[x][y]) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
   render() {
     const range = 20;
-    let tiles = [];
+    let tiles = {};
 
+    // Create tiles
     for (let x = -range; x <= range; x++) {
       for (let y = Math.max(-range, -x-range); y <= Math.min(range, -x+range); y++) {
-        tiles.push({
+        x = x.toString();
+        y = y.toString();
+
+        if (!tiles[x]) {
+          tiles[x] = {};
+        }
+
+        tiles[x][y] = {
           loc: {
-            x: x,
-            y: y,
+            x: +x,
+            y: +y,
+          },
+          attributes: {
+            rock: Math.ceil(Math.random() * 4),
+            heat: Math.ceil(Math.random() * 4),
+            water: Math.ceil(Math.random() * 4),
+            flora: Math.ceil(Math.random() * 4),
+          },
+          neighbours: [],
+        };
+      }
+    }
+
+    // Tell tiles of their neighbours
+    for (var x in tiles) {
+      if (tiles.hasOwnProperty(x)) {
+        for (var y in tiles[x]) {
+          if (tiles[x].hasOwnProperty(y)) {
+            let neighbours = [];
+
+            this.tileExists(+x+1, +y+0, tiles) && neighbours.push(tiles[x][y].attributes);
+            this.tileExists(+x-1, +y+0, tiles) && neighbours.push(tiles[x][y].attributes);
+            this.tileExists(+x+1, +y-1, tiles) && neighbours.push(tiles[x][y].attributes);
+            this.tileExists(+x-1, +y+1, tiles) && neighbours.push(tiles[x][y].attributes);
+            this.tileExists(+x+0, +y-1, tiles) && neighbours.push(tiles[x][y].attributes);
+            this.tileExists(+x+0, +y+1, tiles) && neighbours.push(tiles[x][y].attributes);
+
+            neighbours.map((neighbour) => {
+              tiles[x][y].neighbours.push(neighbour);
+            })
           }
-        });
+        }
       }
     }
 
@@ -56,19 +102,25 @@ export default class World extends Component {
         />
 
         <Entity id="tiles" position={[0, 0.05, 0]} rotation={[0, 0, 0]}>
-          {tiles.map((tile) => {
-            const tileID = `x${tile.loc.x}y${tile.loc.y}`;
+          {
+            Object.keys(tiles).map((x) => {
+              return Object.keys(tiles[x]).map((y) => {
+                const tile = tiles[x][y];
+                const tileID = `x${tile.loc.x}y${tile.loc.y}`;
 
-            return (
-              <Tile
-                x={tile.loc.x}
-                y={tile.loc.y}
-                key={tileID}
-                isActive={this.state.activeTileID === tileID}
-                setActiveTileID={this.setActiveTileID}
-              />
-            );
-          })}
+                return (
+                  <Tile
+                    {...tile.loc}
+                    {...tile.attributes}
+                    neighbours={tile.neighbours}
+                    key={tileID}
+                    isActive={this.state.activeTileID === tileID}
+                    setActiveTileID={this.setActiveTileID}
+                  />
+                );
+              })
+            })
+          }
         </Entity>
       </Entity>
     );

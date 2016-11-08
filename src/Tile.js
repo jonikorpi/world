@@ -31,7 +31,7 @@ export default class Tile extends PureComponent {
     // }
 
     if (!this.props.isActive && type === "stateadded" && name === "cursor-hovered") {
-      this.props.setActiveTileID(this.props.x, this.props.y);
+      // this.props.setActiveTileID(this.props.x, this.props.y);
     }
   }
 
