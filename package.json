@@ -18,6 +18,7 @@
     "react-addons-perf": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-mixin": "^3.0.5",
+    "react-motion": "^0.4.5",
     "react-router": "^4.0.0-alpha.4",
     "react-scripts": "^0.7.0",
     "reactfire": "^1.0.0"
@@ -26,7 +27,6 @@
     "compression": "^1.6.2",
     "express": "^4.14.0",
     "morgan": "^1.7.0",
-    "react-motion": "^0.4.5",
     "rollbar": "^0.6.2",
     "universal-analytics": "^0.4.6"
   },
