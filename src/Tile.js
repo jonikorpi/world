@@ -4,11 +4,11 @@ import "aframe-look-at-billboard-component";
 import "aframe-faceset-component";
 
 export default class Tile extends PureComponent {
-  // constructor(props) {
-  //   super(props);
-  //
-  //   this.state = {};
-  // }
+  constructor(props) {
+    super(props);
+
+    this.hasObject = Math.random() < 0.1;
+  }
 
   handleStateEvent(event) {
     const name = event.detail.state;
@@ -48,7 +48,7 @@ export default class Tile extends PureComponent {
   render() {
     const {x, y, rock, water, flora, heat, neighbours} = this.props;
 
-    const hexSize = 1;
+    const hexSize = 0.618;
     const hexHeight = hexSize * 2;
     const hexWidth = Math.sqrt(3) / 2 * hexHeight;
     const xPosition = hexSize * Math.sqrt(3) * (x + y/2);
@@ -121,24 +121,24 @@ export default class Tile extends PureComponent {
           // onStateremoved={this.handleStateEvent.bind(this)}
         />
 
-        {/* {Math.random() < 0.2 && (
+        {this.hasObject && (
           <Entity
             geometry={{
               primitive: "box",
               width: hexSize*0.5,
               depth: hexSize*0.5,
-              height: hexSize*0.5,
+              height: hexSize*0.236,
             }}
             material={{
               shader: "standard",
             }}
             position={[
               0,
-              height + hexSize*0.25,
+              height + hexSize*0.236/2,
               0.
             ]}
           />
-        )} */}
+        )}
 
         {this.props.isActive && (
           <Entity
