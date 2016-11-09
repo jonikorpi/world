@@ -1,10 +1,10 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import { Entity } from "aframe-react";
 
 import Lights from "./Lights";
 import Tile from "./Tile";
 
-export default class World extends Component {
+export default class World extends PureComponent {
   constructor(props) {
     super(props);
 

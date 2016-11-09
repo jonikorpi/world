@@ -2,12 +2,22 @@ import React, { PureComponent } from "react";
 import { Entity } from "aframe-react";
 import "aframe-look-at-billboard-component";
 import "aframe-faceset-component";
+import { Motion, spring } from "react-motion";
 
 export default class Tile extends PureComponent {
   constructor(props) {
     super(props);
 
-    this.hasObject = Math.random() < 0.1;
+    this.state = {
+      x: this.props.x,
+      y: this.props.y,
+      rock: this.props.rock,
+      water: this.props.water,
+      flora: this.props.flora,
+      heat: this.props.heat,
+      neighbours: this.props.neighbours,
+      object: Math.random() < 0.1,
+    };
   }
 
   handleStateEvent(event) {
@@ -46,7 +56,8 @@ export default class Tile extends PureComponent {
   }
 
   render() {
-    const {x, y, rock, water, flora, heat, neighbours} = this.props;
+    const { x, y, rock, water, flora, heat, neighbours, object } = this.state;
+    const { isActive } = this.props;
 
     const hexSize = 0.618;
     const hexHeight = hexSize * 2;
@@ -60,6 +71,7 @@ export default class Tile extends PureComponent {
     const elevation = hexSize / 4;
     const baseHeight = 0.5;
     const height = (rock + baseHeight) * elevation;
+    const pedestalHeight = isActive ? (Math.floor(Math.random()*5) + baseHeight) * elevation : height;
     const rotation = 0;
 
     const neighbourHeights = Object.keys(neighbours).map((index) => {
@@ -79,86 +91,87 @@ export default class Tile extends PureComponent {
     const heightNW = this.getCornerHeight(height, neighbourHeights[4], neighbourHeights[5]);
 
     return (
-      <Entity
-        id={`x${x}y${y}`}
-        className="tile"
-        position={[
-          xPosition,
-          0,
-          zPosition,
-        ]}
-      >
-
+      <Motion style={{pedestalHeight: spring(pedestalHeight)}}>{interpolation =>
         <Entity
-          className="interactable"
-          faceset={{
-            vertices: [
-              [0,           height, -hexHeight/4],
-              [ hexWidth/4, height, -hexHeight/8],
-              [ hexWidth/4, height,  hexHeight/8],
-              [0,           height,  hexHeight/4],
-              [-hexWidth/4, height,  hexHeight/8],
-              [-hexWidth/4, height, -hexHeight/8],
-
-              [0,           heightN,  -hexHeight/2],
-              [ hexWidth/2, heightNE, -hexHeight/4],
-              [ hexWidth/2, heightSE,  hexHeight/4],
-              [0,           heightS,   hexHeight/2],
-              [-hexWidth/2, heightSW,  hexHeight/4],
-              [-hexWidth/2, heightNW, -hexHeight/4],
-            ],
-          }}
+          id={`x${x}y${y}`}
+          className="tile"
           position={[
+            xPosition,
             0,
-            0,
-            0,
+            zPosition,
           ]}
-          material={{
-            color: this.props.isActive ? `hsl(${100 - rock*15}, 62%, 50%)` : `hsl(${100 - rock*15}, 50%, 38%)`,
-            flatShading: true,
-          }}
-          onStateadded={this.handleStateEvent.bind(this)}
-          // onStateremoved={this.handleStateEvent.bind(this)}
-        />
-
-        {this.hasObject && (
+        >
           <Entity
-            geometry={{
-              primitive: "box",
-              width: hexSize*0.5,
-              depth: hexSize*0.5,
-              height: hexSize*0.236,
-            }}
-            material={{
-              shader: "standard",
+            className="interactable"
+            faceset={{
+              vertices: [
+                [0,           interpolation.pedestalHeight, -hexHeight/4],
+                [ hexWidth/4, interpolation.pedestalHeight, -hexHeight/8],
+                [ hexWidth/4, interpolation.pedestalHeight,  hexHeight/8],
+                [0,           interpolation.pedestalHeight,  hexHeight/4],
+                [-hexWidth/4, interpolation.pedestalHeight,  hexHeight/8],
+                [-hexWidth/4, interpolation.pedestalHeight, -hexHeight/8],
+
+                [0,           heightN,  -hexHeight/2],
+                [ hexWidth/2, heightNE, -hexHeight/4],
+                [ hexWidth/2, heightSE,  hexHeight/4],
+                [0,           heightS,   hexHeight/2],
+                [-hexWidth/2, heightSW,  hexHeight/4],
+                [-hexWidth/2, heightNW, -hexHeight/4],
+              ],
             }}
             position={[
               0,
-              height + hexSize*0.236/2,
-              0.
+              0,
+              0,
             ]}
-          />
-        )}
-
-        {this.props.isActive && (
-          <Entity
-            className="interactable"
-            geometry={{
-              primitive: "plane",
-              width: "1",
-              height: "1",
-            }}
             material={{
-              shader: "flat",
-              color: "white",
+              color: isActive ? `hsl(${100 - rock*15}, 62%, 50%)` : `hsl(${100 - rock*15}, 50%, 38%)`,
+              flatShading: true,
             }}
-            position={[0, height + 2, 0]}
-            rotation={[0, 0, 0]}
-            billboard
+            onStateadded={this.handleStateEvent.bind(this)}
+            // onStateremoved={this.handleStateEvent.bind(this)}
           />
-        )}
 
-      </Entity>
+          {object && (
+            <Entity
+              geometry={{
+                primitive: "box",
+                width: hexSize*0.5,
+                depth: hexSize*0.5,
+                height: hexSize*0.236,
+              }}
+              material={{
+                shader: "standard",
+              }}
+              position={[
+                0,
+                interpolation.pedestalHeight + hexSize*0.236/2,
+                0.
+              ]}
+            />
+          )}
+
+          {/* {isActive && (
+            <Entity
+              className="interactable"
+              geometry={{
+                primitive: "plane",
+                width: "1",
+                height: "1",
+              }}
+              material={{
+                shader: "flat",
+                color: "white",
+              }}
+              position={[0, height + 2, 0]}
+              rotation={[0, 0, 0]}
+              billboard
+            />
+          )} */}
+
+          </Entity>
+      }</Motion>
     );
   }
 }
