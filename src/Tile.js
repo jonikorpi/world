@@ -73,12 +73,14 @@ export default class Tile extends PureComponent {
     const height = (rock + baseHeight) * elevation;
     const pedestalHeight = isActive ? (rock + baseHeight*6) * elevation : height;
     const rotation = 0;
+    let bordersWater = false;
 
     const neighbourHeights = Object.keys(neighbours).map((index) => {
       if (neighbours[index]) {
         return (neighbours[index].rock + baseHeight) * elevation;
       }
       else {
+        bordersWater = true;
         return null;
       }
     });
@@ -134,6 +136,36 @@ export default class Tile extends PureComponent {
             onStateadded={this.handleStateEvent.bind(this)}
             // onStateremoved={this.handleStateEvent.bind(this)}
           />
+
+          {bordersWater && (
+            <Entity
+              className="water-line"
+              geometry={{
+                primitive: "circle",
+                radius: hexWidth / 1.7,
+                segments: 6,
+              }}
+              material={{
+                shader: "flat",
+                color: "white",
+              }}
+              rotation={[
+                -90,
+                30,
+                0,
+              ]}
+            >
+              <a-animation
+                attribute="geometry.radius"
+                dur={6000}
+                easing="ease-in-out"
+                direction="alternate"
+                // fill="both"
+                to={hexWidth / 1.6}
+                repeat="indefinite"
+              />
+            </Entity>
+          )}
 
           {object && (
             <Entity

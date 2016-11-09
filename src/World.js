@@ -8,7 +8,7 @@ export default class World extends PureComponent {
   constructor(props) {
     super(props);
 
-    const range = 15;
+    const range = 3;
     let tiles = {};
 
     // Create tiles
