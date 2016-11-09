@@ -68,10 +68,10 @@ export default class Tile extends PureComponent {
     const comparisonLoc = [0, 0];
     const distance = (Math.abs(comparisonLoc[0] - x) + Math.abs(comparisonLoc[0] + comparisonLoc[1] - x - y) + Math.abs(comparisonLoc[1] - y)) / 2;
 
-    const elevation = hexSize / 4;
+    const elevation = hexSize / 5;
     const baseHeight = 0.5;
     const height = (rock + baseHeight) * elevation;
-    const pedestalHeight = isActive ? (Math.floor(Math.random()*5) + baseHeight) * elevation : height;
+    const pedestalHeight = isActive ? (rock + baseHeight*6) * elevation : height;
     const rotation = 0;
 
     const neighbourHeights = Object.keys(neighbours).map((index) => {
@@ -128,6 +128,8 @@ export default class Tile extends PureComponent {
             material={{
               color: isActive ? `hsl(${100 - rock*15}, 62%, 50%)` : `hsl(${100 - rock*15}, 50%, 38%)`,
               flatShading: true,
+              roughness: rock/4,
+              metalness: 0,
             }}
             onStateadded={this.handleStateEvent.bind(this)}
             // onStateremoved={this.handleStateEvent.bind(this)}
@@ -142,7 +144,10 @@ export default class Tile extends PureComponent {
                 height: hexSize*0.236,
               }}
               material={{
-                shader: "standard",
+                color: `hsl(${230 - heat*30}, 38%, 50%)`,
+                flatShading: true,
+                roughness: 0.236,
+                metalness: 0.618,
               }}
               position={[
                 0,
