@@ -30,7 +30,7 @@ export default class Bubble extends Component {
   render() {
     const playerID = this.props.playerID;
     const height = 3;
-    const radius = 10;
+    const radius = 2;
     const borderThickness = 0.01;
     const wallDistance = radius;
     const wallCount = 8;
@@ -60,7 +60,7 @@ export default class Bubble extends Component {
           rotation={[-90, 360/wallCount*0.5, 0]}
         /> */}
 
-        <Entity id="eyeLevel" position={[0, 1.75, 0]}>
+        <Entity id="eyeLevel" position={[0, 3, 0]}>
 
           <Rotator distance={wallDistance} rotation={[0, 0, 0]}>
             <Entity id="northWall">
