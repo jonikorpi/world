@@ -142,7 +142,7 @@ export default class Tile extends PureComponent {
             // onStateremoved={this.handleStateEvent.bind(this)}
           />
 
-          {bordersWater && (
+          {/* {bordersWater && (
             <ReactMotionLoop
               styleFrom={{radius: spring(hexWidth / 1.70,              waveConfig)}}
                 styleTo={{radius: spring(hexWidth / (1.65 - water/80), waveConfig)}}
@@ -165,7 +165,7 @@ export default class Tile extends PureComponent {
                 ]}
               />
             }</ReactMotionLoop>
-          )}
+          )} */}
 
           {object && (
             <Entity
