@@ -31,14 +31,16 @@ export default class Camera extends PureComponent {
             fov: inVR ? 80 : 80,
             // userHeight: userHeight,
           }}
+          look-controls
           universal-controls={{
             movementEnabled: inVR === false,
             movementControls: ["keyboard", "gamepad"],
+            rotationControls: ['hmd', 'gamepad', 'mouse'],
             // movementSpeed:        30,
             // movementEasing:       25,
             // movementAcceleration: 20,
             // rotationSensitivity:  0.05,
-            // fly: true,
+            fly: true,
           }}
         >
           <Entity
