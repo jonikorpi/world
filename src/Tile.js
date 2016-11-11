@@ -146,7 +146,7 @@ export default class Tile extends PureComponent {
               flatShading: true,
               roughness: rock/4,
               metalness: 0,
-              side: "double",
+              // side: "double",
             }}
             onStateadded={this.handleStateEvent.bind(this)}
             // onStateremoved={this.handleStateEvent.bind(this)}
