@@ -5323,6 +5323,10 @@ react-motion:
     performance-now "^0.2.0"
     raf "^3.1.0"
 
+react-motion-loop:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-motion-loop/-/react-motion-loop-1.0.0.tgz#67dfccc338b34c980392bcdb0a905b82f83377cf"
+
 react-router@^4.0.0-alpha.4:
   version "4.0.0-alpha.5"
   resolved "https://registry.yarnpkg.com/react-router/-/react-router-4.0.0-alpha.5.tgz#9d80514f9bbbec040dffbd4f9cf241da2830e318"

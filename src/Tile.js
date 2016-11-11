@@ -3,6 +3,7 @@ import { Entity } from "aframe-react";
 import "aframe-look-at-billboard-component";
 import "aframe-faceset-component";
 import { Motion, spring } from "react-motion";
+import { ReactMotionLoop } from "react-motion-loop";
 
 export default class Tile extends PureComponent {
   constructor(props) {
@@ -74,6 +75,7 @@ export default class Tile extends PureComponent {
     const pedestalHeight = isActive ? (rock + baseHeight*6) * elevation : height;
     const rotation = 0;
     let bordersWater = false;
+    const waveConfig = {stiffness: 2+(rock/5), damping: 1+(water/10), precision: 0.001};
 
     const neighbourHeights = Object.keys(neighbours).map((index) => {
       if (neighbours[index]) {
@@ -93,7 +95,10 @@ export default class Tile extends PureComponent {
     const heightNW = this.getCornerHeight(height, neighbourHeights[4], neighbourHeights[5]);
 
     return (
-      <Motion style={{pedestalHeight: spring(pedestalHeight)}}>{interpolation =>
+      <Motion style={{
+        pedestalHeight: spring(pedestalHeight),
+
+      }}>{interpolation =>
         <Entity
           id={`x${x}y${y}`}
           className="tile"
@@ -138,33 +143,28 @@ export default class Tile extends PureComponent {
           />
 
           {bordersWater && (
-            <Entity
-              className="water-line"
-              geometry={{
-                primitive: "circle",
-                radius: hexWidth / 1.7,
-                segments: 6,
-              }}
-              material={{
-                shader: "flat",
-                color: "white",
-              }}
-              rotation={[
-                -90,
-                30,
-                0,
-              ]}
-            >
-              <a-animation
-                attribute="geometry.radius"
-                dur={6000}
-                easing="ease-in-out"
-                direction="alternate"
-                // fill="both"
-                to={hexWidth / 1.6}
-                repeat="indefinite"
+            <ReactMotionLoop
+              styleFrom={{radius: spring(hexWidth / 1.70,              waveConfig)}}
+                styleTo={{radius: spring(hexWidth / (1.65 - water/80), waveConfig)}}
+            >{interpolation =>
+              <Entity
+                className="water-line"
+                geometry={{
+                  primitive: "circle",
+                  radius: interpolation.radius,
+                  segments: 6,
+                }}
+                material={{
+                  shader: "flat",
+                  color: "white",
+                }}
+                rotation={[
+                  -90,
+                  30,
+                  0,
+                ]}
               />
-            </Entity>
+            }</ReactMotionLoop>
           )}
 
           {object && (
