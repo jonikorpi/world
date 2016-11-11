@@ -8,7 +8,7 @@ export default class World extends PureComponent {
   constructor(props) {
     super(props);
 
-    const range = 3;
+    const range = 15;
     let tiles = {};
 
     // Create tiles
@@ -45,12 +45,12 @@ export default class World extends PureComponent {
             let neighbours = [];
 
             // Clockwise from top-right
-            neighbours.push(this.tileExists(+x+1, +y-1, tiles) ? tiles[+x+1][+y-1].attributes: null);
-            neighbours.push(this.tileExists(+x+1, +y,   tiles) ? tiles[+x+1][+y  ].attributes: null);
-            neighbours.push(this.tileExists(+x,   +y+1, tiles) ? tiles[+x  ][+y+1].attributes: null);
-            neighbours.push(this.tileExists(+x-1, +y+1, tiles) ? tiles[+x-1][+y+1].attributes: null);
-            neighbours.push(this.tileExists(+x-1, +y,   tiles) ? tiles[+x-1][+y  ].attributes: null);
-            neighbours.push(this.tileExists(+x,   +y-1, tiles) ? tiles[+x  ][+y-1].attributes: null);
+            neighbours.push(this.tileExists(+x+1, +y-1, tiles) ? tiles[+x+1][+y-1]: null);
+            neighbours.push(this.tileExists(+x+1, +y,   tiles) ? tiles[+x+1][+y  ]: null);
+            neighbours.push(this.tileExists(+x,   +y+1, tiles) ? tiles[+x  ][+y+1]: null);
+            neighbours.push(this.tileExists(+x-1, +y+1, tiles) ? tiles[+x-1][+y+1]: null);
+            neighbours.push(this.tileExists(+x-1, +y,   tiles) ? tiles[+x-1][+y  ]: null);
+            neighbours.push(this.tileExists(+x,   +y-1, tiles) ? tiles[+x  ][+y-1]: null);
 
             neighbours.map((neighbour) => {
               tiles[x][y].neighbours.push(neighbour);

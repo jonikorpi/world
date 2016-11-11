@@ -56,30 +56,39 @@ export default class Tile extends PureComponent {
     }
   }
 
+  distanceBetween(a, b) {
+    return (Math.abs(a[0] - b[0]) + Math.abs(a[0] + a[1] - b[0] - b[1]) + Math.abs(a[1] - b[1])) / 2;
+  }
+
   render() {
     const { x, y, rock, water, flora, heat, neighbours, object } = this.state;
     const { isActive } = this.props;
 
-    const hexSize = 0.618;
+    const hexSize = 0.764;
     const hexHeight = hexSize * 2;
     const hexWidth = Math.sqrt(3) / 2 * hexHeight;
     const xPosition = hexSize * Math.sqrt(3) * (x + y/2);
     const zPosition = hexSize * 3/2 * y;
 
-    const comparisonLoc = [0, 0];
-    const distance = (Math.abs(comparisonLoc[0] - x) + Math.abs(comparisonLoc[0] + comparisonLoc[1] - x - y) + Math.abs(comparisonLoc[1] - y)) / 2;
+    const comparisonLoc = [0,0];
+    const distance = this.distanceBetween(comparisonLoc, [x,y]);
 
-    const elevation = hexSize / 5;
+    const elevation = hexSize / 10;
+    const distanceElevation = elevation * 3;
     const baseHeight = 0.5;
-    const height = (rock + baseHeight) * elevation;
-    const pedestalHeight = isActive ? (rock + baseHeight*6) * elevation : height;
+    const height = (rock + baseHeight) * elevation + (distance * distanceElevation);
+    const pedestalHeight = height;//isActive ? (rock + baseHeight*6) * elevation * distance : height;
     const rotation = 0;
     let bordersWater = false;
     const waveConfig = {stiffness: 2+(rock/5), damping: 1+(water/10), precision: 0.001};
 
     const neighbourHeights = Object.keys(neighbours).map((index) => {
-      if (neighbours[index]) {
-        return (neighbours[index].rock + baseHeight) * elevation;
+      if (neighbours[index] && neighbours[index].attributes) {
+        return (
+          (neighbours[index].attributes.rock + baseHeight)
+          * elevation
+          + distanceElevation * this.distanceBetween(comparisonLoc, [neighbours[index].loc.x, neighbours[index].loc.y])
+        );
       }
       else {
         bordersWater = true;
@@ -137,6 +146,7 @@ export default class Tile extends PureComponent {
               flatShading: true,
               roughness: rock/4,
               metalness: 0,
+              side: "double",
             }}
             onStateadded={this.handleStateEvent.bind(this)}
             // onStateremoved={this.handleStateEvent.bind(this)}
