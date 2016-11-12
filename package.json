@@ -13,7 +13,6 @@
     "aframe-react": "^3.4.0",
     "classnames": "^2.2.5",
     "firebase": "^3.5.3",
-    "jonikorpi-base-files": "^5.0.1",
     "react": "^15.3.2",
     "react-addons-perf": "^15.3.2",
     "react-dom": "^15.3.2",

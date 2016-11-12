@@ -3693,10 +3693,6 @@ jodid25519@^1.0.0:
   dependencies:
     jsbn "~0.1.0"
 
-jonikorpi-base-files@^5.0.1:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/jonikorpi-base-files/-/jonikorpi-base-files-5.0.1.tgz#2ff71eb2bd525d8b575ad2a200a2530a87a31bd1"
-
 js-base64@^2.1.9:
   version "2.1.9"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.1.9.tgz#f0e80ae039a4bd654b5f281fc93f04a914a7fcce"

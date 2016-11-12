@@ -3,8 +3,6 @@ import ReactDOM from "react-dom";
 import Client from "./Client";
 import firebase from "firebase";
 
-import "jonikorpi-base-files/reset.css";
-
 firebase.initializeApp({
   apiKey: "AIzaSyACFgRvXI8-2G9ANckoXhrXFYiXsrguveE",
   authDomain: "world-15e5d.firebaseapp.com",
