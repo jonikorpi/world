@@ -2,8 +2,8 @@ import React, { PureComponent } from "react";
 import { Entity } from "aframe-react";
 import "aframe-look-at-billboard-component";
 import "aframe-faceset-component";
-import { Motion, spring } from "react-motion";
-import { ReactMotionLoop } from "react-motion-loop";
+// import { Motion, spring } from "react-motion";
+// import { ReactMotionLoop } from "react-motion-loop";
 
 export default class Tile extends PureComponent {
   constructor(props) {
@@ -80,7 +80,7 @@ export default class Tile extends PureComponent {
     const pedestalHeight = height;//isActive ? (rock + baseHeight*6) * elevation * distance : height;
     const rotation = 0;
     let bordersWater = false;
-    const waveConfig = {stiffness: 2+(rock/5), damping: 1+(water/10), precision: 0.001};
+    // const waveConfig = {stiffness: 2+(rock/5), damping: 1+(water/10), precision: 0.001};
 
     const neighbourHeights = Object.keys(neighbours).map((index) => {
       if (neighbours[index] && neighbours[index].attributes) {
@@ -104,10 +104,9 @@ export default class Tile extends PureComponent {
     const heightNW = this.getCornerHeight(height, neighbourHeights[4], neighbourHeights[5]);
 
     return (
-      <Motion style={{
-        pedestalHeight: spring(pedestalHeight),
-
-      }}>{interpolation =>
+      // <Motion style={{
+      //   pedestalHeight: spring(pedestalHeight),
+      // }}>{interpolation =>
         <Entity
           id={`x${x}y${y}`}
           className="tile"
@@ -121,12 +120,12 @@ export default class Tile extends PureComponent {
             className="interactable"
             faceset={{
               vertices: [
-                [0,           interpolation.pedestalHeight, -hexHeight/4],
-                [ hexWidth/4, interpolation.pedestalHeight, -hexHeight/8],
-                [ hexWidth/4, interpolation.pedestalHeight,  hexHeight/8],
-                [0,           interpolation.pedestalHeight,  hexHeight/4],
-                [-hexWidth/4, interpolation.pedestalHeight,  hexHeight/8],
-                [-hexWidth/4, interpolation.pedestalHeight, -hexHeight/8],
+                [0,           pedestalHeight, -hexHeight/4],
+                [ hexWidth/4, pedestalHeight, -hexHeight/8],
+                [ hexWidth/4, pedestalHeight,  hexHeight/8],
+                [0,           pedestalHeight,  hexHeight/4],
+                [-hexWidth/4, pedestalHeight,  hexHeight/8],
+                [-hexWidth/4, pedestalHeight, -hexHeight/8],
 
                 [0,           heightN,  -hexHeight/2],
                 [ hexWidth/2, heightNE, -hexHeight/4],
@@ -152,16 +151,16 @@ export default class Tile extends PureComponent {
             // onStateremoved={this.handleStateEvent.bind(this)}
           />
 
-          {/* {bordersWater && (
-            <ReactMotionLoop
-              styleFrom={{radius: spring(hexWidth / 1.70,              waveConfig)}}
-                styleTo={{radius: spring(hexWidth / (1.65 - water/80), waveConfig)}}
-            >{interpolation =>
+          {bordersWater && (
+            // <ReactMotionLoop
+            //   styleFrom={{radius: spring(hexWidth / 1.70,              waveConfig)}}
+            //     styleTo={{radius: spring(hexWidth / (1.65 - water/80), waveConfig)}}
+            // >{interpolation =>
               <Entity
                 className="water-line"
                 geometry={{
                   primitive: "circle",
-                  radius: interpolation.radius,
+                  radius: hexWidth / 1.66,
                   segments: 6,
                 }}
                 material={{
@@ -174,8 +173,8 @@ export default class Tile extends PureComponent {
                   0,
                 ]}
               />
-            }</ReactMotionLoop>
-          )} */}
+            // }</ReactMotionLoop>
+          )}
 
           {object && (
             <Entity
@@ -193,7 +192,7 @@ export default class Tile extends PureComponent {
               }}
               position={[
                 0,
-                interpolation.pedestalHeight + hexSize*0.236/2,
+                pedestalHeight + hexSize*0.236/2,
                 0.
               ]}
             />
@@ -218,7 +217,7 @@ export default class Tile extends PureComponent {
           )} */}
 
           </Entity>
-      }</Motion>
+      // }</Motion>
     );
   }
 }
