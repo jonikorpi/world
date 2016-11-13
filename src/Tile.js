@@ -70,6 +70,9 @@ export default class Tile extends PureComponent {
     const xPosition = hexSize * Math.sqrt(3) * (x + y/2);
     const zPosition = hexSize * 3/2 * y;
 
+    const angleToOrigin = Math.atan2(xPosition, zPosition) * (180/Math.PI);
+    console.log(angleToOrigin);
+
     const comparisonLoc = [0,0];
     const distance = this.distanceBetween(comparisonLoc, [x,y]);
 
@@ -78,7 +81,6 @@ export default class Tile extends PureComponent {
     const baseHeight = 0.5;
     const height = (rock + baseHeight) * elevation + (distance * distanceElevation);
     const pedestalHeight = height;//isActive ? (rock + baseHeight*6) * elevation * distance : height;
-    const rotation = 0;
     let bordersWater = false;
     // const waveConfig = {stiffness: 2+(rock/5), damping: 1+(water/10), precision: 0.001};
 
@@ -115,108 +117,111 @@ export default class Tile extends PureComponent {
             0,
             zPosition,
           ]}
+          rotation={[0, 0, 0]}
         >
-          <Entity
-            className="interactable"
-            faceset={{
-              vertices: [
-                [0,           pedestalHeight, -hexHeight/4],
-                [ hexWidth/4, pedestalHeight, -hexHeight/8],
-                [ hexWidth/4, pedestalHeight,  hexHeight/8],
-                [0,           pedestalHeight,  hexHeight/4],
-                [-hexWidth/4, pedestalHeight,  hexHeight/8],
-                [-hexWidth/4, pedestalHeight, -hexHeight/8],
+          <Entity rotation={[0, 0, 0]}>
+            <Entity
+              className="interactable"
+              faceset={{
+                vertices: [
+                  [0,           pedestalHeight, -hexHeight/4],
+                  [ hexWidth/4, pedestalHeight, -hexHeight/8],
+                  [ hexWidth/4, pedestalHeight,  hexHeight/8],
+                  [0,           pedestalHeight,  hexHeight/4],
+                  [-hexWidth/4, pedestalHeight,  hexHeight/8],
+                  [-hexWidth/4, pedestalHeight, -hexHeight/8],
 
-                [0,           heightN,  -hexHeight/2],
-                [ hexWidth/2, heightNE, -hexHeight/4],
-                [ hexWidth/2, heightSE,  hexHeight/4],
-                [0,           heightS,   hexHeight/2],
-                [-hexWidth/2, heightSW,  hexHeight/4],
-                [-hexWidth/2, heightNW, -hexHeight/4],
-              ],
-            }}
-            position={[
-              0,
-              0,
-              0,
-            ]}
-            material={{
-              color: isActive ? `hsl(${100 - rock*15}, 62%, 50%)` : `hsl(${100 - rock*15}, 50%, 38%)`,
-              flatShading: true,
-              roughness: rock/4,
-              metalness: 0,
-              // side: "double",
-            }}
-            onStateadded={this.handleStateEvent.bind(this)}
-            // onStateremoved={this.handleStateEvent.bind(this)}
-          />
+                  [0,           heightN,  -hexHeight/2],
+                  [ hexWidth/2, heightNE, -hexHeight/4],
+                  [ hexWidth/2, heightSE,  hexHeight/4],
+                  [0,           heightS,   hexHeight/2],
+                  [-hexWidth/2, heightSW,  hexHeight/4],
+                  [-hexWidth/2, heightNW, -hexHeight/4],
+                ],
+              }}
+              position={[
+                0,
+                0,
+                0,
+              ]}
+              material={{
+                color: isActive ? `hsl(${100 - rock*15}, 62%, 50%)` : `hsl(${100 - rock*15}, 50%, 38%)`,
+                flatShading: true,
+                roughness: rock/4,
+                metalness: 0,
+                // side: "double",
+              }}
+              onStateadded={this.handleStateEvent.bind(this)}
+              // onStateremoved={this.handleStateEvent.bind(this)}
+            />
 
-          {bordersWater && (
-            // <ReactMotionLoop
-            //   styleFrom={{radius: spring(hexWidth / 1.70,              waveConfig)}}
-            //     styleTo={{radius: spring(hexWidth / (1.65 - water/80), waveConfig)}}
-            // >{interpolation =>
+            {bordersWater && (
+              // <ReactMotionLoop
+              //   styleFrom={{radius: spring(hexWidth / 1.70,              waveConfig)}}
+              //     styleTo={{radius: spring(hexWidth / (1.65 - water/80), waveConfig)}}
+              // >{interpolation =>
+                <Entity
+                  className="water-line"
+                  geometry={{
+                    primitive: "circle",
+                    radius: hexWidth / 1.66,
+                    segments: 6,
+                  }}
+                  material={{
+                    shader: "flat",
+                    color: "white",
+                  }}
+                  rotation={[
+                    -90,
+                    30,
+                    0,
+                  ]}
+                />
+              // }</ReactMotionLoop>
+            )}
+
+            {object && (
               <Entity
-                className="water-line"
                 geometry={{
-                  primitive: "circle",
-                  radius: hexWidth / 1.66,
-                  segments: 6,
+                  primitive: "box",
+                  width: hexSize*0.5,
+                  depth: hexSize*0.5,
+                  height: hexSize*0.236,
+                }}
+                material={{
+                  color: `hsl(${230 - heat*30}, 38%, 50%)`,
+                  flatShading: true,
+                  roughness: 0.236,
+                  metalness: 0.618,
+                }}
+                position={[
+                  0,
+                  pedestalHeight + hexSize*0.236/2,
+                  0.
+                ]}
+                rotation={[0, angleToOrigin, 0]}
+              />
+            )}
+
+            {/* {isActive && (
+              <Entity
+                className="interactable"
+                geometry={{
+                  primitive: "plane",
+                  width: "1",
+                  height: "1",
                 }}
                 material={{
                   shader: "flat",
                   color: "white",
                 }}
-                rotation={[
-                  -90,
-                  30,
-                  0,
-                ]}
+                position={[0, height + 2, 0]}
+                rotation={[0, 0, 0]}
+                billboard
               />
-            // }</ReactMotionLoop>
-          )}
-
-          {object && (
-            <Entity
-              geometry={{
-                primitive: "box",
-                width: hexSize*0.5,
-                depth: hexSize*0.5,
-                height: hexSize*0.236,
-              }}
-              material={{
-                color: `hsl(${230 - heat*30}, 38%, 50%)`,
-                flatShading: true,
-                roughness: 0.236,
-                metalness: 0.618,
-              }}
-              position={[
-                0,
-                pedestalHeight + hexSize*0.236/2,
-                0.
-              ]}
-            />
-          )}
-
-          {/* {isActive && (
-            <Entity
-              className="interactable"
-              geometry={{
-                primitive: "plane",
-                width: "1",
-                height: "1",
-              }}
-              material={{
-                shader: "flat",
-                color: "white",
-              }}
-              position={[0, height + 2, 0]}
-              rotation={[0, 0, 0]}
-              billboard
-            />
-          )} */}
-
+            )} */}
           </Entity>
+        </Entity>
       // }</Motion>
     );
   }
