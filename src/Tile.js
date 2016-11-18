@@ -43,6 +43,17 @@ export default class Tile extends PureComponent {
     const isActive = this.props.isActive;
     const tileSize = 0.3;
 
+    const geometry = {
+      primitive: "plane",
+      width: tileSize * 0.146,
+      height: tileSize * 0.146,
+    };
+
+    const material = {
+      color: `hsl(${180 + z*20}, 24%, 50%)`,
+      flatShading: true,
+    };
+
     return (
       <Entity
         id={`x${x}y${y}z${z}`}
@@ -60,16 +71,9 @@ export default class Tile extends PureComponent {
       >
         <Entity
           className="interactable"
-          geometry={{
-            primitive: "plane",
-            width: tileSize * 0.146,
-            height: tileSize * 0.146,
-          }}
+          geometry={geometry}
           billboard
-          material={{
-            color: isActive ? "white" : `hsl(${180 + z*20}, 38.2%, 38%)`,
-            flatShading: true,
-          }}
+          material={material}
           onStateadded={this.handleStateEvent.bind(this)}
           // onStateremoved={this.handleStateEvent.bind(this)}
         />
