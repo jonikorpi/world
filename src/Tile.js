@@ -71,30 +71,35 @@ export default class Tile extends PureComponent {
     const zPosition = hexSize * 3/2 * y;
 
     const angleToOrigin = Math.atan2(xPosition, zPosition) * (180/Math.PI);
-    console.log(angleToOrigin);
 
     const comparisonLoc = [0,0];
     const distance = this.distanceBetween(comparisonLoc, [x,y]);
 
-    const elevation = hexSize / 10;
-    const distanceElevation = elevation * 3;
+    const elevation = hexSize / 5;
+    const wallEdge = 5;
+    const distanceElevation = hexSize / 3;
+
+    // const distanceRotation = distance > distanceFalloff ? 90 : 0;
+    // const distanceElevation = distance > distanceFalloff ? Math.sin(distanceRotation) * hexWidth/4 : 0;
+
     const baseHeight = 0.5;
-    const height = (rock + baseHeight) * elevation + (distance * distanceElevation);
+    const height = (rock + baseHeight) * elevation + (distance > wallEdge ? ((distance - wallEdge) * distanceElevation) : 0);
     const pedestalHeight = height;//isActive ? (rock + baseHeight*6) * elevation * distance : height;
     let bordersWater = false;
     // const waveConfig = {stiffness: 2+(rock/5), damping: 1+(water/10), precision: 0.001};
 
     const neighbourHeights = Object.keys(neighbours).map((index) => {
       if (neighbours[index] && neighbours[index].attributes) {
+        const thisDistance = this.distanceBetween(comparisonLoc, [neighbours[index].loc.x, neighbours[index].loc.y]);
+
         return (
-          (neighbours[index].attributes.rock + baseHeight)
-          * elevation
-          + distanceElevation * this.distanceBetween(comparisonLoc, [neighbours[index].loc.x, neighbours[index].loc.y])
+          (neighbours[index].attributes.rock + baseHeight) * elevation
+          + thisDistance > wallEdge ? ((thisDistance - wallEdge) * distanceElevation) : 0
         );
       }
       else {
         bordersWater = true;
-        return null;
+        return 0;
       }
     });
 
@@ -117,9 +122,13 @@ export default class Tile extends PureComponent {
             0,
             zPosition,
           ]}
-          rotation={[0, 0, 0]}
+          rotation={[
+            0,
+            angleToOrigin,
+            0
+          ]}
         >
-          <Entity rotation={[0, 0, 0]}>
+          <Entity rotation={[0, -angleToOrigin, 0]}>
             <Entity
               className="interactable"
               faceset={{
@@ -147,7 +156,7 @@ export default class Tile extends PureComponent {
               material={{
                 color: isActive ? `hsl(${100 - rock*15}, 62%, 50%)` : `hsl(${100 - rock*15}, 50%, 38%)`,
                 flatShading: true,
-                roughness: rock/4,
+                roughness: 10 + rock/4,
                 metalness: 0,
                 // side: "double",
               }}
@@ -199,7 +208,7 @@ export default class Tile extends PureComponent {
                   pedestalHeight + hexSize*0.236/2,
                   0.
                 ]}
-                rotation={[0, angleToOrigin, 0]}
+                rotation={[0, 0, 0]}
               />
             )}
 
