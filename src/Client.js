@@ -26,6 +26,7 @@ export default class Client extends PureComponent {
 
     this.far = 1000;
     this.near = 0.1;
+    this.userHeight = 1.75;
 
     // this.handleResize = this.handleResize.bind(this);
     this.handleStartVR = this.handleStartVR.bind(this);
@@ -124,15 +125,18 @@ export default class Client extends PureComponent {
           inVR={this.state.inVR}
           far={this.far}
           near={this.near}
+          userHeight={this.userHeight}
         />
         <Bubble
           toggleVR={this.toggleVR}
           playerID={playerID}
           far={this.far}
+          userHeight={this.userHeight}
         />
 
         <World
           far={this.far}
+          userHeight={this.userHeight}
         />
 
       </a-scene>

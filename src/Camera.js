@@ -14,7 +14,7 @@ export default class Camera extends PureComponent {
   }
 
   render() {
-    const userHeight = 1.75;
+    const userHeight = this.props.userHeight;
     const inVR = this.props.inVR;
     const position = inVR ? [0, userHeight, 0] : [this.state.x, userHeight, this.state.z];
 
@@ -40,7 +40,7 @@ export default class Camera extends PureComponent {
             // movementEasing:       25,
             // movementAcceleration: 20,
             // rotationSensitivity:  0.05,
-            fly: true,
+            // fly: true,
           }}
         >
           <Entity
