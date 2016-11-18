@@ -41,14 +41,14 @@ export default class Tile extends PureComponent {
   render() {
     const {x,y,z} = {...this.props};
     const isActive = this.props.isActive;
-    const tileSize = 0.2;
+    const tileSize = 0.3;
 
     return (
       <Entity
         id={`x${x}y${y}z${z}`}
         className="tile"
         position={[
-          x * tileSize,
+          x * tileSize * 1.618,
           y * tileSize,
           z * tileSize,
         ]}
@@ -62,12 +62,12 @@ export default class Tile extends PureComponent {
           className="interactable"
           geometry={{
             primitive: "plane",
-            width: tileSize * 0.056,
-            height: tileSize * 0.056,
+            width: tileSize * 0.146,
+            height: tileSize * 0.146,
           }}
           billboard
           material={{
-            color: isActive ? "white" : `hsl(${100 + z*15}, 50%, 38%)`,
+            color: isActive ? "white" : `hsl(${180 + z*20}, 38.2%, 38%)`,
             flatShading: true,
           }}
           onStateadded={this.handleStateEvent.bind(this)}

@@ -101,6 +101,33 @@ export default class World extends PureComponent {
             })
           }
         </Entity>
+
+        <Entity
+          position={[-0.35, this.props.userHeight/1.618, -0.7]}
+          rotation={[-90, 0, 0]}
+          geometry={{
+            primitive: "plane",
+            width: 0.3,
+            height: 0.3,
+          }}
+          material={{
+            color: "grey",
+            shader: "flat",
+          }}
+        />
+        <Entity
+          position={[0.35, this.props.userHeight/1.618, -0.7]}
+          rotation={[-90, 0, 0]}
+          geometry={{
+            primitive: "plane",
+            width: 0.3,
+            height: 0.3,
+          }}
+          material={{
+            color: "grey",
+            shader: "flat",
+          }}
+        />
       </Entity>
     );
   }
