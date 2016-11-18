@@ -16,12 +16,10 @@ export default class Camera extends PureComponent {
   render() {
     const userHeight = this.props.userHeight;
     const inVR = this.props.inVR;
-    const position = inVR ? [0, userHeight, 0] : [this.state.x, userHeight, this.state.z];
 
     return (
       <Entity
-        id="locomotion"
-        position={position}
+        id="cameraContainer"
       >
         <Entity
           id="camera"
@@ -29,7 +27,7 @@ export default class Camera extends PureComponent {
             far: this.props.far,
             near: this.props.near,
             fov: inVR ? 80 : 80,
-            // userHeight: userHeight,
+            userHeight: userHeight,
           }}
           look-controls
           universal-controls={{
