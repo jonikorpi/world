@@ -7,12 +7,12 @@ export default class Tile extends PureComponent {
   constructor(props) {
     super(props);
 
-    this.state = {
-
-    };
+    // this.state = {
+    //
+    // };
   }
 
-  handleStateEvent(event) {
+  handleStateEvent = (event) => {
     const name = event.detail.state;
     const type = event.type;
     // let boolean;
@@ -38,10 +38,21 @@ export default class Tile extends PureComponent {
     }
   }
 
-  render() {
+  handleClick = (event) => {
+    console.log(event);
+  }
+
+  render = () => {
     const {x,y,z} = {...this.props};
     const isActive = this.props.isActive;
-    const tileSize = 0.5;
+    const tileSize = this.props.tileSize;
+    const dotSize = 0.01;
+
+    const position = [
+      x * tileSize,
+      y * tileSize,
+      z * tileSize,
+    ];
 
     return (
       <Entity
@@ -52,39 +63,36 @@ export default class Tile extends PureComponent {
           className="interactable"
           geometry={{
             primitive: "box",
-            width: tileSize * 0.146,
-            height: tileSize * 0.146,
-            depth: tileSize * 0.146,
+            width: dotSize,
+            height: dotSize,
+            depth: dotSize,
             buffer: false,
             skipCache: true,
             mergeTo: "#dot",
           }}
-          position={[
-            x * tileSize,
-            y * tileSize,
-            z * tileSize,
-          ]}
-          onStateadded={this.handleStateEvent.bind(this)}
+          position={position}
+          onStateadded={this.handleStateEvent}
+          onClick={this.handleClick}
           // onStateremoved={this.handleStateEvent.bind(this)}
         />
 
-        {/* {isActive && (
+        {isActive && (
           <Entity
-            className="interactable"
             geometry={{
-              primitive: "plane",
-              width: "1",
-              height: "1",
+              primitive: "box",
+              width: tileSize,
+              height: tileSize,
+              depth: tileSize,
             }}
             material={{
               shader: "flat",
-              color: "white",
+              color: "grey",
+              side: "back",
             }}
-            position={[0, height + 2, 0]}
-            rotation={[0, 0, 0]}
-            billboard
+            position={position}
+            // billboard
           />
-        )} */}
+        )}
       </Entity>
     );
   }

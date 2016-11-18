@@ -8,16 +8,16 @@ export default class World extends PureComponent {
   constructor(props) {
     super(props);
 
-    const range = 5;
+    this.range = 5;
     let tiles = {};
 
     // Create tiles
-    for (let x = -range; x <= range; x++) {
-      for (let y = -range; y <= range; y++) {
-        for (let z = -range; z <= range; z++) {
+    for (let x = -this.range; x <= this.range; x++) {
+      for (let y = -this.range; y <= this.range; y++) {
+        for (let z = -this.range; z <= this.range; z++) {
           const distance = Math.abs( Math.sqrt( Math.pow(x,2)+Math.pow(y,2)+Math.pow(z,2) ) );
 
-          if (distance <= range) {
+          if (distance <= this.range) {
             x = x.toString();
             y = y.toString();
             z = z.toString();
@@ -74,14 +74,24 @@ export default class World extends PureComponent {
 
   render() {
     const tiles = this.state.tiles;
+    const fieldSize = 6;
+    const tileSize = fieldSize / (this.range * 2);
+    const gridDistance = 0.5;
+    const gridWidth = 1;
+    const gridHeight = 0.6;
+    const gridSpacing = 0.2;
 
     return (
       <Entity id="world">
         <Lights/>
 
         <Entity
-          id="tiles"
-          position={[0, this.props.userHeight*1.236, -3.5]}
+          id="field"
+          position={[
+            0,
+            this.props.userHeight + fieldSize*0.146,
+            -gridDistance - gridHeight - fieldSize * 0.5,
+          ]}
           rotation={[0, 0, 0]}
         >
           <Entity
@@ -95,7 +105,7 @@ export default class World extends PureComponent {
             }}
             material={{
               color: `hsl(${180}, 24%, 50%)`,
-              flatShading: true,
+              shader: "flat",
             }}
           />
 
@@ -113,6 +123,7 @@ export default class World extends PureComponent {
                       key={tileID}
                       isActive={this.state.activeTileID === tileID}
                       setActiveTileID={this.setActiveTileID}
+                      tileSize={tileSize}
                     />
                   );
                 })
@@ -122,31 +133,49 @@ export default class World extends PureComponent {
         </Entity>
 
         <Entity
-          position={[-0.3, this.props.userHeight/1.618, -0.7]}
-          rotation={[-90, 0, 0]}
-          geometry={{
-            primitive: "plane",
-            width: 0.5,
-            height: 0.3,
-          }}
-          material={{
-            color: "grey",
-            shader: "flat",
-          }}
-        />
-        <Entity
-          position={[0.3, this.props.userHeight/1.618, -0.7]}
-          rotation={[-90, 0, 0]}
-          geometry={{
-            primitive: "plane",
-            width: 0.5,
-            height: 0.3,
-          }}
-          material={{
-            color: "grey",
-            shader: "flat",
-          }}
-        />
+          id="grids"
+          position={[
+            0,
+            this.props.userHeight/1.618,
+            -gridDistance,
+          ]}
+        >
+          <Entity
+            position={[
+              -gridWidth/2 - gridSpacing/2,
+              0,
+              -gridHeight*0.5,
+            ]}
+            rotation={[-90, 0, 0]}
+            geometry={{
+              primitive: "plane",
+              width: gridWidth,
+              height: gridHeight,
+            }}
+            material={{
+              color: "grey",
+              shader: "flat",
+            }}
+          />
+
+          <Entity
+            position={[
+              gridWidth/2 + gridSpacing/2,
+              0,
+              -gridHeight*0.5,
+            ]}
+            rotation={[-90, 0, 0]}
+            geometry={{
+              primitive: "plane",
+              width: gridWidth,
+              height: gridHeight,
+            }}
+            material={{
+              color: "grey",
+              shader: "flat",
+            }}
+          />
+        </Entity>
       </Entity>
     );
   }
