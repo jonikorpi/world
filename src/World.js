@@ -8,7 +8,7 @@ export default class World extends PureComponent {
   constructor(props) {
     super(props);
 
-    const range = 3;
+    const range = 5;
     let tiles = {};
 
     // Create tiles
@@ -77,9 +77,24 @@ export default class World extends PureComponent {
 
         <Entity
           id="tiles"
-          position={[0, this.props.userHeight, -2]}
+          position={[0, this.props.userHeight, -3.5]}
           rotation={[0, 0, 0]}
         >
+          <Entity
+            id="dot"
+            geometry={{
+              primitive: "plane",
+              width: 0,
+              height: 0,
+              buffer: false,
+              // skipCache: true,
+            }}
+            material={{
+              color: `hsl(${180}, 24%, 50%)`,
+              flatShading: true,
+            }}
+          />
+
           {
             Object.keys(tiles).map((x) => {
               return Object.keys(tiles[x]).map((y) => {
@@ -103,7 +118,7 @@ export default class World extends PureComponent {
         </Entity>
 
         <Entity
-          position={[-0.55, this.props.userHeight/1.618, -0.7]}
+          position={[-0.3, this.props.userHeight/1.618, -0.7]}
           rotation={[-90, 0, 0]}
           geometry={{
             primitive: "plane",
@@ -116,7 +131,7 @@ export default class World extends PureComponent {
           }}
         />
         <Entity
-          position={[0.55, this.props.userHeight/1.618, -0.7]}
+          position={[0.3, this.props.userHeight/1.618, -0.7]}
           rotation={[-90, 0, 0]}
           geometry={{
             primitive: "plane",
