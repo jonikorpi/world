@@ -15,30 +15,34 @@ export default class World extends PureComponent {
     for (let x = -range; x <= range; x++) {
       for (let y = -range; y <= range; y++) {
         for (let z = -range; z <= range; z++) {
-          x = x.toString();
-          y = y.toString();
-          z = z.toString();
+          const distance = Math.abs( Math.sqrt( Math.pow(x,2)+Math.pow(y,2)+Math.pow(z,2) ) );
 
-          if (!tiles[x]) { tiles[x] = {};}
-          if (!tiles[x][y]) { tiles[x][y] = {};}
-          if (!tiles[x][y][z]) { tiles[x][y][z] = {};}
+          if (distance <= range) {
+            x = x.toString();
+            y = y.toString();
+            z = z.toString();
 
-          tiles[x][y][z] = {
-            loc: {
-              x: +x,
-              y: +y,
-              z: +z,
-            },
-            attributes: {
-              gravity: Math.floor(Math.random() * 5),
-              radiation: Math.floor(Math.random() * 5),
-              plasma: Math.floor(Math.random() * 5),
-              dust: Math.floor(Math.random() * 5),
-              gas: Math.floor(Math.random() * 5),
-              water: Math.floor(Math.random() * 5),
-              mineral: Math.floor(Math.random() * 5),
-            },
-          };
+            if (!tiles[x]) { tiles[x] = {};}
+            if (!tiles[x][y]) { tiles[x][y] = {};}
+            if (!tiles[x][y][z]) { tiles[x][y][z] = {};}
+
+            tiles[x][y][z] = {
+              loc: {
+                x: +x,
+                y: +y,
+                z: +z,
+              },
+              attributes: {
+                gravity: Math.floor(Math.random() * 5),
+                radiation: Math.floor(Math.random() * 5),
+                plasma: Math.floor(Math.random() * 5),
+                dust: Math.floor(Math.random() * 5),
+                gas: Math.floor(Math.random() * 5),
+                water: Math.floor(Math.random() * 5),
+                mineral: Math.floor(Math.random() * 5),
+              },
+            };
+          }
         }
       }
     }
@@ -77,7 +81,7 @@ export default class World extends PureComponent {
 
         <Entity
           id="tiles"
-          position={[0, this.props.userHeight, -3.5]}
+          position={[0, this.props.userHeight*1.236, -3.5]}
           rotation={[0, 0, 0]}
         >
           <Entity

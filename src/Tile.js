@@ -47,16 +47,6 @@ export default class Tile extends PureComponent {
       <Entity
         id={`x${x}y${y}z${z}`}
         className="tile"
-        position={[
-          x * tileSize * 1.618,
-          y * tileSize,
-          z * tileSize,
-        ]}
-        rotation={[
-          0,
-          0,
-          0
-        ]}
       >
         <Entity
           className="interactable"
@@ -70,7 +60,7 @@ export default class Tile extends PureComponent {
             mergeTo: "#dot",
           }}
           position={[
-            x * tileSize * 1.618,
+            x * tileSize,
             y * tileSize,
             z * tileSize,
           ]}
