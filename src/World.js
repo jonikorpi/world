@@ -74,7 +74,7 @@ export default class World extends PureComponent {
 
   render() {
     const tiles = this.state.tiles;
-    const fieldSize = 6;
+    const fieldSize = 7.5;
     const tileSize = fieldSize / (this.range * 2);
     const gridDistance = 0.5;
     const gridWidth = 1;
@@ -89,8 +89,8 @@ export default class World extends PureComponent {
           id="field"
           position={[
             0,
-            this.props.userHeight + fieldSize*0.146,
-            -gridDistance - gridHeight - fieldSize * 0.5,
+            this.props.userHeight,// + fieldSize*0.146,
+            0,// -gridDistance - gridHeight - fieldSize * 0.5,
           ]}
           rotation={[0, 0, 0]}
         >
