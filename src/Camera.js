@@ -16,6 +16,7 @@ export default class Camera extends PureComponent {
   render() {
     const userHeight = this.props.userHeight;
     const inVR = this.props.inVR;
+    const pointerDistance = this.props.far / Math.pow(1.618, 3);
 
     return (
       <Entity
@@ -53,15 +54,19 @@ export default class Camera extends PureComponent {
             cursor={{
               fuse: false,
             }}
-            geometry={!inVR && {
+          />
+
+          <Entity
+            id="pointer"
+            geometry={{
               primitive: "circle",
-              radius: 0.000618,
+              radius: 0.005*pointerDistance,
               segments: 6,
             }}
-            position={[0, 0, -this.props.near - 0.01]}
-            material={!inVR && {
+            position={[0, 0, -pointerDistance]}
+            material={{
               shader: "flat",
-              color: "white",
+              color: "yellow",
             }}
           />
         </Entity>
