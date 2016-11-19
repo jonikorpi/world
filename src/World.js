@@ -153,8 +153,9 @@ export default class World extends PureComponent {
               height: gridHeight,
             }}
             material={{
-              color: "grey",
               shader: "flat",
+              color: "grey",
+              wireframe: true,
             }}
           />
 
@@ -171,8 +172,9 @@ export default class World extends PureComponent {
               height: gridHeight,
             }}
             material={{
-              color: "grey",
               shader: "flat",
+              color: "grey",
+              wireframe: true,
             }}
           />
         </Entity>
