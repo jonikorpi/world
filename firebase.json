@@ -15,19 +15,14 @@
             ".read": "auth != null",
             /* TODO complicated neighbour rules */
             /* (pos(playerid).bx + "" == $binx &&  pos(playerid).by + "" == $biny) || //and the other 8 adjacent bin coords */
-            "influence": {
-              "$playerID": { ".validate": "newData.isBoolean()" },
-            },
-            "object": {
-              "owner": { ".validate": "newData.isString()" },
-              "ID":    { ".validate": "newData.isString() || !newData.exists()" }, /*blank if stealthed*/
-              "$other": { ".validate": "false" },
-            },
+            "objectID": { ".validate": "newData.isString() || newData.isBoolean() || !newData.exists()" },
+            /* TODO maybe shard objects by type */
             "tile": {
-              "rock":  { ".validate": "newData.isNumber()" },
-              "heat":  { ".validate": "newData.isNumber()" },
-              "water": { ".validate": "newData.isNumber()" },
-              "flora": { ".validate": "newData.isNumber()" },
+              "attributes": {
+                "radiation": { ".validate": "newData.isNumber()" },
+                "debris":    { ".validate": "newData.isNumber()" },
+                "$other": { ".validate": "false" },
+              },
               "$other": { ".validate": "false" },
             },
             "$other": { ".validate": "false" },
@@ -36,35 +31,14 @@
       },
     },
 
-    "publicPlayers": {
+    "players": {
       "$playerID": {
         ".read": "auth != null",
         ".write": "
-             (auth != null && auth.uid === $playerID && !data.exists())
-          || auth.worldmaster === true
-        ",
-        /* TODO public identifying features */
-        "$other": { ".validate": "false" },
-      },
-    },
-
-    "privatePlayers": {
-      ".write": "auth.worldmaster === true",
-      "$playerID": {
-        ".read": "
              (auth != null && auth.uid === $playerID)
           || auth.worldmaster === true
         ",
-        "objects": {
-          "$objectID": { ".validate": "newData.isBoolean()" },
-        },
-        "cards": {
-          "$cardID": {
-            "type":   { ".validate": "newData.isString()" },
-            "amount": { ".validate": "newData.isNumber()" },
-            "$other": { ".validate": "false" },
-          },
-        },
+        /* TODO public identifying features */
         "inGame": { ".validate": "newData.isBoolean()" },
         "message": { ".validate": "newData.isString()" },
         "$other": { ".validate": "false" },
@@ -73,34 +47,21 @@
 
     "objects": {
       ".write": "auth.worldmaster === true",
-      "$ownerID": {
-        "$objectID": {
-          ".read": "auth != null",
-          "loc": {
-            "x": { ".validate": "newData.isNumber()" },
-            "y": { ".validate": "newData.isNumber()" },
-            "z": { ".validate": "newData.isNumber()" },
-            "$other": { ".validate": "false" },
-          },
-          "lastLoc": {
-            "x": { ".validate": "newData.isNumber()" },
-            "y": { ".validate": "newData.isNumber()" },
-            "z": { ".validate": "newData.isNumber()" },
-            "$other": { ".validate": "false" },
-          },
-          "type":   { ".validate": "newData.isString()" },
-          "health": { ".validate": "newData.isNumber()" },
-          "attack": { ".validate": "newData.isNumber()" },
+      "$objectID": {
+        ".read": "auth != null",
+        "location": {
+          "x": { ".validate": "newData.isNumber()" },
+          "y": { ".validate": "newData.isNumber()" },
+          "z": { ".validate": "newData.isNumber()" },
           "$other": { ".validate": "false" },
         },
-      }
-    },
-
-    "worldmasters": {
-      ".read": "true",
-      ".write": "auth.worldmaster === true",
-      "$worldmasterID": {
-        ".validate": "newData.isBoolean()",
+        "previousLocation": {
+          "x": { ".validate": "newData.isNumber()" },
+          "y": { ".validate": "newData.isNumber()" },
+          "z": { ".validate": "newData.isNumber()" },
+          "$other": { ".validate": "false" },
+        },
+        "type": { ".validate": "newData.isString()" },
       },
     },
 
