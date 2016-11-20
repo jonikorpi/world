@@ -89,8 +89,8 @@ export default class World extends PureComponent {
           id="field"
           position={[
             0,
-            this.props.userHeight,// + fieldSize*0.146,
-            0,// -gridDistance - gridHeight - fieldSize * 0.5,
+            this.props.userHeight + fieldSize*0.146,
+            -gridDistance - gridHeight - fieldSize * 0.5,
           ]}
           rotation={[0, 0, 0]}
         >
