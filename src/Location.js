@@ -75,7 +75,7 @@ export default class Location extends Component {
     console.log(event);
   }
 
-  render = () => {
+  render() {
     const {x,y,z} = {...this.props};
     const isActive = this.props.isActive;
     const tileSize = this.props.tileSize;
