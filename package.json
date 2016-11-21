@@ -16,7 +16,6 @@
     "react-addons-perf": "^15.4.0",
     "react-dom": "^15.4.0",
     "react-mixin": "^3.0.5",
-    "react-router": "^4.0.0-alpha.4",
     "react-scripts": "^0.7.0",
     "reactfire": "^1.0.0"
   },
