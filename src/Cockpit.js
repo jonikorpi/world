@@ -73,17 +73,9 @@ export default class Cockpit extends Component {
   render() {
     const playerID = this.props.playerID;
     const player = this.state.player;
-    let playerLocation;
+    const playerLocation = player && player.location;
     const cockpitSize = 3;
     const wallDistance = cockpitSize / 2;
-
-    if (player && player.location) {
-      playerLocation = [
-        player.location.x,
-        player.location.y,
-        player.location.z,
-      ];
-    }
 
     return (
       <Entity id="cockpit">
@@ -101,6 +93,7 @@ export default class Cockpit extends Component {
             userHeight={this.props.userHeight}
             tileSize={cockpitSize}
             playerID={playerID}
+            playerLocation={playerLocation}
           />
         )}
 
