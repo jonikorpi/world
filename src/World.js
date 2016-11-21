@@ -55,7 +55,7 @@ export default class World extends PureComponent {
     this.setActiveTileID = this.setActiveTileID.bind(this);
   }
 
-  setActiveTileID(x, y, z) {
+  setActiveTileID = (x, y, z) => {
     const tileID = `x${x}y${y}z${z}`;
 
     if (this.state.activeTileID !== tileID) {
@@ -63,7 +63,7 @@ export default class World extends PureComponent {
     }
   }
 
-  tileExists(x, y, z, tiles) {
+  tileExists = (x, y, z, tiles) => {
     if (tiles[x] && tiles[x][y] && tiles[x][y][z]) {
       return true;
     }

@@ -4,13 +4,13 @@ import "aframe-look-at-billboard-component";
 import "aframe-faceset-component";
 
 export default class Tile extends PureComponent {
-  constructor(props) {
-    super(props);
-
-    // this.state = {
-    //
-    // };
-  }
+  // constructor(props) {
+  //   super(props);
+  //
+  //   // this.state = {
+  //   //
+  //   // };
+  // }
 
   handleStateEvent = (event) => {
     const name = event.detail.state;

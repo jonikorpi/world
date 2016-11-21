@@ -16,7 +16,7 @@ export default class Cockpit extends Component {
     this.state = {};
   }
 
-  componentDidMount = () => {
+  componentDidMount() {
     if (this.props.playerID) {
       this.bindFirebase(this.props.playerID);
     }
@@ -60,7 +60,7 @@ export default class Cockpit extends Component {
     });
   }
 
-  render = () => {
+  render() {
     const playerID = this.props.playerID;
     const cockpitSize = 3;
     const wallDistance = cockpitSize / 2;
@@ -79,6 +79,7 @@ export default class Cockpit extends Component {
           far={this.props.far}
           userHeight={this.props.userHeight}
           tileSize={cockpitSize}
+          playerID={playerID}
         />
 
         {/* <Entity

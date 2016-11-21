@@ -9,7 +9,7 @@ export default class Button extends PureComponent {
     this.state = {};
   }
 
-  handleStateEvent(event) {
+  handleStateEvent = (event) => {
     const name = event.detail.state;
     const type = event.type;
     let boolean;
@@ -49,8 +49,8 @@ export default class Button extends PureComponent {
         className="button interactable"
         events={{
           click: this.props.onClick,
-          stateadded: this.handleStateEvent.bind(this),
-          stateremoved: this.handleStateEvent.bind(this),
+          stateadded: this.handleStateEvent,
+          stateremoved: this.handleStateEvent,
         }}
         position={this.props.position || [0,0,0]}
         geometry={{

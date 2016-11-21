@@ -25,11 +25,6 @@ export default class Client extends PureComponent {
     this.far = 1000;
     this.near = 0.1;
     this.userHeight = 1.75;
-
-    // this.handleResize = this.handleResize.bind(this);
-    this.handleStartVR = this.handleStartVR.bind(this);
-    this.handleStopVR = this.handleStopVR.bind(this);
-    this.toggleVR = this.toggleVR.bind(this);
   }
 
   componentDidMount() {
@@ -79,7 +74,7 @@ export default class Client extends PureComponent {
   //   });
   // }
 
-  handleStartVR() {
+  handleStartVR = () => {
     console.log("Entering VR");
 
     this.setState({
@@ -87,7 +82,7 @@ export default class Client extends PureComponent {
     });
   }
 
-  handleStopVR() {
+  handleStopVR = () => {
     console.log("Exiting VR");
 
     this.setState({
@@ -95,7 +90,7 @@ export default class Client extends PureComponent {
     });
   }
 
-  toggleVR() {
+  toggleVR = () => {
     if (this.state.inVR) {
       this.scene.exitVR();
     }
