@@ -1,8 +1,8 @@
 import React, { PureComponent } from "react";
 import firebase from "firebase";
 import "aframe";
-import extras from "aframe-extras";
-extras.controls.registerAll();
+// import extras from "aframe-extras";
+// extras.controls.registerAll();
 
 import Camera from "./Camera";
 import Sky from "./Sky";
