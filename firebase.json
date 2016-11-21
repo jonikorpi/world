@@ -7,7 +7,7 @@
       ".validate": "newData.isString()",
     },
 
-    "tiles": {
+    "locations": {
       ".write": "auth.worldmaster === true",
       "$x": {
         "$y": {
@@ -15,7 +15,7 @@
             ".read": "auth != null",
             /* TODO complicated neighbour rules */
             /* (pos(playerid).bx + "" == $binx &&  pos(playerid).by + "" == $biny) || //and the other 8 adjacent bin coords */
-            "objectID": { ".validate": "newData.isString() || newData.isBoolean() || !newData.exists()" },
+            /*"objectID": { ".validate": "newData.isString() || newData.isBoolean() || !newData.exists()" },*/
             /* TODO maybe shard objects by type */
             "tile": {
               "attributes": {
@@ -24,6 +24,16 @@
                 "$other": { ".validate": "false" },
               },
               "$other": { ".validate": "false" },
+            },
+            "object": {
+              "previousLocation": {
+                "x": { ".validate": "newData.isNumber()" },
+                "y": { ".validate": "newData.isNumber()" },
+                "z": { ".validate": "newData.isNumber()" },
+                "$other": { ".validate": "false" },
+              },
+              "type": { ".validate": "newData.isString()" },
+              "playerID": { ".validate": "newData.isString()" },
             },
             "$other": { ".validate": "false" },
           },
@@ -45,7 +55,22 @@
       },
     },
 
-    "objects": {
+    "playerSecrets": {
+      ".write": "auth.worldmaster === true",
+      "$playerID": {
+        ".read": "
+             (auth != null && auth.uid === $playerID)
+          || auth.worldmaster === true
+        ",
+        "location": {
+          "x": { ".validate": "newData.isNumber()" },
+          "y": { ".validate": "newData.isNumber()" },
+          "z": { ".validate": "newData.isNumber()" },
+        },
+      },
+    },
+
+    /*"objects": {
       ".write": "auth.worldmaster === true",
       "$objectID": {
         ".read": "auth != null",
@@ -63,7 +88,7 @@
         },
         "type": { ".validate": "newData.isString()" },
       },
-    },
+    },*/
 
     "actionQueue": {
       ".read": "auth.worldmaster === true",

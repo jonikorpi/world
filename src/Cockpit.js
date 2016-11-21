@@ -36,7 +36,7 @@ export default class Cockpit extends Component {
 
   bindFirebase = (playerID) => {
     this.bindAsObject(
-      firebase.database().ref(`players/${playerID}`),
+      firebase.database().ref(`playerSecrets/${playerID}`),
       "player",
       (error) => {
         console.log("Player subscription cancelled:")
@@ -60,10 +60,30 @@ export default class Cockpit extends Component {
     });
   }
 
+  createPlayer = () => {
+    firebase.database().ref("playerQueue/tasks").push({
+      request: {
+        playerID: this.props.playerID,
+        action: "spawn",
+        time: firebase.database.ServerValue.TIMESTAMP,
+      }
+    });
+  }
+
   render() {
     const playerID = this.props.playerID;
+    const player = this.state.player;
+    let playerLocation;
     const cockpitSize = 3;
     const wallDistance = cockpitSize / 2;
+
+    if (player && player.location) {
+      playerLocation = [
+        player.location.x,
+        player.location.y,
+        player.location.z,
+      ];
+    }
 
     return (
       <Entity id="cockpit">
@@ -75,12 +95,14 @@ export default class Cockpit extends Component {
           userHeight={this.props.userHeight}
         />
 
-        <World
-          far={this.props.far}
-          userHeight={this.props.userHeight}
-          tileSize={cockpitSize}
-          playerID={playerID}
-        />
+        {playerLocation && (
+          <World
+            far={this.props.far}
+            userHeight={this.props.userHeight}
+            tileSize={cockpitSize}
+            playerID={playerID}
+          />
+        )}
 
         {/* <Entity
           id="boundaries"
@@ -100,6 +122,11 @@ export default class Cockpit extends Component {
         <Entity id="eyeLevel" position={[0, this.props.userHeight, 0]}>
 
           <Rotator id="northWall" distance={wallDistance} rotation={[0, 0, 0]}>
+            <Button
+              onClick={this.createPlayer}
+              color="green"
+              position={[0, 0.5, 0]}
+            />
           </Rotator>
 
           <Rotator id="westWall" distance={wallDistance} rotation={[0, 90, 0]}>
