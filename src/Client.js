@@ -4,10 +4,8 @@ import "aframe";
 // import extras from "aframe-extras";
 // extras.controls.registerAll();
 
-import Camera from "./Camera";
 import Sky from "./Sky";
-import World from "./World";
-import Bubble from "./Bubble";
+import Cockpit from "./Cockpit";
 
 export default class Client extends PureComponent {
   constructor(props) {
@@ -117,25 +115,14 @@ export default class Client extends PureComponent {
         vr-mode-ui="enabled: false"
       >
 
-        <Sky
-          far={this.far}
-        /
-        >
-        <Camera
+        <Sky far={this.far}/>
+
+        <Cockpit
+          playerID={playerID}
+          toggleVR={this.toggleVR}
           inVR={this.state.inVR}
           far={this.far}
           near={this.near}
-          userHeight={this.userHeight}
-        />
-        <Bubble
-          toggleVR={this.toggleVR}
-          playerID={playerID}
-          far={this.far}
-          userHeight={this.userHeight}
-        />
-
-        <World
-          far={this.far}
           userHeight={this.userHeight}
         />
 

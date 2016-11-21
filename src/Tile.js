@@ -46,7 +46,7 @@ export default class Tile extends PureComponent {
     const {x,y,z} = {...this.props};
     const isActive = this.props.isActive;
     const tileSize = this.props.tileSize;
-    const dotSize = 0.01;
+    const dotSize = 0.05;
 
     const position = [
       x * tileSize,
