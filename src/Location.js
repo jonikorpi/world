@@ -14,28 +14,28 @@ export default class Location extends Component {
   }
 
   componentWillMount() {
-    const {x,y,z} = {...this.props};
-    this.bindFirebase(x,y,z);
+    const {x,y} = {...this.props};
+    this.bindFirebase(x,y);
   }
 
   componentWillReceiveProps(nextProps) {
-    const {x,y,z} = {...this.props};
-    const {xNext,yNext,zNext} = {...nextProps};
-    const thisLocation = [x,y,z];
-    const nextLocation = [xNext,yNext,zNext];
+    const {x,y} = {...this.props};
+    const {xNext,yNext} = {...nextProps};
+    const thisLocation = [x,y];
+    const nextLocation = [xNext,yNext];
 
     if (thisLocation !== nextLocation) {
       if (this.state.location) {
         this.unbind("location");
       }
 
-      this.bindFirebase(xNext,yNext,zNext);
+      this.bindFirebase(xNext,yNext);
     }
   }
 
-  bindFirebase = (x,y,z) => {
+  bindFirebase = (x,y) => {
     this.bindAsObject(
-      firebase.database().ref(`locations/${x}/${y}/${z}`),
+      firebase.database().ref(`locations/${x}/${y}`),
       "location",
       (error) => {
         console.log("Player subscription cancelled:")
@@ -76,16 +76,16 @@ export default class Location extends Component {
   }
 
   render() {
-    const {x,y,z} = {...this.props};
+    const {x,y} = {...this.props};
     const isActive = this.props.isActive;
     const tileSize = this.props.tileSize;
     const dotSize = 0.1;
-    const hasObject = this.state.location && this.state.location.object;
+    const hasObject = true;//this.state.location && this.state.location.object;
 
     const position = [
       x * tileSize,
+      0,
       y * tileSize,
-      z * tileSize,
     ];
 
     return (

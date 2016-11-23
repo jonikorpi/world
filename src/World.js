@@ -13,16 +13,16 @@ export default class World extends Component {
     };
   }
 
-  setActiveTileID = (x, y, z) => {
-    const tileID = this.getTileID(x, y, z);
+  setActiveTileID = (x, y) => {
+    const tileID = this.getTileID(x, y);
 
     if (this.state.activeTileID !== tileID) {
       this.setState({activeTileID: tileID})
     }
   }
 
-  getTileID = (x, y, z) => {
-    return `x:${x},y:${y},z:${z}`;
+  getTileID = (x, y) => {
+    return `x:${x},y:${y}`;
   }
 
   render() {
@@ -32,35 +32,30 @@ export default class World extends Component {
     const gridHeight = 0.6;
     const gridSpacing = 0.2;
 
-    const range = 5;
+    const range = 10;
     const playerLocation = this.props.playerLocation;
     let tiles = [];
 
     // Create tiles
     for (    let x = playerLocation.x - range; x <= playerLocation.x + range; x++) {
       for (  let y = playerLocation.y - range; y <= playerLocation.y + range; y++) {
-        for (let z = playerLocation.z - range; z <= playerLocation.z + range; z++) {
-          const distance = (
-            Math.abs(
-              Math.sqrt(
-                  Math.pow(playerLocation.x - x, 2)
-                + Math.pow(playerLocation.y - y, 2)
-                + Math.pow(playerLocation.z - z, 2)
-              )
+        const distance = (
+          Math.abs(
+            Math.sqrt(
+                Math.pow(playerLocation.x - x, 2)
+              + Math.pow(playerLocation.y - y, 2)
             )
-          );
+          )
+        );
 
-          if (distance <= range) {
-            tiles.push({
-              x: x,
-              y: y,
-              z: z,
-            });
-          }
+        if (distance <= range) {
+          tiles.push({
+            x: x,
+            y: y,
+          });
         }
       }
     }
-
 
     return (
       <Entity id="world">
@@ -93,12 +88,11 @@ export default class World extends Component {
           {tiles.map((tile) => {
             return (
               <Location
-                key={this.getTileID(tile.x, tile.y, tile.z)}
-                id={this.getTileID(tile.x, tile.y, tile.z)}
+                key={this.getTileID(tile.x, tile.y)}
+                id={this.getTileID(tile.x, tile.y)}
                 x={tile.x}
                 y={tile.y}
-                z={tile.z}
-                isActive={this.state.activeTileID === this.getTileID(tile.x, tile.y, tile.z)}
+                isActive={this.state.activeTileID === this.getTileID(tile.x, tile.y)}
                 setActiveTileID={this.setActiveTileID}
                 tileSize={tileSize}
               />
