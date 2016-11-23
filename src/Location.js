@@ -13,7 +13,7 @@ export default class Location extends Component {
     this.state = {};
   }
 
-  componentDidMount() {
+  componentWillMount() {
     const {x,y,z} = {...this.props};
     this.bindFirebase(x,y,z);
   }

@@ -16,7 +16,7 @@ export default class Cockpit extends Component {
     this.state = {};
   }
 
-  componentDidMount() {
+  componentWillMount() {
     if (this.props.playerID) {
       this.bindFirebase(this.props.playerID);
     }
