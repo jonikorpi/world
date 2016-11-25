@@ -45,14 +45,6 @@ acorn@^4.0.1:
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-4.0.3.tgz#1a3e850b428e73ba6b09d1cc527f5aaad4d03ef1"
 
-aframe-extras@^2.7.2:
-  version "2.7.2"
-  resolved "https://registry.yarnpkg.com/aframe-extras/-/aframe-extras-2.7.2.tgz#10c8d932a8c305881b234e5b7c1f6b928ece6b1d"
-  dependencies:
-    aframe-physics-system "^1.0.2"
-    cannon "^0.6.2"
-    three-to-cannon "^1.0.0"
-
 aframe-faceset-component:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/aframe-faceset-component/-/aframe-faceset-component-0.3.1.tgz#e09d0738017bc3d5f4a9ff0de4854ce91fba049f"
@@ -60,13 +52,6 @@ aframe-faceset-component:
 "aframe-look-at-billboard-component@https://github.com/blairmacintyre/aframe-look-at-billboard-component.git":
   version "0.2.0"
   resolved "https://github.com/blairmacintyre/aframe-look-at-billboard-component.git#5f22260a1d2df0df7395fa95750403eebc2bb665"
-
-aframe-physics-system@^1.0.2:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/aframe-physics-system/-/aframe-physics-system-1.0.3.tgz#ffb561d762bd5da0075bcc7052247f2601766f43"
-  dependencies:
-    cannon "^0.6.2"
-    three-to-cannon "^1.0.0"
 
 aframe-react@^3.4.0:
   version "3.4.0"
@@ -1164,10 +1149,6 @@ caniuse-db@^1.0.30000539, caniuse-db@^1.0.30000554:
   version "1.0.30000566"
   resolved "https://registry.yarnpkg.com/caniuse-db/-/caniuse-db-1.0.30000566.tgz#9463db955f509136fd35b385903bb61b07150f27"
 
-cannon@^0.6.2:
-  version "0.6.2"
-  resolved "https://registry.yarnpkg.com/cannon/-/cannon-0.6.2.tgz#1e7bc72dd5841982f3c104c2bc578bfa4fb1c572"
-
 cardinal@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/cardinal/-/cardinal-1.0.0.tgz#50e21c1b0aa37729f9377def196b5a9cec932ee9"
@@ -1251,10 +1232,6 @@ clap@^1.0.9:
   resolved "https://registry.yarnpkg.com/clap/-/clap-1.1.1.tgz#a8a93e0bfb7581ac199c4f001a5525a724ce696d"
   dependencies:
     chalk "^1.1.3"
-
-classnames@^2.2.5:
-  version "2.2.5"
-  resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.5.tgz#fb3801d453467649ef3603c7d61a02bd129bde6d"
 
 clean-css@2.2.x:
   version "2.2.23"
@@ -2945,15 +2922,6 @@ header-case@^1.0.0:
     no-case "^2.2.0"
     upper-case "^1.1.3"
 
-history@^4.3.0:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/history/-/history-4.3.0.tgz#42bc1067c22760ac0b792d80264c93591ed3900b"
-  dependencies:
-    invariant "^2.2.1"
-    loose-envify "^1.2.0"
-    resolve-pathname "^2.0.0"
-    warning "^3.0.0"
-
 hoek@2.x.x:
   version "2.16.3"
   resolved "https://registry.yarnpkg.com/hoek/-/hoek-2.16.3.tgz#20bb7403d3cea398e91dc4710a8ff1b8274a25ed"
@@ -3159,7 +3127,7 @@ interpret@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-1.0.1.tgz#d579fb7f693b858004947af39fa0db49f795602c"
 
-invariant@^2.2.0, invariant@^2.2.1:
+invariant@^2.2.0:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.1.tgz#b097010547668c7e337028ebe816ebe36c8a8d54"
   dependencies:
@@ -4104,7 +4072,7 @@ longest@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/longest/-/longest-1.0.1.tgz#30a0b2da38f73770e8294a0d22e6625ed77d0097"
 
-loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.2.0:
+loose-envify@^1.0.0, loose-envify@^1.1.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/loose-envify/-/loose-envify-1.2.0.tgz#69a65aad3de542cf4ee0f4fe74e8e33c709ccb0f"
   dependencies:
@@ -4444,7 +4412,7 @@ node-pre-gyp@^0.6.29:
     tar "~2.2.0"
     tar-pack "~3.1.0"
 
-node-uuid@1.4.x, node-uuid@1.x, node-uuid@~1.4.7:
+node-uuid@1.4.x, node-uuid@~1.4.7:
   version "1.4.7"
   resolved "https://registry.yarnpkg.com/node-uuid/-/node-uuid-1.4.7.tgz#6da5a17668c4b3dd59623bda11cf7fa4c1f60a6f"
 
@@ -4775,12 +4743,6 @@ path-root@^0.1.1:
 path-to-regexp@0.1.7:
   version "0.1.7"
   resolved "https://registry.yarnpkg.com/path-to-regexp/-/path-to-regexp-0.1.7.tgz#df604178005f522f15eb4490e7247a1bfaa67f8c"
-
-path-to-regexp@^1.5.3:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/path-to-regexp/-/path-to-regexp-1.6.0.tgz#4c59cfeab5e360a2657b180730a4bb4582ecec5b"
-  dependencies:
-    isarray "0.0.1"
 
 path-type@^1.0.0:
   version "1.1.0"
@@ -5176,7 +5138,7 @@ qs@6.2.0, qs@~6.2.0:
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.2.0.tgz#3b7848c03c2dece69a9522b0fae8c4126d745f3b"
 
-query-string@4.2.3, query-string@^4.1.0:
+query-string@^4.1.0:
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/query-string/-/query-string-4.2.3.tgz#9f27273d207a25a8ee4c7b8c74dcd45d556db822"
   dependencies:
@@ -5228,15 +5190,9 @@ rcloader@0.1.2:
     lodash "~2.4.1"
     rcfinder "~0.1.6"
 
-react-addons-perf@^15.4.0:
-  version "15.4.0"
-  resolved "https://registry.yarnpkg.com/react-addons-perf/-/react-addons-perf-15.4.0.tgz#1e8b694677b31eb759289f7ddeb72e9f9215c745"
-
-react-broadcast@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/react-broadcast/-/react-broadcast-0.1.1.tgz#d8da92dcfada6e666e95e153220f9e5bbb1b42f2"
-  dependencies:
-    invariant "^2.2.1"
+react-addons-perf@^15.4.1:
+  version "15.4.1"
+  resolved "https://registry.yarnpkg.com/react-addons-perf/-/react-addons-perf-15.4.1.tgz#c6dd5a7011f43cd3222f47b7cb1aebe9d4174cb0"
 
 react-dev-utils@^0.3.0:
   version "0.3.0"
@@ -5250,9 +5206,9 @@ react-dev-utils@^0.3.0:
     sockjs-client "1.0.3"
     strip-ansi "3.0.1"
 
-react-dom@^15.4.0:
-  version "15.4.0"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.4.0.tgz#6a97a69000966570db48c746bc4b7b0ca50d1534"
+react-dom@^15.4.1:
+  version "15.4.1"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.4.1.tgz#d54c913261aaedb17adc20410d029dcc18a1344a"
   dependencies:
     fbjs "^0.8.1"
     loose-envify "^1.1.0"
@@ -5264,15 +5220,6 @@ react-mixin@^3.0.5:
   dependencies:
     object-assign "^4.0.1"
     smart-mixin "^2.0.0"
-
-react-router@^4.0.0-alpha.4:
-  version "4.0.0-alpha.5"
-  resolved "https://registry.yarnpkg.com/react-router/-/react-router-4.0.0-alpha.5.tgz#9d80514f9bbbec040dffbd4f9cf241da2830e318"
-  dependencies:
-    history "^4.3.0"
-    path-to-regexp "^1.5.3"
-    query-string "4.2.3"
-    react-broadcast "^0.1.1"
 
 react-scripts@^0.7.0:
   version "0.7.0"
@@ -5325,9 +5272,9 @@ react-scripts@^0.7.0:
   optionalDependencies:
     fsevents "1.0.14"
 
-react@^15.4.0:
-  version "15.4.0"
-  resolved "https://registry.yarnpkg.com/react/-/react-15.4.0.tgz#736c1c7c542e8088127106e1f450b010f86d172b"
+react@^15.4.1:
+  version "15.4.1"
+  resolved "https://registry.yarnpkg.com/react/-/react-15.4.1.tgz#498e918602677a3983cd0fd206dfe700389a0dd6"
   dependencies:
     fbjs "^0.8.4"
     loose-envify "^1.1.0"
@@ -5592,10 +5539,6 @@ resolve-from@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/resolve-from/-/resolve-from-2.0.0.tgz#9480ab20e94ffa1d9e80a804c7ea147611966b57"
 
-resolve-pathname@^2.0.0:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/resolve-pathname/-/resolve-pathname-2.0.2.tgz#e55c016eb2e9df1de98e85002282bfb38c630436"
-
 resolve@1.1.7, resolve@1.1.x, resolve@^1.1.6, resolve@^1.1.7:
   version "1.1.7"
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.1.7.tgz#203114d82ad2c5ed9e8e0411b3932875e889e97b"
@@ -5623,9 +5566,9 @@ ripemd160@0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/ripemd160/-/ripemd160-0.2.0.tgz#2bf198bde167cacfa51c0a928e84b68bbe171fce"
 
-rollbar@^0.6.2:
-  version "0.6.2"
-  resolved "https://registry.yarnpkg.com/rollbar/-/rollbar-0.6.2.tgz#0dc5a69225847be0cf5c3a573ba0624b68e7c083"
+rollbar@^0.6.3:
+  version "0.6.3"
+  resolved "https://registry.yarnpkg.com/rollbar/-/rollbar-0.6.3.tgz#24ec674e9470772b3541f5144ad60784ce52b57b"
   dependencies:
     async "~1.2.1"
     debug "2.2.0"
@@ -6146,12 +6089,6 @@ text-table@~0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
 
-three-to-cannon@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/three-to-cannon/-/three-to-cannon-1.0.0.tgz#8ec94b4c709d8c5469f7496b891fa0f2f387a0ab"
-  dependencies:
-    cannon "^0.6.2"
-
 three@^0.76.1:
   version "0.76.1"
   resolved "https://registry.yarnpkg.com/three/-/three-0.76.1.tgz#123bc99418a7721804f960b2485ecd3740d28950"
@@ -6351,14 +6288,14 @@ unique-stream@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/unique-stream/-/unique-stream-1.0.0.tgz#d59a4a75427447d9aa6c91e70263f8d26a4b104b"
 
-universal-analytics@^0.4.6:
-  version "0.4.6"
-  resolved "https://registry.yarnpkg.com/universal-analytics/-/universal-analytics-0.4.6.tgz#257960dc585afba8f4e313230c351813bc037dcb"
+universal-analytics@^0.4.8:
+  version "0.4.8"
+  resolved "https://registry.yarnpkg.com/universal-analytics/-/universal-analytics-0.4.8.tgz#80e8862741aaf6fa2102c451ddaf04c6ba4a2d02"
   dependencies:
     async "1.2.x"
-    node-uuid "1.x"
     request "2.x"
     underscore "1.x"
+    uuid "^3.0.0"
 
 unpipe@~1.0.0:
   version "1.0.0"
@@ -6438,6 +6375,10 @@ uuid@^2.0.2:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-2.0.3.tgz#67e2e863797215530dff318e5bf9dcebfd47b21a"
 
+uuid@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.0.0.tgz#6728fc0459c450d796a99c31837569bdf672d728"
+
 v8flags@^2.0.2:
   version "2.0.11"
   resolved "https://registry.yarnpkg.com/v8flags/-/v8flags-2.0.11.tgz#bca8f30f0d6d60612cc2c00641e6962d42ae6881"
@@ -6511,12 +6452,6 @@ walker@~1.0.5:
   resolved "https://registry.yarnpkg.com/walker/-/walker-1.0.7.tgz#2f7f9b8fd10d677262b18a884e28d19618e028fb"
   dependencies:
     makeerror "1.0.x"
-
-warning@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/warning/-/warning-3.0.0.tgz#32e5377cb572de4ab04753bdf8821c01ed605b7c"
-  dependencies:
-    loose-envify "^1.0.0"
 
 watch@~0.10.0:
   version "0.10.0"

@@ -11,9 +11,9 @@
     "aframe-look-at-billboard-component": "https://github.com/blairmacintyre/aframe-look-at-billboard-component.git",
     "aframe-react": "^3.4.0",
     "firebase": "^3.6.1",
-    "react": "^15.4.0",
-    "react-addons-perf": "^15.4.0",
-    "react-dom": "^15.4.0",
+    "react": "^15.4.1",
+    "react-addons-perf": "^15.4.1",
+    "react-dom": "^15.4.1",
     "react-mixin": "^3.0.5",
     "react-scripts": "^0.7.0",
     "reactfire": "^1.0.0"
@@ -22,8 +22,8 @@
     "compression": "^1.6.2",
     "express": "^4.14.0",
     "morgan": "^1.7.0",
-    "rollbar": "^0.6.2",
-    "universal-analytics": "^0.4.6"
+    "rollbar": "^0.6.3",
+    "universal-analytics": "^0.4.8"
   },
   "scripts": {
     "start": "react-scripts start",
