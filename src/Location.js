@@ -46,6 +46,7 @@ export default class Location extends Component {
   }
 
   handleStateEvent = (event) => {
+    console.log(event);
     const name = event.detail.state;
     const type = event.type;
     // let boolean;
@@ -67,7 +68,7 @@ export default class Location extends Component {
     // }
 
     if (!this.props.isActive && type === "stateadded" && name === "cursor-hovered") {
-      this.props.setActiveTileID(this.props.x, this.props.y, this.props.z);
+      this.props.setActiveTileID(this.props.x, this.props.y);
     }
   }
 
@@ -80,7 +81,7 @@ export default class Location extends Component {
     const isActive = this.props.isActive;
     const tileSize = this.props.tileSize;
     const dotSize = 0.1;
-    const hasObject = true;//this.state.location && this.state.location.object;
+    const hasObject = this.state.location && this.state.location.object;
 
     const position = [
       x * tileSize,
@@ -92,10 +93,10 @@ export default class Location extends Component {
       <Entity
         id={this.props.id}
         className="tile"
+        position={position}
       >
         {hasObject && (
           <Entity
-            className="interactable"
             geometry={{
               primitive: "box",
               width: dotSize,
@@ -106,27 +107,42 @@ export default class Location extends Component {
               mergeTo: "#dot",
             }}
             position={position}
-            onStateadded={this.handleStateEvent}
-            onClick={this.handleClick}
-            // onStateremoved={this.handleStateEvent.bind(this)}
           />
         )}
+
+        <Entity
+          className="interactable"
+          geometry={{
+            primitive: "plane",
+            width: tileSize,
+            height: tileSize,
+          }}
+          material={{
+            transparent: true,
+            opacity: isActive ? 1 : 0.1,
+            color: "yellow",
+          }}
+          rotation={[-90, 0, 0]}
+          events={{
+            click: this.handleClick,
+            stateadded: this.handleStateEvent,
+            stateremoved: this.handleStateEvent,
+          }}
+        />
 
         {isActive && (
           <Entity
             geometry={{
-              primitive: "box",
+              primitive: "plane",
               width: tileSize,
               height: tileSize,
-              depth: tileSize,
             }}
             material={{
               shader: "flat",
               color: "grey",
               side: "back",
             }}
-            position={position}
-            // billboard
+            billboard
           />
         )}
       </Entity>

@@ -65,7 +65,7 @@ export default class World extends Component {
           id="field"
           position={[
             0,
-            this.props.userHeight,
+            0,
             0,
           ]}
           rotation={[0, 0, 0]}

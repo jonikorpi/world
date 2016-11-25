@@ -49,8 +49,8 @@ export default class Camera extends PureComponent {
           <Entity
             id="cursor"
             raycaster={{
-              far: 1100,
-              near: 0.1,
+              far: this.props.far,
+              near: this.props.near,
               interval: 80,
               objects: ".interactable",
               recursive: true,
