@@ -62,90 +62,33 @@ export default class World extends Component {
         <Lights/>
 
         <Entity
-          id="field"
-          position={[
-            0,
-            0,
-            0,
-          ]}
-          rotation={[0, 0, 0]}
-        >
-          <Entity
-            id="dot"
-            geometry={{
-              primitive: "plane",
-              width: 0,
-              height: 0,
-              buffer: false,
-              // skipCache: true,
-            }}
-            material={{
-              color: `hsl(${180}, 24%, 50%)`,
-              shader: "flat",
-            }}
-          />
+          id="dot"
+          geometry={{
+            primitive: "plane",
+            width: 0,
+            height: 0,
+            buffer: false,
+            // skipCache: true,
+          }}
+          material={{
+            color: `hsl(${180}, 24%, 50%)`,
+            shader: "flat",
+          }}
+        />
 
-          {locations.map((location) => {
-            return (
-              <Location
-                key={this.getLocationID(location.x, location.y)}
-                id={this.getLocationID(location.x, location.y)}
-                x={location.x}
-                y={location.y}
-                isActive={this.state.activeLocationID === this.getLocationID(location.x, location.y)}
-                setActiveLocationID={this.setActiveLocationID}
-                tileSize={tileSize}
-              />
-            )
-          })}
-        </Entity>
-
-        <Entity
-          id="grids"
-          position={[
-            0,
-            this.props.userHeight/1.618,
-            -gridDistance,
-          ]}
-        >
-          <Entity
-            position={[
-              -gridWidth/2 - gridSpacing/2,
-              0,
-              -gridHeight*0.5,
-            ]}
-            rotation={[-90, 0, 0]}
-            geometry={{
-              primitive: "plane",
-              width: gridWidth,
-              height: gridHeight,
-            }}
-            material={{
-              shader: "flat",
-              color: "grey",
-              wireframe: true,
-            }}
-          />
-
-          <Entity
-            position={[
-              gridWidth/2 + gridSpacing/2,
-              0,
-              -gridHeight*0.5,
-            ]}
-            rotation={[-90, 0, 0]}
-            geometry={{
-              primitive: "plane",
-              width: gridWidth,
-              height: gridHeight,
-            }}
-            material={{
-              shader: "flat",
-              color: "grey",
-              wireframe: true,
-            }}
-          />
-        </Entity>
+        {locations.map((location) => {
+          return (
+            <Location
+              key={this.getLocationID(location.x, location.y)}
+              id={this.getLocationID(location.x, location.y)}
+              x={location.x}
+              y={location.y}
+              isActive={this.state.activeLocationID === this.getLocationID(location.x, location.y)}
+              setActiveLocationID={this.setActiveLocationID}
+              tileSize={tileSize}
+            />
+          )
+        })}
       </Entity>
     );
   }
