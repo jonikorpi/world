@@ -2,26 +2,26 @@ import React, { Component } from "react";
 import { Entity } from "aframe-react";
 
 import Lights from "../components/Lights";
-import TileContainer from "../components/TileContainer";
+import Location from "../components/Location";
 
 export default class World extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      activeTileID: "",
+      activeLocationID: "",
     };
   }
 
-  setActiveTileID = (x, y) => {
-    const tileID = this.getTileID(x, y);
+  setActiveLocationID = (x, y) => {
+    const locationID = this.getLocationID(x, y);
 
-    if (this.state.activeTileID !== tileID) {
-      this.setState({activeTileID: tileID})
+    if (this.state.activeLocationID !== locationID) {
+      this.setState({activeLocationID: locationID})
     }
   }
 
-  getTileID = (x, y) => {
+  getLocationID = (x, y) => {
     return `x:${x},y:${y}`;
   }
 
@@ -34,9 +34,9 @@ export default class World extends Component {
 
     const range = 10;
     const playerLocation = this.props.playerLocation;
-    let tiles = [];
+    let locations = [];
 
-    // Create tiles
+    // Create locations
     for (    let x = playerLocation.x - range; x <= playerLocation.x + range; x++) {
       for (  let y = playerLocation.y - range; y <= playerLocation.y + range; y++) {
         const distance = (
@@ -49,7 +49,7 @@ export default class World extends Component {
         );
 
         if (distance <= range) {
-          tiles.push({
+          locations.push({
             x: x,
             y: y,
           });
@@ -85,15 +85,15 @@ export default class World extends Component {
             }}
           />
 
-          {tiles.map((tile) => {
+          {locations.map((location) => {
             return (
-              <TileContainer
-                key={this.getTileID(tile.x, tile.y)}
-                id={this.getTileID(tile.x, tile.y)}
-                x={tile.x}
-                y={tile.y}
-                isActive={this.state.activeTileID === this.getTileID(tile.x, tile.y)}
-                setActiveTileID={this.setActiveTileID}
+              <Location
+                key={this.getLocationID(location.x, location.y)}
+                id={this.getLocationID(location.x, location.y)}
+                x={location.x}
+                y={location.y}
+                isActive={this.state.activeLocationID === this.getLocationID(location.x, location.y)}
+                setActiveLocationID={this.setActiveLocationID}
                 tileSize={tileSize}
               />
             )

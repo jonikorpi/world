@@ -41,7 +41,6 @@ export default class Tile extends PureComponent {
 
   render() {
     const {x, y, object, isActive, tileSize} = {...this.props};
-    const hasObject = object;
 
     const dotSize = 0.1;
     const position = [
@@ -56,7 +55,7 @@ export default class Tile extends PureComponent {
         className="tile"
         position={position}
       >
-        {hasObject && (
+        {object && (
           <Entity
             geometry={{
               primitive: "box",
