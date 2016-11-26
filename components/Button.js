@@ -1,6 +1,5 @@
 import React, { PureComponent } from "react";
 import { Entity } from "aframe-react";
-import "aframe-look-at-billboard-component";
 
 export default class Button extends PureComponent {
   constructor(props) {

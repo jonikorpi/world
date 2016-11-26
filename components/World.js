@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Entity } from "aframe-react";
 
-import Lights from "./Lights";
-import Location from "./Location";
+import Lights from "../components/Lights";
+import TileContainer from "../components/TileContainer";
 
 export default class World extends Component {
   constructor(props) {
@@ -87,7 +87,7 @@ export default class World extends Component {
 
           {tiles.map((tile) => {
             return (
-              <Location
+              <TileContainer
                 key={this.getTileID(tile.x, tile.y)}
                 id={this.getTileID(tile.x, tile.y)}
                 x={tile.x}
