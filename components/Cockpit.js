@@ -79,7 +79,7 @@ export default class Cockpit extends Component {
 
     const oceanSize = 250;
     const oceanAmplitude = 0.5;
-    const oceanColor = "hsl(200, 62%, 9%)";
+    const oceanColor = "hsl(200, 62%, 0%)";
 
     return (
       <Entity id="cockpit">
