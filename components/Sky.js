@@ -6,12 +6,12 @@ export default class Sky extends PureComponent {
     super(props);
 
     if (!AFRAME.shaders.gradient) {
-      AFRAME.registerShader('gradient', {
+      AFRAME.registerShader("gradient", {
         schema: {
-          topColor: {type: 'vec3', default: '1 0 0', is: 'uniform'},
-          bottomColor: {type: 'vec3', default: '0 0 1', is: 'uniform'},
-          offset: {type: 'float', default: '400', is: 'uniform'},
-          exponent: {type: 'float', default: '0.6', is: 'uniform'}
+          topColor: {type: "vec3", default: "1 0 0", is: "uniform"},
+          bottomColor: {type: "vec3", default: "0 0 1", is: "uniform"},
+          offset: {type: "float", default: "400", is: "uniform"},
+          exponent: {type: "float", default: "0.6", is: "uniform"}
         },
         vertexShader: `
           varying vec3 vWorldPosition;
