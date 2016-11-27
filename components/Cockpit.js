@@ -4,10 +4,10 @@ import firebase from "firebase";
 import reactMixin from "react-mixin";
 import reactFire from "reactfire";
 
-import Camera from "./Camera";
-import World from "./World";
-import Button from "./Button";
-import Rotator from "./Rotator";
+import Camera from "../components/Camera";
+import World from "../components/World";
+import Button from "../components/Button";
+import Rotator from "../components/Rotator";
 
 export default class Cockpit extends Component {
   constructor(props) {

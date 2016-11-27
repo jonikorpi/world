@@ -5,34 +5,24 @@
   "now": {
     "alias": "world-dev"
   },
-  "devDependencies": {
+  "dependencies": {
     "aframe": "^0.3.2",
     "aframe-faceset-component": "^0.3.1",
     "aframe-look-at-billboard-component": "https://github.com/blairmacintyre/aframe-look-at-billboard-component.git",
     "aframe-react": "^3.4.0",
     "firebase": "^3.6.1",
-    "react": "^15.4.1",
+    "next": "^1.1.2",
     "react-addons-perf": "^15.4.1",
-    "react-dom": "^15.4.1",
     "react-mixin": "^3.0.5",
-    "react-scripts": "^0.7.0",
     "reactfire": "^1.0.0"
   },
-  "dependencies": {
-    "compression": "^1.6.2",
-    "express": "^4.14.0",
-    "morgan": "^1.7.0",
-    "rollbar": "^0.6.3",
-    "universal-analytics": "^0.4.8"
-  },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "deploy": "npm run build && now -e NODE_ENV=production && curl https://api.rollbar.com/api/1/deploy/ -F access_token=22fca22d3936434eb8b69cc0c453d040 -F environment=production -F revision=`git log -n 1 --pretty=format:'%H'` -F local_username=`whoami`",
-    "server": "npm run build && node server",
-    "now-start": "node server",
-    "now-build": ""
+    "start": "next",
+    "build": "next build",
+    "test": "",
+    "eject": "",
+    "deploy": "now -e NODE_ENV=production && curl https://api.rollbar.com/api/1/deploy/ -F access_token=22fca22d3936434eb8b69cc0c453d040 -F environment=production -F revision=`git log -n 1 --pretty=format:'%H'` -F local_username=`whoami`",
+    "now-start": "next start",
+    "now-build": "next build"
   }
 }
