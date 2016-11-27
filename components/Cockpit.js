@@ -77,6 +77,10 @@ export default class Cockpit extends Component {
     const cockpitSize = 3;
     const wallDistance = cockpitSize / 2;
 
+    const oceanSize = 200;
+    const oceanAmplitude = 0.5;
+    const oceanColor = "hsl(200, 62%, 9%)";
+
     return (
       <Entity id="cockpit">
 
@@ -85,6 +89,38 @@ export default class Cockpit extends Component {
           far={this.props.far}
           near={this.props.near}
           userHeight={this.props.userHeight}
+        />
+
+        <Entity
+          geometry={{
+            primitive: "plane",
+            width: this.props.far,
+            height: this.props.far,
+          }}
+          material={{
+            color: oceanColor,
+            flatShading: true,
+          }}
+          rotation={[-90, 0, 0]}
+          position={[0, -oceanAmplitude*4, 0]}
+        />
+
+        <Entity
+          ocean={{
+            width: oceanSize,
+            depth: oceanSize,
+            density: oceanSize / 5,
+            amplitude: oceanAmplitude,
+            amplitudeVariance: 0.1,
+            speed: 1,
+            speedVariance: 2,
+          }}
+          material={{
+            color: oceanColor,
+            flatShading: true,
+          }}
+          rotation={[-90, 0, 0]}
+          position={[0, -oceanAmplitude*2, 0]}
         />
 
         {playerLocation && (

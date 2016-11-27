@@ -66,7 +66,7 @@ export default class Tile extends PureComponent {
           />
         )}
 
-        <Entity
+        {/* <Entity
           ref={(c) => this.ref = c}
           className="interactable"
           events={{
@@ -85,7 +85,7 @@ export default class Tile extends PureComponent {
             color: "yellow",
           }}
           rotation={[-90, 0, 0]}
-        />
+        /> */}
 
         {isActive && (
           <Entity

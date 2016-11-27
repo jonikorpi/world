@@ -14,7 +14,7 @@ export default class Sky extends PureComponent {
         }}
         material={{
           shader: "flat",
-          color: "hsl(200, 62%, 9%)",
+          color: "hsl(200, 62%, 15%)",
           fog: false,
         }}
         scale={[1, 1, -1]}

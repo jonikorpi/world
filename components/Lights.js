@@ -10,22 +10,22 @@ export default class Lights extends PureComponent {
           light={{
             type: "directional",
             color: "hsl(40, 62%, 91%)",
-            intensity: 1,
+            intensity: 1.236,
           }}
           position={[
             -1.5,
             1,
-            2,
+            1,
           ]}
         />
 
-        <Entity
+        {/* <Entity
           id="ambientLight"
           light={{
             type: "ambient",
-            color: "hsl(200, 62%, 24%)",
+            color: "hsl(200, 62%, 6%)",
           }}
-        />
+        /> */}
       </Entity>
     );
   }
