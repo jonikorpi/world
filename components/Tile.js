@@ -36,9 +36,11 @@ export default class Tile extends PureComponent {
   }
 
   render() {
-    const {x, y, object, isActive, tileSize} = {...this.props};
+    const {x, y, object, isActive} = {...this.props};
 
-    const dotSize = 0.1;
+    const tileSize = 12;
+    const dotSize = tileSize * 0.91;
+
     const position = [
       x * tileSize,
       0,
@@ -51,7 +53,7 @@ export default class Tile extends PureComponent {
         className="tile"
         position={position}
       >
-        {object && (
+        {object && object.type !== "player" && (
           <Entity
             geometry={{
               primitive: "box",
@@ -66,7 +68,7 @@ export default class Tile extends PureComponent {
           />
         )}
 
-        {/* <Entity
+        <Entity
           ref={(c) => this.ref = c}
           className="interactable"
           events={{
@@ -76,16 +78,16 @@ export default class Tile extends PureComponent {
           }}
           geometry={{
             primitive: "plane",
-            width: tileSize,
-            height: tileSize,
+            width: tileSize * 0.944,
+            height: tileSize * 0.944,
           }}
           material={{
             transparent: true,
-            opacity: isActive ? 1 : 0.1,
-            color: "yellow",
+            opacity: isActive ? 1 : 0.056,
+            color: "white",
           }}
           rotation={[-90, 0, 0]}
-        /> */}
+        />
 
         {isActive && (
           <Entity

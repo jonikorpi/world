@@ -14,13 +14,7 @@ export default class World extends Component {
   }
 
   render() {
-    const tileSize = this.props.tileSize;
-    const gridDistance = 0.5;
-    const gridWidth = 1;
-    const gridHeight = 0.6;
-    const gridSpacing = 0.2;
-
-    const range = 10;
+    const range = 15;
     const playerLocation = this.props.playerLocation;
     let locations = [];
 
@@ -28,10 +22,12 @@ export default class World extends Component {
     for (    let x = playerLocation.x - range; x <= playerLocation.x + range; x++) {
       for (  let y = playerLocation.y - range; y <= playerLocation.y + range; y++) {
         const distance = (
-          Math.abs(
-            Math.sqrt(
-                Math.pow(playerLocation.x - x, 2)
-              + Math.pow(playerLocation.y - y, 2)
+          Math.floor(
+            Math.abs(
+              Math.sqrt(
+                  Math.pow(playerLocation.x - x, 2)
+                + Math.pow(playerLocation.y - y, 2)
+              )
             )
           )
         );
@@ -59,8 +55,7 @@ export default class World extends Component {
             // skipCache: true,
           }}
           material={{
-            color: `hsl(${180}, 24%, 50%)`,
-            shader: "flat",
+            color: "black",
           }}
         />
 
@@ -71,7 +66,6 @@ export default class World extends Component {
               id={this.getLocationID(location.x, location.y)}
               x={location.x}
               y={location.y}
-              tileSize={tileSize}
             />
           )
         })}

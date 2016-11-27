@@ -3,6 +3,7 @@ import firebase from "firebase";
 
 import Loading from "../components/Loading";
 import Sky from "../components/Sky";
+import Sea from "../components/Sea";
 import Cockpit from "../components/Cockpit";
 
 export default class Scene extends PureComponent {
@@ -132,6 +133,7 @@ export default class Scene extends PureComponent {
           >
             <a-entity>
               <Sky far={this.far}/>
+              <Sea far={this.far}/>
 
               <Cockpit
                 playerID={playerID}
