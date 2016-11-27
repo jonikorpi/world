@@ -53,8 +53,8 @@ export default class Sky extends PureComponent {
         }}
         material={{
           shader: "gradient",
-          topColor: "0.09 0 0.236",
-          bottomColor: "0.146 0.056 0",
+          topColor: "0.056 0 0.056",
+          bottomColor: "0.146 0 0.146",
           exponent: 0.382,
           offset: 0,
         }}
