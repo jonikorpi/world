@@ -78,76 +78,81 @@ export default class Cockpit extends Component {
     const wallDistance = cockpitSize / 2;
 
     return (
-      <Entity id="cockpit">
-
-        <Camera
-          inVR={this.props.inVR}
-          far={this.props.far}
-          near={this.props.near}
-          userHeight={this.props.userHeight}
-        />
-
+      <Entity>
         {playerLocation && (
           <World
             far={this.props.far}
             userHeight={this.props.userHeight}
             playerID={playerID}
             playerLocation={playerLocation}
+            cockpitSize={cockpitSize}
           />
         )}
 
-        {/* <Entity
-          id="boundaries"
-          geometry={{
-            primitive: "box",
-            width:  cockpitSize,
-            height: cockpitSize,
-            depth:  cockpitSize,
-          }}
-          material={{
-            shader: "flat",
-            color: "grey",
-            wireframe: true,
-          }}
-        /> */}
+        <Entity
+          id="cockpit"
+          position={[0, cockpitSize, 0]}
+        >
+          <Camera
+            inVR={this.props.inVR}
+            far={this.props.far}
+            near={this.props.near}
+            userHeight={this.props.userHeight}
+          />
 
-        <Entity id="eyeLevel" position={[0, this.props.userHeight, 0]}>
+          {/* <Entity
+            id="boundaries"
+            geometry={{
+              primitive: "box",
+              width:  cockpitSize,
+              height: cockpitSize,
+              depth:  cockpitSize,
+            }}
+            material={{
+              shader: "flat",
+              color: "grey",
+              wireframe: true,
+            }}
+          /> */}
 
-          <Rotator id="northWall" distance={wallDistance} rotation={[0, 0, 0]}>
-            <Button
-              onClick={this.createPlayer}
-              color="green"
-              position={[0, 0.5, 0]}
-            />
-          </Rotator>
+          <Entity id="eyeLevel" position={[0, this.props.userHeight, 0]}>
 
-          <Rotator id="westWall" distance={wallDistance} rotation={[0, 90, 0]}>
-            <Button
-              onClick={this.props.toggleVR}
-              color="purple"
-              position={[0, 0.5, 0]}
-            />
-          </Rotator>
+            <Rotator id="northWall" distance={wallDistance} rotation={[0, 0, 0]}>
+              <Button
+                onClick={this.createPlayer}
+                color="green"
+                position={[0, 0.5, 0]}
+              />
+            </Rotator>
 
-          <Rotator id="eastWall" distance={wallDistance} rotation={[0, 270, 0]}>
-            <Button
-              onClick={this.signOut}
-              color="red"
-              position={[-0.5, 0.5, 0]}
-            />
+            <Rotator id="westWall" distance={wallDistance} rotation={[0, 90, 0]}>
+              <Button
+                onClick={this.props.toggleVR}
+                color="purple"
+                position={[0, 0.5, 0]}
+              />
+            </Rotator>
 
-            <Button
-              onClick={this.signIn}
-              color="green"
-              position={[0.5, 0.5, 0]}
-            />
-          </Rotator>
+            <Rotator id="eastWall" distance={wallDistance} rotation={[0, 270, 0]}>
+              <Button
+                onClick={this.signOut}
+                color="red"
+                position={[-0.5, 0.5, 0]}
+              />
 
-          <Rotator id="southWall" distance={wallDistance} rotation={[0, 180, 0]}>
-          </Rotator>
+              <Button
+                onClick={this.signIn}
+                color="green"
+                position={[0.5, 0.5, 0]}
+              />
+            </Rotator>
+
+            <Rotator id="southWall" distance={wallDistance} rotation={[0, 180, 0]}>
+            </Rotator>
+
+          </Entity>
 
         </Entity>
-
       </Entity>
     );
   }

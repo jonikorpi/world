@@ -4,6 +4,7 @@ import firebase from "firebase";
 import Loading from "../components/Loading";
 import Sky from "../components/Sky";
 import Sea from "../components/Sea";
+import Lights from "../components/Lights";
 import Cockpit from "../components/Cockpit";
 
 export default class Scene extends PureComponent {
@@ -43,7 +44,6 @@ export default class Scene extends PureComponent {
     require("aframe-look-at-billboard-component");
     require("aframe-look-at-billboard-component");
     require("aframe-faceset-component");
-    require("../components/ocean.js");
     window.addEventListener("enter-vr", this.handleStartVR);
     window.addEventListener("exit-vr", this.handleStopVR);
     // window.addEventListener('resize', this.handleResize);
@@ -134,6 +134,7 @@ export default class Scene extends PureComponent {
             <a-entity>
               <Sky far={this.far}/>
               <Sea far={this.far}/>
+              <Lights/>
 
               <Cockpit
                 playerID={playerID}

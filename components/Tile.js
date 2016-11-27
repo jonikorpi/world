@@ -36,10 +36,11 @@ export default class Tile extends PureComponent {
   }
 
   render() {
-    const {x, y, object, isActive} = {...this.props};
+    const {x, y, distance, object, isActive, cockpitSize} = {...this.props};
 
-    const tileSize = 12;
-    const dotSize = tileSize * 0.91;
+    const cutOff = 6;
+    const tileSize = cockpitSize + Math.exp(distance/3);
+    const dotSize = tileSize * 0.056;
 
     const position = [
       x * tileSize,
@@ -57,9 +58,9 @@ export default class Tile extends PureComponent {
           <Entity
             geometry={{
               primitive: "box",
-              width: dotSize,
-              height: dotSize,
-              depth: dotSize,
+              width: tileSize,
+              height: tileSize,
+              depth: tileSize,
               buffer: false,
               skipCache: true,
               mergeTo: "#dot",
@@ -78,15 +79,15 @@ export default class Tile extends PureComponent {
           }}
           geometry={{
             primitive: "plane",
-            width: tileSize * 0.944,
-            height: tileSize * 0.944,
+            width: dotSize,
+            height: dotSize,
           }}
           material={{
             transparent: true,
-            opacity: isActive ? 1 : 0.056,
-            color: "white",
+            opacity: distance <= cutOff ? 0.618 : 0.236,
+            color: "yellow",
           }}
-          rotation={[-90, 0, 0]}
+          billboard
         />
 
         {isActive && (
