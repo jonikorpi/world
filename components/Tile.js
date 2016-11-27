@@ -12,26 +12,22 @@ export default class Tile extends PureComponent {
     console.log(event);
     const name = event.detail.state;
     const type = event.type;
-    // let boolean;
-    //
-    // switch (type) {
-    //   case "stateadded":
-    //     boolean = true;
-    //     break;
-    //   case "stateremoved":
-    //     boolean = false;
-    //     break;
-    //   default:
-    //     console.log("Bad state event in Button");
-    //     return;
-    // }
-    //
-    // if (name && type && this._reactInternalInstance) {
-    //   this.setState({[name]: boolean});
-    // }
+    let boolean;
 
-    if (!this.props.isActive && type === "stateadded" && name === "cursor-hovered") {
-      this.props.setActiveTileID(this.props.x, this.props.y);
+    switch (type) {
+      case "stateadded":
+        boolean = true;
+        break;
+      case "stateremoved":
+        boolean = false;
+        break;
+      default:
+        console.log("Bad state event in Button");
+        return;
+    }
+
+    if (name && type && this._reactInternalInstance) {
+      this.setState({[name]: boolean});
     }
   }
 
@@ -71,7 +67,13 @@ export default class Tile extends PureComponent {
         )}
 
         <Entity
+          ref={(c) => this.ref = c}
           className="interactable"
+          events={{
+            click: this.handleClick,
+            stateadded: this.handleStateEvent,
+            stateremoved: this.handleStateEvent,
+          }}
           geometry={{
             primitive: "plane",
             width: tileSize,
@@ -83,11 +85,6 @@ export default class Tile extends PureComponent {
             color: "yellow",
           }}
           rotation={[-90, 0, 0]}
-          events={{
-            click: this.handleClick,
-            stateadded: this.handleStateEvent,
-            stateremoved: this.handleStateEvent,
-          }}
         />
 
         {isActive && (

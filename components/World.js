@@ -7,18 +7,6 @@ import Location from "../components/Location";
 export default class World extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      activeLocationID: "",
-    };
-  }
-
-  setActiveLocationID = (x, y) => {
-    const locationID = this.getLocationID(x, y);
-
-    if (this.state.activeLocationID !== locationID) {
-      this.setState({activeLocationID: locationID})
-    }
   }
 
   getLocationID = (x, y) => {
@@ -83,8 +71,6 @@ export default class World extends Component {
               id={this.getLocationID(location.x, location.y)}
               x={location.x}
               y={location.y}
-              isActive={this.state.activeLocationID === this.getLocationID(location.x, location.y)}
-              setActiveLocationID={this.setActiveLocationID}
               tileSize={tileSize}
             />
           )
