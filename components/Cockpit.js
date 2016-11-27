@@ -77,7 +77,7 @@ export default class Cockpit extends Component {
     const cockpitSize = 3;
     const wallDistance = cockpitSize / 2;
 
-    const oceanSize = 200;
+    const oceanSize = 250;
     const oceanAmplitude = 0.5;
     const oceanColor = "hsl(200, 62%, 9%)";
 
@@ -94,8 +94,8 @@ export default class Cockpit extends Component {
         <Entity
           geometry={{
             primitive: "plane",
-            width: this.props.far,
-            height: this.props.far,
+            width: this.props.far * 2,
+            height: this.props.far * 2,
           }}
           material={{
             color: oceanColor,
@@ -112,8 +112,8 @@ export default class Cockpit extends Component {
             density: oceanSize / 5,
             amplitude: oceanAmplitude,
             amplitudeVariance: 0.1,
-            speed: 1,
-            speedVariance: 2,
+            speed: 0.5,
+            speedVariance: 1,
           }}
           material={{
             color: oceanColor,

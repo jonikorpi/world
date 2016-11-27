@@ -8,9 +8,9 @@ export default class Sky extends PureComponent {
         id="sky"
         geometry={{
           primitive: "box",
-          width: this.props.far / 1.618,
-          height: this.props.far / 1.618,
-          depth: this.props.far / 1.618,
+          width: this.props.far * 2,
+          height: this.props.far * 2,
+          depth: this.props.far * 2,
         }}
         material={{
           shader: "flat",
