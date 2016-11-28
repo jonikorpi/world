@@ -24,10 +24,6 @@ export default class Cockpit extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.playerID !== nextProps.playerID) {
-      if (this.state.player) {
-        this.unbind("player");
-      }
-
       if (nextProps.playerID) {
         this.bindFirebase(nextProps.playerID);
       }
@@ -35,6 +31,10 @@ export default class Cockpit extends Component {
   }
 
   bindFirebase = (playerID) => {
+    if (this.state.player) {
+      this.unbind("player");
+    }
+
     this.bindAsObject(
       firebase.database().ref(`playerSecrets/${playerID}`),
       "player",

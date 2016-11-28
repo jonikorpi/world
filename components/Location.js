@@ -25,15 +25,15 @@ export default class Location extends Component {
     const nextLocation = [xNext,yNext];
 
     if (thisLocation !== nextLocation) {
-      if (this.state.location) {
-        this.unbind("location");
-      }
-
       this.bindFirebase(xNext,yNext);
     }
   }
 
   bindFirebase = (x,y) => {
+    if (this.state.location) {
+      this.unbind("location");
+    }
+
     this.bindAsObject(
       firebase.database().ref(`locations/${x}/${y}`),
       "location",
