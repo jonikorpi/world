@@ -3,9 +3,9 @@ import React, { PureComponent } from "react";
 import Scene from "../components/Scene";
 import Head from "../components/Head";
 
-if (process.env.NODE_ENV === "development") {
-  window.ReactPerf = require("react-addons-perf");
-  window.ReactPerf.start();
+if (process.env.NODE_ENV !== "production" && typeof window !== "undefined") {
+  // window.ReactPerf = require("react-addons-perf");
+  // window.ReactPerf.start();
   // firebase.database.enableLogging(true);
 }
 

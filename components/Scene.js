@@ -128,7 +128,7 @@ export default class Scene extends PureComponent {
         {this.state.readyForVR ? (
           <a-scene
             ref={(ref) => {this.scene = ref}}
-            stats={process.env.NODE_ENV === "development" ? true : undefined}
+            stats={process.env.NODE_ENV === "production" ? undefined : true}
             vr-mode-ui="enabled: false"
           >
             <a-entity>
