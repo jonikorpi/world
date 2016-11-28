@@ -70,6 +70,25 @@ export default class Cockpit extends Component {
     });
   }
 
+  moveNorth = () => { this.move(this.state.player.location.x,   this.state.player.location.y-1); }
+  moveWest  = () => { this.move(this.state.player.location.x+1, this.state.player.location.y); }
+  moveEast  = () => { this.move(this.state.player.location.x-1, this.state.player.location.y); }
+  moveSouth = () => { this.move(this.state.player.location.x,   this.state.player.location.y+1); }
+
+  move = (x, y) => {
+    firebase.database().ref("actionQueue/tasks").push({
+      request: {
+        playerID: this.props.playerID,
+        action: "move",
+        target: {
+          x: x,
+          y: y,
+        },
+        time: firebase.database.ServerValue.TIMESTAMP,
+      }
+    });
+  }
+
   render() {
     const playerID = this.props.playerID;
     const player = this.state.player;
@@ -121,7 +140,13 @@ export default class Cockpit extends Component {
               <Button
                 onClick={this.createPlayer}
                 color="green"
-                position={[0, 0.5, 0]}
+                position={[0, 1, 0]}
+              />
+
+              <Button
+                onClick={this.moveNorth}
+                color="grey"
+                position={[0, -1, 0]}
               />
             </Rotator>
 
@@ -129,7 +154,13 @@ export default class Cockpit extends Component {
               <Button
                 onClick={this.props.toggleVR}
                 color="purple"
-                position={[0, 0.5, 0]}
+                position={[0, 1, 0]}
+              />
+
+              <Button
+                onClick={this.moveWest}
+                color="grey"
+                position={[0, -1, 0]}
               />
             </Rotator>
 
@@ -137,17 +168,28 @@ export default class Cockpit extends Component {
               <Button
                 onClick={this.signOut}
                 color="red"
-                position={[-0.5, 0.5, 0]}
+                position={[-0.5, 1, 0]}
               />
 
               <Button
                 onClick={this.signIn}
                 color="green"
-                position={[0.5, 0.5, 0]}
+                position={[0.5, 1, 0]}
+              />
+
+              <Button
+                onClick={this.moveEast}
+                color="grey"
+                position={[0, -1, 0]}
               />
             </Rotator>
 
             <Rotator id="southWall" distance={wallDistance} rotation={[0, 180, 0]}>
+              <Button
+                onClick={this.moveSouth}
+                color="grey"
+                position={[0, -1, 0]}
+              />
             </Rotator>
 
           </Entity>

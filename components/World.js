@@ -14,7 +14,8 @@ export default class World extends Component {
 
   render() {
     const range = 10;
-    const playerLocation = this.props.playerLocation;
+    const { playerLocation, cockpitSize } = {...this.props};
+    const tileSize = cockpitSize;
     let locations = [];
 
     // Create locations
@@ -33,14 +34,22 @@ export default class World extends Component {
           locations.push({
             x: x,
             y: y,
-            distance: distance
           });
         }
       }
     }
 
+    const worldPosition = [
+      -playerLocation.x * tileSize,
+      0,
+      -playerLocation.y * tileSize,
+    ];
+
     return (
-      <Entity id="world">
+      <Entity
+        id="world"
+        position={worldPosition}
+      >
         <Entity
           id="dot"
           geometry={{
@@ -61,7 +70,7 @@ export default class World extends Component {
               key={this.getLocationID(location.x, location.y)}
               id={this.getLocationID(location.x, location.y)}
               {...location}
-              cockpitSize={this.props.cockpitSize}
+              tileSize={tileSize}
             />
           )
         })}

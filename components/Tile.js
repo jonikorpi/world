@@ -36,10 +36,10 @@ export default class Tile extends PureComponent {
   }
 
   render() {
-    const {x, y, distance, object, isActive, cockpitSize} = {...this.props};
+    const {x, y, object, isActive, tileSize} = {...this.props};
 
     const cutOff = 6;
-    const tileSize = cockpitSize + Math.exp(distance/3);
+    // tileSize = tileSize + Math.exp(distance/3);
     const dotSize = tileSize * 0.056;
 
     const position = [
@@ -84,7 +84,7 @@ export default class Tile extends PureComponent {
           }}
           material={{
             transparent: true,
-            opacity: distance <= cutOff ? 0.618 : 0.236,
+            opacity: 0.618,
             color: "yellow",
           }}
           billboard
