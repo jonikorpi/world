@@ -40,7 +40,6 @@
         ",
         /* TODO public identifying features */
         "inGame": { ".validate": "newData.isBoolean()" },
-        "message": { ".validate": "newData.isString()" },
         "$other": { ".validate": "false" },
       },
     },
@@ -56,6 +55,7 @@
           "x": { ".validate": "newData.isNumber()" },
           "y": { ".validate": "newData.isNumber()" },
         },
+        "message": { ".validate": "newData.isString()" },
       },
     },
 
