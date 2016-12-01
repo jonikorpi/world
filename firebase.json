@@ -14,8 +14,10 @@
           ".read": "auth != null",
           /* TODO complicated neighbour rules */
           /* (pos(playerid).bx + "" == $binx &&  pos(playerid).by + "" == $biny) || //and the other 8 adjacent bin coords */
-          /*"objectID": { ".validate": "newData.isString() || newData.isBoolean() || !newData.exists()" },*/
-          /* TODO maybe shard objects by type */
+          "objectID": { ".validate": "
+               (!data.exists() && newData.isString())
+            || (!newData.exists())
+          "},
           "tile": {
             "attributes": {
               "radiation": { ".validate": "newData.isNumber()" },
@@ -23,15 +25,6 @@
               "$other": { ".validate": "false" },
             },
             "$other": { ".validate": "false" },
-          },
-          "object": {
-            "previousLocation": {
-              "x": { ".validate": "newData.isNumber()" },
-              "y": { ".validate": "newData.isNumber()" },
-              "$other": { ".validate": "false" },
-            },
-            "type": { ".validate": "newData.isString()" },
-            "playerID": { ".validate": "newData.isString()" },
           },
           "$other": { ".validate": "false" },
         },
