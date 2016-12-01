@@ -16,7 +16,7 @@ export default class Camera extends PureComponent {
   render() {
     const userHeight = this.props.userHeight;
     const inVR = this.props.inVR;
-    const pointerDistance = this.props.far / Math.pow(1.618, 3);
+    const pointerDistance = 0.5;
 
     return (
       <Entity
