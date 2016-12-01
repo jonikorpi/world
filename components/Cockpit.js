@@ -30,6 +30,14 @@ export default class Cockpit extends Component {
     }
   }
 
+  componentWillUpdate(nextProps, nextState) {
+    if (this.state.player && nextState.player) {
+      if (this.state.player.message && nextState.player.message) {
+        console.log(nextState.player.message);
+      }
+    }
+  }
+
   bindFirebase = (playerID) => {
     if (this.state.player) {
       this.unbind("player");
