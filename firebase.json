@@ -63,6 +63,8 @@
       ".write": "auth.worldmaster === true",
       "$objectID": {
         ".read": "auth != null",
+        /* TODO complicated neighbour rules */
+        /* (pos(playerid).bx + "" == $binx &&  pos(playerid).by + "" == $biny) || //and the other 8 adjacent bin
         "location": {
           "x": { ".validate": "newData.isNumber()" },
           "y": { ".validate": "newData.isNumber()" },
