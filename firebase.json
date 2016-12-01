@@ -18,14 +18,7 @@
                (!data.exists() && newData.isString())
             || (!newData.exists())
           "},
-          "tile": {
-            "attributes": {
-              "radiation": { ".validate": "newData.isNumber()" },
-              "debris":    { ".validate": "newData.isNumber()" },
-              "$other": { ".validate": "false" },
-            },
-            "$other": { ".validate": "false" },
-          },
+          /* MAKE SURE THIS IS FLAT */
           "$other": { ".validate": "false" },
         },
       },
@@ -51,10 +44,8 @@
              (auth != null && auth.uid === $playerID)
           || auth.worldmaster === true
         ",
-        "location": {
-          "x": { ".validate": "newData.isNumber()" },
-          "y": { ".validate": "newData.isNumber()" },
-        },
+        "x": { ".validate": "newData.isNumber()" },
+        "y": { ".validate": "newData.isNumber()" },
         "message": { ".validate": "newData.isString()" },
       },
     },
@@ -65,16 +56,10 @@
         ".read": "auth != null",
         /* TODO complicated neighbour rules */
         /* (pos(playerid).bx + "" == $binx &&  pos(playerid).by + "" == $biny) || //and the other 8 adjacent bin
-        "location": {
-          "x": { ".validate": "newData.isNumber()" },
-          "y": { ".validate": "newData.isNumber()" },
-          "$other": { ".validate": "false" },
-        },
-        "previousLocation": {
-          "x": { ".validate": "newData.isNumber()" },
-          "y": { ".validate": "newData.isNumber()" },
-          "$other": { ".validate": "false" },
-        },
+        "x": { ".validate": "newData.isNumber()" },
+        "y": { ".validate": "newData.isNumber()" },
+        "previousX": { ".validate": "newData.isNumber()" },
+        "previousY": { ".validate": "newData.isNumber()" },
         "type": { ".validate": "newData.isString()" },
       },
     },*/

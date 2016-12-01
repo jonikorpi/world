@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import { Entity } from "aframe-react";
 import reactMixin from "react-mixin";
 import reactFire from "reactfire";
@@ -6,7 +6,7 @@ import firebase from "firebase";
 
 import Tile from "../components/Tile";
 
-export default class Location extends Component {
+export default class Location extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -14,20 +14,32 @@ export default class Location extends Component {
   }
 
   componentWillMount() {
-    const {x,y} = {...this.props};
+    const { x,y } = {...this.props};
     this.bindFirebase(x,y);
   }
 
-  componentWillReceiveProps(nextProps) {
-    const {x,y} = {...this.props};
-    const {xNext,yNext} = {...nextProps};
-    const thisLocation = [x,y];
-    const nextLocation = [xNext,yNext];
+  // componentWillReceiveProps(nextProps) {
+  //   const { x,y } = {...this.props};
+  //   const { xNext,yNext } = {...nextProps};
+  //   const thisLocation = [x,y];
+  //   const nextLocation = [xNext,yNext];
+  //
+  //   if (thisLocation !== nextLocation) {
+  //     this.bindFirebase(xNext,yNext);
+  //   }
+  // }
 
-    if (thisLocation !== nextLocation) {
-      this.bindFirebase(xNext,yNext);
-    }
-  }
+  // componentDidUpdate() {
+  //   console.log("Location updated");
+  // }
+  //
+  // componentWillUnmount() {
+  //   console.log("Location unmounting");
+  // }
+  //
+  // componentDidMount() {
+  //   console.log("Location mounted");
+  // }
 
   bindFirebase = (x,y) => {
     if (this.state.location) {

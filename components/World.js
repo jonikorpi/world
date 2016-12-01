@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import { Entity } from "aframe-react";
 
 import Location from "../components/Location";
 
-export default class World extends Component {
+export default class World extends PureComponent {
   constructor(props) {
     super(props);
   }
@@ -14,18 +14,18 @@ export default class World extends Component {
 
   render() {
     const range = 10;
-    const { playerLocation, cockpitSize } = {...this.props};
+    const { playerX, playerY, cockpitSize } = {...this.props};
     const tileSize = cockpitSize;
     let locations = [];
 
     // Create locations
-    for (    let x = playerLocation.x - range; x <= playerLocation.x + range; x++) {
-      for (  let y = playerLocation.y - range; y <= playerLocation.y + range; y++) {
+    for (    let x = playerX - range; x <= playerX + range; x++) {
+      for (  let y = playerY - range; y <= playerY + range; y++) {
         const distance = (
           Math.abs(
             Math.sqrt(
-                Math.pow(playerLocation.x - x, 2)
-              + Math.pow(playerLocation.y - y, 2)
+                Math.pow(playerX - x, 2)
+              + Math.pow(playerY - y, 2)
             )
           )
         );
@@ -40,9 +40,9 @@ export default class World extends Component {
     }
 
     const worldPosition = [
-      -playerLocation.x * tileSize,
+      -playerX * tileSize,
       0,
-      -playerLocation.y * tileSize,
+      -playerY * tileSize,
     ];
 
     return (
@@ -50,20 +50,6 @@ export default class World extends Component {
         id="world"
         position={worldPosition}
       >
-        <Entity
-          id="dot"
-          geometry={{
-            primitive: "plane",
-            width: 0,
-            height: 0,
-            buffer: false,
-            // skipCache: true,
-          }}
-          material={{
-            color: "black",
-          }}
-        />
-
         {locations.map((location) => {
           return (
             <Location

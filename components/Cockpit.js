@@ -70,10 +70,10 @@ export default class Cockpit extends Component {
     });
   }
 
-  moveNorth = () => { this.move(this.state.player.location.x,   this.state.player.location.y-1); }
-  moveWest  = () => { this.move(this.state.player.location.x+1, this.state.player.location.y); }
-  moveEast  = () => { this.move(this.state.player.location.x-1, this.state.player.location.y); }
-  moveSouth = () => { this.move(this.state.player.location.x,   this.state.player.location.y+1); }
+  moveNorth = () => { this.move(this.state.player.x,   this.state.player.y-1); }
+  moveWest  = () => { this.move(this.state.player.x+1, this.state.player.y); }
+  moveEast  = () => { this.move(this.state.player.x-1, this.state.player.y); }
+  moveSouth = () => { this.move(this.state.player.x,   this.state.player.y+1); }
 
   move = (x, y) => {
     firebase.database().ref("actionQueue/tasks").push({
@@ -91,22 +91,37 @@ export default class Cockpit extends Component {
 
   render() {
     const playerID = this.props.playerID;
-    const player = this.state.player;
-    const playerLocation = player && player.location;
+    const { x, y } = {...this.state.player};
     const cockpitSize = 3;
     const wallDistance = cockpitSize / 2;
 
     return (
       <Entity>
-        {playerLocation && (
+        {typeof x !== "undefined" && (
           <World
             far={this.props.far}
             userHeight={this.props.userHeight}
             playerID={playerID}
-            playerLocation={playerLocation}
+            playerX={x}
+            playerY={y}
             cockpitSize={cockpitSize}
           />
         )}
+
+        <Entity
+          id="dot"
+          geometry={{
+            primitive: "box",
+            width: 3,
+            height: 3,
+            depth: 3,
+            buffer: false,
+            // skipCache: true,
+          }}
+          material={{
+            color: "yellow",
+          }}
+        />
 
         <Entity
           id="cockpit"

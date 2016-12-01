@@ -31,6 +31,18 @@ export default class Tile extends PureComponent {
     }
   }
 
+  // componentDidUpdate() {
+  //   console.log("Tile updated");
+  // }
+  //
+  // componentWillUnmount() {
+  //   console.log("Tile unmounting");
+  // }
+  //
+  // componentDidMount() {
+  //   console.log("Tile mounted");
+  // }
+
   handleClick = (event) => {
     console.log(event);
   }
@@ -81,13 +93,17 @@ export default class Tile extends PureComponent {
             primitive: "plane",
             width: dotSize,
             height: dotSize,
+            buffer: false,
+            skipCache: true,
+            mergeTo: "#dot",
           }}
-          material={{
-            transparent: true,
-            opacity: 0.618,
-            color: "yellow",
-          }}
-          billboard
+          // material={{
+          //   transparent: true,
+          //   opacity: 0.618,
+          //   color: "yellow",
+          // }}
+          position={position}
+          rotation={[-90, 0, 0]}
         />
 
         {isActive && (
