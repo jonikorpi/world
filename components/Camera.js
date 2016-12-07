@@ -32,7 +32,7 @@ export default class Camera extends PureComponent {
           }}
           look-controls
           wasd-controls={{
-            enabled: inVR === false,
+            enabled: true, //inVR === false,
             fly: true,
           }}
           // universal-controls={{

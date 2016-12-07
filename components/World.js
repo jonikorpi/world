@@ -41,7 +41,7 @@ export default class World extends PureComponent {
 
     const worldPosition = [
       -playerX * tileSize,
-      0,
+      0.5,
       -playerY * tileSize,
     ];
 

@@ -126,7 +126,7 @@ export default class Cockpit extends Component {
             // skipCache: true,
           }}
           material={{
-            color: "yellow",
+            color: "white",
           }}
         />
 

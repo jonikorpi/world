@@ -92,13 +92,27 @@ export default class Sea extends PureComponent {
           //   speedVariance: 1,
           // }}
           material={{
+            shader: "flat",
             color: color,
-            flatShading: true,
             transparent: true,
-            opacity: 0.5,
+            opacity: 0.764,
           }}
           rotation={[-90, 0, 0]}
-          // position={[0, -amplitude*2, 0]}
+          position={[0, 0.5, 0]}
+        />
+
+        <Entity
+          geometry={{
+            primitive: "box",
+            height: 0.2,
+            width: 0.2,
+            depth: 0.2,
+          }}
+          material={{
+            shader: "flat",
+            color: "grey",
+          }}
+          position={[0, -0.5, 0]}
         />
       </a-entity>
     );

@@ -56,7 +56,7 @@ export default class Tile extends PureComponent {
 
     const position = [
       x * tileSize,
-      0,
+      0.6,
       y * tileSize,
     ];
 
@@ -93,15 +93,13 @@ export default class Tile extends PureComponent {
             primitive: "plane",
             width: dotSize,
             height: dotSize,
-            buffer: false,
-            skipCache: true,
-            mergeTo: "#dot",
+            // buffer: false,
+            // skipCache: true,
+            // mergeTo: "#dot",
           }}
-          // material={{
-          //   transparent: true,
-          //   opacity: 0.618,
-          //   color: "yellow",
-          // }}
+          material={{
+            color: "yellow",
+          }}
           position={position}
           rotation={[-90, 0, 0]}
         />

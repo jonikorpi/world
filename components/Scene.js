@@ -134,7 +134,7 @@ export default class Scene extends PureComponent {
             <a-entity>
               <Sky far={this.far}/>
               <Sea far={this.far}/>
-              <Lights/>
+              {/* <Lights/> */}
 
               <Cockpit
                 playerID={playerID}
