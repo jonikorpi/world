@@ -122,7 +122,6 @@ export default class Cockpit extends Component {
             primitive: "plane",
             width: 0,
             height: 0,
-            depth: 0,
             buffer: false,
             // skipCache: true,
           }}
