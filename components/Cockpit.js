@@ -119,10 +119,10 @@ export default class Cockpit extends Component {
         <Entity
           id="dot"
           geometry={{
-            primitive: "box",
-            width: 3,
-            height: 3,
-            depth: 3,
+            primitive: "plane",
+            width: 0,
+            height: 0,
+            depth: 0,
             buffer: false,
             // skipCache: true,
           }}

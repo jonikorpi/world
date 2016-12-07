@@ -9,8 +9,8 @@ export default class Lights extends PureComponent {
           id="directionalLight"
           light={{
             type: "directional",
-            color: "hsl(40, 62%, 91%)",
-            intensity: 2,
+            color: "hsl(0, 0%, 91%)",
+            intensity: 1.5,
           }}
           position={[
             -1.5,

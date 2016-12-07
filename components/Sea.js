@@ -77,20 +77,6 @@ export default class Sea extends PureComponent {
     return (
       <a-entity>
         <Entity
-          geometry={{
-            primitive: "plane",
-            width: this.props.far * 2,
-            height: this.props.far * 2,
-          }}
-          material={{
-            color: color,
-            flatShading: true,
-          }}
-          rotation={[-90, 0, 0]}
-          position={[0, -amplitude*4, 0]}
-        />
-
-        <Entity
           ocean={{
             width: size,
             depth: size,
@@ -103,6 +89,8 @@ export default class Sea extends PureComponent {
           material={{
             color: color,
             flatShading: true,
+            transparent: true,
+            opacity: 0.5,
           }}
           rotation={[-90, 0, 0]}
           position={[0, -amplitude*2, 0]}
