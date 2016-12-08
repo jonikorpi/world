@@ -73,6 +73,7 @@ export default class Sea extends PureComponent {
     const size = this.props.far; //250;
     // const amplitude = 0.5;
     const color = "black";
+    const seaLevel = this.props.userHeight - 0.5;
 
     return (
       <a-entity>
@@ -98,10 +99,11 @@ export default class Sea extends PureComponent {
             opacity: 0.764,
           }}
           rotation={[-90, 0, 0]}
-          position={[0, 0.5, 0]}
+          position={[0, seaLevel, 0]}
         />
 
         <Entity
+          id="opacity-test"
           geometry={{
             primitive: "box",
             height: 0.2,
@@ -112,7 +114,7 @@ export default class Sea extends PureComponent {
             shader: "flat",
             color: "grey",
           }}
-          position={[0, -0.5, 0]}
+          position={[0, seaLevel-1, 0]}
         />
       </a-entity>
     );

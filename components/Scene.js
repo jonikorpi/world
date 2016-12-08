@@ -132,9 +132,15 @@ export default class Scene extends PureComponent {
             vr-mode-ui="enabled: false"
           >
             <a-entity>
-              <Sky far={this.far}/>
-              <Sea far={this.far}/>
-              {/* <Lights/> */}
+              <Sky
+                far={this.far}
+                userHeight={this.userHeight}
+              />
+
+              <Sea
+                far={this.far}
+                userHeight={this.userHeight}
+              />
 
               <Cockpit
                 playerID={playerID}
