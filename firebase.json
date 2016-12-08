@@ -11,15 +11,16 @@
       ".write": "auth.worldmaster === true",
       "$x": {
         "$y": {
-          ".read": "auth != null",
-          /* TODO complicated neighbour rules */
+          /* TODO generate complicated neighbour rules */
           /* (pos(playerid).bx + "" == $binx &&  pos(playerid).by + "" == $biny) || //and the other 8 adjacent bin coords */
-          "objectID": { ".validate": "
-               (!data.exists() && newData.isString())
-            || (!newData.exists())
-          "},
-          /* MAKE SURE THIS IS FLAT */
-          "$other": { ".validate": "false" },
+          ".read": "auth != null",
+          /* Tile data */
+          "tileOwner": { ".validate": "newData.isString()" },
+          /* Object data */
+          "objectOwner": { ".validate": "newData.isString()" },
+          "objectLastX": { ".validate": "newData.isNumber()" },
+          "objectLastY": { ".validate": "newData.isNumber()" },
+          "objectLastTurn": { ".validate": "newData.isNumber()" },
         },
       },
     },
@@ -32,7 +33,6 @@
           || auth.worldmaster === true
         ",
         /* TODO public identifying features */
-        "inGame": { ".validate": "newData.isBoolean()" },
         "$other": { ".validate": "false" },
       },
     },
@@ -44,25 +44,16 @@
              (auth != null && auth.uid === $playerID)
           || auth.worldmaster === true
         ",
-        "x": { ".validate": "newData.isNumber()" },
-        "y": { ".validate": "newData.isNumber()" },
         "message": { ".validate": "newData.isString()" },
+        "turn": { ".validate": "newData.isNumber()" },
+        "locations": {
+          "$x": {
+            "$y": { ".validate": "newData.isBoolean()" },
+          },
+        },
+        "$other": { ".validate": "false" },
       },
     },
-
-    /*"objects": {
-      ".write": "auth.worldmaster === true",
-      "$objectID": {
-        ".read": "auth != null",
-        /* TODO complicated neighbour rules */
-        /* (pos(playerid).bx + "" == $binx &&  pos(playerid).by + "" == $biny) || //and the other 8 adjacent bin
-        "x": { ".validate": "newData.isNumber()" },
-        "y": { ".validate": "newData.isNumber()" },
-        "previousX": { ".validate": "newData.isNumber()" },
-        "previousY": { ".validate": "newData.isNumber()" },
-        "type": { ".validate": "newData.isString()" },
-      },
-    },*/
 
     "actionQueue": {
       ".read": "auth.worldmaster === true",
