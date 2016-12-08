@@ -4,7 +4,6 @@ import firebase from "firebase";
 import Loading from "../components/Loading";
 import Sky from "../components/Sky";
 import Sea from "../components/Sea";
-import Lights from "../components/Lights";
 import Cockpit from "../components/Cockpit";
 
 export default class Scene extends PureComponent {
