@@ -88,9 +88,10 @@ export default class Tile extends PureComponent {
             stateremoved: this.handleStateEvent,
           }}
           geometry={{
-            primitive: "plane",
+            primitive: "box",
             width: dotSize,
             height: dotSize,
+            depth: dotSize,
           }}
           material={{
             color: objectType ? "yellow" : "white",

@@ -31,7 +31,7 @@ export default class World extends PureComponent {
         id="world"
         position={[
           centerOn[0] * tileSize,
-          userHeight - seaLevel,
+          userHeight + seaLevel,
           centerOn[1] * tileSize,
         ]}
       >
