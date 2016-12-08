@@ -10,6 +10,8 @@ export default class Scene extends PureComponent {
   constructor(props) {
     super(props);
 
+    const userHeight = 1.75;
+
     this.state = {
       playerID: null,
       anonymous: null,
@@ -23,8 +25,8 @@ export default class Scene extends PureComponent {
 
       far: 1000,
       near: 0.1,
-      userHeight: 1.75,
-      seaLevel: -0.5,
+      userHeight: userHeight,
+      seaLevel: -(userHeight/2.618),
       playArea: [1.5, 1.5],
     };
   }
