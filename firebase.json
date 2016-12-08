@@ -18,6 +18,7 @@
           "tileOwner": { ".validate": "newData.isString()" },
           /* Object data */
           "objectOwner": { ".validate": "newData.isString()" },
+          "objectType": { ".validate": "newData.isString()" },
           "objectLastX": { ".validate": "newData.isNumber()" },
           "objectLastY": { ".validate": "newData.isNumber()" },
           "objectLastTurn": { ".validate": "newData.isNumber()" },
