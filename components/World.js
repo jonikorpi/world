@@ -1,5 +1,7 @@
 import React, { PureComponent } from "react";
 import { Entity } from "aframe-react";
+import uniqWith from "lodash.uniqwith";
+import isEqual from "lodash.isequal";
 
 import Location from "../components/Location";
 
@@ -18,9 +20,14 @@ export default class World extends PureComponent {
   }
 
   render() {
-    const { locations, userHeight, seaLevel } = {...this.props};
+    const { userHeight, seaLevel } = {...this.props};
     const { centerOn } = {...this.state};
     const tileSize = 1;
+
+    let locations = this.props.locations;
+    if (locations.length > 1) {
+      locations = uniqWith(locations, isEqual);
+    }
 
     return (
       <Entity

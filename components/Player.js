@@ -3,8 +3,6 @@ import { Entity } from "aframe-react";
 import firebase from "firebase";
 import reactMixin from "react-mixin";
 import reactFire from "reactfire";
-import uniqWith from "lodash.uniqwith";
-import isEqual from "lodash.isequal";
 
 import World from "../components/World";
 import Camera from "../components/Camera";
@@ -119,7 +117,7 @@ export default class Player extends Component {
       })
     });
 
-    return uniqWith(locations, isEqual);
+    return locations;
   }
 
   getLocationChunk = (x, y) => {
