@@ -4,7 +4,7 @@ import firebase from "firebase";
 import Loading from "../components/Loading";
 import Sky from "../components/Sky";
 import Sea from "../components/Sea";
-import Cockpit from "../components/Cockpit";
+import Player from "../components/Player";
 
 export default class Scene extends PureComponent {
   constructor(props) {
@@ -20,11 +20,12 @@ export default class Scene extends PureComponent {
       inVR: false,
       // width: window.innerWidth,
       // height: window.innerHeight,
-    };
 
-    this.far = 1000;
-    this.near = 0.1;
-    this.userHeight = 1.75;
+      far: 1000,
+      near: 0.1,
+      userHeight: 1.75,
+      playArea: [1.5, 1.5],
+    };
   }
 
   componentDidMount() {
@@ -132,23 +133,16 @@ export default class Scene extends PureComponent {
           >
             <a-entity>
               <Sky
-                far={this.far}
-                userHeight={this.userHeight}
+                far={this.state.far}
+                userHeight={this.state.userHeight}
               />
 
               <Sea
-                far={this.far}
-                userHeight={this.userHeight}
+                far={this.state.far}
+                userHeight={this.state.userHeight}
               />
 
-              <Cockpit
-                playerID={playerID}
-                toggleVR={this.toggleVR}
-                inVR={this.state.inVR}
-                far={this.far}
-                near={this.near}
-                userHeight={this.userHeight}
-              />
+              <Player {...this.state}/>
             </a-entity>
           </a-scene>
         ) : (

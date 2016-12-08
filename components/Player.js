@@ -9,7 +9,7 @@ import World from "../components/World";
 import Button from "../components/Button";
 import Rotator from "../components/Rotator";
 
-export default class Cockpit extends Component {
+export default class Player extends Component {
   constructor(props) {
     super(props);
 
@@ -39,12 +39,23 @@ export default class Cockpit extends Component {
   }
 
   bindFirebase = (playerID) => {
-    if (this.state.player) {
+    if (this.state.player || this.state.playerSecrets) {
       this.unbind("player");
+      this.unbind("playerSecrets");
     }
 
     this.bindAsObject(
       firebase.database().ref(`playerSecrets/${playerID}`),
+      "playerSecrets",
+      (error) => {
+        console.log("Player subscription cancelled:")
+        console.log(error);
+        this.setState({playerSecrets: undefined})
+      }
+    );
+
+    this.bindAsObject(
+      firebase.database().ref(`players/${playerID}`),
       "player",
       (error) => {
         console.log("Player subscription cancelled:")
@@ -98,10 +109,8 @@ export default class Cockpit extends Component {
   }
 
   render() {
-    const playerID = this.props.playerID;
-    const { x, y } = {...this.state.player};
-    const cockpitSize = 3;
-    const wallDistance = cockpitSize / 2;
+    const { playerID, playArea, userHeight} = {...this.props};
+    const wallDistance = playArea[1] / 2;
 
     return (
       <Entity>
@@ -110,9 +119,6 @@ export default class Cockpit extends Component {
             far={this.props.far}
             userHeight={this.props.userHeight}
             playerID={playerID}
-            playerX={x}
-            playerY={y}
-            cockpitSize={cockpitSize}
           />
         )}
 
@@ -132,7 +138,7 @@ export default class Cockpit extends Component {
 
         <Entity
           id="cockpit"
-          position={[0, cockpitSize, 0]}
+          position={[0, 0, 0]}
         >
           <Camera
             inVR={this.props.inVR}
@@ -222,4 +228,4 @@ export default class Cockpit extends Component {
   }
 }
 
-reactMixin(Cockpit.prototype, reactFire);
+reactMixin(Player.prototype, reactFire);
