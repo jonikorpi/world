@@ -111,20 +111,11 @@ export default class Player extends Component {
   getLocations = (secretLocations) => {
     let locations = [];
 
-    for (var x in secretLocations) {
-      if (secretLocations.hasOwnProperty(x)) {
-
-        for (var y in x) {
-          if (x.hasOwnProperty(y)) {
-            locations.push({
-              x: x,
-              y: y,
-            });
-          }
-        }
-
-      }
-    }
+    Object.keys(secretLocations).map((x) => {
+      return Object.keys(secretLocations[x]).map((y) => {
+        return locations.push({ x: +x, y: +y });
+      })
+    });
 
     return locations;
   }

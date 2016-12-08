@@ -17,10 +17,6 @@ export default class World extends PureComponent {
     }
   }
 
-  getLocationID = (x, y) => {
-    return `x:${x},y:${y}`;
-  }
-
   render() {
     const { locations, userHeight, seaLevel } = {...this.props};
     const { centerOn } = {...this.state};

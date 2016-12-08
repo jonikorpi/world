@@ -48,7 +48,7 @@ export default class Tile extends PureComponent {
   }
 
   render() {
-    const {x, y, objectType, isActive, tileSize} = {...this.props};
+    const {x, y, tileOwner, isActive, tileSize} = {...this.props};
 
     const cutOff = 6;
     const dotSize = tileSize * 0.146;
@@ -94,7 +94,7 @@ export default class Tile extends PureComponent {
             depth: dotSize,
           }}
           material={{
-            color: objectType ? "yellow" : "white",
+            color: tileOwner ? "yellow" : "white",
           }}
           rotation={[-90, 0, 0]}
         />
