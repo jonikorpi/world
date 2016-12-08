@@ -4,8 +4,8 @@ import firebase from "firebase";
 import reactMixin from "react-mixin";
 import reactFire from "reactfire";
 
-import Camera from "../components/Camera";
 import World from "../components/World";
+import Camera from "../components/Camera";
 import Button from "../components/Button";
 import Rotator from "../components/Rotator";
 
@@ -108,17 +108,41 @@ export default class Player extends Component {
     });
   }
 
+  getLocations = (secretLocations) => {
+    let locations = [];
+
+    for (var x in secretLocations) {
+      if (secretLocations.hasOwnProperty(x)) {
+
+        for (var y in x) {
+          if (x.hasOwnProperty(y)) {
+            locations.push({
+              x: x,
+              y: y,
+            });
+          }
+        }
+
+      }
+    }
+
+    return locations;
+  }
+
   render() {
-    const { playerID, playArea, userHeight} = {...this.props};
+    const { playerID, playArea, userHeight, seaLevel} = {...this.props};
     const wallDistance = playArea[1] / 2;
+    const player = this.state.player;
+    const playerSecrets = this.state.playerSecrets;
+    const secretLocations = playerSecrets && playerSecrets.locations;
+    const locations = secretLocations ? this.getLocations(secretLocations) : [];
 
     return (
       <Entity>
-        {typeof x !== "undefined" && (
+        {locations.length > 0 && (
           <World
-            far={this.props.far}
-            userHeight={this.props.userHeight}
-            playerID={playerID}
+            {...this.props}
+            locations={locations}
           />
         )}
 

@@ -6,6 +6,15 @@ import Location from "../components/Location";
 export default class World extends PureComponent {
   constructor(props) {
     super(props);
+
+    const locations = this.props.locations;
+
+    this.state = {
+      centerOn: [
+        -locations[0].x,
+        -locations[0].y,
+      ],
+    }
   }
 
   getLocationID = (x, y) => {
@@ -13,50 +22,25 @@ export default class World extends PureComponent {
   }
 
   render() {
-    const range = 10;
-    const { playerX, playerY, cockpitSize } = {...this.props};
-    const tileSize = cockpitSize;
-    let locations = [];
-
-    // Create locations
-    for (    let x = playerX - range; x <= playerX + range; x++) {
-      for (  let y = playerY - range; y <= playerY + range; y++) {
-        const distance = (
-          Math.abs(
-            Math.sqrt(
-                Math.pow(playerX - x, 2)
-              + Math.pow(playerY - y, 2)
-            )
-          )
-        );
-
-        if (Math.floor(distance) <= range) {
-          locations.push({
-            x: x,
-            y: y,
-          });
-        }
-      }
-    }
-
-    const worldPosition = [
-      -playerX * tileSize,
-      0.5,
-      -playerY * tileSize,
-    ];
+    const { locations, userHeight, seaLevel } = {...this.props};
+    const { centerOn } = {...this.state};
+    const tileSize = 1;
 
     return (
       <Entity
         id="world"
-        position={worldPosition}
+        position={[
+          centerOn[0] * tileSize,
+          userHeight - seaLevel,
+          centerOn[1] * tileSize,
+        ]}
       >
         {locations.map((location) => {
           return (
             <Location
-              key={this.getLocationID(location.x, location.y)}
-              id={this.getLocationID(location.x, location.y)}
-              {...location}
+              key={`x${location.x},y${location.y}`}
               tileSize={tileSize}
+              {...location}
             />
           )
         })}

@@ -24,6 +24,7 @@ export default class Scene extends PureComponent {
       far: 1000,
       near: 0.1,
       userHeight: 1.75,
+      seaLevel: -0.5,
       playArea: [1.5, 1.5],
     };
   }
@@ -131,19 +132,18 @@ export default class Scene extends PureComponent {
             stats={process.env.NODE_ENV === "production" ? undefined : true}
             vr-mode-ui="enabled: false"
           >
-            <a-entity>
-              <Sky
-                far={this.state.far}
-                userHeight={this.state.userHeight}
-              />
+            <Sky
+              far={this.state.far}
+              userHeight={this.state.userHeight}
+            />
 
-              <Sea
-                far={this.state.far}
-                userHeight={this.state.userHeight}
-              />
+            <Sea
+              far={this.state.far}
+              userHeight={this.state.userHeight}
+              seaLevel={this.state.seaLevel}
+            />
 
-              <Player {...this.state}/>
-            </a-entity>
+            <Player {...this.state}/>
           </a-scene>
         ) : (
           <Loading/>

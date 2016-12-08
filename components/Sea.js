@@ -73,7 +73,7 @@ export default class Sea extends PureComponent {
     const size = this.props.far; //250;
     // const amplitude = 0.5;
     const color = "black";
-    const seaLevel = this.props.userHeight - 0.5;
+    const seaLevel = this.props.userHeight - this.props.seaLevel - 0.02;
 
     return (
       <a-entity>

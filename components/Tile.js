@@ -48,25 +48,23 @@ export default class Tile extends PureComponent {
   }
 
   render() {
-    const {x, y, object, isActive, tileSize} = {...this.props};
+    const {x, y, objectType, isActive, tileSize} = {...this.props};
 
     const cutOff = 6;
-    // tileSize = tileSize + Math.exp(distance/3);
-    const dotSize = tileSize * 0.056;
+    const dotSize = tileSize * 0.146;
 
     const position = [
       x * tileSize,
-      0.6,
+      0,
       y * tileSize,
     ];
 
     return (
       <Entity
-        id={this.props.id}
         className="tile"
         position={position}
       >
-        {object && object.type !== "player" && (
+        {/* {objectType && (
           <Entity
             geometry={{
               primitive: "box",
@@ -79,7 +77,7 @@ export default class Tile extends PureComponent {
             }}
             position={position}
           />
-        )}
+        )} */}
 
         <Entity
           ref={(c) => this.ref = c}
@@ -93,14 +91,10 @@ export default class Tile extends PureComponent {
             primitive: "plane",
             width: dotSize,
             height: dotSize,
-            // buffer: false,
-            // skipCache: true,
-            // mergeTo: "#dot",
           }}
           material={{
-            color: "yellow",
+            color: objectType ? "yellow" : "white",
           }}
-          position={position}
           rotation={[-90, 0, 0]}
         />
 
