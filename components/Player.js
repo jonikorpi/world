@@ -24,6 +24,11 @@ export default class Player extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.playerID !== nextProps.playerID) {
+      if (this.props.playerID) {
+        this.unbind("player");
+        this.unbind("playerSecrets");
+      }
+
       if (nextProps.playerID) {
         this.bindFirebase(nextProps.playerID);
       }
@@ -39,11 +44,6 @@ export default class Player extends Component {
   }
 
   bindFirebase = (playerID) => {
-    if (this.state.player || this.state.playerSecrets) {
-      this.unbind("player");
-      this.unbind("playerSecrets");
-    }
-
     this.bindAsObject(
       firebase.database().ref(`playerSecrets/${playerID}`),
       "playerSecrets",
@@ -63,20 +63,6 @@ export default class Player extends Component {
         this.setState({player: undefined})
       }
     );
-  }
-
-  signIn = () => {
-    console.log("Signing in anonymously");
-    firebase.auth().signInAnonymously().catch(function(error) {
-      console.log(error);
-    });
-  }
-
-  signOut = () => {
-    console.log("Signing out");
-    firebase.auth().signOut().catch(function(error) {
-      console.log(error);
-    });
   }
 
   createPlayer = () => {
@@ -180,17 +166,6 @@ export default class Player extends Component {
                 onClick={this.props.toggleVR}
                 color="purple"
                 position={[0, 1, 0]}
-              />
-
-              <Button
-                onClick={this.signOut}
-                color="red"
-                position={[-1, 1, 0]}
-              />
-              <Button
-                onClick={this.signIn}
-                color="green"
-                position={[1, 1, 0]}
               />
             </Rotator>
           </Entity>

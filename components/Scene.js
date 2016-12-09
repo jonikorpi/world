@@ -75,6 +75,8 @@ export default class Scene extends PureComponent {
           playerID: null,
           anonymous: null,
         });
+
+        this.signIn();
       }
     });
 
@@ -88,6 +90,20 @@ export default class Scene extends PureComponent {
       else {
         this.setState({connected: false});
       }
+    });
+  }
+
+  signIn = () => {
+    console.log("Signing in anonymously");
+    firebase.auth().signInAnonymously().catch(function(error) {
+      console.log(error);
+    });
+  }
+
+  signOut = () => {
+    console.log("Signing out");
+    firebase.auth().signOut().catch(function(error) {
+      console.log(error);
     });
   }
 
