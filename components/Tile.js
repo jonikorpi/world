@@ -88,6 +88,7 @@ export default class Tile extends PureComponent {
           geometry={{
             primitive: "plane",
             width: tileSize,
+            height: tileSize,
           }}
           material={{
             shader: "flat",
