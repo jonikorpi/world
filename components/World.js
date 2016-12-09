@@ -13,8 +13,8 @@ export default class World extends Component {
 
     this.state = {
       centerOn: [
-        -locations[0].x,
-        -locations[0].y,
+        -locations[0].x - 1,
+        -locations[0].y - 1,
       ],
     }
   }

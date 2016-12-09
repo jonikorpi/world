@@ -29,6 +29,7 @@ export default class Camera extends PureComponent {
             fov: inVR ? 80 : 80,
             userHeight: userHeight,
           }}
+          // rotation={[-20, 0, 0]}
           look-controls
           wasd-controls
           // universal-controls={{

@@ -51,22 +51,22 @@ export default class Unit extends PureComponent {
         <Button
           onClick={this.moveNorth}
           color="red"
-          position={[0, 0, -tileSize]}
+          position={[0, 1, -tileSize]}
         />
         <Button
           onClick={this.moveWest}
           color="grey"
-          position={[-tileSize, 0, 0]}
+          position={[-tileSize, 1, 0]}
         />
         <Button
           onClick={this.moveEast}
           color="grey"
-          position={[tileSize, 0, 0]}
+          position={[tileSize, 1, 0]}
         />
         <Button
           onClick={this.moveSouth}
           color="grey"
-          position={[0, 0, tileSize]}
+          position={[0, 1, tileSize]}
         />
 
       </Entity>
