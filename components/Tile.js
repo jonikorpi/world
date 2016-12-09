@@ -11,7 +11,6 @@ export default class Tile extends PureComponent {
   }
 
   handleStateEvent = (event) => {
-    console.log(event);
     const name = event.detail.state;
     const type = event.type;
     let boolean;
@@ -50,10 +49,9 @@ export default class Tile extends PureComponent {
   }
 
   render() {
-    const {x, y, tileOwner, isActive, tileSize, unit} = {...this.props};
+    const {x, y, tileOwner, tileSize, unit} = {...this.props};
 
-    const cutOff = 6;
-    const dotSize = tileSize * 0.146;
+    const dotSize = this.state["cursor-hovered"] ? tileSize * 0.236 : tileSize * 0.146;
 
     const position = [
       x * tileSize,
@@ -91,22 +89,6 @@ export default class Tile extends PureComponent {
           }}
           rotation={[-90, 0, 0]}
         />
-
-        {isActive && (
-          <Entity
-            geometry={{
-              primitive: "plane",
-              width: tileSize,
-              height: tileSize,
-            }}
-            material={{
-              shader: "flat",
-              color: "grey",
-              side: "back",
-            }}
-            billboard
-          />
-        )}
       </Entity>
     );
   }
