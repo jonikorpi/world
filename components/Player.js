@@ -89,25 +89,6 @@ export default class Player extends Component {
     });
   }
 
-  moveNorth = () => { this.move(this.state.player.x,   this.state.player.y-1); }
-  moveWest  = () => { this.move(this.state.player.x+1, this.state.player.y); }
-  moveEast  = () => { this.move(this.state.player.x-1, this.state.player.y); }
-  moveSouth = () => { this.move(this.state.player.x,   this.state.player.y+1); }
-
-  move = (x, y) => {
-    firebase.database().ref("actionQueue/tasks").push({
-      request: {
-        playerID: this.props.playerID,
-        action: "move",
-        target: {
-          x: x,
-          y: y,
-        },
-        time: firebase.database.ServerValue.TIMESTAMP,
-      }
-    });
-  }
-
   getLocations = (secretLocations) => {
     let locations = [];
 
@@ -186,18 +167,11 @@ export default class Player extends Component {
           /> */}
 
           <Entity id="eyeLevel" position={[0, this.props.userHeight, 0]}>
-
             <Rotator id="northWall" distance={wallDistance} rotation={[0, 0, 0]}>
               <Button
                 onClick={this.createPlayer}
                 color="green"
-                position={[0, 1, 0]}
-              />
-
-              <Button
-                onClick={this.moveNorth}
-                color="grey"
-                position={[0, -1, 0]}
+                position={[0, 1.5, 0]}
               />
             </Rotator>
 
@@ -209,40 +183,16 @@ export default class Player extends Component {
               />
 
               <Button
-                onClick={this.moveWest}
-                color="grey"
-                position={[0, -1, 0]}
-              />
-            </Rotator>
-
-            <Rotator id="eastWall" distance={wallDistance} rotation={[0, 270, 0]}>
-              <Button
                 onClick={this.signOut}
                 color="red"
-                position={[-0.5, 1, 0]}
+                position={[-1, 1, 0]}
               />
-
               <Button
                 onClick={this.signIn}
                 color="green"
-                position={[0.5, 1, 0]}
-              />
-
-              <Button
-                onClick={this.moveEast}
-                color="grey"
-                position={[0, -1, 0]}
+                position={[1, 1, 0]}
               />
             </Rotator>
-
-            <Rotator id="southWall" distance={wallDistance} rotation={[0, 180, 0]}>
-              <Button
-                onClick={this.moveSouth}
-                color="grey"
-                position={[0, -1, 0]}
-              />
-            </Rotator>
-
           </Entity>
 
         </Entity>

@@ -1,11 +1,11 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import { Entity } from "aframe-react";
 import uniqWith from "lodash.uniqwith";
 import isEqual from "lodash.isequal";
 
 import Location from "../components/Location";
 
-export default class World extends PureComponent {
+export default class World extends Component {
   constructor(props) {
     super(props);
 
@@ -43,6 +43,7 @@ export default class World extends PureComponent {
             <Location
               key={`x${location.x},y${location.y}`}
               tileSize={tileSize}
+              playerID={this.props.playerID}
               {...location}
             />
           )

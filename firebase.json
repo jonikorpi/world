@@ -72,9 +72,13 @@
           ",
 
           "request": {
-            ".validate": "newData.hasChildren(['playerID', 'action', 'target', 'time']) || auth.worldmaster === true",
+            ".validate": "newData.hasChildren(['playerID', 'action', 'origin', 'target', 'time']) || auth.worldmaster === true",
             "playerID": { ".validate": "newData.val() === auth.uid || auth.worldmaster === true", },
             "action": { ".validate": "newData.isString()" },
+            "origin": {
+              "x": { ".validate": "newData.isNumber()" },
+              "y": { ".validate": "newData.isNumber()" },
+            },
             "target": {
               "x": { ".validate": "newData.isNumber()" },
               "y": { ".validate": "newData.isNumber()" },
