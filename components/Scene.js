@@ -45,7 +45,7 @@ export default class Scene extends PureComponent {
   clientSideRender = () => {
     require("aframe");
     require("aframe-look-at-billboard-component");
-    require("aframe-look-at-billboard-component");
+    require("aframe-meshline-component");
     require("aframe-faceset-component");
 
     window.addEventListener("enter-vr", this.handleStartVR);

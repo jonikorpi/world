@@ -51,13 +51,21 @@ export default class Tile extends PureComponent {
   render() {
     const {x, y, tileOwner, tileSize, unit} = {...this.props};
 
-    const dotSize = this.state["cursor-hovered"] ? tileSize * 0.236 : tileSize * 0.146;
+    let wireframeColor = tileOwner ? "hsl(50, 100%, 15%)" : "hsl(0, 0%, 15%)";
+    let wireframeThickness = tileOwner ? 3 : 1;
+
+    if (this.state["cursor-hovered"]) {
+      wireframeColor = tileOwner ? "hsl(50, 100%, 50%)" : "hsl(0, 0%, 50%)";
+      wireframeThickness = tileOwner ? 8 : 5;
+    }
 
     const position = [
       x * tileSize,
       0,
       y * tileSize,
     ];
+
+    const halfTileSize = tileSize * 0.5;
 
     return (
       <Entity
@@ -71,7 +79,6 @@ export default class Tile extends PureComponent {
         )}
 
         <Entity
-          ref={(c) => this.ref = c}
           className="interactable"
           events={{
             click: this.handleClick,
@@ -79,15 +86,30 @@ export default class Tile extends PureComponent {
             stateremoved: this.handleStateEvent,
           }}
           geometry={{
-            primitive: "box",
-            width: dotSize,
-            height: dotSize,
-            depth: dotSize,
+            primitive: "plane",
+            width: tileSize,
           }}
           material={{
-            color: tileOwner ? "yellow" : "white",
+            shader: "flat",
+            transparent: true,
+            opacity: 0,
           }}
           rotation={[-90, 0, 0]}
+        />
+
+        <Entity
+          position={[halfTileSize, 0, halfTileSize]}
+          meshline={{
+            lineWidth: wireframeThickness,
+            path: `
+              0 0 0,
+              0 0 ${-tileSize},
+              ${-tileSize} 0 ${-tileSize},
+              ${-tileSize} 0 0,
+              0 0 0
+            `,
+            color: wireframeColor,
+          }}
         />
       </Entity>
     );

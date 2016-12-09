@@ -34,7 +34,7 @@ export default class World extends Component {
         id="world"
         position={[
           centerOn[0] * tileSize,
-          userHeight + seaLevel,
+          userHeight + seaLevel + 0.01,
           centerOn[1] * tileSize,
         ]}
       >

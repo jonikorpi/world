@@ -22,6 +22,10 @@ aframe-faceset-component:
   version "0.2.0"
   resolved "https://github.com/blairmacintyre/aframe-look-at-billboard-component.git#5f22260a1d2df0df7395fa95750403eebc2bb665"
 
+"aframe-meshline-component@https://github.com/andreasplesch/aframe-meshline-component.git":
+  version "0.2.0"
+  resolved "https://github.com/andreasplesch/aframe-meshline-component.git#b79b46091326d277960cb2713f12e31a05d708e4"
+
 aframe-react@^3.4.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/aframe-react/-/aframe-react-3.4.0.tgz#4370deb6649550bdb15799b7515a99dd2c6a844a"

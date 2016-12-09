@@ -101,21 +101,6 @@ export default class Sea extends PureComponent {
           rotation={[-90, 0, 0]}
           position={[0, seaLevel, 0]}
         />
-
-        <Entity
-          id="opacity-test"
-          geometry={{
-            primitive: "box",
-            height: 0.2,
-            width: 0.2,
-            depth: 0.2,
-          }}
-          material={{
-            shader: "flat",
-            color: "grey",
-          }}
-          position={[0, seaLevel-1, 0]}
-        />
       </a-entity>
     );
   }
