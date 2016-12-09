@@ -49,15 +49,13 @@ export default class Tile extends PureComponent {
   }
 
   render() {
-    const {x, y, tileOwner, tileSize, unit} = {...this.props};
+    const {x, y, tileOwner, tileSize, unit, playerID} = {...this.props};
 
-    let wireframeColor = tileOwner ? "hsl(50, 100%, 15%)" : "hsl(0, 0%, 15%)";
-    let wireframeThickness = tileOwner ? 3 : 1;
-
-    if (this.state["cursor-hovered"]) {
-      wireframeColor = tileOwner ? "hsl(50, 100%, 50%)" : "hsl(0, 0%, 50%)";
-      wireframeThickness = tileOwner ? 8 : 5;
-    }
+    const wireframeHue = tileOwner === playerID ? 50 : 355;
+    const wireframeSaturation = tileOwner ? 100 : 0;
+    const wireframeLightness = this.state["cursor-hovered"] ? 50 : 15;
+    const wireframeColor = `hsl(${wireframeHue}, ${wireframeSaturation}%, ${wireframeLightness}%)`;
+    const wireframeThickness = this.state["cursor-hovered"] ? 5 : (tileOwner ? 3 : 1);
 
     const position = [
       x * tileSize,
