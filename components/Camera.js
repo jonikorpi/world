@@ -10,7 +10,6 @@ export default class Camera extends PureComponent {
       x: 0,
       z: 0,
     };
-
   }
 
   render() {
@@ -31,17 +30,13 @@ export default class Camera extends PureComponent {
             userHeight: userHeight,
           }}
           look-controls
-          wasd-controls={{
-            enabled: true,
-            // fly: true,
-          }}
+          wasd-controls
           // universal-controls={{
-          //   movementEnabled: inVR === false,
-          //   movementControls: ["keyboard", "gamepad"],
-          //   rotationControls: ['hmd', 'gamepad', 'mouse'],
-          //   // movementSpeed:        30,
-          //   // movementEasing:       25,
-          //   // movementAcceleration: 20,
+          //   movementControls: ["keyboard", "gamepad", "touch", "hmd"],
+          //   rotationControls: ["hmd", "gamepad", "mouse"],
+          //   movementSpeed:        100,
+          //   movementEasing:       100,
+          //   movementAcceleration: 100,
           //   // rotationSensitivity:  0.05,
           //   // fly: true,
           // }}

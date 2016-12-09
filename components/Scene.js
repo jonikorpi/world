@@ -47,10 +47,12 @@ export default class Scene extends PureComponent {
     require("aframe-look-at-billboard-component");
     require("aframe-look-at-billboard-component");
     require("aframe-faceset-component");
+
     window.addEventListener("enter-vr", this.handleStartVR);
     window.addEventListener("exit-vr", this.handleStopVR);
     // window.addEventListener('resize', this.handleResize);
     // this.handleResize();
+
     this.setState({readyForVR: true});
   }
 
