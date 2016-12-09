@@ -102,13 +102,33 @@ export default class Player extends Component {
     const playerSecrets = this.state.playerSecrets;
     const secretLocations = playerSecrets && playerSecrets.locations;
     const locations = secretLocations ? this.getLocations(secretLocations) : [];
+    const tileSize = 1;
 
     return (
       <Entity>
-        {locations.length > 0 && (
+        {locations.length > 0 ? (
           <World
             {...this.props}
             locations={locations}
+            tileSize={tileSize}
+          />
+        ) : (
+          <Entity
+            className="spawnButton interactable"
+            events={{
+              click: this.createPlayer,
+            }}
+            position={[0, userHeight + seaLevel, -2 * tileSize]}
+            geometry={{
+              primitive: "box",
+              width: tileSize * 0.382,
+              height: tileSize * 0.618,
+              depth: tileSize * 0.382,
+            }}
+            material={{
+              shader: "flat",
+              color: "green",
+            }}
           />
         )}
 
@@ -153,13 +173,6 @@ export default class Player extends Component {
           /> */}
 
           <Entity id="eyeLevel" position={[0, this.props.userHeight, 0]}>
-            <Rotator id="northWall" distance={wallDistance} rotation={[0, 0, 0]}>
-              <Button
-                onClick={this.createPlayer}
-                color="green"
-                position={[0, 1.5, 0]}
-              />
-            </Rotator>
 
             <Rotator id="westWall" distance={wallDistance} rotation={[0, 90, 0]}>
               <Button

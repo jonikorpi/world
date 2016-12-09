@@ -20,9 +20,8 @@ export default class World extends Component {
   }
 
   render() {
-    const { userHeight, seaLevel } = {...this.props};
+    const { userHeight, seaLevel, tileSize } = {...this.props};
     const { centerOn } = {...this.state};
-    const tileSize = 1;
 
     let locations = this.props.locations;
     if (locations.length > 1) {
