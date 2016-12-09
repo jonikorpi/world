@@ -1,6 +1,8 @@
 import React, { PureComponent } from "react";
 import { Entity } from "aframe-react";
 
+import Unit from "../components/Unit";
+
 export default class Tile extends PureComponent {
   constructor(props) {
     super(props);
@@ -48,7 +50,7 @@ export default class Tile extends PureComponent {
   }
 
   render() {
-    const {x, y, tileOwner, isActive, tileSize} = {...this.props};
+    const {x, y, tileOwner, isActive, tileSize, unit} = {...this.props};
 
     const cutOff = 6;
     const dotSize = tileSize * 0.146;
@@ -64,20 +66,11 @@ export default class Tile extends PureComponent {
         className="tile"
         position={position}
       >
-        {/* {objectType && (
-          <Entity
-            geometry={{
-              primitive: "box",
-              width: tileSize,
-              height: tileSize,
-              depth: tileSize,
-              buffer: false,
-              skipCache: true,
-              mergeTo: "#dot",
-            }}
-            position={position}
+        {unit && (
+          <Unit
+            {...this.props}
           />
-        )} */}
+        )}
 
         <Entity
           ref={(c) => this.ref = c}

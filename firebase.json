@@ -17,11 +17,11 @@
           /* Tile data */
           "tileOwner": { ".validate": "newData.isString()" },
           /* Object data */
-          "objectOwner": { ".validate": "newData.isString()" },
-          "objectType": { ".validate": "newData.isString()" },
-          "objectLastX": { ".validate": "newData.isNumber()" },
-          "objectLastY": { ".validate": "newData.isNumber()" },
-          "objectLastTurn": { ".validate": "newData.isNumber()" },
+          "unit": { ".validate": "newData.isString()" },
+          "unitOwner": { ".validate": "newData.isString()" },
+          "unitLastX": { ".validate": "newData.isNumber()" },
+          "unitLastY": { ".validate": "newData.isNumber()" },
+          "unitLastTurn": { ".validate": "newData.isNumber()" },
         },
       },
     },
