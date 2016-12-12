@@ -97,7 +97,11 @@ export default class Tile extends PureComponent {
         />
 
         <Entity
-          position={[halfTileSize, 0, halfTileSize]}
+          position={[
+            halfTileSize,
+            wireframeThickness * 0.005,
+            halfTileSize,
+          ]}
           meshline={{
             lineWidth: wireframeThickness,
             path: `
