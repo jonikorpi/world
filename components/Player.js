@@ -6,8 +6,6 @@ import reactFire from "reactfire";
 
 import World from "../components/World";
 import Camera from "../components/Camera";
-import Button from "../components/Button";
-import Rotator from "../components/Rotator";
 
 export default class Player extends Component {
   constructor(props) {
@@ -150,12 +148,7 @@ export default class Player extends Component {
           id="cockpit"
           position={[0, 0, 0]}
         >
-          <Camera
-            inVR={this.props.inVR}
-            far={this.props.far}
-            near={this.props.near}
-            userHeight={this.props.userHeight}
-          />
+          <Camera {...this.props}/>
 
           {/* <Entity
             id="boundaries"
@@ -171,17 +164,6 @@ export default class Player extends Component {
               wireframe: true,
             }}
           /> */}
-
-          <Entity id="eyeLevel" position={[0, this.props.userHeight, 0]}>
-
-            <Rotator id="westWall" distance={wallDistance} rotation={[0, 90, 0]}>
-              <Button
-                onClick={this.props.toggleVR}
-                color="purple"
-                position={[0, 1, 0]}
-              />
-            </Rotator>
-          </Entity>
 
         </Entity>
       </Entity>

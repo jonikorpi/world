@@ -163,7 +163,10 @@ export default class Scene extends PureComponent {
               seaLevel={this.state.seaLevel}
             />
 
-            <Player {...this.state}/>
+            <Player
+              {...this.state}
+              toggleVR={this.toggleVR}
+            />
           </a-scene>
         ) : (
           <Loading/>
