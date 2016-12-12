@@ -14,28 +14,24 @@
           /* TODO generate complicated neighbour rules */
           /* (pos(playerid).bx + "" == $binx &&  pos(playerid).by + "" == $biny) || //and the other 8 adjacent bin coords */
           ".read": "auth != null",
-          /* Tile data */
-          "tileOwner": { ".validate": "newData.isString()" },
-          /* Object data */
-          "unit": { ".validate": "newData.isString()" },
-          "unitOwner": { ".validate": "newData.isString()" },
-          "unitLastX": { ".validate": "newData.isNumber()" },
-          "unitLastY": { ".validate": "newData.isNumber()" },
-          "unitLastTurn": { ".validate": "newData.isNumber()" },
-          "unitLastAction": { ".validate": "newData.isString()" },
+          "unitID": { ".validate": "newData.isString() && !data.exists()" },
         },
       },
     },
 
-    "players": {
-      "$playerID": {
+    "units": {
+      ".write": "auth.worldmaster === true",
+      "$unitID": {
+        /* TODO generate complicated neighbour rules */
         ".read": "auth != null",
-        ".write": "
-             (auth != null && auth.uid === $playerID)
-          || auth.worldmaster === true
-        ",
-        /* TODO public identifying features */
-        "$other": { ".validate": "false" },
+        "ownerID": { ".validate": "newData.isString()" },
+        "type": { ".validate": "newData.isString()" },
+        "x": { ".validate": "newData.isNumber()" },
+        "y": { ".validate": "newData.isNumber()" },
+        "lastX": { ".validate": "newData.isNumber()" },
+        "lastY": { ".validate": "newData.isNumber()" },
+        "lastTurn": { ".validate": "newData.isNumber()" },
+        "lastAction": { ".validate": "newData.isString()" },
       },
     },
 
@@ -48,11 +44,21 @@
         ",
         "message": { ".validate": "newData.isString()" },
         "turn": { ".validate": "newData.isNumber()" },
-        "locations": {
-          "$x": {
-            "$y": { ".validate": "newData.isBoolean()" },
-          },
+        "units": {
+          "$unitID": { ".validate": "newData.isString()" },
         },
+        "$other": { ".validate": "false" },
+      },
+    },
+
+    "players": {
+      "$playerID": {
+        ".read": "auth != null",
+        ".write": "
+             (auth != null && auth.uid === $playerID)
+          || auth.worldmaster === true
+        ",
+        /* TODO public identifying features */
         "$other": { ".validate": "false" },
       },
     },
@@ -84,83 +90,6 @@
               "x": { ".validate": "newData.isNumber()" },
               "y": { ".validate": "newData.isNumber()" },
             },
-            "time":   { ".validate": "newData.val() === now || auth.worldmaster === true" },
-            "$other": { ".validate": "false" },
-          },
-
-          "_state": {
-            ".validate": "newData.isString()"
-          },
-          "_state_changed": {
-            ".validate": "newData.isNumber() && (newData.val() === now
-                          || data.val() === newData.val())"
-          },
-          "_owner": {
-            ".validate": "newData.isString()"
-          },
-          "_progress": {
-            ".validate": "newData.isNumber()
-                          && newData.val() >= 0
-                          && newData.val() <= 100"
-          },
-          "_error_details": {
-              "error": {
-                ".validate": "newData.isString()"
-              },
-              "error_stack": {
-                ".validate": "newData.isString()"
-              },
-              "previous_state": {
-                ".validate": "newData.isString()"
-              },
-              "original_task": {},
-              "attempts": {
-                ".validate": "newData.isNumber() && newData.val() > 0"
-              },
-              "$other": {
-                ".validate": false
-              }
-          },
-          "_id": {
-            ".validate": "newData.isString()"
-          },
-        },
-      },
-
-      "specs" : {
-        ".read": "auth.worldmaster === true",
-        ".write": "auth.worldmaster === true",
-        "$specId": {
-          ".validate": "newData.hasChild('in_progress_state')",
-          "start_state":       { ".validate": "newData.isString()" },
-          "in_progress_state": { ".validate": "newData.isString()" },
-          "finished_state":    { ".validate": "newData.isString()" },
-          "error_state":       { ".validate": "newData.isString()" },
-          "timeout":           { ".validate": "newData.isNumber() && newData.val() > 0" },
-          "$other":            { ".validate": false },
-        },
-      },
-    },
-
-    "playerQueue": {
-      ".read": "auth.worldmaster === true",
-      "tasks": {
-        ".indexOn": "_state",
-
-        "$taskId": {
-          ".write": " (auth.uid != null && !data.exists()) || auth.worldmaster === true",
-          ".validate": "
-            newData.hasChildren(['request'])
-            || (
-              auth.worldmaster === true
-              && newData.hasChildren(['_state', '_state_changed', '_progress'])
-            )
-          ",
-
-          "request": {
-            ".validate": "newData.hasChildren(['playerID', 'action', 'time']) || auth.worldmaster === true",
-            "playerID": { ".validate": "newData.val() === auth.uid || auth.worldmaster === true", },
-            "action": { ".validate": "newData.isString()" },
             "time":   { ".validate": "newData.val() === now || auth.worldmaster === true" },
             "$other": { ".validate": "false" },
           },
