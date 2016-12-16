@@ -1,37 +1,41 @@
 {
   "rules": {
 
-    "motd": {
+    "world": {
       ".read": "auth != null",
       ".write": "auth.worldmaster === true",
-      ".validate": "newData.isString()",
+      "motd": { ".validate": "newData.isString()" },
+      "playerCount": { ".validate": "newData.isNumber()" },
+      "serverCount": { ".validate": "newData.isNumber()" },
     },
 
     "locations": {
       ".write": "auth.worldmaster === true",
-      "$x": {
-        "$y": {
-          /* TODO generate complicated neighbour rules */
-          /* (pos(playerid).bx + "" == $binx &&  pos(playerid).by + "" == $biny) || //and the other 8 adjacent bin coords */
-          ".read": "auth != null",
-          "unitID": { ".validate": "newData.isString() && !data.exists()" },
-        },
-      },
-    },
-
-    "units": {
-      ".write": "auth.worldmaster === true",
-      "$unitID": {
+      "$locationID": {
         /* TODO generate complicated neighbour rules */
+        /* (pos(playerid).bx + "" == $binx &&  pos(playerid).by + "" == $biny) || //and the other 8 adjacent bin coords */
         ".read": "auth != null",
-        "ownerID": { ".validate": "newData.isString()" },
-        "type": { ".validate": "newData.isString()" },
         "x": { ".validate": "newData.isNumber()" },
         "y": { ".validate": "newData.isNumber()" },
-        "lastX": { ".validate": "newData.isNumber()" },
-        "lastY": { ".validate": "newData.isNumber()" },
-        "lastTurn": { ".validate": "newData.isNumber()" },
-        "lastAction": { ".validate": "newData.isString()" },
+        "tiles": {
+          "$tileID": {
+            "x": { ".validate": "newData.isNumber()" },
+            "y": { ".validate": "newData.isNumber()" },
+            "tile": {
+              "rock": { ".validate": "newData.isNumber()" },
+            },
+            "unit": {
+              "playerID": { ".validate": "newData.isString()" },
+              "type": { ".validate": "newData.isString()" },
+              "actions": { ".validate": "newData.isNumber()" },
+              "action": { ".validate": "newData.isString()" },
+              "emote": { ".validate": "newData.isString()" },
+              "health": { ".validate": "newData.isNumber()" },
+              "orientation": { ".validate": "newData.isNumber()" }, /* 0 = east */
+              "attack": { ".validate": "newData.isString()" }, /* 2 2 2 1 1 1 */
+            },
+          }
+        },
       },
     },
 
@@ -43,13 +47,12 @@
           || auth.worldmaster === true
         ",
         "message": { ".validate": "newData.isString()" },
-        "turn": { ".validate": "newData.isNumber()" },
-        "units": {
-          "$unitID": { ".validate": "newData.isString()" },
+        "locations": {
+          "$locationID": { ".validate": "newData.isString()" },
         },
-        "$other": { ".validate": "false" },
       },
     },
+
 
     "players": {
       "$playerID": {
@@ -58,7 +61,7 @@
              (auth != null && auth.uid === $playerID)
           || auth.worldmaster === true
         ",
-        /* TODO public identifying features */
+        /* TODO flag */
         "$other": { ".validate": "false" },
       },
     },
