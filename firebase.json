@@ -21,20 +21,23 @@
           "$tileID": {
             "x": { ".validate": "newData.isNumber()" },
             "y": { ".validate": "newData.isNumber()" },
-            "tile": {
-              "rock": { ".validate": "newData.isNumber()" },
-            },
-            "unit": {
-              "playerID": { ".validate": "newData.isString()" },
-              "type": { ".validate": "newData.isString()" },
-              "actions": { ".validate": "newData.isNumber()" },
-              "action": { ".validate": "newData.isString()" },
-              "emote": { ".validate": "newData.isString()" },
-              "health": { ".validate": "newData.isNumber()" },
-              "orientation": { ".validate": "newData.isNumber()" }, /* 0 = east */
-              "attack": { ".validate": "newData.isString()" }, /* 2 2 2 1 1 1 */
-            },
-          }
+            "rock": { ".validate": "newData.isNumber()" },
+          },
+        },
+        "units": {
+          "$unitID": {
+            "x": { ".validate": "newData.isNumber()" },
+            "y": { ".validate": "newData.isNumber()" },
+            "playerID": { ".validate": "newData.isString()" },
+            "type": { ".validate": "newData.isString()" },
+            "actions": { ".validate": "newData.isNumber()" },
+            "action": { ".validate": "newData.isString()" },
+            "actionTime": { ".validate": "newData.isString()" },
+            "emote": { ".validate": "newData.isString()" },
+            "health": { ".validate": "newData.isNumber()" },
+            "orientation": { ".validate": "newData.isNumber()" }, /* 0 = north */
+            "attack": { ".validate": "newData.isString()" }, /* 2 3 2 1 0 1 */
+          },
         },
       },
     },
@@ -48,7 +51,7 @@
         ",
         "message": { ".validate": "newData.isString()" },
         "locations": {
-          "$locationID": { ".validate": "newData.isString()" },
+          "$locationID": { ".validate": "newData.isBoolean()" },
         },
       },
     },
