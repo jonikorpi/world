@@ -41,7 +41,9 @@
         ",
         "message": { ".validate": "newData.isString()" },
         "locations": {
-          "$locationID": { ".validate": "newData.isBoolean()" },
+          "$x": {
+            "$y": { ".validate": "newData.isBoolean()" },
+          }
         },
       },
     },
