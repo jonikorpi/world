@@ -3,6 +3,8 @@ import { Entity } from "aframe-react";
 import firebase from "firebase";
 import reactMixin from "react-mixin";
 import reactFire from "reactfire";
+import uniqWith from "lodash.uniqwith";
+import isEqual from "lodash.isequal";
 
 import World from "../components/World";
 import Camera from "../components/Camera";
@@ -78,20 +80,27 @@ export default class Player extends Component {
 
     Object.keys(secretLocations).map((x) => {
       return Object.keys(secretLocations[x]).map((y) => {
-        return locations = locations.concat( this.getLocationChunk(+x, +y) );
+        return locations = locations.concat( this.listNeighbouringTiles([+x, +y]) );
       })
     });
 
     return locations;
   }
 
-  getLocationChunk = (x, y) => {
-    return [
-      { x: x-1, y: y+1 }, { x: x+0, y: y+1 }, { x: x+1, y: y+1 },
-      { x: x-1, y: y+0 }, { x: x+0, y: y+0 }, { x: x+1, y: y+0 },
-      { x: x-1, y: y-1 }, { x: x+0, y: y-1 }, { x: x+1, y: y-1 },
-    ];
-  }
+  listNeighbouringTiles = (location) => {
+    const [x, y] = location;
+    let neighbours = [];
+
+    // Clockwise from top-right
+    neighbours.push({x: x+1, y: y-1});
+    neighbours.push({x: x+1, y: y  });
+    neighbours.push({x: x,   y: y+1});
+    neighbours.push({x: x-1, y: y+1});
+    neighbours.push({x: x-1, y: y  });
+    neighbours.push({x: x,   y: y-1});
+
+    return neighbours;
+  };
 
   render() {
     const { playerID, playArea, userHeight, seaLevel} = {...this.props};
@@ -99,7 +108,12 @@ export default class Player extends Component {
     const player = this.state.player;
     const playerSecrets = this.state.playerSecrets;
     const secretLocations = playerSecrets && playerSecrets.locations;
-    const locations = secretLocations ? this.getLocations(secretLocations) : [];
+
+    let locations = secretLocations ? this.getLocations(secretLocations) : [];
+    if (locations.length > 1) {
+      locations = uniqWith(locations, isEqual);
+    }
+
     const tileSize = 1;
 
     return (
