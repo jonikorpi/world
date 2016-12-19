@@ -10,7 +10,7 @@ export default class Scene extends PureComponent {
   constructor(props) {
     super(props);
 
-    const userHeight = 1.75;
+    const userHeight = 1.6;
 
     this.state = {
       playerID: null,
