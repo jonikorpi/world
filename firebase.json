@@ -1,14 +1,6 @@
 {
   "rules": {
 
-    "world": {
-      ".read": "auth != null",
-      ".write": "auth.worldmaster === true",
-      "motd": { ".validate": "newData.isString()" },
-      "playerCount": { ".validate": "newData.isNumber()" },
-      "serverCount": { ".validate": "newData.isNumber()" },
-    },
-
     "locations": {
       ".write": "auth.worldmaster === true",
       "$locationID": {
