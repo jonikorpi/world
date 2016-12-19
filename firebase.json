@@ -7,12 +7,8 @@
         /* TODO generate complicated neighbour rules */
         /* (pos(playerid).bx + "" == $binx &&  pos(playerid).by + "" == $biny) || //and the other 8 adjacent bin coords */
         ".read": "auth != null",
-        "x": { ".validate": "newData.isNumber()" },
-        "y": { ".validate": "newData.isNumber()" },
         "tiles": {
           "$tileID": {
-            "x": { ".validate": "newData.isNumber()" },
-            "y": { ".validate": "newData.isNumber()" },
             "rock": { ".validate": "newData.isNumber()" },
           },
         },
