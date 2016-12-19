@@ -23,7 +23,7 @@
             "actionTime": { ".validate": "newData.isString()" },
             "emote": { ".validate": "newData.isString()" },
             "health": { ".validate": "newData.isNumber()" },
-            "orientation": { ".validate": "newData.isNumber()" }, /* 0 = north */
+            "orientation": { ".validate": "newData.isNumber()" }, /* 0 = NE */
             "attack": { ".validate": "newData.isString()" }, /* 2 3 2 1 0 1 */
           },
         },
