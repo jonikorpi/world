@@ -9,6 +9,8 @@
         ".read": "auth != null",
         "x": { ".validate": "newData.isNumber()" },
         "y": { ".validate": "newData.isNumber()" },
+        "unitCount": { ".validate": "newData.isNumber()" },
+        "playerCount": { ".validate": "newData.isNumber()" },
         "tiles": {
           "$tileID": {
             "rock": { ".validate": "newData.isNumber()" },
