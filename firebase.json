@@ -26,7 +26,21 @@
             "flankAttack": { ".validate": "newData.isNumber()" },
             "backAttack":  { ".validate": "newData.isNumber()" },
             "orientation": { ".validate": "newData.isNumber()" }, /* 0 = N */
-          }
+          },
+        },
+      },
+    },
+
+    "playerSecrets": {
+      ".write": "auth.worldmaster === true",
+      "$playerID": {
+        ".read": "
+             (auth != null && auth.uid === $playerID)
+          || auth.worldmaster === true
+        ",
+        "message": { ".validate": "newData.isString()" },
+        "locations": {
+          "$locationID": { ".validate": "newData.isBoolean()" },
         },
       },
     },
