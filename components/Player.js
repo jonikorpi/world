@@ -26,7 +26,7 @@ export default class Player extends Component {
     if (this.props.playerID !== nextProps.playerID) {
       if (this.props.playerID) {
         this.unbind("player");
-        this.unbind("playerSecrets");
+        // this.unbind("playerSecrets");
       }
 
       if (nextProps.playerID) {
@@ -44,18 +44,18 @@ export default class Player extends Component {
   }
 
   bindFirebase = (playerID) => {
-    this.bindAsObject(
-      firebase.database().ref(`playerSecrets/${playerID}`),
-      "playerSecrets",
-      (error) => {
-        console.log("Player subscription cancelled:")
-        console.log(error);
-        this.setState({playerSecrets: undefined})
-      }
-    );
+    // this.bindAsObject(
+    //   firebase.database().ref(`playerSecrets/${playerID}`),
+    //   "playerSecrets",
+    //   (error) => {
+    //     console.log("Player subscription cancelled:")
+    //     console.log(error);
+    //     this.setState({playerSecrets: undefined})
+    //   }
+    // );
 
     this.bindAsObject(
-      firebase.database().ref(`players/${playerID}`),
+      firebase.database().ref("locations").orderByChild(`unit/${playerID}`),
       "player",
       (error) => {
         console.log("Player subscription cancelled:")
