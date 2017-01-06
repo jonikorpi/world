@@ -8,23 +8,58 @@
       ".read": "auth != null",
       "x": { ".validate": "newData.isNumber()" },
       "y": { ".validate": "newData.isNumber()" },
-      "visibility": { ".validate": "newData.isNumber()" },
-      "unit": {
-        "$playerID": {
+      "player": {
+        "playerID": { ".validate": "newData.isString()" },
+        "turn": { ".validate": "newData.isNumber()" },
+        "orientation": { ".validate": "newData.isNumber()" }, /* 0 = N */
+        "secrets": { ".validate": "newData.isNumber()" },
+        "emote": {
           "type": { ".validate": "newData.isString()" },
-
-          "action": { ".validate": "newData.isString()" },
-          "actionTime": { ".validate": "newData.isNumber()" },
-          "emote": { ".validate": "newData.isString()" },
-
-          "maxHealth": { ".validate": "newData.isNumber()" },
-          "health":    { ".validate": "newData.isNumber()" },
-          "attack":    { ".validate": "newData.isNumber()" },
-
-          "frontAttack": { ".validate": "newData.isNumber()" },
-          "flankAttack": { ".validate": "newData.isNumber()" },
-          "backAttack":  { ".validate": "newData.isNumber()" },
-          "orientation": { ".validate": "newData.isNumber()" }, /* 0 = N */
+          "turn": { ".validate": "newData.isNumber()" }, /* Use with `turnMounted` */
+        },
+        "action": {
+          "type": { ".validate": "newData.isString()" },
+          "turn": { ".validate": "newData.isNumber()" }, /* Use with `turnMounted` */
+        },
+        "health": {
+          "originalMax": { ".validate": "newData.isNumber()" },
+          "max":         { ".validate": "newData.isNumber()" },
+          "current":     { ".validate": "newData.isNumber()" },
+        },
+        "attack": {
+          "original": { ".validate": "newData.isNumber()" },
+          "current":  { ".validate": "newData.isNumber()" },
+        },
+        "mana": {
+          "current": { ".validate": "newData.isNumber()" },
+          "max":     { ".validate": "newData.isNumber()" },
+        },
+        "playedCards": {
+          "$cardKey": { ".validate": "newData.isString()" },
+        },
+        "$unitID": {
+          ".validate": "
+               $unitID === 'frontLeft'
+            || $unitID === 'front'
+            || $unitID === 'frontRight'
+            || $unitID === 'backRight'
+            || $unitID === 'back'
+            || $unitID === 'backLeft'
+          ",
+          "type": { ".validate": "newData.isString()" },
+          "action": {
+            "type": { ".validate": "newData.isString()" },
+            "turn": { ".validate": "newData.isNumber()" }, /* Use with `turnMounted` */
+          },
+          "health": {
+            "originalMax": { ".validate": "newData.isNumber()" },
+            "max":         { ".validate": "newData.isNumber()" },
+            "current":     { ".validate": "newData.isNumber()" },
+          },
+          "attack": {
+            "original": { ".validate": "newData.isNumber()" },
+            "current":  { ".validate": "newData.isNumber()" },
+          },
         },
       },
     },
@@ -38,8 +73,13 @@
         || auth.worldmaster === true
       ",
       "message": { ".validate": "newData.isString()" },
-      "locations": {
-        "$locationID": { ".validate": "newData.isBoolean()" },
+      "locationID": { ".validate": "newData.isString()" },
+      "cards": {
+        "$cardKey": { ".validate": "newData.isString()" },
+      },
+      "cardLocationID": { ".validate": "newData.isString()" },
+      "lockedCardLocationIDs": {
+        "$lockedCardLocationID": { ".validate": "newData.isString()" },
       },
     },
   },
