@@ -12,6 +12,7 @@
     "aframe-meshline-component": "https://github.com/andreasplesch/aframe-meshline-component.git",
     "aframe-react": "^3.4.1",
     "firebase": "^3.6.5",
+    "firebase-admin": "^4.0.4",
     "lodash.isequal": "^4.5.0",
     "lodash.uniqwith": "^4.5.0",
     "next": "^2.0.0-beta",
@@ -19,12 +20,11 @@
     "reactfire": "^1.0.0"
   },
   "scripts": {
-    "start": "next dev",
+    "start": "node --harmony-async-await server.js",
     "build": "next build",
     "test": "",
     "eject": "",
     "deploy": "now -e NODE_ENV=production && curl https://api.rollbar.com/api/1/deploy/ -F access_token=22fca22d3936434eb8b69cc0c453d040 -F environment=production -F revision=`git log -n 1 --pretty=format:'%H'` -F local_username=`whoami`",
-    "now-start": "next start",
-    "now-build": "next build"
+    "now-start": "NODE_ENV=production node --harmony-async-await server.js"
   }
 }
