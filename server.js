@@ -25,12 +25,18 @@ app.prepare().then(() => {
   createServer((req, res) => {
     const { pathname, query } = parse(req.url, true);
 
-    if (pathname === "/a") {
-      app.render(req, res, "/a", query);
-    } else if (pathname === "/b") {
-      app.render(req, res, "/b", query);
+    if (req.method === "POST") {
+      dev && console.log(req.method, pathname, query, req.body);
     } else {
-      handle(req, res);
+      dev && console.log(req.method, pathname, query);
+
+      switch (pathname) {
+      // case "/a":
+      //   app.render(req, res, "/b", query);
+      //   break;
+      default:
+        handle(req, res);
+      }
     }
   }).listen(3000, err => {
     if (err)
