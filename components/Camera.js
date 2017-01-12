@@ -1,8 +1,6 @@
 import React, { PureComponent } from "react";
 import { Entity } from "aframe-react";
 
-import Button from "../components/Button";
-
 export default class Camera extends PureComponent {
   constructor(props) {
     super(props);
@@ -72,12 +70,6 @@ export default class Camera extends PureComponent {
             }}
           />
         </Entity>
-
-        <Button
-          onClick={this.props.toggleVR}
-          color="purple"
-          position={[0, 5, 0]}
-        />
       </Entity>
     );
   }
