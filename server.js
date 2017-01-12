@@ -57,6 +57,7 @@ const handleRequest = async (request) => {
 
   const decodedToken = await firebase.auth().verifyIdToken(token);
 
+  if (playerID !== decodedToken.uid) {
     throw new Error("You are not authenticated as this player.")
   }
 
