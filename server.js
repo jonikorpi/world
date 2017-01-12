@@ -12,38 +12,52 @@ firebase.initializeApp({
 const database = firebase.database();
 
 //
-// Setup server and next.js
-const { createServer } = require("http");
-const { parse } = require("url");
+// Setup next
 const next = require("next");
-
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
+//
+// Setup express
+const express = require("express");
+const bodyParser = require("body-parser");
+const server = express();
+server.use(bodyParser.json());
+
+//
+// Handle requests
 app.prepare().then(() => {
-  createServer((req, res) => {
-    const { pathname, query } = parse(req.url, true);
+  // Page requests
+  server.get("*", (req, res) => {
+    dev && console.log(req.method, req.originalUrl)
+    return handle(req, res)
+  })
 
-    if (req.method === "POST") {
-      dev && console.log(req.method, pathname, query, req.body);
-    } else {
-      dev && console.log(req.method, pathname, query);
-
-      switch (pathname) {
-      // case "/a":
-      //   app.render(req, res, "/b", query);
-      //   break;
-      default:
-        handle(req, res);
-      }
+  // Player requests
+  server.post("*", async (req, res) => {
+    dev && console.log(req.method, req.originalUrl, req.body);
+    try {
+      await handleRequest(req.body) && res.send("ok");
+    } catch (error) {
+      res.send(error.message);
     }
-  }).listen(3000, err => {
-    if (err)
-      throw err;
-    console.log("> Next ready on http://localhost:3000");
-  });
+  })
+
+  // Start server
+  server.listen(3000, (err) => {
+    if (err) throw err
+    console.log('> Express & next.js ready on http://localhost:3000')
+  })
 });
+
+const handleRequest = async (request) => {
+  // const {token, playerID, action} = {...request};
+  const decodedToken = await firebase.auth().verifyIdToken(request.token);
+
+  return true;
+}
+
 // //
 // // Task processing
 //

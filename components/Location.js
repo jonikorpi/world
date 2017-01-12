@@ -15,7 +15,10 @@ export default class Location extends PureComponent {
 
   componentWillMount() {
     const { x,y } = {...this.props};
-    this.bindFirebase(x,y);
+
+    if (x && y) {
+      this.bindFirebase(x,y);
+    }
   }
 
   // componentWillReceiveProps(nextProps) {
@@ -67,7 +70,7 @@ export default class Location extends PureComponent {
       );
     }
     else {
-      return null;
+      return this.props.children;
     }
   }
 }

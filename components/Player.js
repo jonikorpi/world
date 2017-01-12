@@ -6,6 +6,8 @@ import reactFire from "reactfire";
 import uniqWith from "lodash.uniqwith";
 import isEqual from "lodash.isequal";
 
+import request from "../helpers/request";
+
 import World from "../components/World";
 import Camera from "../components/Camera";
 
@@ -65,26 +67,37 @@ export default class Player extends Component {
     );
   }
 
-  createPlayer = () => {
-    firebase.database().ref("playerQueue/tasks").push({
-      request: {
+  createPlayer = async () => {
+    const headers = new Headers({
+      "Content-Type": "application/json",
+    });
+
+    const response = await fetch("/", {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify({
+        token: this.props.playerToken,
         playerID: this.props.playerID,
         action: "spawn",
-        time: firebase.database.ServerValue.TIMESTAMP,
-      }
+      }),
     });
+
+    if (response.ok) {
+      console.log(await response.text());
+    }
+    else {
+      console.log(response);
+    }
   }
 
   getLocations = (secretLocations) => {
-    let locations = [];
-
-    Object.keys(secretLocations).map((x) => {
-      return Object.keys(secretLocations[x]).map((y) => {
-        return locations = locations.concat( this.listNeighbouringTiles([+x, +y]) );
-      })
-    });
-
-    return locations;
+    // let locations = [];
+    //
+    // return Object.keys(secretLocations).map((locationID) => {
+    //   return locations = locations.concat( this.listNeighbouringTiles([+x, +y]) );
+    // });
+    //
+    // return locations;
   }
 
   listNeighbouringTiles = (location) => {
@@ -158,28 +171,7 @@ export default class Player extends Component {
           }}
         />
 
-        <Entity
-          id="cockpit"
-          position={[0, 0, 0]}
-        >
-          <Camera {...this.props}/>
-
-          {/* <Entity
-            id="boundaries"
-            geometry={{
-              primitive: "box",
-              width:  cockpitSize,
-              height: cockpitSize,
-              depth:  cockpitSize,
-            }}
-            material={{
-              shader: "flat",
-              color: "grey",
-              wireframe: true,
-            }}
-          /> */}
-
-        </Entity>
+        <Camera {...this.props}/>
       </Entity>
     );
   }

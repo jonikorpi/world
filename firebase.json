@@ -13,6 +13,7 @@
         "playerID": { ".validate": "newData.isString()" },
         "type": { ".validate": "newData.isString()" },
         "turn": { ".validate": "newData.isNumber()" },
+        "immuneUntil": { ".validate": "newData.isNumber()" },
         "emote": {
           "type": { ".validate": "newData.isString()" },
           "turn": { ".validate": "newData.isNumber()" }, /* Use with `turnMounted` */
@@ -45,7 +46,7 @@
       "mana": { ".validate": "newData.isNumber()" },
       "turns": { ".validate": "newData.isNumber()" },
       "locations": {
-        "$locationID": { ".validate": "newData.isString()" },
+        "$locationID": { ".validate": "newData.isBoolean()" },
       },
     },
   },
