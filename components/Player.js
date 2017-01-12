@@ -132,14 +132,18 @@ export default class Player extends Component {
     const tileSize = 1;
 
     return (
-      <Entity>
-        {locations.length > 0 ? (
+      <Entity id="player">
+        <Camera {...this.props}/>
+
+        {playerSecrets && locations.length > 0 && (
           <World
             {...this.props}
             locations={locations}
             tileSize={tileSize}
           />
-        ) : (
+        )}
+
+        {playerSecrets && locations.length === 0 && (
           <Entity
             className="spawnButton interactable"
             events={{
