@@ -23,12 +23,12 @@
     "reactfire": "^1.0.0"
   },
   "scripts": {
-    "start": "firebase deploy && nodemon --harmony-async-await server.js",
+    "start": "firebase deploy && nodemon --watch server --harmony-async-await server/server.js",
     "build": "next build",
     "test": "",
     "eject": "",
     "deploy": "now -e NODE_ENV=production && curl https://api.rollbar.com/api/1/deploy/ -F access_token=22fca22d3936434eb8b69cc0c453d040 -F environment=production -F revision=`git log -n 1 --pretty=format:'%H'` -F local_username=`whoami` && firebase deploy",
-    "now-start": "NODE_ENV=production node --harmony-async-await server.js"
+    "now-start": "NODE_ENV=production node --harmony-async-await server/server.js"
   },
   "devDependencies": {
     "nodemon": "^1.11.0"
