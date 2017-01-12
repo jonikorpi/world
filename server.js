@@ -45,9 +45,9 @@ app.prepare().then(() => {
   })
 
   // Start server
-  server.listen(3000, (err) => {
-    if (err) throw err
-    console.log('> Express & next.js ready on http://localhost:3000')
+  server.listen(3000, (error) => {
+    if (error) throw error;
+    console.log("> Express & next.js ready on http://localhost:3000");
   })
 });
 
