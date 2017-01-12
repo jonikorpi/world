@@ -52,8 +52,13 @@ app.prepare().then(() => {
 });
 
 const handleRequest = async (request) => {
-  // const {token, playerID, action} = {...request};
-  const decodedToken = await firebase.auth().verifyIdToken(request.token);
+  const playerID = request.playerID;
+  const token = request.token;
+
+  const decodedToken = await firebase.auth().verifyIdToken(token);
+
+    throw new Error("You are not authenticated as this player.")
+  }
 
   return true;
 }
