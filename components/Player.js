@@ -92,28 +92,30 @@ export default class Player extends Component {
 
   getLocations = (secretLocations) => {
     // let locations = [];
-    //
+
+    return Object.keys(secretLocations);
+
     // return Object.keys(secretLocations).map((locationID) => {
     //   return locations = locations.concat( this.listNeighbouringTiles([+x, +y]) );
     // });
-    //
+
     // return locations;
   }
 
-  listNeighbouringTiles = (location) => {
-    const [x, y] = location;
-    let neighbours = [];
-
-    // Clockwise from top-right
-    neighbours.push({x: x+1, y: y-1});
-    neighbours.push({x: x+1, y: y  });
-    neighbours.push({x: x,   y: y+1});
-    neighbours.push({x: x-1, y: y+1});
-    neighbours.push({x: x-1, y: y  });
-    neighbours.push({x: x,   y: y-1});
-
-    return neighbours;
-  };
+  // listNeighbouringTiles = (location) => {
+  //   const [x, y] = location;
+  //   let neighbours = [];
+  //
+  //   // Clockwise from top-right
+  //   neighbours.push({x: x+1, y: y-1});
+  //   neighbours.push({x: x+1, y: y  });
+  //   neighbours.push({x: x,   y: y+1});
+  //   neighbours.push({x: x-1, y: y+1});
+  //   neighbours.push({x: x-1, y: y  });
+  //   neighbours.push({x: x,   y: y-1});
+  //
+  //   return neighbours;
+  // };
 
   render() {
     const { playerID, playArea, userHeight, seaLevel} = {...this.props};

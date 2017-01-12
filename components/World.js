@@ -31,12 +31,15 @@ export default class World extends Component {
         ]}
       >
         {locations.map((location) => {
+          const coordinates = location.split(",");
+
           return (
             <Location
-              key={`x${location.x},y${location.y}`}
+              key={`x${coordinates[0]},y${coordinates[1]}`}
               tileSize={tileSize}
               playerID={this.props.playerID}
-              {...location}
+              x={coordinates[0]}
+              y={coordinates[1]}
             />
           )
         })}

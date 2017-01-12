@@ -2,17 +2,17 @@
 
   "locations": {
     ".write": "auth.worldmaster === true",
+    ".indexOn": "unit/playerID",
     "$locationID": {
       /* TODO generate complicated neighbour rules based on adj. locations */
       /* (pos(playerid).bx + "" == $binx &&  pos(playerid).by + "" == $biny) || //and the other 5 adjacent bin coords */
       ".read": "auth != null",
-      "x": { ".validate": "newData.isNumber()" },
-      "y": { ".validate": "newData.isNumber()" },
       "tile": { ".validate": "newData.isString()" },
       "unit": {
         "playerID": { ".validate": "newData.isString()" },
         "type": { ".validate": "newData.isString()" },
         "turn": { ".validate": "newData.isNumber()" },
+        "sleeping": { ".validate": "newData.isBoolean()" },
         "immuneUntil": { ".validate": "newData.isNumber()" },
         "emote": {
           "type": { ".validate": "newData.isString()" },

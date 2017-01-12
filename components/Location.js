@@ -70,7 +70,7 @@ export default class Location extends PureComponent {
       );
     }
     else {
-      return this.props.children;
+      return null;
     }
   }
 }

@@ -5,8 +5,7 @@ const serviceAccount = require("./secret.json");
 
 firebase.initializeApp({
   credential: firebase.credential.cert(serviceAccount),
-  databaseURL: "https://world-15e5d.firebaseio.com",
-  databaseAuthVariableOverride: { worldmaster: true }
+  databaseURL: "https://world-15e5d.firebaseio.com"
 });
 
 const database = firebase.database();
@@ -40,6 +39,7 @@ app.prepare().then(() => {
     try {
       await handleRequest(req.body) && res.send("ok");
     } catch (error) {
+      console.log(error);
       res.send(error.message);
     }
   })
@@ -61,8 +61,91 @@ const handleRequest = async (request) => {
     throw new Error("You are not authenticated as this player.")
   }
 
+  const action = request.action;
+
+  switch (action) {
+    case "spawn":
+      await spawn(playerID);
+      break;
+    default:
+      throw new Error("Unknown action type.")
+  }
+
   return true;
 }
+
+const spawn = async (playerID) => {
+  // Check if player already has a monument
+  const locationsWithUnits = await database.ref("locations")
+    .orderByChild("unit/playerID")
+    .equalTo(playerID)
+    .once("value")
+  ;
+
+  if (locationsWithUnits.numChildren() > 0) {
+    locationsWithUnits.forEach((location) => {
+      if (location.unit.type === "monument") {
+        throw new Error("Cannot spawn while you have a monument. Destroy it first.");
+      }
+    });
+  }
+
+  // Find a spawn location
+  let spawnFound = false;
+  let spawnLocation;
+
+  while (!spawnFound) {
+    spawnLocation = [
+      Math.floor(Math.random() * 20) - 10,
+      Math.floor(Math.random() * 20) - 10,
+    ];
+
+    const locationTransaction = await database.ref(`location/${spawnLocation[0]},${spawnLocation[1]}`)
+      .transaction((location) => {
+        if (location === null) {
+          location = {};
+        }
+        else if (location.unit) {
+          return;
+        }
+
+        location.unit = {
+          playerID: playerID,
+          type: 0,
+          turn: 0,
+          immuneUntil: Date.now() + 45*1000,
+          action: {
+            type: "spawn",
+            turn: 0,
+          },
+          health: {
+            originalMax: 30,
+            max:         30,
+            current:     30,
+          },
+          attack: {
+            original: 0,
+            current:  0,
+          },
+        };
+        return location;
+      })
+    ;
+
+    if (locationTransaction.committed) {
+      spawnFound = true;
+    }
+  }
+
+  // Add spawnLocation to playerSecrets
+  await database.ref(`playerSecrets/${playerID}/locations`)
+    .update({
+      [`${spawnLocation[0]},${spawnLocation[1]}`]: true
+    })
+  ;
+
+  return;
+};
 
 // //
 // // Task processing
