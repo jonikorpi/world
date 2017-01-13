@@ -173,6 +173,29 @@ export default class Play extends PureComponent {
     }
   }
 
+  selfDestruct = async () => {
+    const headers = new Headers({
+      "Content-Type": "application/json",
+    });
+
+    const response = await fetch("/", {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify({
+        token: this.state.playerToken,
+        playerID: this.state.playerID,
+        action: "self-destruct",
+      }),
+    });
+
+    if (response.ok) {
+      console.log(await response.text());
+    }
+    else {
+      console.log(response);
+    }
+  }
+
   render() {
     const playerID = this.state.playerID;
 
@@ -200,6 +223,7 @@ export default class Play extends PureComponent {
             pathname={this.props.url.pathname}
             enterFullscreen={this.enterFullscreen}
             toggleVR={this.toggleVR}
+            selfDestruct={this.selfDestruct}
           />
         )}
       </div>

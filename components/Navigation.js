@@ -48,6 +48,9 @@ export default class Navigation extends PureComponent {
 
         {this.props.pathname === "/" && (
           <div className="navigation-wrapper">
+            <button type="button" onClick={this.props.selfDestruct}>
+              RESTART
+            </button>
             <button type="button" onClick={this.props.toggleVR}>
               VR
             </button>

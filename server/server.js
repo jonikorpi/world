@@ -35,7 +35,9 @@ app.prepare().then(() => {
 
   // Player requests
   server.post("*", async (req, res) => {
-    dev && console.log(req.method, req.originalUrl, req.body);
+    if (dev) {
+      console.log(req.method, req.originalUrl, req.body.playerID, req.body.action);
+    }
     try {
       await handleRequest(req.body) && res.send("ok");
     } catch (error) {
@@ -51,6 +53,8 @@ app.prepare().then(() => {
   })
 });
 
+//
+// Handle and pass on requests
 const handleRequest = async (request) => {
   const playerID = request.playerID;
   const token = request.token;
@@ -67,6 +71,9 @@ const handleRequest = async (request) => {
     case "spawn":
       await spawn(playerID);
       break;
+    case "self-destruct":
+      await selfDestruct(playerID);
+      break;
     default:
       throw new Error("Unknown action type.")
   }
@@ -74,6 +81,8 @@ const handleRequest = async (request) => {
   return true;
 }
 
+//
+// Spawn
 const spawn = async (playerID) => {
   // Check if player already has a monument
   const locationsWithUnits = await database.ref("locations")
@@ -84,7 +93,7 @@ const spawn = async (playerID) => {
 
   if (locationsWithUnits.numChildren() > 0) {
     locationsWithUnits.forEach((location) => {
-      if (location.unit.type === "monument") {
+      if (location.val().unit.type === "monument") {
         throw new Error("Cannot spawn while you have a monument. Destroy it first.");
       }
     });
@@ -100,35 +109,32 @@ const spawn = async (playerID) => {
       Math.floor(Math.random() * 20) - 10,
     ];
 
-    const locationTransaction = await database.ref(`location/${spawnLocation[0]},${spawnLocation[1]}`)
-      .transaction((location) => {
-        if (location === null) {
-          location = {};
+    const locationTransaction = await database.ref(`locations/${spawnLocation[0]},${spawnLocation[1]}/unit`)
+      .transaction((unit) => {
+        if (unit === null) {
+          return {
+            playerID: playerID,
+            type: "monument",
+            turn: 0,
+            immuneUntil: Date.now() + 45*1000,
+            action: {
+              type: "spawn",
+              turn: 0,
+            },
+            health: {
+              originalMax: 30,
+              max:         30,
+              current:     30,
+            },
+            attack: {
+              original: 0,
+              current:  0,
+            },
+          };
         }
-        else if (location.unit) {
+        else {
           return;
         }
-
-        location.unit = {
-          playerID: playerID,
-          type: 0,
-          turn: 0,
-          immuneUntil: Date.now() + 45*1000,
-          action: {
-            type: "spawn",
-            turn: 0,
-          },
-          health: {
-            originalMax: 30,
-            max:         30,
-            current:     30,
-          },
-          attack: {
-            original: 0,
-            current:  0,
-          },
-        };
-        return location;
       })
     ;
 
@@ -143,6 +149,41 @@ const spawn = async (playerID) => {
       [`${spawnLocation[0]},${spawnLocation[1]}`]: true
     })
   ;
+
+  return;
+};
+
+//
+// Self-destruct
+const selfDestruct = async (playerID) => {
+  // Find all player units
+  const locationsWithUnits = await database.ref("locations")
+    .orderByChild("unit/playerID")
+    .equalTo(playerID)
+    .once("value")
+  ;
+
+  // Destroy all player units
+  if (locationsWithUnits.numChildren() > 0) {
+    locationsWithUnits.forEach((locationWithUnit) => {
+      locationWithUnit.child("unit").ref.transaction((unit) => {
+        if (unit) {
+          if (unit.playerID === playerID) {
+            return null;
+          }
+          else {
+            return;
+          }
+        }
+        else {
+          return null;
+        }
+      });
+    });
+  }
+
+  // Remove all unit location indexes
+  await database.ref(`playerSecrets/${playerID}/locations`).remove();
 
   return;
 };
