@@ -6,6 +6,7 @@ import reactFire from "reactfire";
 
 import request from "../helpers/request";
 
+import World from "../components/World";
 import Camera from "../components/Camera";
 import Location from "../components/Location";
 
@@ -31,14 +32,6 @@ export default class Player extends Component {
 
       if (nextProps.playerID) {
         this.bindFirebase(nextProps.playerID);
-      }
-    }
-  }
-
-  componentWillUpdate(nextProps, nextState) {
-    if (this.state.player && nextState.player) {
-      if (this.state.player.message && nextState.player.message) {
-        console.log(nextState.player.message);
       }
     }
   }
@@ -131,44 +124,19 @@ export default class Player extends Component {
     const hexHeight = hexSize * 2;
     const hexWidth = Math.sqrt(3) / 2 * hexHeight;
 
-    let centerOnX = 0;
-    let centerOnY = 0;
-
-    if (locations.length > 0) {
-      centerOnX = +locations[0].split(",")[0];
-      centerOnY = +locations[0].split(",")[1];
-    }
-
     return (
       <Entity id="player">
         <Camera {...this.props}/>
 
         {playerSecrets && locations.length > 0 && (
-          <Entity
-            id="world"
-            position={[
-              -centerOnX * hexSize * 3/2,
-              userHeight + seaLevel,
-              -hexSize * Math.sqrt(3) * (centerOnY + centerOnX/2) - 2,
-            ]}
-          >
-            {locations.map((location) => {
-              const coordinates = location.split(",");
-
-              return (
-                <Location
-                  key={`x${coordinates[0]},y${coordinates[1]}`}
-                  playerID={this.props.playerID}
-                  x={+coordinates[0]}
-                  y={+coordinates[1]}
-                  tileSize={tileSize}
-                  hexSize={hexSize}
-                  hexHeight={hexHeight}
-                  hexWidth={hexWidth}
-                />
-              )
-            })}
-          </Entity>
+          <World
+            {...this.props}
+            locations={locations}
+            tileSize={tileSize}
+            hexSize={hexSize}
+            hexHeight={hexHeight}
+            hexWidth={hexWidth}
+          />
         )}
 
         {playerSecrets && locations.length === 0 && (
@@ -180,9 +148,9 @@ export default class Player extends Component {
             position={[0, userHeight + seaLevel, -2 * tileSize]}
             geometry={{
               primitive: "box",
-              width: tileSize * 0.382,
-              height: tileSize * 0.618,
-              depth: tileSize * 0.382,
+              width: 0.382,
+              height: 0.618,
+              depth: 0.382,
             }}
             material={{
               shader: "flat",
@@ -190,20 +158,6 @@ export default class Player extends Component {
             }}
           />
         )}
-
-        <Entity
-          id="dot"
-          geometry={{
-            primitive: "plane",
-            width: 0,
-            height: 0,
-            buffer: false,
-            // skipCache: true,
-          }}
-          material={{
-            color: "white",
-          }}
-        />
       </Entity>
     );
   }
