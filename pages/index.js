@@ -201,6 +201,12 @@ export default class Play extends PureComponent {
 
     return (
       <div id="play">
+        <style jsx>{`
+          #play {
+            user-select: none;
+          }
+        `}</style>
+
         <Head />
 
         {this.state.readyForVR ? (
