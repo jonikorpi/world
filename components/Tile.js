@@ -32,18 +32,6 @@ export default class Tile extends PureComponent {
     }
   }
 
-  // componentDidUpdate() {
-  //   console.log("Tile updated");
-  // }
-  //
-  // componentWillUnmount() {
-  //   console.log("Tile unmounting");
-  // }
-  //
-  // componentDidMount() {
-  //   console.log("Tile mounted");
-  // }
-
   handleClick = (event) => {
     console.log(event);
   }
@@ -62,25 +50,16 @@ export default class Tile extends PureComponent {
   }
 
   render() {
-    const {x, y, tileOwner, tileSize, unit, playerID} = {...this.props};
-
-    const wireframeHue = tileOwner === playerID ? 50 : 355;
-    const wireframeSaturation = tileOwner ? 100 : 0;
-    const wireframeLightness = this.state["cursor-hovered"] ? 50 : 15;
-    const wireframeColor = `hsl(${wireframeHue}, ${wireframeSaturation}%, ${wireframeLightness}%)`;
-    const wireframeThickness = this.state["cursor-hovered"] ? 5 : (tileOwner ? 3 : 1);
-
-    // const halfTileSize = tileSize * 0.5;
-
-    // HEXES
-    const hexSize = tileSize / 2;
-    const hexHeight = hexSize * 2;
-    const hexWidth = Math.sqrt(3) / 2 * hexHeight;
+    const {
+      x, y,
+      tileSize, hexSize, hexHeight, hexWidth,
+      unit, playerID
+    } = {...this.props};
 
     const position = [
       x * hexSize * Math.sqrt(3) * (x + y/2),
       0,
-      hexSize * 3/2 * y,
+      y * hexSize * 3/2,
     ];
 
     // const angleToOrigin = Math.atan2(xPosition, zPosition) * (180/Math.PI);
@@ -139,7 +118,7 @@ export default class Tile extends PureComponent {
           }}
           material={{
             shader: "flat",
-            color: `hsl(${150 - position[0] * 20}, 50%, 50%)`,
+            color: `hsl(40, 50%, 50%)`,
             // transparent: true,
             // opacity: 0,
           }}

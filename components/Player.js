@@ -8,8 +8,8 @@ import isEqual from "lodash.isequal";
 
 import request from "../helpers/request";
 
-import World from "../components/World";
 import Camera from "../components/Camera";
+import Location from "../components/Location";
 
 export default class Player extends Component {
   constructor(props) {
@@ -130,17 +130,48 @@ export default class Player extends Component {
     }
 
     const tileSize = 1;
+    const hexSize = tileSize / 2;
+    const hexHeight = hexSize * 2;
+    const hexWidth = Math.sqrt(3) / 2 * hexHeight;
+
+    let centerOnX = 0;
+    let centerOnY = 0;
+
+    if (locations.length > 0) {
+      centerOnX = +locations[0].split(",")[0];
+      centerOnY = +locations[0].split(",")[1];
+    }
 
     return (
       <Entity id="player">
         <Camera {...this.props}/>
 
         {playerSecrets && locations.length > 0 && (
-          <World
-            {...this.props}
-            locations={locations}
-            tileSize={tileSize}
-          />
+          <Entity
+            id="world"
+            position={[
+              -centerOnX * hexSize * Math.sqrt(3) * (centerOnX + centerOnY/2),
+              userHeight + seaLevel + 0.01,
+              -centerOnY * hexSize * 3/2 - 2,
+            ]}
+          >
+            {locations.map((location) => {
+              const coordinates = location.split(",");
+
+              return (
+                <Location
+                  key={`x${coordinates[0]},y${coordinates[1]}`}
+                  playerID={this.props.playerID}
+                  x={+coordinates[0]}
+                  y={+coordinates[1]}
+                  tileSize={tileSize}
+                  hexSize={hexSize}
+                  hexHeight={hexHeight}
+                  hexWidth={hexWidth}
+                />
+              )
+            })}
+          </Entity>
         )}
 
         {playerSecrets && locations.length === 0 && (
@@ -176,8 +207,6 @@ export default class Player extends Component {
             color: "white",
           }}
         />
-
-        <Camera {...this.props}/>
       </Entity>
     );
   }

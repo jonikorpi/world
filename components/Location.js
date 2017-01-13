@@ -14,47 +14,33 @@ export default class Location extends PureComponent {
   }
 
   componentWillMount() {
-    const { x,y } = {...this.props};
+    const { x, y } = {...this.props};
 
     if (x && y) {
-      this.bindFirebase(x,y);
+      this.bindFirebase(x, y);
     }
   }
 
+  // Warning: broken
   // componentWillReceiveProps(nextProps) {
-  //   const { x,y } = {...this.props};
-  //   const { xNext,yNext } = {...nextProps};
-  //   const thisLocation = [x,y];
-  //   const nextLocation = [xNext,yNext];
+  //   const { x, y } = {...this.props};
+  //   const { xNext, yNext } = {...nextProps};
   //
-  //   if (thisLocation !== nextLocation) {
-  //     this.bindFirebase(xNext,yNext);
+  //   if (x !== xNext || y !== yNext) {
+  //     this.bindFirebase(xNext, yNext);
   //   }
   // }
 
-  // componentDidUpdate() {
-  //   console.log("Location updated");
-  // }
-  //
-  // componentWillUnmount() {
-  //   console.log("Location unmounting");
-  // }
-  //
-  // componentDidMount() {
-  //   console.log("Location mounted");
-  // }
-
-  bindFirebase = (x,y) => {
+  bindFirebase = (x, y) => {
     if (this.state.location) {
       this.unbind("location");
     }
 
     this.bindAsObject(
-      firebase.database().ref(`locations/${x}/${y}`),
+      firebase.database().ref(`locations/${x},${y}`),
       "location",
       (error) => {
-        console.log("Player subscription cancelled:")
-        console.log(error);
+        console.log("Location subscription cancelled:", error)
         this.setState({location: undefined})
       }
     );
