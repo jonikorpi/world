@@ -16,6 +16,7 @@ export default class Navigation extends PureComponent {
             display: flex;
             justify-content: space-between;
             pointer-events: none;
+            padding: 0 0.25rem;
           }
 
           .navigation-wrapper {
@@ -25,10 +26,11 @@ export default class Navigation extends PureComponent {
           a, button {
             font-size: 0.618rem;
             line-height: 0.75rem;
-            padding: 0.5rem;
+            padding: 0.5rem 0.25rem;
             pointer-events: all;
             text-decoration: none;
             opacity: 0.618;
+            font-weight: bold;
           }
 
           .active {
