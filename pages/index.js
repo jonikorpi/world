@@ -5,7 +5,7 @@ import Head from "../components/Head";
 import Navigation from "../components/Navigation";
 import Loading from "../components/Loading";
 import Sky from "../components/Sky";
-import Sea from "../components/Sea";
+// import Sea from "../components/Sea";
 import Player from "../components/Player";
 
 // if (process.env.NODE_ENV !== "production" && typeof window !== "undefined") {
@@ -217,7 +217,7 @@ export default class Play extends PureComponent {
             keyboard-shortcuts="enterVR: false; resetSensor: false;"
           >
             <Sky far={this.state.far} userHeight={this.state.userHeight} />
-            <Sea far={this.state.far} userHeight={this.state.userHeight} seaLevel={this.state.seaLevel} />
+            {/* <Sea far={this.state.far} userHeight={this.state.userHeight} seaLevel={this.state.seaLevel} /> */}
             <Player {...this.state} toggleVR={this.toggleVR} />
           </a-scene>
         ) : (
