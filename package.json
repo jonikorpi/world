@@ -20,7 +20,8 @@
     "lodash.uniqwith": "^4.5.0",
     "next": "^2.0.0-beta",
     "react-mixin": "^3.0.5",
-    "reactfire": "^1.0.0"
+    "reactfire": "^1.0.0",
+    "rollbar": "^0.6.3"
   },
   "scripts": {
     "start": "firebase deploy && nodemon --watch server --harmony-async-await server/server.js",

@@ -25,6 +25,14 @@ const server = express();
 server.use(bodyParser.json());
 
 //
+// Setup rollbar
+const rollbar = require("rollbar");
+server.use(rollbar.errorHandler(
+  "22fca22d3936434eb8b69cc0c453d040",
+  {environment: process.env.NODE_ENV || "development"}
+));
+
+//
 // Handle requests
 app.prepare().then(() => {
   // Page requests
