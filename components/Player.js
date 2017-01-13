@@ -3,8 +3,6 @@ import { Entity } from "aframe-react";
 import firebase from "firebase";
 import reactMixin from "react-mixin";
 import reactFire from "reactfire";
-import uniqWith from "lodash.uniqwith";
-import isEqual from "lodash.isequal";
 
 import request from "../helpers/request";
 
@@ -91,43 +89,42 @@ export default class Player extends Component {
   }
 
   getLocations = (secretLocations) => {
-    // let locations = [];
+    let locations = Object.assign({}, secretLocations);
 
-    return Object.keys(secretLocations);
+    for (const locationID of Object.keys(secretLocations)) {
+      for (const neighbourID of this.listNeighbouringTiles(locationID)) {
+        locations[neighbourID] = true;
+      }
+    }
 
-    // return Object.keys(secretLocations).map((locationID) => {
-    //   return locations = locations.concat( this.listNeighbouringTiles([+x, +y]) );
-    // });
-
-    // return locations;
+    return locations;
   }
 
-  // listNeighbouringTiles = (location) => {
-  //   const [x, y] = location;
-  //   let neighbours = [];
-  //
-  //   // Clockwise from top-right
-  //   neighbours.push({x: x+1, y: y-1});
-  //   neighbours.push({x: x+1, y: y  });
-  //   neighbours.push({x: x,   y: y+1});
-  //   neighbours.push({x: x-1, y: y+1});
-  //   neighbours.push({x: x-1, y: y  });
-  //   neighbours.push({x: x,   y: y-1});
-  //
-  //   return neighbours;
-  // };
+  listNeighbouringTiles = (locationID) => {
+    const x = +locationID.split(",")[0];
+    const y = +locationID.split(",")[1];
+    let neighbours = [];
+
+    // Clockwise from top-right
+    neighbours.push(`${x+1},${y-1}`);
+    neighbours.push(`${x+1},${y  }`);
+    neighbours.push(`${x  },${y+1}`);
+    neighbours.push(`${x-1},${y+1}`);
+    neighbours.push(`${x-1},${y  }`);
+    neighbours.push(`${x  },${y-1}`);
+
+    return neighbours;
+  };
 
   render() {
     const { playerID, playArea, userHeight, seaLevel} = {...this.props};
     const wallDistance = playArea[1] / 2;
     const player = this.state.player;
     const playerSecrets = this.state.playerSecrets;
-    const secretLocations = playerSecrets && playerSecrets.locations;
 
-    let locations = secretLocations ? this.getLocations(secretLocations) : [];
-    if (locations.length > 1) {
-      locations = uniqWith(locations, isEqual);
-    }
+    const secretLocations = playerSecrets && playerSecrets.locations;
+    const locationsObject = secretLocations ? this.getLocations(secretLocations) : {};
+    const locations = Object.keys(locationsObject);
 
     const tileSize = 1;
     const hexSize = tileSize / 2;
@@ -150,9 +147,9 @@ export default class Player extends Component {
           <Entity
             id="world"
             position={[
-              -centerOnX * hexSize * Math.sqrt(3) * (centerOnX + centerOnY/2),
-              userHeight + seaLevel + 0.01,
-              -centerOnY * hexSize * 3/2 - 2,
+              -centerOnX * hexSize * 3/2,
+              userHeight + seaLevel,
+              -hexSize * Math.sqrt(3) * (centerOnY + centerOnX/2) - 2,
             ]}
           >
             {locations.map((location) => {

@@ -57,9 +57,9 @@ export default class Tile extends PureComponent {
     } = {...this.props};
 
     const position = [
-      x * hexSize * Math.sqrt(3) * (x + y/2),
+      x * hexSize * 3/2,
       0,
-      y * hexSize * 3/2,
+      hexSize * Math.sqrt(3) * (y + x/2),
     ];
 
     // const angleToOrigin = Math.atan2(xPosition, zPosition) * (180/Math.PI);
@@ -122,7 +122,7 @@ export default class Tile extends PureComponent {
             // transparent: true,
             // opacity: 0,
           }}
-          rotation={[-90, 90, 0]}
+          rotation={[-90, 0, 0]}
         />
 {/*
         <Entity
