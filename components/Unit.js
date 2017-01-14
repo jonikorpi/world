@@ -48,7 +48,7 @@ export default class Unit extends PureComponent {
         ]}
       >
 
-        <Button
+        {/* <Button
           onClick={this.moveNorth}
           color="red"
           position={[0, 1, -tileSize]}
@@ -67,7 +67,7 @@ export default class Unit extends PureComponent {
           onClick={this.moveSouth}
           color="grey"
           position={[0, 1, tileSize]}
-        />
+        /> */}
 
       </Entity>
     );

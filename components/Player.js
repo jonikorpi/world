@@ -6,7 +6,7 @@ import reactFire from "reactfire";
 
 import request from "../helpers/request";
 
-import World from "../components/World";
+import WorldContainer from "../components/WorldContainer";
 import Camera from "../components/Camera";
 import Location from "../components/Location";
 
@@ -116,8 +116,8 @@ export default class Player extends Component {
     const playerSecrets = this.state.playerSecrets;
 
     const secretLocations = playerSecrets && playerSecrets.locations;
-    const locationsObject = secretLocations ? this.getLocations(secretLocations) : {};
-    const locations = Object.keys(locationsObject);
+    const locations = secretLocations ? Object.keys(this.getLocations(secretLocations)) : [];
+    const hasSomeLocations = locations.length > 0;
 
     const tileSize = 1;
     const hexSize = tileSize / 2;
@@ -128,8 +128,8 @@ export default class Player extends Component {
       <Entity id="player">
         <Camera {...this.props}/>
 
-        {playerSecrets && locations.length > 0 && (
-          <World
+        {playerSecrets && hasSomeLocations && (
+          <WorldContainer
             {...this.props}
             locations={locations}
             tileSize={tileSize}
@@ -139,7 +139,7 @@ export default class Player extends Component {
           />
         )}
 
-        {playerSecrets && locations.length === 0 && (
+        {playerSecrets && !hasSomeLocations && (
           <Entity
             className="spawnButton interactable"
             events={{

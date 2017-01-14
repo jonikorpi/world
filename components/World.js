@@ -23,15 +23,17 @@ export default class World extends Component {
     const { locations } = {...nextProps};
     const { centerOnX, centerOnY } = {...this.state};
 
-    if (centerOnX === 0 && centerOnY === 0 && locations.length > 0) {
+    if (centerOnX === 0 && centerOnY === 0 && locations) {
       this.setState(this.getCenterCoordinates(locations));
     }
   }
 
   getCenterCoordinates = (locations) => {
+    const locationsArray = Object.keys(locations);
+
     return {
-      centerOnX: +locations[0].split(",")[0],
-      centerOnY: +locations[0].split(",")[1],
+      centerOnX: +locationsArray[0].split(",")[0],
+      centerOnY: +locationsArray[0].split(",")[1],
     };
   }
 
@@ -43,7 +45,7 @@ export default class World extends Component {
       tileSize, hexSize, hexHeight, hexWidth
     } = {...this.props};
 
-    const { centerOnX, centerOnY } = {...this.state};
+    const { centerOnX, centerOnY, savedLocations } = {...this.state};
 
     return (
       <Entity
@@ -54,12 +56,13 @@ export default class World extends Component {
           -hexSize * Math.sqrt(3) * (centerOnY + centerOnX/2) - 2,
         ]}
       >
-        {locations.map((location) => {
-          const coordinates = location.split(",");
+
+        {Object.keys(locations).map((locationID) => {
+          const coordinates = locationID.split(",");
 
           return (
             <Location
-              key={`x${coordinates[0]},y${coordinates[1]}`}
+              key={`${coordinates[0]},${coordinates[1]}`}
               playerID={this.props.playerID}
               x={+coordinates[0]}
               y={+coordinates[1]}
@@ -67,6 +70,8 @@ export default class World extends Component {
               hexSize={hexSize}
               hexHeight={hexHeight}
               hexWidth={hexWidth}
+              saveLocation={this.props.saveLocation}
+              savedLocation={locations[locationID] === true ? undefined : locations[locationID]}
             />
           )
         })}
