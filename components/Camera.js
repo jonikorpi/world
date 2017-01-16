@@ -15,7 +15,6 @@ export default class Camera extends PureComponent {
   render() {
     const userHeight = this.props.userHeight;
     const inVR = this.props.inVR;
-    const pointerDistance = 0.5;
 
     return (
       <Entity
@@ -41,35 +40,33 @@ export default class Camera extends PureComponent {
           //   // rotationSensitivity:  0.05,
           //   // fly: true,
           // }}
+          raycaster
+          crawling-cursor="target: #cursor"
         >
-          <Entity
-            id="cursor"
-            raycaster={{
-              far: this.props.far,
-              near: this.props.near,
-              interval: 80,
-              objects: ".interactable",
-              recursive: true,
-            }}
-            cursor={{
-              fuse: false,
-            }}
-          />
-
-          <Entity
-            id="pointer"
-            geometry={{
-              primitive: "circle",
-              radius: 0.005*pointerDistance,
-              segments: 6,
-            }}
-            position={[0, 0, -pointerDistance]}
-            material={{
-              shader: "flat",
-              color: "yellow",
-            }}
-          />
         </Entity>
+
+        <Entity
+          id="cursor"
+          raycaster={{
+            far: this.props.far,
+            near: this.props.near,
+            interval: 80,
+            objects: ".interactable",
+            recursive: true,
+          }}
+          cursor={{
+            fuse: false,
+          }}
+          geometry={{
+            primitive: "circle",
+            radius: 0.05,
+            segments: 6,
+          }}
+          material={{
+            shader: "flat",
+            color: "yellow",
+          }}
+        />
       </Entity>
     );
   }

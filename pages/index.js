@@ -56,6 +56,7 @@ export default class Play extends PureComponent {
     require("aframe-look-at-billboard-component");
     require("aframe-meshline-component");
     require("aframe-faceset-component");
+    require("aframe-crawling-cursor");
 
     document.addEventListener("fullscreenchange", this.handleFullScreenChange);
     document.addEventListener("mozfullscreenchange", this.handleFullScreenChange);
