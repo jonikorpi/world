@@ -4,6 +4,18 @@ import { Entity } from "aframe-react";
 import Button from "../components/Button";
 
 export default class Unit extends PureComponent {
+  componentDidMount() {
+    const isOwnUnit = this.props.playerID === this.props.unit.playerID;
+
+    this.props.synth.triggerAttackRelease(isOwnUnit ? "C6" : "E6", "8n");
+  }
+
+  componentWillUnmount() {
+    const isOwnUnit = this.props.playerID === this.props.unit.playerID;
+
+    this.props.synth.triggerAttackRelease(isOwnUnit ? "C4" : "E4", "4n");
+  }
+
   moveNorth = () => { console.log("moveNorth"); this.move(this.props.x, this.props.y-1); }
   moveSouth = () => { console.log("moveSouth"); this.move(this.props.x, this.props.y+1); }
 

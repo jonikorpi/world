@@ -73,6 +73,7 @@ export default class World extends Component {
               hexWidth={hexWidth}
               saveLocation={this.props.saveLocation}
               savedLocation={locations[locationID] === true ? undefined : locations[locationID]}
+              synth={this.props.synth}
             />
           )
         })}

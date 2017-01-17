@@ -58,6 +58,27 @@ export default class Play extends PureComponent {
     require("aframe-faceset-component");
     require("aframe-mouse-cursor-component");
 
+    const Tone = require("tone");
+
+    // const Tone = require("tone/Tone/core/Tone");
+    // const Synth = require("tone/Tone/instrument/Synth");
+    // const Transport = require("tone/Tone/core/Transport");
+
+    this.synth = new Tone.Synth().toMaster();
+
+    // const pattern = new Tone.Pattern(
+    //   (time, note) => {
+    //     this.synth.triggerAttackRelease(note);
+    //   },
+    //   ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C4"],
+    // );
+    // pattern.playbackRate = 0.1;
+    // pattern.pattern = "random";
+    // pattern.humanize = true;
+    // pattern.start(0);
+
+    Tone.Transport.start();
+
     document.addEventListener("fullscreenchange", this.handleFullScreenChange);
     document.addEventListener("mozfullscreenchange", this.handleFullScreenChange);
     document.addEventListener("webkitfullscreenchange", this.handleFullScreenChange);
@@ -219,7 +240,12 @@ export default class Play extends PureComponent {
           >
             <Sky far={this.state.far} userHeight={this.state.userHeight} />
             {/* <Sea far={this.state.far} userHeight={this.state.userHeight} seaLevel={this.state.seaLevel} /> */}
-            <Player {...this.state} toggleVR={this.toggleVR} />
+
+            <Player
+              {...this.state}
+              toggleVR={this.toggleVR}
+              synth={this.synth}
+            />
           </a-scene>
         ) : (
           <Loading />
