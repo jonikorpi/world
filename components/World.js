@@ -64,6 +64,7 @@ export default class World extends Component {
             <Location
               key={`${coordinates[0]},${coordinates[1]}`}
               playerID={this.props.playerID}
+              playerToken={this.props.playerToken}
               x={+coordinates[0]}
               y={+coordinates[1]}
               tileSize={tileSize}

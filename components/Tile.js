@@ -118,7 +118,7 @@ export default class Tile extends PureComponent {
           }}
           material={{
             shader: "flat",
-            color: `hsl(${this.props.savedLocation ? 300 : 50}, 50%, 50%)`,
+            color: `hsl(30, 50%, ${this.props.savedLocation ? 15 : 50}%)`,
             // transparent: true,
             // opacity: 0,
           }}

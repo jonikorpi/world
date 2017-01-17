@@ -14,15 +14,11 @@ export default class Location extends Component {
   }
 
   componentWillMount() {
-    const { x, y } = {...this.props};
-
-    if (x && y) {
-      this.bindFirebase(x, y);
-    }
+    this.bindFirebase(this.props.x, this.props.y);
   }
 
   componentDidUpdate(nextProps, nextState) {
-    if (nextState.location !== this.state.location && this.state.location) {
+    if (this.state.location && nextState.location !== this.state.location) {
       this.props.saveLocation(this.state.location);
     }
   }
@@ -33,13 +29,13 @@ export default class Location extends Component {
     const xNext = nextProps.x;
     const yNext = nextProps.y;
 
-    if (!savedLocation) {
-      if (x !== xNext || y !== yNext) {
-        this.bindFirebase(xNext, yNext);
-      }
+    if (savedLocation) {
+      this.unbindFirebase();
     }
     else {
-      this.unbindFirebase();
+      if (!this.firebaseListeners.location) {
+        this.bindFirebase(xNext, yNext);
+      }
     }
   }
 
@@ -57,9 +53,8 @@ export default class Location extends Component {
   }
 
   unbindFirebase = () => {
-    if (this.state.location) {
+    if (this.firebaseListeners.location) {
       this.unbind("location");
-      this.setState({location: undefined});
     }
   }
 
@@ -72,13 +67,16 @@ export default class Location extends Component {
         />
       );
     }
-    else {
+    else if (this.state.location) {
       return (
         <Tile
           {...this.props}
           {...this.state.location}
         />
       );
+    }
+    else {
+      return null;
     }
   }
 }

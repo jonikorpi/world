@@ -1,31 +1,42 @@
 import React, { PureComponent } from "react";
 import { Entity } from "aframe-react";
-import firebase from "firebase";
 
 import Button from "../components/Button";
 
 export default class Unit extends PureComponent {
-  moveNorth = () => { this.move(this.props.x,   this.props.y-1); }
-  moveWest  = () => { this.move(this.props.x-1, this.props.y); }
-  moveEast  = () => { this.move(this.props.x+1, this.props.y); }
-  moveSouth = () => { this.move(this.props.x,   this.props.y+1); }
+  moveNorth = () => { console.log("moveNorth"); this.move(this.props.x, this.props.y-1); }
+  moveSouth = () => { console.log("moveSouth"); this.move(this.props.x, this.props.y+1); }
 
-  move = (x, y) => {
-    firebase.database().ref("actionQueue/tasks").push({
-      request: {
+  moveNorthWest = () => { console.log("moveNorthWest"); this.move(this.props.x-1, this.props.y); }
+  moveSouthEast = () => { console.log("moveSouthEast"); this.move(this.props.x+1, this.props.y); }
+
+  moveNorthEast = () => { console.log("moveNorthEast"); this.move(this.props.x+1, this.props.y-1); }
+  moveSouthWest = () => { console.log("moveSouthWest"); this.move(this.props.x-1, this.props.y+1); }
+
+
+  move = async (x, y) => {
+    const headers = new Headers({
+      "Content-Type": "application/json",
+    });
+
+    const response = await fetch("/", {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify({
+        token: this.props.playerToken,
         playerID: this.props.playerID,
         action: "move",
-        origin: {
-          x: this.props.x,
-          y: this.props.y,
-        },
-        target: {
-          x: x,
-          y: y,
-        },
-        time: firebase.database.ServerValue.TIMESTAMP,
-      }
+        from: [this.props.x, this.props.y],
+        to: [x, y],
+      }),
     });
+
+    if (response.ok) {
+      console.log(await response.text());
+    }
+    else {
+      console.log(response);
+    }
   }
 
   render() {
@@ -48,26 +59,38 @@ export default class Unit extends PureComponent {
         ]}
       >
 
-        {/* <Button
+        <Button
           onClick={this.moveNorth}
           color="red"
           position={[0, 1, -tileSize]}
         />
         <Button
-          onClick={this.moveWest}
-          color="grey"
-          position={[-tileSize, 1, 0]}
-        />
-        <Button
-          onClick={this.moveEast}
-          color="grey"
-          position={[tileSize, 1, 0]}
-        />
-        <Button
           onClick={this.moveSouth}
           color="grey"
           position={[0, 1, tileSize]}
-        /> */}
+        />
+
+        <Button
+          onClick={this.moveNorthWest}
+          color="grey"
+          position={[-1, 1, -tileSize*0.5]}
+        />
+        <Button
+          onClick={this.moveNorthEast}
+          color="grey"
+          position={[1, 1, -tileSize*0.5]}
+        />
+
+        <Button
+          onClick={this.moveSouthWest}
+          color="grey"
+          position={[-1, 1, tileSize*0.5]}
+        />
+        <Button
+          onClick={this.moveSouthEast}
+          color="grey"
+          position={[1, 1, tileSize*0.5]}
+        />
 
       </Entity>
     );

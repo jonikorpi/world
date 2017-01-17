@@ -10,10 +10,10 @@
       "tile": { ".validate": "newData.isString()" },
       "unit": {
         "playerID": { ".validate": "newData.isString()" },
+        "locked": { ".validate": "newData.isBoolean()" },
+        "immuneUntil": { ".validate": "newData.isNumber()" },
         "type": { ".validate": "newData.isString()" },
         "turn": { ".validate": "newData.isNumber()" },
-        "sleeping": { ".validate": "newData.isBoolean()" },
-        "immuneUntil": { ".validate": "newData.isNumber()" },
         "emote": {
           "type": { ".validate": "newData.isString()" },
           "turn": { ".validate": "newData.isNumber()" } /* Use with `turnMounted` */
