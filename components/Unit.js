@@ -58,6 +58,10 @@ export default class Unit extends PureComponent {
           tileSize * 0.618 * 0.5,
           0,
         ]}
+        material={{
+          shader: "flat",
+          color: isOwnUnit ? "green" : "red",
+        }}
       >
         {isOwnUnit &&
           <Entity>
