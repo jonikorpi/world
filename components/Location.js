@@ -23,7 +23,6 @@ export default class Location extends Component {
 
   componentDidUpdate(nextProps, nextState) {
     if (nextState.location !== this.state.location && this.state.location) {
-      console.log("Saving", this.state.location);
       this.props.saveLocation(this.state.location);
     }
   }
