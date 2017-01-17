@@ -20,8 +20,14 @@ export default class Button extends PureComponent {
       case "stateremoved":
         boolean = false;
         break;
+      case "mouseenter":
+        boolean = true;
+        break;
+      case "mouseleave":
+        boolean = false;
+        break;
       default:
-        console.log("Bad state event in Button");
+        console.log("Bad state event in Button:", type);
         return;
     }
 
@@ -32,6 +38,7 @@ export default class Button extends PureComponent {
 
   render() {
     const baseLineHeight = 0.12;
+    const hovered = this.state["cursor-hovered"] || this.state["hovered"];
 
     const padding = this.props.padding || 0.1;
     const lineHeight = this.props.lineHeight ? this.props.lineHeight * baseLineHeight : baseLineHeight;
@@ -41,7 +48,7 @@ export default class Button extends PureComponent {
     const color = this.props.color || "grey";
     const scale = this.props.scale || 0.5;
 
-    const currentColor = this.state["cursor-hovered"] ? "black" : color;
+    const currentColor = hovered ? "white" : color;
 
     return (
       <Entity
@@ -50,6 +57,8 @@ export default class Button extends PureComponent {
           click: this.props.onClick,
           stateadded: this.handleStateEvent,
           stateremoved: this.handleStateEvent,
+          mouseenter: this.handleStateEvent,
+          mouseleave: this.handleStateEvent,
         }}
         position={this.props.position || [0,0,0]}
         geometry={{

@@ -32,6 +32,7 @@ export default class Camera extends PureComponent {
           // rotation={[-20, 0, 0]}
           look-controls
           wasd-controls
+          mouse-cursor
           // universal-controls={{
           //   movementControls: ["keyboard", "gamepad", "touch", "hmd"],
           //   rotationControls: ["hmd", "gamepad", "mouse"],
