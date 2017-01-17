@@ -206,19 +206,24 @@ const move = async (playerID, from, to) => {
 
   // Lock moving unit and make sure it can move
   const lockTransaction = await fromReference.transaction((unit) => {
-    if (unit && unit.playerID === playerID && !unit.moving) {
-      unit.locked = true;
-      return unit;
+    if (unit) {
+      if (unit.playerID === playerID && !unit.moving) {
+        unit.locked = true;
+        return unit;
+      }
+      else {
+        return;
+      }
     }
     else {
       return null;
     }
   });
 
-  // If that didn't work, stop
+  // If there was no unit or the locking didn't work, stop
   let lockedUnit = lockTransaction.snapshot.val();
 
-  if (!lockedUnit) {
+  if (!lockedUnit || !lockTransaction.committed) {
     throw new Error("Failed to start movement");
   }
 

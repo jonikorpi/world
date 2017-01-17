@@ -1,8 +1,6 @@
 import React, { PureComponent } from "react";
 import { Entity } from "aframe-react";
 
-import Unit from "../components/Unit";
-
 export default class Tile extends PureComponent {
   constructor(props) {
     super(props);
@@ -98,11 +96,7 @@ export default class Tile extends PureComponent {
         className="tile"
         position={position}
       >
-        {unit && (
-          <Unit
-            {...this.props}
-          />
-        )}
+        {this.props.children}
 
         <Entity
           className="interactable"

@@ -40,8 +40,9 @@ export default class Unit extends PureComponent {
   }
 
   render() {
-    const {x, y, tileOwner, isActive, tileSize, unit} = {...this.props};
-    const {entityOwner, entityType, entityLastX, entityLastY, entityLastTurn} = {...this.props};
+    const {tileSize, unit, playerID} = {...this.props};
+
+    const isOwnUnit = playerID === unit.playerID;
 
     return (
       <Entity
@@ -58,39 +59,42 @@ export default class Unit extends PureComponent {
           0,
         ]}
       >
+        {isOwnUnit &&
+          <Entity>
+            <Button
+              onClick={this.moveNorth}
+              color="red"
+              position={[0, 1, -tileSize]}
+            />
+            <Button
+              onClick={this.moveSouth}
+              color="grey"
+              position={[0, 1, tileSize]}
+            />
 
-        <Button
-          onClick={this.moveNorth}
-          color="red"
-          position={[0, 1, -tileSize]}
-        />
-        <Button
-          onClick={this.moveSouth}
-          color="grey"
-          position={[0, 1, tileSize]}
-        />
+            <Button
+              onClick={this.moveNorthWest}
+              color="grey"
+              position={[-1, 1, -tileSize*0.5]}
+            />
+            <Button
+              onClick={this.moveNorthEast}
+              color="grey"
+              position={[1, 1, -tileSize*0.5]}
+            />
 
-        <Button
-          onClick={this.moveNorthWest}
-          color="grey"
-          position={[-1, 1, -tileSize*0.5]}
-        />
-        <Button
-          onClick={this.moveNorthEast}
-          color="grey"
-          position={[1, 1, -tileSize*0.5]}
-        />
-
-        <Button
-          onClick={this.moveSouthWest}
-          color="grey"
-          position={[-1, 1, tileSize*0.5]}
-        />
-        <Button
-          onClick={this.moveSouthEast}
-          color="grey"
-          position={[1, 1, tileSize*0.5]}
-        />
+            <Button
+              onClick={this.moveSouthWest}
+              color="grey"
+              position={[-1, 1, tileSize*0.5]}
+            />
+            <Button
+              onClick={this.moveSouthEast}
+              color="grey"
+              position={[1, 1, tileSize*0.5]}
+            />
+          </Entity>
+        }
 
       </Entity>
     );

@@ -5,6 +5,7 @@ import reactFire from "reactfire";
 import firebase from "firebase";
 
 import Tile from "../components/Tile";
+import Unit from "../components/Unit";
 
 export default class Location extends Component {
   constructor(props) {
@@ -72,7 +73,14 @@ export default class Location extends Component {
         <Tile
           {...this.props}
           {...this.state.location}
-        />
+        >
+          {this.state.location.unit && (
+            <Unit
+              {...this.props}
+              {...this.state.location}
+            />
+          )}
+        </Tile>
       );
     }
     else {
