@@ -94,17 +94,27 @@ export default class Player extends Component {
   }
 
   listNeighbouringTiles = (locationID) => {
-    const x = +locationID.split(",")[0];
-    const y = +locationID.split(",")[1];
+    const centerX = +locationID.split(",")[0];
+    const centerY = +locationID.split(",")[1];
     let neighbours = [];
 
     // Clockwise from top-right
-    neighbours.push(`${x+1},${y-1}`);
-    neighbours.push(`${x+1},${y  }`);
-    neighbours.push(`${x  },${y+1}`);
-    neighbours.push(`${x-1},${y+1}`);
-    neighbours.push(`${x-1},${y  }`);
-    neighbours.push(`${x  },${y-1}`);
+    // neighbours.push(`${x+1},${y-1}`);
+    // neighbours.push(`${x+1},${y  }`);
+    // neighbours.push(`${x  },${y+1}`);
+    // neighbours.push(`${x-1},${y+1}`);
+    // neighbours.push(`${x-1},${y  }`);
+    // neighbours.push(`${x  },${y-1}`);
+
+    const range = 5;
+
+    for ( let x = -range ; x <= range ; x++ ) {
+      for ( let y = Math.max(-range, -x-range) ; y <= Math.min(range, -x+range) ; y++ ) {
+        neighbours.push(`${centerX + x},${centerY + y}`);
+      }
+    }
+
+    console.log(neighbours);
 
     return neighbours;
   };
