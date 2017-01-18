@@ -8,11 +8,14 @@ import Sky from "../components/Sky";
 // import Sea from "../components/Sea";
 import Player from "../components/Player";
 
+let Tone, DuoSynth, Transport, Panner, Loop, FeedbackDelay;
+
 // if (process.env.NODE_ENV !== "production" && typeof window !== "undefined") {
 // window.ReactPerf = require("react-addons-perf");
 // window.ReactPerf.start();
 // firebase.database.enableLogging(true);
 // }
+
 export default class Play extends PureComponent {
   constructor(props) {
     super(props);
@@ -24,7 +27,7 @@ export default class Play extends PureComponent {
       anonymous: null,
       connected: false,
       haveConnectedOnce: false,
-      readyForVR: false,
+      clientSideRendered: false,
       inVR: false,
       // width: window.innerWidth,
       // height: window.innerHeight,
@@ -52,32 +55,8 @@ export default class Play extends PureComponent {
   }
 
   clientSideRender = () => {
-    require("aframe");
-    require("aframe-look-at-billboard-component");
-    require("aframe-meshline-component");
-    require("aframe-faceset-component");
-    require("aframe-mouse-cursor-component");
-
-    // const Tone = require("tone");
-
-    const Tone = require("Tone/Tone/core/Tone");
-    const Synth = require("Tone/Tone/instrument/Synth");
-    const Transport = require("Tone/Tone/core/Transport");
-
-    this.synth = new Synth().toMaster();
-
-    // const pattern = new Tone.Pattern(
-    //   (time, note) => {
-    //     this.synth.triggerAttackRelease(note);
-    //   },
-    //   ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C4"],
-    // );
-    // pattern.playbackRate = 0.1;
-    // pattern.pattern = "random";
-    // pattern.humanize = true;
-    // pattern.start(0);
-
-    Transport.start();
+    this.setupAframe();
+    this.setupTone();
 
     document.addEventListener("fullscreenchange", this.handleFullScreenChange);
     document.addEventListener("mozfullscreenchange", this.handleFullScreenChange);
@@ -85,9 +64,11 @@ export default class Play extends PureComponent {
 
     window.addEventListener("enter-vr", this.handleStartVR);
     window.addEventListener("exit-vr", this.handleStopVR);
+
     // window.addEventListener('resize', this.handleResize);
     // this.handleResize();
-    this.setState({ readyForVR: true });
+
+    this.setState({ clientSideRendered: true });
   }
 
   setupFirebase = () => {
@@ -116,6 +97,109 @@ export default class Play extends PureComponent {
       } else {
         this.setState({ connected: false });
       }
+    });
+  }
+
+  setupAframe = () => {
+    require("aframe");
+    require("aframe-look-at-billboard-component");
+    require("aframe-meshline-component");
+    require("aframe-faceset-component");
+    require("aframe-mouse-cursor-component");
+  }
+
+  setupTone = () => {
+    Tone = require("Tone/Tone/core/Tone");
+    DuoSynth = require("Tone/Tone/instrument/DuoSynth");
+    Transport = require("Tone/Tone/core/Transport");
+    Panner = require("Tone/Tone/component/Panner");
+    Loop = require("Tone/Tone/event/Loop");
+    FeedbackDelay = require("Tone/Tone/effect/FeedbackDelay");
+
+    let leftSynth = this.makeSynth();
+    let rightSynth = this.makeSynth();
+
+    let leftPanner = new Panner(-0.5).toMaster();
+    let rightPanner = new Panner(0.5).toMaster();
+    let echo = new FeedbackDelay('16n', 0.2);
+    let delay = Tone.context.createDelay(6.0);
+    let delayFade = Tone.context.createGain();
+
+    delay.delayTime.value = 6.0;
+    delayFade.gain.value = 0.75;
+
+    leftSynth.connect(leftPanner);
+    rightSynth.connect(rightPanner);
+    leftPanner.connect(echo);
+    rightPanner.connect(echo);
+
+    echo.toMaster();
+    echo.connect(delay);
+    delay.connect(Tone.context.destination);
+    delay.connect(delay);
+
+    new Loop(time => {
+      leftSynth.triggerAttackRelease('C5', '1:2', time);
+      leftSynth.setNote('D5', '+0:2');
+
+      leftSynth.triggerAttackRelease('E4', '0:2', '+6:0');
+
+      leftSynth.triggerAttackRelease('G4', '0:2', '+11:2');
+
+      leftSynth.triggerAttackRelease('E5', '2:0', '+19:0');
+      leftSynth.setNote('G5', '+19:1:2');
+      leftSynth.setNote('A5', '+19:3:0');
+      leftSynth.setNote('G5', '+19:4:2');
+    }, '34m').start();
+
+    new Loop(time => {
+    // Trigger D4 after 5 measures and hold for 1 full measure + two 1/4 notes
+      rightSynth.triggerAttackRelease('D4', '1:2', '+5:0');
+      // Switch to E4 after one more measure
+      rightSynth.setNote('E4', '+6:0');
+
+      // Trigger B3 after 11 measures + two 1/4 notes + two 1/16 notes. Hold for one measure
+      rightSynth.triggerAttackRelease('B3', '1m', '+11:2:2');
+      // Switch to G3 after a 1/2 note more
+      rightSynth.setNote('G3', '+12:0:2');
+
+      // Trigger G4 after 23 measures + two 1/4 notes. Hold for a half note.
+      rightSynth.triggerAttackRelease('G4', '0:2', '+23:2');
+    }, '37m').start();
+
+    Tone.Transport.start();
+  }
+
+  makeSynth = () => {
+    const envelope = {
+      attack: 0.1,
+      release: 4,
+      releaseCurve: 'linear'
+    };
+
+    const filterEnvelope = {
+      baseFrequency: 200,
+      octaves: 2,
+      attack: 0,
+      decay: 0,
+      release: 1000
+    };
+
+    return new DuoSynth({
+      harmonicity: 1,
+      volume: -20,
+      voice0: {
+        oscillator: {type: 'sawtooth'},
+        envelope,
+        filterEnvelope
+      },
+      voice1: {
+        oscillator: {type: 'sine'},
+        envelope,
+        filterEnvelope
+      },
+      vibratoRate: 0.5,
+      vibratoAmount: 0.1
     });
   }
 
@@ -231,7 +315,7 @@ export default class Play extends PureComponent {
 
         <Head />
 
-        {this.state.readyForVR ? (
+        {this.state.clientSideRendered ? (
           <a-scene
             ref={ref => {this.scene = ref;}}
             // stats={process.env.NODE_ENV === "production" ? undefined : true}
