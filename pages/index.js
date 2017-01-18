@@ -58,13 +58,13 @@ export default class Play extends PureComponent {
     require("aframe-faceset-component");
     require("aframe-mouse-cursor-component");
 
-    const Tone = require("tone");
+    // const Tone = require("tone");
 
-    // const Tone = require("tone/Tone/core/Tone");
-    // const Synth = require("tone/Tone/instrument/Synth");
-    // const Transport = require("tone/Tone/core/Transport");
+    const Tone = require("Tone/Tone/core/Tone");
+    const Synth = require("Tone/Tone/instrument/Synth");
+    const Transport = require("Tone/Tone/core/Transport");
 
-    this.synth = new Tone.Synth().toMaster();
+    this.synth = new Synth().toMaster();
 
     // const pattern = new Tone.Pattern(
     //   (time, note) => {
@@ -77,7 +77,7 @@ export default class Play extends PureComponent {
     // pattern.humanize = true;
     // pattern.start(0);
 
-    Tone.Transport.start();
+    Transport.start();
 
     document.addEventListener("fullscreenchange", this.handleFullScreenChange);
     document.addEventListener("mozfullscreenchange", this.handleFullScreenChange);

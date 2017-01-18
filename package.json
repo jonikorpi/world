@@ -23,6 +23,9 @@
     "rollbar": "^0.6.3",
     "tone": "^0.9.0"
   },
+  "paths": {
+    "Tone" : "tone/Tone"
+  },
   "scripts": {
     "start": "firebase deploy && nodemon --watch server --harmony-async-await server/server.js",
     "build": "next build",
