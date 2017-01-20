@@ -20,6 +20,7 @@ export default class Camera extends PureComponent {
     return (
       <Entity
         id="cameraContainer"
+        rotation={[0, 30, 0]}
       >
         <Entity
           id="camera"

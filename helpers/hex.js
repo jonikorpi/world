@@ -1,4 +1,4 @@
-const size = 0.5;
+const size = 0.618;
 const height = size * 2;
 const width = Math.sqrt(3) / 2 * height;
 

@@ -15,9 +15,10 @@ export default class WorldContainer extends PureComponent {
       playArea, userHeight, seaLevel,
      } = {...this.props};
 
+    const visibility = 3;
     const centerOnArray = centerOn.split(",");
-    const centerOnX = +centerOnArray[0];
-    const centerOnY = +centerOnArray[1];
+    const centerOnX = +centerOnArray[0] + visibility / 1.75;
+    const centerOnY = +centerOnArray[1] + visibility / 1.75;
 
     return (
       <Entity
@@ -25,7 +26,7 @@ export default class WorldContainer extends PureComponent {
         position={[
           -centerOnX * hex.size * 3/2,
           userHeight + seaLevel,
-          hex.size * Math.sqrt(3) * (-centerOnY + centerOnX/2) - (hex.size * 3),
+          -hex.size * Math.sqrt(3) * (centerOnY + centerOnX/2),
         ]}
       >
         <Assets/>
@@ -41,7 +42,7 @@ export default class WorldContainer extends PureComponent {
               playerToken={this.props.playerToken}
               x={+coordinates[0]}
               y={+coordinates[1]}
-              visible={hex.distanceBetween(locationID, locations[0]) < 5}
+              visible={hex.distanceBetween(locationID, locations[0]) <= visibility}
               synth={this.props.synth}
             />
           )
