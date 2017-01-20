@@ -33,7 +33,7 @@ export default class Play extends PureComponent {
       seaLevel: -(userHeight / 2.618),
       playArea: [ 1.5, 1.5 ],
       fullScreen: false,
-      env: env,
+      env: env || "development",
     };
   }
 
