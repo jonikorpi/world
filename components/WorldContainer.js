@@ -36,6 +36,7 @@ export default class WorldContainer extends PureComponent {
           return (
             <Location
               key={locationID}
+              locationID={locationID}
               playerID={this.props.playerID}
               playerToken={this.props.playerToken}
               x={+coordinates[0]}

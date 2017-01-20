@@ -20,6 +20,12 @@ export default class Location extends PureComponent {
     }
   }
 
+  componentDidUpdate() {
+    if (this.props.visible) {
+      sessionStorage.setItem(this.props.locationID, JSON.stringify(this.state));
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     const { x, y } = {...this.props};
     const visible = nextProps.visible;
@@ -64,25 +70,36 @@ export default class Location extends PureComponent {
   }
 
   render() {
-    const { visible } = {...this.props};
-    const tileProps = /*visible ? {...savedLocation} :*/ {...this.state.tile};
-    const hasUnit = this.state.unit && this.state.unit.ownerID;
+    const { visible, locationID } = {...this.props};
 
-    return (
-      <a-entity class="location">
-        <Tile
-          {...this.props}
-          {...tileProps}
-        />
+    let state = {};
+    state = visible ? this.state : JSON.parse(sessionStorage.getItem(locationID));
 
-        {hasUnit && (
-          <Unit
-            {...this.props}
-            {...this.state.unit}
-          />
-        )}
-      </a-entity>
-    );
+    const tileProps = state && state.tile && {...state.tile};
+    const unitProps = state && state.unit && {...state.unit};
+
+    if (tileProps || unitProps) {
+      return (
+        <a-entity class="location">
+          {tileProps && (
+            <Tile
+              {...this.props}
+              {...tileProps}
+            />
+          )}
+
+          {unitProps && unitProps.ownerID && (
+            <Unit
+              {...this.props}
+              {...unitProps}
+            />
+          )}
+        </a-entity>
+      );
+    }
+    else {
+      return null;
+    }
   }
 }
 
