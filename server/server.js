@@ -124,7 +124,7 @@ const spawn = async (playerID) => {
       .transaction((unit) => {
         if (unit === null) {
           return {
-            playerID: playerID,
+            ownerID: playerID,
             type: "monument",
             turn: 0,
             immuneUntil: Date.now() + 45*1000,
@@ -168,7 +168,7 @@ const spawn = async (playerID) => {
 const selfDestruct = async (playerID) => {
   // Find all player units
   const locationsWithUnits = await database.ref("locations")
-    .orderByChild("unit/playerID")
+    .orderByChild("unit/ownerID")
     .equalTo(playerID)
     .once("value")
   ;
@@ -178,7 +178,7 @@ const selfDestruct = async (playerID) => {
     locationsWithUnits.forEach((locationWithUnit) => {
       locationWithUnit.child("unit").ref.transaction((unit) => {
         if (unit) {
-          if (unit.playerID === playerID) {
+          if (unit.ownerID === playerID) {
             return null;
           }
           else {
@@ -207,7 +207,7 @@ const move = async (playerID, from, to) => {
   // Lock moving unit and make sure it can move
   const lockTransaction = await fromReference.transaction((unit) => {
     if (unit) {
-      if (unit.playerID === playerID && !unit.moving) {
+      if (unit.ownerID === playerID && !unit.moving) {
         unit.locked = true;
         return unit;
       }
@@ -243,7 +243,7 @@ const move = async (playerID, from, to) => {
     // If that worked, remove moving unit from origin tile
     const removeTransaction = await fromReference.transaction((unit) => {
       if (unit) {
-        if (unit.playerID === playerID) {
+        if (unit.ownerID === playerID) {
           return null;
         }
         else {
@@ -258,7 +258,7 @@ const move = async (playerID, from, to) => {
   else {
     // Else remove lock from moving unit and stop
     const unlockTransaction = fromReference.transaction((unit) => {
-      if (unit && unit.playerID === playerID) {
+      if (unit && unit.ownerID === playerID) {
         unit.locked = null;
         return unit;
       }

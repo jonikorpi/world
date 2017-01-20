@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Entity } from "aframe-react";
 
 import request from "../helpers/request";
+import hex from "../helpers/hex";
 
 import Location from "../components/Location";
 
@@ -42,18 +43,17 @@ export default class World extends Component {
       playerID,
       playArea, userHeight, seaLevel,
       locations,
-      tileSize, hexSize, hexHeight, hexWidth
     } = {...this.props};
 
-    const { centerOnX, centerOnY, savedLocations } = {...this.state};
+    const { centerOnX, centerOnY } = {...this.state};
 
     return (
       <Entity
         id="world"
         position={[
-          -centerOnX * hexSize * 3/2,
+          -centerOnX * hex.size * 3/2,
           userHeight + seaLevel,
-          -hexSize * Math.sqrt(3) * (centerOnY + centerOnX/2) - 2,
+          -hex.size * Math.sqrt(3) * (centerOnY + centerOnX/2) - 2,
         ]}
       >
 
@@ -67,10 +67,6 @@ export default class World extends Component {
               playerToken={this.props.playerToken}
               x={+coordinates[0]}
               y={+coordinates[1]}
-              tileSize={tileSize}
-              hexSize={hexSize}
-              hexHeight={hexHeight}
-              hexWidth={hexWidth}
               saveLocation={this.props.saveLocation}
               savedLocation={locations[locationID] === true ? undefined : locations[locationID]}
               synth={this.props.synth}
@@ -79,7 +75,7 @@ export default class World extends Component {
         })}
 
         <Entity
-          id="dot"
+          id="tile1"
           geometry={{
             primitive: "plane",
             width: 0,
@@ -89,6 +85,62 @@ export default class World extends Component {
           }}
           material={{
             color: "white",
+          }}
+        />
+
+        <Entity
+          id="tile2"
+          geometry={{
+            primitive: "plane",
+            width: 0,
+            height: 0,
+            buffer: false,
+            // skipCache: true,
+          }}
+          material={{
+            color: "red",
+          }}
+        />
+
+        <Entity
+          id="tile3"
+          geometry={{
+            primitive: "plane",
+            width: 0,
+            height: 0,
+            buffer: false,
+            // skipCache: true,
+          }}
+          material={{
+            color: "grey",
+          }}
+        />
+
+        <Entity
+          id="tile4"
+          geometry={{
+            primitive: "plane",
+            width: 0,
+            height: 0,
+            buffer: false,
+            // skipCache: true,
+          }}
+          material={{
+            color: "orange",
+          }}
+        />
+
+        <Entity
+          id="tile5"
+          geometry={{
+            primitive: "plane",
+            width: 0,
+            height: 0,
+            buffer: false,
+            // skipCache: true,
+          }}
+          material={{
+            color: "purple",
           }}
         />
       </Entity>

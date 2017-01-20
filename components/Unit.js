@@ -1,6 +1,8 @@
 import React, { PureComponent } from "react";
 import { Entity } from "aframe-react";
 
+import hex from "../helpers/hex";
+
 import Button from "../components/Button";
 
 export default class Unit extends PureComponent {
@@ -52,24 +54,30 @@ export default class Unit extends PureComponent {
   }
 
   render() {
-    const {tileSize, unit, playerID} = {...this.props};
+    const {
+      x, y,
+      playerID,
+      ownerID, locked, immuneUntil, type, turn, emote, action, health, attack,
+    } = {...this.props};
 
-    const isOwnUnit = playerID === unit.playerID;
+    const position = [
+      x * hex.size * 3/2,
+      0,
+      hex.size * Math.sqrt(3) * (y + x/2),
+    ];
+
+    const isOwnUnit = playerID === ownerID;
 
     return (
       <Entity
         className="unit"
         geometry={{
           primitive: "box",
-          width: tileSize * 0.382,
-          depth: tileSize * 0.382,
-          height: tileSize * 0.618,
+          width: hex.width * 0.236,
+          depth: hex.width * 0.5,
+          height: hex.width * 0.236,
         }}
-        position={[
-          0,
-          tileSize * 0.618 * 0.5,
-          0,
-        ]}
+        position={position}
         material={{
           shader: "flat",
           color: isOwnUnit ? "green" : "red",
@@ -80,34 +88,34 @@ export default class Unit extends PureComponent {
             <Button
               onClick={this.moveNorth}
               color="red"
-              position={[0, 1, -tileSize]}
+              position={[0, 1, -hex.width]}
             />
             <Button
               onClick={this.moveSouth}
               color="grey"
-              position={[0, 1, tileSize]}
+              position={[0, 1, hex.width]}
             />
 
             <Button
               onClick={this.moveNorthWest}
               color="grey"
-              position={[-1, 1, -tileSize*0.5]}
+              position={[-1, 1, -hex.width*0.5]}
             />
             <Button
               onClick={this.moveNorthEast}
               color="grey"
-              position={[1, 1, -tileSize*0.5]}
+              position={[1, 1, -hex.width*0.5]}
             />
 
             <Button
               onClick={this.moveSouthWest}
               color="grey"
-              position={[-1, 1, tileSize*0.5]}
+              position={[-1, 1, hex.width*0.5]}
             />
             <Button
               onClick={this.moveSouthEast}
               color="grey"
-              position={[1, 1, tileSize*0.5]}
+              position={[1, 1, hex.width*0.5]}
             />
           </Entity>
         }

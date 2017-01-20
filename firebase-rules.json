@@ -9,7 +9,7 @@
       ".read": "auth != null",
       "tile": { ".validate": "newData.isString()" },
       "unit": {
-        "playerID": { ".validate": "newData.isString()" },
+        "ownerID": { ".validate": "newData.isString()" },
         "locked": { ".validate": "newData.isBoolean()" },
         "immuneUntil": { ".validate": "newData.isNumber()" },
         "type": { ".validate": "newData.isString()" },

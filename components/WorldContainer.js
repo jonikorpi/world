@@ -1,11 +1,9 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import { Entity } from "aframe-react";
-
-import request from "../helpers/request";
 
 import World from "../components/World";
 
-export default class WorldContainer extends Component {
+export default class WorldContainer extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -13,8 +11,8 @@ export default class WorldContainer extends Component {
     this.state = {};
   }
 
-  saveLocation = (location) => {
-    this.setState({[location[".key"]]: location})
+  saveLocation = (x, y, location) => {
+    this.setState({[`${x},${y}`]: location})
   }
 
   render() {

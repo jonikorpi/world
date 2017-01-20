@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import { Entity } from "aframe-react";
 import reactMixin from "react-mixin";
 import reactFire from "reactfire";
@@ -7,7 +7,7 @@ import firebase from "firebase";
 import Tile from "../components/Tile";
 import Unit from "../components/Unit";
 
-export default class Location extends Component {
+export default class Location extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -19,8 +19,8 @@ export default class Location extends Component {
   }
 
   componentDidUpdate(nextProps, nextState) {
-    if (this.state.location && nextState.location !== this.state.location) {
-      this.props.saveLocation(this.state.location);
+    if (this.state.tile && nextState.tile !== this.state.tile) {
+      this.props.saveLocation(nextProps.x, nextProps.y, this.state.tile);
     }
   }
 
@@ -34,7 +34,7 @@ export default class Location extends Component {
       this.unbindFirebase();
     }
     else {
-      if (!this.firebaseListeners.location) {
+      if (!this.firebaseListeners.tile && !this.firebaseListeners.unit) {
         this.bindFirebase(xNext, yNext);
       }
     }
@@ -44,8 +44,17 @@ export default class Location extends Component {
     this.unbindFirebase();
 
     this.bindAsObject(
-      firebase.database().ref(`locations/${x},${y}`),
-      "location",
+      firebase.database().ref(`locations/${x},${y}/tile`),
+      "tile",
+      (error) => {
+        console.log("Location subscription cancelled:", error)
+        this.unbindFirebase();
+      }
+    );
+
+    this.bindAsObject(
+      firebase.database().ref(`locations/${x},${y}/unit`),
+      "unit",
       (error) => {
         console.log("Location subscription cancelled:", error)
         this.unbindFirebase();
@@ -54,38 +63,31 @@ export default class Location extends Component {
   }
 
   unbindFirebase = () => {
-    if (this.firebaseListeners.location) {
-      this.unbind("location");
-    }
+    this.firebaseListeners.tile && this.unbind("tile");
+    this.firebaseListeners.unit && this.unbind("unit");
   }
 
   render() {
-    if (this.props.savedLocation) {
-      return (
+    const { savedLocation, ...otherProps } = {...this.props};
+    const tileProps = savedLocation ? {...savedLocation} : {...this.state.tile};
+    const hasUnit = this.state.unit && this.state.unit.ownerID;
+
+    return (
+      <a-entity class="location">
         <Tile
-          {...this.props}
-          {...this.props.savedLocation}
+          {...otherProps}
+          {...tileProps}
+          isVisible={savedLocation ? false : true}
         />
-      );
-    }
-    else if (this.state.location) {
-      return (
-        <Tile
-          {...this.props}
-          {...this.state.location}
-        >
-          {this.state.location.unit && (
-            <Unit
-              {...this.props}
-              {...this.state.location}
-            />
-          )}
-        </Tile>
-      );
-    }
-    else {
-      return null;
-    }
+
+        {hasUnit && (
+          <Unit
+            {...otherProps}
+            {...this.state.unit}
+          />
+        )}
+      </a-entity>
+    );
   }
 }
 

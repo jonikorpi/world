@@ -5,6 +5,7 @@ import reactMixin from "react-mixin";
 import reactFire from "reactfire";
 
 import request from "../helpers/request";
+import hex from "../helpers/hex";
 
 import WorldContainer from "../components/WorldContainer";
 import Camera from "../components/Camera";
@@ -110,18 +111,12 @@ export default class Player extends Component {
 
   render() {
     const { playerID, playArea, userHeight, seaLevel} = {...this.props};
-    const wallDistance = playArea[1] / 2;
     const player = this.state.player;
     const playerSecrets = this.state.playerSecrets;
 
     const secretLocations = playerSecrets && playerSecrets.locations;
     const locations = secretLocations ? Object.keys(this.getLocations(secretLocations)) : [];
     const hasSomeLocations = locations.length > 0;
-
-    const tileSize = 1;
-    const hexSize = tileSize / 2;
-    const hexHeight = hexSize * 2;
-    const hexWidth = Math.sqrt(3) / 2 * hexHeight;
 
     return (
       <Entity id="player">
@@ -131,10 +126,6 @@ export default class Player extends Component {
           <WorldContainer
             {...this.props}
             locations={locations}
-            tileSize={tileSize}
-            hexSize={hexSize}
-            hexHeight={hexHeight}
-            hexWidth={hexWidth}
           />
         )}
 
@@ -144,7 +135,7 @@ export default class Player extends Component {
             events={{
               click: this.createPlayer,
             }}
-            position={[0, userHeight + seaLevel, -2 * tileSize]}
+            position={[0, userHeight + seaLevel, -2 * hex.width]}
             geometry={{
               primitive: "box",
               width: 0.382,

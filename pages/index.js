@@ -10,11 +10,7 @@ import Player from "../components/Player";
 
 let Tone, DuoSynth, Transport, Panner, Loop, FeedbackDelay;
 
-// if (process.env.NODE_ENV !== "production" && typeof window !== "undefined") {
-// window.ReactPerf = require("react-addons-perf");
-// window.ReactPerf.start();
-// firebase.database.enableLogging(true);
-// }
+const env = process && process.env && process.env.NODE_ENV;
 
 export default class Play extends PureComponent {
   constructor(props) {
@@ -37,12 +33,12 @@ export default class Play extends PureComponent {
       seaLevel: -(userHeight / 2.618),
       playArea: [ 1.5, 1.5 ],
       fullScreen: false,
+      env: env,
     };
   }
 
   componentDidMount() {
     this.clientSideRender();
-    this.setupFirebase();
   }
 
   componentWillUnmount() {
@@ -55,6 +51,11 @@ export default class Play extends PureComponent {
   }
 
   clientSideRender = () => {
+    if (this.state.env !== "production") {
+      this.setupLogging();
+    }
+
+    this.setupFirebase();
     this.setupAframe();
     this.setupTone();
 
@@ -69,6 +70,20 @@ export default class Play extends PureComponent {
     // this.handleResize();
 
     this.setState({ clientSideRendered: true });
+  }
+
+  setupLogging = () => {
+    window.ReactPerf = require("react-addons-perf");
+    // firebase.database.enableLogging(true);
+
+    window.setTimeout(() => {
+      window.ReactPerf.start();
+
+      window.setTimeout(() => {
+        window.ReactPerf.stop();
+        console.log(window.ReactPerf.printWasted());
+      }, 8000);
+    }, 1);
   }
 
   setupFirebase = () => {
@@ -109,12 +124,12 @@ export default class Play extends PureComponent {
   }
 
   setupTone = () => {
-    Tone = require("Tone/Tone/core/Tone");
-    DuoSynth = require("Tone/Tone/instrument/DuoSynth");
-    Transport = require("Tone/Tone/core/Transport");
-    Panner = require("Tone/Tone/component/Panner");
-    Loop = require("Tone/Tone/event/Loop");
-    FeedbackDelay = require("Tone/Tone/effect/FeedbackDelay");
+    Tone = require("tone/Tone/core/Tone");
+    DuoSynth = require("tone/Tone/instrument/DuoSynth");
+    Transport = require("tone/Tone/core/Transport");
+    Panner = require("tone/Tone/component/Panner");
+    Loop = require("tone/Tone/event/Loop");
+    FeedbackDelay = require("tone/Tone/effect/FeedbackDelay");
 
     let leftSynth = this.makeSynth();
     let rightSynth = this.makeSynth();
@@ -187,7 +202,7 @@ export default class Play extends PureComponent {
 
     return new DuoSynth({
       harmonicity: 1,
-      volume: -20,
+      volume: -25,
       voice0: {
         oscillator: {type: 'sawtooth'},
         envelope,

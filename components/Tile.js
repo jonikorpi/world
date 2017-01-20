@@ -1,6 +1,8 @@
 import React, { PureComponent } from "react";
 import { Entity } from "aframe-react";
 
+import hex from "../helpers/hex";
+
 export default class Tile extends PureComponent {
   constructor(props) {
     super(props);
@@ -50,21 +52,21 @@ export default class Tile extends PureComponent {
   render() {
     const {
       x, y,
-      tileSize, hexSize, hexHeight, hexWidth,
-      unit, playerID
+      playerID,
+      isVisible,
     } = {...this.props};
 
     const position = [
-      x * hexSize * 3/2,
+      x * hex.size * 3/2,
       0,
-      hexSize * Math.sqrt(3) * (y + x/2),
+      hex.size * Math.sqrt(3) * (y + x/2),
     ];
 
     // const angleToOrigin = Math.atan2(xPosition, zPosition) * (180/Math.PI);
     // const comparisonLoc = [0,0];
     // const distance = this.distanceBetween(comparisonLoc, [x,y]);
     //
-    const elevation = hexSize / 5;
+    // const elevation = hex.size / 5;
     // const baseHeight = 0.5;
     // const height = (rock + baseHeight) * elevation + (distance > wallEdge ? ((distance - wallEdge) * distanceElevation) : 0);
 
@@ -96,7 +98,6 @@ export default class Tile extends PureComponent {
         className="tile"
         position={position}
       >
-        {this.props.children}
 
         <Entity
           className="interactable"
@@ -108,11 +109,11 @@ export default class Tile extends PureComponent {
           geometry={{
             primitive: "circle",
             segments: 6,
-            radius: hexSize * 0.944,
+            radius: hex.size * 0.944,
           }}
           material={{
             shader: "flat",
-            color: `hsl(30, 50%, ${this.props.savedLocation ? 15 : 50}%)`,
+            color: `hsl(30, 50%, ${isVisible ? 50 : 15}%)`,
             // transparent: true,
             // opacity: 0,
           }}
@@ -121,34 +122,34 @@ export default class Tile extends PureComponent {
 {/*
         <Entity
           position={[
-            halfTileSize,
+            halfhex.width,
             wireframeThickness * 0.005,
-            halfTileSize,
+            halfhex.width,
           ]}
           faceset={{
             vertices: [
-              [0,           0, -hexHeight/4],
-              [ hexWidth/4, 0, -hexHeight/8],
-              [ hexWidth/4, 0,  hexHeight/8],
-              [0,           0,  hexHeight/4],
-              [-hexWidth/4, 0,  hexHeight/8],
-              [-hexWidth/4, 0, -hexHeight/8],
+              [0,           0, -hex.height/4],
+              [ hex.width/4, 0, -hex.height/8],
+              [ hex.width/4, 0,  hex.height/8],
+              [0,           0,  hex.height/4],
+              [-hex.width/4, 0,  hex.height/8],
+              [-hex.width/4, 0, -hex.height/8],
           //
-          //     [0,           heightN,  -hexHeight/2],
-          //     [ hexWidth/2, heightNE, -hexHeight/4],
-          //     [ hexWidth/2, heightSE,  hexHeight/4],
-          //     [0,           heightS,   hexHeight/2],
-          //     [-hexWidth/2, heightSW,  hexHeight/4],
-          //     [-hexWidth/2, heightNW, -hexHeight/4],
+          //     [0,           heightN,  -hex.height/2],
+          //     [ hex.width/2, heightNE, -hex.height/4],
+          //     [ hex.width/2, heightSE,  hex.height/4],
+          //     [0,           heightS,   hex.height/2],
+          //     [-hex.width/2, heightSW,  hex.height/4],
+          //     [-hex.width/2, heightNW, -hex.height/4],
             ],
           }}
           meshline={{
             lineWidth: wireframeThickness,
             path: `
               0 0 0,
-              0 0 ${-tileSize},
-              ${-tileSize} 0 ${-tileSize},
-              ${-tileSize} 0 0,
+              0 0 ${-hex.width},
+              ${-hex.width} 0 ${-hex.width},
+              ${-hex.width} 0 0,
               0 0 0
             `,
             color: wireframeColor,
