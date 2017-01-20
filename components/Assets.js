@@ -14,9 +14,10 @@ export default class Assets extends PureComponent {
             width: 0,
             height: 0,
             buffer: false,
-            // skipCache: true,
+            skipCache: true,
           }}
           material={{
+            shader: "flat",
             color: "white",
           }}
         />
@@ -28,9 +29,10 @@ export default class Assets extends PureComponent {
             width: 0,
             height: 0,
             buffer: false,
-            // skipCache: true,
+            skipCache: true,
           }}
           material={{
+            shader: "flat",
             color: "red",
           }}
         />
@@ -42,9 +44,10 @@ export default class Assets extends PureComponent {
             width: 0,
             height: 0,
             buffer: false,
-            // skipCache: true,
+            skipCache: true,
           }}
           material={{
+            shader: "flat",
             color: "grey",
           }}
         />
@@ -56,9 +59,10 @@ export default class Assets extends PureComponent {
             width: 0,
             height: 0,
             buffer: false,
-            // skipCache: true,
+            skipCache: true,
           }}
           material={{
+            shader: "flat",
             color: "orange",
           }}
         />
@@ -70,9 +74,10 @@ export default class Assets extends PureComponent {
             width: 0,
             height: 0,
             buffer: false,
-            // skipCache: true,
+            skipCache: true,
           }}
           material={{
+            shader: "flat",
             color: "purple",
           }}
         />

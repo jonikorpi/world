@@ -86,7 +86,7 @@ export default class Player extends Component {
     let locations = Object.assign({}, secretLocations);
 
     for (const locationID of Object.keys(secretLocations)) {
-      for (const neighbourID of hex.listNeighbouringTiles(locationID, 8)) {
+      for (const neighbourID of hex.listNeighbouringTiles(locationID, 16)) {
         locations[neighbourID] = true;
       }
     }

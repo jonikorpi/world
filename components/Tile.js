@@ -58,6 +58,33 @@ export default class Tile extends PureComponent {
       hex.size * Math.sqrt(3) * (y + x/2),
     ];
 
+    return (
+      <Entity
+        // className="interactable"
+        // events={{
+        //   click: this.handleClick,
+        //   stateadded: this.handleStateEvent,
+        //   stateremoved: this.handleStateEvent,
+        // }}
+        geometry={{
+          primitive: "circle",
+          segments: 6,
+          radius: hex.size * 0.944,
+          // buffer: false,
+          // skipCache: true,
+          // mergeTo: "#tile1",
+        }}
+        material={{
+          shader: "flat",
+          color: `hsl(30, 50%, ${visible ? 50 : 15}%)`,
+          // transparent: true,
+          // opacity: 0,
+        }}
+        rotation={[-90, 0, 0]}
+        position={position}
+      />
+    );
+
     // const angleToOrigin = Math.atan2(xPosition, zPosition) * (180/Math.PI);
     // const comparisonLoc = [0,0];
     // const distance = this.distanceBetween(comparisonLoc, [x,y]);
@@ -89,69 +116,47 @@ export default class Tile extends PureComponent {
     // const heightSW = this.getCornerHeight(height, neighbourHeights[3], neighbourHeights[4]);
     // const heightNW = this.getCornerHeight(height, neighbourHeights[4], neighbourHeights[5]);
 
-    return (
-      <Entity
-        className="tile"
-        position={position}
-      >
-
-        <Entity
-          className="interactable"
-          events={{
-            click: this.handleClick,
-            stateadded: this.handleStateEvent,
-            stateremoved: this.handleStateEvent,
-          }}
-          geometry={{
-            primitive: "circle",
-            segments: 6,
-            radius: hex.size * 0.944,
-          }}
-          material={{
-            shader: "flat",
-            color: `hsl(30, 50%, ${visible ? 50 : 15}%)`,
-            // transparent: true,
-            // opacity: 0,
-          }}
-          rotation={[-90, 0, 0]}
-        />
-{/*
-        <Entity
-          position={[
-            halfhex.width,
-            wireframeThickness * 0.005,
-            halfhex.width,
-          ]}
-          faceset={{
-            vertices: [
-              [0,           0, -hex.height/4],
-              [ hex.width/4, 0, -hex.height/8],
-              [ hex.width/4, 0,  hex.height/8],
-              [0,           0,  hex.height/4],
-              [-hex.width/4, 0,  hex.height/8],
-              [-hex.width/4, 0, -hex.height/8],
-          //
-          //     [0,           heightN,  -hex.height/2],
-          //     [ hex.width/2, heightNE, -hex.height/4],
-          //     [ hex.width/2, heightSE,  hex.height/4],
-          //     [0,           heightS,   hex.height/2],
-          //     [-hex.width/2, heightSW,  hex.height/4],
-          //     [-hex.width/2, heightNW, -hex.height/4],
-            ],
-          }}
-          meshline={{
-            lineWidth: wireframeThickness,
-            path: `
-              0 0 0,
-              0 0 ${-hex.width},
-              ${-hex.width} 0 ${-hex.width},
-              ${-hex.width} 0 0,
-              0 0 0
-            `,
-            color: wireframeColor,
-          }}
-        /> */}
-      </Entity>
-    );
+    // return (
+    //   <Entity
+    //     className="tile"
+    //     position={position}
+    //   >
+    //     <Entity
+    //       position={[
+    //         halfhex.width,
+    //         wireframeThickness * 0.005,
+    //         halfhex.width,
+    //       ]}
+    //       faceset={{
+    //         vertices: [
+    //           [0,           0, -hex.height/4],
+    //           [ hex.width/4, 0, -hex.height/8],
+    //           [ hex.width/4, 0,  hex.height/8],
+    //           [0,           0,  hex.height/4],
+    //           [-hex.width/4, 0,  hex.height/8],
+    //           [-hex.width/4, 0, -hex.height/8],
+    //       //
+    //       //     [0,           heightN,  -hex.height/2],
+    //       //     [ hex.width/2, heightNE, -hex.height/4],
+    //       //     [ hex.width/2, heightSE,  hex.height/4],
+    //       //     [0,           heightS,   hex.height/2],
+    //       //     [-hex.width/2, heightSW,  hex.height/4],
+    //       //     [-hex.width/2, heightNW, -hex.height/4],
+    //         ],
+    //       }}
+    //       meshline={{
+    //         lineWidth: wireframeThickness,
+    //         path: `
+    //           0 0 0,
+    //           0 0 ${-hex.width},
+    //           ${-hex.width} 0 ${-hex.width},
+    //           ${-hex.width} 0 0,
+    //           0 0 0
+    //         `,
+    //         color: wireframeColor,
+    //       }}
+    //     />
+    //   </Entity>
+    // );
   }
 }
