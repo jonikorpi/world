@@ -18,9 +18,9 @@ export default class Location extends PureComponent {
     this.bindFirebase(this.props.x, this.props.y);
   }
 
-  componentDidUpdate(nextProps, nextState) {
-    if (this.state.tile && nextState.tile !== this.state.tile) {
-      this.props.saveLocation(nextProps.x, nextProps.y, this.state.tile);
+  componentDidUpdate(previousProps, previousState) {
+    if (this.state.tile && !this.props.savedLocation) {
+      this.props.saveLocation(this.props.x, this.props.y, this.state.tile);
     }
   }
 

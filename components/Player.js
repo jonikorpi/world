@@ -126,6 +126,7 @@ export default class Player extends Component {
           <WorldContainer
             {...this.props}
             locations={locations}
+            centerOn={Object.keys(secretLocations)[0]}
           />
         )}
 
