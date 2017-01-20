@@ -86,28 +86,13 @@ export default class Player extends Component {
     let locations = Object.assign({}, secretLocations);
 
     for (const locationID of Object.keys(secretLocations)) {
-      for (const neighbourID of this.listNeighbouringTiles(locationID)) {
+      for (const neighbourID of hex.listNeighbouringTiles(locationID, 8)) {
         locations[neighbourID] = true;
       }
     }
 
     return locations;
   }
-
-  listNeighbouringTiles = (locationID) => {
-    const centerX = +locationID.split(",")[0];
-    const centerY = +locationID.split(",")[1];
-    const range = 5;
-    let neighbours = [];
-
-    for ( let x = -range ; x <= range ; x++ ) {
-      for ( let y = Math.max(-range, -x-range) ; y <= Math.min(range, -x+range) ; y++ ) {
-        neighbours.push(`${centerX + x},${centerY + y}`);
-      }
-    }
-
-    return neighbours;
-  };
 
   render() {
     const { playerID, playArea, userHeight, seaLevel} = {...this.props};

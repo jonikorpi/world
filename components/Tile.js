@@ -45,15 +45,11 @@ export default class Tile extends PureComponent {
     }
   }
 
-  distanceBetween(a, b) {
-    return (Math.abs(a[0] - b[0]) + Math.abs(a[0] + a[1] - b[0] - b[1]) + Math.abs(a[1] - b[1])) / 2;
-  }
-
   render() {
     const {
       x, y,
       playerID,
-      isVisible,
+      visible,
     } = {...this.props};
 
     const position = [
@@ -113,7 +109,7 @@ export default class Tile extends PureComponent {
           }}
           material={{
             shader: "flat",
-            color: `hsl(30, 50%, ${isVisible ? 50 : 15}%)`,
+            color: `hsl(30, 50%, ${visible ? 50 : 15}%)`,
             // transparent: true,
             // opacity: 0,
           }}

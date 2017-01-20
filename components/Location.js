@@ -15,22 +15,18 @@ export default class Location extends PureComponent {
   }
 
   componentWillMount() {
-    this.bindFirebase(this.props.x, this.props.y);
-  }
-
-  componentDidUpdate(previousProps, previousState) {
-    if (this.state.tile && !this.props.savedLocation) {
-      this.props.saveLocation(this.props.x, this.props.y, this.state.tile);
+    if (this.props.visible) {
+      this.bindFirebase(this.props.x, this.props.y);
     }
   }
 
   componentWillReceiveProps(nextProps) {
     const { x, y } = {...this.props};
-    const savedLocation = nextProps.savedLocation;
+    const visible = nextProps.visible;
     const xNext = nextProps.x;
     const yNext = nextProps.y;
 
-    if (savedLocation) {
+    if (!visible) {
       this.unbindFirebase();
     }
     else {
@@ -68,21 +64,20 @@ export default class Location extends PureComponent {
   }
 
   render() {
-    const { savedLocation, ...otherProps } = {...this.props};
-    const tileProps = savedLocation ? {...savedLocation} : {...this.state.tile};
+    const { visible } = {...this.props};
+    const tileProps = /*visible ? {...savedLocation} :*/ {...this.state.tile};
     const hasUnit = this.state.unit && this.state.unit.ownerID;
 
     return (
       <a-entity class="location">
         <Tile
-          {...otherProps}
+          {...this.props}
           {...tileProps}
-          isVisible={savedLocation ? false : true}
         />
 
         {hasUnit && (
           <Unit
-            {...otherProps}
+            {...this.props}
             {...this.state.unit}
           />
         )}
