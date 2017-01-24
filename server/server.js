@@ -51,6 +51,7 @@ app.prepare().then(() => {
       await handleRequest(req.body) && res.send();
     } catch (error) {
       dev && console.log(error);
+      rollbar.handleError(error);
       res.status(500).send(error.message);
     }
   })
