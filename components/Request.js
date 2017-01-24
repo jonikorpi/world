@@ -3,6 +3,8 @@ import { Entity } from "aframe-react";
 
 import hex from "../helpers/hex";
 
+const version = process && process.env && process.env.GAME_VERSION;
+
 export default class Request extends Component {
   constructor(props) {
     super(props);
@@ -33,11 +35,15 @@ export default class Request extends Component {
     const response = await fetch("/", {
       method: "POST",
       headers: headers,
-      body: JSON.stringify({...this.props.request}),
+      body: JSON.stringify({
+        version: version,
+        ...this.props.request,
+      }),
     });
 
     if (response.ok && this.mounted) {
       const message = await response.text();
+      console.log(message)
 
       if (this.mounted) {
         this.setState({
@@ -47,12 +53,20 @@ export default class Request extends Component {
       }
     }
     else if (this.mounted) {
-      this.setState({
-        status: "error",
-        message: response,
-      });
+      const error = await response.text();
 
-      console.log(response);
+      if (this.mounted) {
+        this.setState({
+          status: "error",
+          message: error,
+        });
+
+        console.log(error);
+
+        if (error === "Client is outdated. Refreshing!") {
+          window.location.reload(true);
+        }
+      }
     }
 
     if (this.mounted) {

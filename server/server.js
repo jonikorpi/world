@@ -12,6 +12,7 @@ const database = firebase.database();
 
 //
 // Setup next
+const version = process.env.GAME_VERSION;
 const next = require("next");
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
@@ -47,10 +48,10 @@ app.prepare().then(() => {
       console.log(req.method, req.originalUrl, req.body.userID, req.body.action);
     }
     try {
-      await handleRequest(req.body) && res.send("ok");
+      await handleRequest(req.body) && res.send();
     } catch (error) {
-      console.log(error);
-      res.send(error.message);
+      dev && console.log(error);
+      res.status(500).send(error.message);
     }
   })
 
@@ -64,6 +65,12 @@ app.prepare().then(() => {
 //
 // Handle and pass on requests
 const handleRequest = async (request) => {
+  // Version check
+  if (request.version !== version) {
+    throw new Error(`Client is outdated. Refreshing! (Version ${request.version} vs. ${version}.)`)
+  }
+
+  // Token vs. UID check
   const userID = request.userID;
   const token = request.token;
 
@@ -73,6 +80,7 @@ const handleRequest = async (request) => {
     throw new Error("You are not authenticated as this player.")
   }
 
+  // Start appropriate action
   const action = request.action;
 
   switch (action) {

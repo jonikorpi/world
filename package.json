@@ -25,11 +25,11 @@
     "tone": "^0.9.0"
   },
   "scripts": {
-    "start": "firebase deploy && nodemon --watch server --harmony-async-await server/server.js",
+    "start": "firebase deploy && GAME_VERSION=`git log -n 1 --pretty=format:'%H'` nodemon --watch server --harmony-async-await server/server.js",
     "build": "next build",
     "test": "",
     "eject": "",
-    "deploy": "now -e NODE_ENV=production && curl https://api.rollbar.com/api/1/deploy/ -F access_token=22fca22d3936434eb8b69cc0c453d040 -F environment=production -F revision=`git log -n 1 --pretty=format:'%H'` -F local_username=`whoami` && firebase deploy",
+    "deploy": "now -e NODE_ENV=production -e GAME_VERSION=`git log -n 1 --pretty=format:'%H'` && curl https://api.rollbar.com/api/1/deploy/ -F access_token=22fca22d3936434eb8b69cc0c453d040 -F environment=production -F revision=`git log -n 1 --pretty=format:'%H'` -F local_username=`whoami` && firebase deploy",
     "alias": "now alias && now rm $(now-no-alias | json -a uid)",
     "now-start": "NODE_ENV=production node --harmony-async-await server/server.js"
   },
