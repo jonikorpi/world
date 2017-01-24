@@ -1,7 +1,6 @@
 import React, { PureComponent } from "react";
 import { Entity } from "aframe-react";
 
-import request from "../helpers/request";
 import hex from "../helpers/hex";
 
 import Location from "../components/Location";

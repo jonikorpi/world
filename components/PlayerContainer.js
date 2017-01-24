@@ -4,7 +4,6 @@ import firebase from "firebase";
 import reactMixin from "react-mixin";
 import reactFire from "reactfire";
 
-import request from "../helpers/request";
 import hex from "../helpers/hex";
 
 import WorldContainer from "../components/WorldContainer";
