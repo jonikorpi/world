@@ -57,7 +57,7 @@ export default class Play extends PureComponent {
 
     this.setupFirebase();
     this.setupAframe();
-    this.setupTone();
+    // this.setupTone();
 
     document.addEventListener("fullscreenchange", this.handleFullScreenChange);
     document.addEventListener("mozfullscreenchange", this.handleFullScreenChange);
