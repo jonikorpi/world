@@ -4,8 +4,17 @@ import { Entity } from "aframe-react";
 import hex from "../helpers/hex";
 
 import Button from "../components/Button";
+import Request from "../components/Request";
 
 export default class Player extends PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      requests: [],
+    };
+  }
+
   // componentDidMount() {
   //   const isOwnUnit = this.props.userID === this.props.unit.userID;
   //
@@ -18,39 +27,36 @@ export default class Player extends PureComponent {
   //   this.props.synth.triggerAttackRelease(isOwnUnit ? "C4" : "E4", "4n");
   // }
 
-  moveNorth = () => { console.log("moveNorth"); this.move(this.props.x, this.props.y-1); }
-  moveSouth = () => { console.log("moveSouth"); this.move(this.props.x, this.props.y+1); }
+  moveNorth = () =>     { this.move(this.props.x, this.props.y-1); }
+  moveSouth = () =>     { this.move(this.props.x, this.props.y+1); }
+  moveNorthWest = () => { this.move(this.props.x-1, this.props.y); }
+  moveSouthEast = () => { this.move(this.props.x+1, this.props.y); }
+  moveNorthEast = () => { this.move(this.props.x+1, this.props.y-1); }
+  moveSouthWest = () => { this.move(this.props.x-1, this.props.y+1); }
 
-  moveNorthWest = () => { console.log("moveNorthWest"); this.move(this.props.x-1, this.props.y); }
-  moveSouthEast = () => { console.log("moveSouthEast"); this.move(this.props.x+1, this.props.y); }
+  move = (x, y) => {
+    const request = [{
+      id: Date.now(),
+      token: this.props.userToken,
+      userID: this.props.userID,
+      action: "move",
+      from: [this.props.x, this.props.y],
+      to: [x, y],
+    }];
 
-  moveNorthEast = () => { console.log("moveNorthEast"); this.move(this.props.x+1, this.props.y-1); }
-  moveSouthWest = () => { console.log("moveSouthWest"); this.move(this.props.x-1, this.props.y+1); }
+    this.setState({
+      requests: this.state.requests.concat(request),
+    })
+  }
 
-
-  move = async (x, y) => {
-    const headers = new Headers({
-      "Content-Type": "application/json",
+  removeRequest = (id) => {
+    const requests = this.state.requests.filter((request) => {
+      return !request.id === id;
     });
 
-    const response = await fetch("/", {
-      method: "POST",
-      headers: headers,
-      body: JSON.stringify({
-        token: this.props.userToken,
-        userID: this.props.userID,
-        action: "move",
-        from: [this.props.x, this.props.y],
-        to: [x, y],
-      }),
+    this.setState({
+      requests: requests,
     });
-
-    if (response.ok) {
-      console.log(await response.text());
-    }
-    else {
-      console.log(response);
-    }
   }
 
   render() {
@@ -59,6 +65,8 @@ export default class Player extends PureComponent {
       userID,
       playerID, locked, immuneUntil, type, turn, emote, action, health, attack,
     } = {...this.props};
+
+    const requests = this.state.requests;
 
     const position = [
       x * hex.size * 3/2,
@@ -83,6 +91,16 @@ export default class Player extends PureComponent {
           color: isOwnUnit ? "green" : "red",
         }}
       >
+        {requests && requests.map((request) => {
+          return (
+            <Request
+              key={request.id}
+              request={request}
+              removeRequest={this.removeRequest}
+            />
+          );
+        })}
+
         {isOwnUnit &&
           <Entity>
             <Button
