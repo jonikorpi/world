@@ -1,65 +1,34 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import { Entity } from "aframe-react";
-import firebase from "firebase";
-import reactMixin from "react-mixin";
-import reactFire from "reactfire";
 
-import request from "../helpers/request";
 import hex from "../helpers/hex";
 
-import WorldContainer from "../components/WorldContainer";
-import Camera from "../components/Camera";
-import Location from "../components/Location";
+import Button from "../components/Button";
 
-export default class Player extends Component {
-  constructor(props) {
-    super(props);
+export default class Player extends PureComponent {
+  // componentDidMount() {
+  //   const isOwnUnit = this.props.userID === this.props.unit.userID;
+  //
+  //   this.props.synth.triggerAttackRelease(isOwnUnit ? "C6" : "E6", "8n");
+  // }
+  //
+  // componentWillUnmount() {
+  //   const isOwnUnit = this.props.userID === this.props.unit.userID;
+  //
+  //   this.props.synth.triggerAttackRelease(isOwnUnit ? "C4" : "E4", "4n");
+  // }
 
-    this.state = {};
-  }
+  moveNorth = () => { console.log("moveNorth"); this.move(this.props.x, this.props.y-1); }
+  moveSouth = () => { console.log("moveSouth"); this.move(this.props.x, this.props.y+1); }
 
-  componentWillMount() {
-    if (this.props.playerID) {
-      this.bindFirebase(this.props.playerID);
-    }
-  }
+  moveNorthWest = () => { console.log("moveNorthWest"); this.move(this.props.x-1, this.props.y); }
+  moveSouthEast = () => { console.log("moveSouthEast"); this.move(this.props.x+1, this.props.y); }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.playerID !== nextProps.playerID) {
-      if (this.props.playerID) {
-        this.unbind("player");
-        this.unbind("playerSecrets");
-      }
+  moveNorthEast = () => { console.log("moveNorthEast"); this.move(this.props.x+1, this.props.y-1); }
+  moveSouthWest = () => { console.log("moveSouthWest"); this.move(this.props.x-1, this.props.y+1); }
 
-      if (nextProps.playerID) {
-        this.bindFirebase(nextProps.playerID);
-      }
-    }
-  }
 
-  bindFirebase = (playerID) => {
-    this.bindAsObject(
-      firebase.database().ref(`playerSecrets/${playerID}`),
-      "playerSecrets",
-      (error) => {
-        console.log("Player subscription cancelled:")
-        console.log(error);
-        this.setState({playerSecrets: undefined})
-      }
-    );
-
-    this.bindAsObject(
-      firebase.database().ref(`players/${playerID}`),
-      "player",
-      (error) => {
-        console.log("Player subscription cancelled:")
-        console.log(error);
-        this.setState({player: undefined})
-      }
-    );
-  }
-
-  createPlayer = async () => {
+  move = async (x, y) => {
     const headers = new Headers({
       "Content-Type": "application/json",
     });
@@ -69,8 +38,10 @@ export default class Player extends Component {
       headers: headers,
       body: JSON.stringify({
         token: this.props.playerToken,
-        playerID: this.props.playerID,
-        action: "spawn",
+        userID: this.props.userID,
+        action: "move",
+        from: [this.props.x, this.props.y],
+        to: [x, y],
       }),
     });
 
@@ -82,61 +53,74 @@ export default class Player extends Component {
     }
   }
 
-  getLocations = (secretLocations) => {
-    let locations = Object.assign({}, secretLocations);
-
-    for (const locationID of Object.keys(secretLocations)) {
-      for (const neighbourID of hex.listNeighbouringTiles(locationID, 16)) {
-        locations[neighbourID] = true;
-      }
-    }
-
-    return locations;
-  }
-
   render() {
-    const { playerID, playArea, userHeight, seaLevel} = {...this.props};
-    const player = this.state.player;
-    const playerSecrets = this.state.playerSecrets;
+    const {
+      x, y,
+      userID,
+      playerID, locked, immuneUntil, type, turn, emote, action, health, attack,
+    } = {...this.props};
 
-    const secretLocations = playerSecrets && playerSecrets.locations;
-    const locations = secretLocations ? Object.keys(this.getLocations(secretLocations)) : [];
-    const hasSomeLocations = locations.length > 0;
+    const position = [
+      x * hex.size * 3/2,
+      0,
+      hex.size * Math.sqrt(3) * (y + x/2),
+    ];
+
+    const isOwnUnit = userID === playerID;
 
     return (
-      <Entity id="player">
-        <Camera {...this.props}/>
+      <Entity
+        className="unit"
+        geometry={{
+          primitive: "box",
+          width: hex.width * 0.236,
+          depth: hex.width * 0.5,
+          height: hex.width * 0.236,
+        }}
+        position={position}
+        material={{
+          shader: "flat",
+          color: isOwnUnit ? "green" : "red",
+        }}
+      >
+        {isOwnUnit &&
+          <Entity>
+            <Button
+              onClick={this.moveNorth}
+              color="red"
+              position={[0, 1, -hex.width]}
+            />
+            <Button
+              onClick={this.moveSouth}
+              color="grey"
+              position={[0, 1, hex.width]}
+            />
 
-        {playerSecrets && hasSomeLocations && (
-          <WorldContainer
-            {...this.props}
-            locations={locations}
-            centerOn={Object.keys(secretLocations)[0]}
-          />
-        )}
+            <Button
+              onClick={this.moveNorthWest}
+              color="grey"
+              position={[-1, 1, -hex.width*0.5]}
+            />
+            <Button
+              onClick={this.moveNorthEast}
+              color="grey"
+              position={[1, 1, -hex.width*0.5]}
+            />
 
-        {playerSecrets && !hasSomeLocations && (
-          <Entity
-            className="spawnButton interactable"
-            events={{
-              click: this.createPlayer,
-            }}
-            position={[0, userHeight + seaLevel, -2 * hex.width]}
-            geometry={{
-              primitive: "box",
-              width: 0.382,
-              height: 0.618,
-              depth: 0.382,
-            }}
-            material={{
-              shader: "flat",
-              color: "green",
-            }}
-          />
-        )}
+            <Button
+              onClick={this.moveSouthWest}
+              color="grey"
+              position={[-1, 1, hex.width*0.5]}
+            />
+            <Button
+              onClick={this.moveSouthEast}
+              color="grey"
+              position={[1, 1, hex.width*0.5]}
+            />
+          </Entity>
+        }
+
       </Entity>
     );
   }
 }
-
-reactMixin(Player.prototype, reactFire);

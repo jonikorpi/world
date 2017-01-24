@@ -5,7 +5,7 @@ import reactFire from "reactfire";
 import firebase from "firebase";
 
 import Tile from "../components/Tile";
-import Unit from "../components/Unit";
+import Player from "../components/Player";
 
 export default class Location extends PureComponent {
   constructor(props) {
@@ -36,7 +36,7 @@ export default class Location extends PureComponent {
       this.unbindFirebase();
     }
     else {
-      if (!this.firebaseListeners.tile && !this.firebaseListeners.unit) {
+      if (!this.firebaseListeners.tile && !this.firebaseListeners.player) {
         this.bindFirebase(xNext, yNext);
       }
     }
@@ -55,8 +55,8 @@ export default class Location extends PureComponent {
     );
 
     this.bindAsObject(
-      firebase.database().ref(`locations/${x},${y}/unit`),
-      "unit",
+      firebase.database().ref(`locations/${x},${y}/player`),
+      "player",
       (error) => {
         console.log("Location subscription cancelled:", error)
         this.unbindFirebase();
@@ -66,7 +66,7 @@ export default class Location extends PureComponent {
 
   unbindFirebase = () => {
     this.firebaseListeners.tile && this.unbind("tile");
-    this.firebaseListeners.unit && this.unbind("unit");
+    this.firebaseListeners.player && this.unbind("player");
   }
 
   render() {
@@ -76,9 +76,9 @@ export default class Location extends PureComponent {
     state = visible ? this.state : JSON.parse(sessionStorage.getItem(locationID));
 
     const tileProps = state && state.tile && {...state.tile};
-    const unitProps = state && state.unit && {...state.unit};
+    const playerProps = state && state.player && {...state.player};
 
-    if (tileProps || unitProps) {
+    if (tileProps || playerProps) {
       return (
         <a-entity class="location">
           {tileProps && (
@@ -88,10 +88,10 @@ export default class Location extends PureComponent {
             />
           )}
 
-          {unitProps && unitProps.ownerID && (
-            <Unit
+          {playerProps && playerProps.playerID && (
+            <Player
               {...this.props}
-              {...unitProps}
+              {...playerProps}
             />
           )}
         </a-entity>

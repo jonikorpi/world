@@ -48,7 +48,7 @@ export default class Tile extends PureComponent {
   render() {
     const {
       x, y,
-      playerID,
+      userID,
       visible,
     } = {...this.props};
 

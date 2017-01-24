@@ -2,36 +2,28 @@
 
   "locations": {
     ".write": "auth.worldmaster === true",
-    ".indexOn": "unit/playerID",
+    ".indexOn": "player/playerID",
     "$locationID": {
       /* TODO generate complicated neighbour rules based on adj. locations */
       /* (pos(playerid).bx + "" == $binx &&  pos(playerid).by + "" == $biny) || //and the other 5 adjacent bin coords */
       ".read": "auth != null",
       "tile": { ".validate": "newData.isString()" },
-      "unit": {
-        "ownerID": { ".validate": "newData.isString()" },
+      "player": {
+        "playerID": { ".validate": "newData.isString()" },
         "locked": { ".validate": "newData.isBoolean()" },
         "immuneUntil": { ".validate": "newData.isNumber()" },
-        "type": { ".validate": "newData.isString()" },
-        "turn": { ".validate": "newData.isNumber()" },
-        "emote": {
-          "type": { ".validate": "newData.isString()" },
-          "turn": { ".validate": "newData.isNumber()" } /* Use with `turnMounted` */
-        },
-        "action": {
-          "type": { ".validate": "newData.isString()" },
-          "turn": { ".validate": "newData.isNumber()" } /* Use with `turnMounted` */
-        },
-        "health": {
-          "originalMax": { ".validate": "newData.isNumber()" },
-          "max":         { ".validate": "newData.isNumber()" },
-          "current":     { ".validate": "newData.isNumber()" }
-        },
-        "attack": {
-          "original": { ".validate": "newData.isNumber()" },
-          "current":  { ".validate": "newData.isNumber()" }
-        }
-      }
+        "emoteType": { ".validate": "newData.isString()" },
+        "emoteTurn": { ".validate": "newData.isNumber()" }, /* Use with `turnMounted` */
+        "actionType": { ".validate": "newData.isString()" },
+        "actionTurn": { ".validate": "newData.isNumber()" }, /* Use with `turnMounted` */
+        "originalMaxHealth": { ".validate": "newData.isNumber()" },
+        "maxHealth":         { ".validate": "newData.isNumber()" },
+        "currentHealth":     { ".validate": "newData.isNumber()" },
+        "originalAttack": { ".validate": "newData.isNumber()" },
+        "currentAttack":  { ".validate": "newData.isNumber()" },
+        "$other": { ".validate": "false" }
+      },
+      "$other": { ".validate": "false" }
     }
   },
 
@@ -39,11 +31,8 @@
     ".write": "auth.worldmaster === true",
     "$playerID": {
       ".read": "(auth != null && auth.uid === $playerID) || auth.worldmaster === true",
-      "mana": { ".validate": "newData.isNumber()" },
-      "turns": { ".validate": "newData.isNumber()" },
-      "locations": {
-        "$locationID": { ".validate": "newData.isBoolean()" }
-      }
+      "location": { ".validate": "newData.isString()" },
+      "$other": { ".validate": "false" }
     }
   },
 
@@ -51,7 +40,7 @@
     "$playerID": {
       ".read": "auth != null",
       ".write": "(auth != null && auth.uid === $playerID) || auth.worldmaster === true",
-      /* TODO flag */
+      /* TODO flag/mask/icon/logo */
       "$other": { ".validate": "false" }
     }
   }

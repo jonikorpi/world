@@ -44,7 +44,7 @@ app.prepare().then(() => {
   // Player requests
   server.post("*", async (req, res) => {
     if (dev) {
-      console.log(req.method, req.originalUrl, req.body.playerID, req.body.action);
+      console.log(req.method, req.originalUrl, req.body.userID, req.body.action);
     }
     try {
       await handleRequest(req.body) && res.send("ok");
@@ -64,12 +64,12 @@ app.prepare().then(() => {
 //
 // Handle and pass on requests
 const handleRequest = async (request) => {
-  const playerID = request.playerID;
+  const userID = request.userID;
   const token = request.token;
 
   const decodedToken = await firebase.auth().verifyIdToken(token);
 
-  if (playerID !== decodedToken.uid) {
+  if (userID !== decodedToken.uid) {
     throw new Error("You are not authenticated as this player.")
   }
 
@@ -77,13 +77,13 @@ const handleRequest = async (request) => {
 
   switch (action) {
     case "spawn":
-      await spawn(playerID);
+      await spawn(userID);
       break;
     case "self-destruct":
-      await selfDestruct(playerID);
+      await selfDestruct(userID);
       break;
     case "move":
-      await move(playerID, request.from, request.to);
+      await move(userID, request.from, request.to);
       break;
     default:
       throw new Error("Unknown action type.")
@@ -94,20 +94,16 @@ const handleRequest = async (request) => {
 
 //
 // Spawn
-const spawn = async (playerID) => {
+const spawn = async (userID) => {
   // Check if player already has a monument
-  const locationsWithUnits = await database.ref("locations")
-    .orderByChild("unit/playerID")
-    .equalTo(playerID)
+  const locationsWithPlayers = await database.ref("locations")
+    .orderByChild("player/playerID")
+    .equalTo(userID)
     .once("value")
   ;
 
-  if (locationsWithUnits.numChildren() > 0) {
-    locationsWithUnits.forEach((location) => {
-      if (location.val().unit.type === "monument") {
-        throw new Error("Cannot spawn while you have a monument. Destroy it first.");
-      }
-    });
+  if (locationsWithPlayers.numChildren() > 0) {
+    throw new Error("Cannot spawn while you are still in the game.");
   }
 
   // Find a spawn location
@@ -120,27 +116,14 @@ const spawn = async (playerID) => {
       Math.floor(Math.random() * 20) - 10,
     ];
 
-    const locationTransaction = await database.ref(`locations/${spawnLocation[0]},${spawnLocation[1]}/unit`)
-      .transaction((unit) => {
-        if (unit === null) {
+    const locationTransaction = await database.ref(`locations/${spawnLocation[0]},${spawnLocation[1]}/player`)
+      .transaction((player) => {
+        if (player === null) {
           return {
-            ownerID: playerID,
-            type: "monument",
-            turn: 0,
-            immuneUntil: Date.now() + 45*1000,
-            action: {
-              type: "spawn",
-              turn: 0,
-            },
-            health: {
-              originalMax: 30,
-              max:         30,
-              current:     30,
-            },
-            attack: {
-              original: 0,
-              current:  0,
-            },
+            playerID: userID,
+            immuneUntil: Date.now() + 60*1000,
+            actionType: "spawn",
+            actionTurn: 0,
           };
         }
         else {
@@ -155,9 +138,9 @@ const spawn = async (playerID) => {
   }
 
   // Add spawnLocation to playerSecrets
-  await database.ref(`playerSecrets/${playerID}/locations`)
+  await database.ref(`playerSecrets/${userID}`)
     .update({
-      [`${spawnLocation[0]},${spawnLocation[1]}`]: true
+      location: `${spawnLocation[0]},${spawnLocation[1]}`,
     })
   ;
   return;
@@ -165,20 +148,20 @@ const spawn = async (playerID) => {
 
 //
 // Self-destruct
-const selfDestruct = async (playerID) => {
-  // Find all player units
-  const locationsWithUnits = await database.ref("locations")
-    .orderByChild("unit/ownerID")
-    .equalTo(playerID)
+const selfDestruct = async (userID) => {
+  // Find all player players
+  const locationsWithPlayers = await database.ref("locations")
+    .orderByChild("player/playerID")
+    .equalTo(userID)
     .once("value")
   ;
 
-  // Destroy all player units
-  if (locationsWithUnits.numChildren() > 0) {
-    locationsWithUnits.forEach((locationWithUnit) => {
-      locationWithUnit.child("unit").ref.transaction((unit) => {
-        if (unit) {
-          if (unit.ownerID === playerID) {
+  // Destroy all player players
+  if (locationsWithPlayers.numChildren() > 0) {
+    locationsWithPlayers.forEach((locationWithPlayer) => {
+      locationWithPlayer.child("player").ref.transaction((player) => {
+        if (player) {
+          if (player.playerID === userID) {
             return null;
           }
           else {
@@ -192,24 +175,24 @@ const selfDestruct = async (playerID) => {
     });
   }
 
-  // Remove all unit location indexes
-  await database.ref(`playerSecrets/${playerID}/locations`).remove();
+  // Remove player location index
+  await database.ref(`playerSecrets/${userID}/location`).remove();
   return;
 };
 
 //
 // Move
 
-const move = async (playerID, from, to) => {
-  const fromReference = database.ref(`locations/${from[0]},${from[1]}/unit`);
-  const toReference = database.ref(`locations/${to[0]},${to[1]}/unit`);
+const move = async (userID, from, to) => {
+  const fromReference = database.ref(`locations/${from[0]},${from[1]}/player`);
+  const toReference = database.ref(`locations/${to[0]},${to[1]}/player`);
 
-  // Lock moving unit and make sure it can move
-  const lockTransaction = await fromReference.transaction((unit) => {
-    if (unit) {
-      if (unit.ownerID === playerID && !unit.moving) {
-        unit.locked = true;
-        return unit;
+  // Lock moving player and make sure it can move
+  const lockTransaction = await fromReference.transaction((player) => {
+    if (player) {
+      if (player.playerID === userID && !player.locked) {
+        player.locked = true;
+        return player;
       }
       else {
         return;
@@ -220,19 +203,19 @@ const move = async (playerID, from, to) => {
     }
   });
 
-  // If there was no unit or the locking didn't work, stop
-  let lockedUnit = lockTransaction.snapshot.val();
+  // If there was no player or the locking didn't work, stop
+  let lockedPlayer = lockTransaction.snapshot.val();
 
-  if (!lockedUnit || !lockTransaction.committed) {
+  if (!lockedPlayer || !lockTransaction.committed) {
     throw new Error("Failed to start movement");
   }
 
-  // Add moving unit to target tile
-  lockedUnit.locked = null;
+  // Add moving player to target tile
+  lockedPlayer.locked = null;
 
-  const addTransaction = await toReference.transaction((unit) => {
-    if (unit === null) {
-      return lockedUnit;
+  const addTransaction = await toReference.transaction((player) => {
+    if (player === null) {
+      return lockedPlayer;
     }
     else {
       return;
@@ -240,10 +223,10 @@ const move = async (playerID, from, to) => {
   });
 
   if (addTransaction.committed) {
-    // If that worked, remove moving unit from origin tile
-    const removeTransaction = await fromReference.transaction((unit) => {
-      if (unit) {
-        if (unit.ownerID === playerID) {
+    // If that worked, remove moving player from origin tile
+    const removeTransaction = await fromReference.transaction((player) => {
+      if (player) {
+        if (player.playerID === userID) {
           return null;
         }
         else {
@@ -256,27 +239,26 @@ const move = async (playerID, from, to) => {
     });
   }
   else {
-    // Else remove lock from moving unit and stop
-    const unlockTransaction = fromReference.transaction((unit) => {
-      if (unit && unit.ownerID === playerID) {
-        unit.locked = null;
-        return unit;
+    // Else remove lock from moving player and stop
+    const unlockTransaction = fromReference.transaction((player) => {
+      if (player && player.playerID === userID) {
+        player.locked = null;
+        return player;
       }
       else {
         return null;
       }
     });
 
-    throw new Error("Failed to add unit to target tile");
+    throw new Error("Failed to add player to target tile");
   }
 
   // On ultimate success, update location index in playerSecrets
-  const indexUpdates = {
-    [`playerSecrets/${playerID}/locations/${from[0]},${from[1]}`]: null,
-    [`playerSecrets/${playerID}/locations/${to[0]},${to[1]}`]: true,
-  };
-
-  await database.ref().update(indexUpdates);
+  await database.ref(`playerSecrets/${userID}`)
+    .update({
+      location: `${to[0]},${to[1]}`,
+    })
+  ;
 
   return;
 };

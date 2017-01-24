@@ -11,7 +11,7 @@ export default class WorldContainer extends PureComponent {
   render() {
     const {
       locations, centerOn,
-      playerID,
+      userID,
       playArea, userHeight, seaLevel,
      } = {...this.props};
 
@@ -38,7 +38,7 @@ export default class WorldContainer extends PureComponent {
             <Location
               key={locationID}
               locationID={locationID}
-              playerID={this.props.playerID}
+              userID={this.props.userID}
               playerToken={this.props.playerToken}
               x={+coordinates[0]}
               y={+coordinates[1]}

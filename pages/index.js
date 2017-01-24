@@ -6,7 +6,7 @@ import Navigation from "../components/Navigation";
 import Loading from "../components/Loading";
 import Sky from "../components/Sky";
 // import Sea from "../components/Sea";
-import Player from "../components/Player";
+import PlayerContainer from "../components/PlayerContainer";
 
 let Tone, DuoSynth, Transport, Panner, Loop, FeedbackDelay;
 
@@ -19,7 +19,7 @@ export default class Play extends PureComponent {
     const userHeight = 1.6;
 
     this.state = {
-      playerID: null,
+      userID: null,
       anonymous: null,
       connected: false,
       haveConnectedOnce: false,
@@ -98,10 +98,10 @@ export default class Play extends PureComponent {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         firebase.auth().currentUser.getToken(true).then((playerToken) => {
-          this.setState({ playerID: user.uid, anonymous: user.isAnonymous, playerToken: playerToken });
+          this.setState({ userID: user.uid, anonymous: user.isAnonymous, playerToken: playerToken });
         });
       } else {
-        this.setState({ playerID: null, anonymous: null, playerToken: null });
+        this.setState({ userID: null, anonymous: null, playerToken: null });
         this.signIn();
       }
     });
@@ -304,7 +304,7 @@ export default class Play extends PureComponent {
       headers: headers,
       body: JSON.stringify({
         token: this.state.playerToken,
-        playerID: this.state.playerID,
+        userID: this.state.userID,
         action: "self-destruct",
       }),
     });
@@ -318,7 +318,7 @@ export default class Play extends PureComponent {
   }
 
   render() {
-    const playerID = this.state.playerID;
+    const userID = this.state.userID;
 
     return (
       <div id="play">
@@ -340,7 +340,7 @@ export default class Play extends PureComponent {
             <Sky far={this.state.far} userHeight={this.state.userHeight} />
             {/* <Sea far={this.state.far} userHeight={this.state.userHeight} seaLevel={this.state.seaLevel} /> */}
 
-            <Player
+            <PlayerContainer
               {...this.state}
               toggleVR={this.toggleVR}
               synth={this.synth}
