@@ -39,7 +39,7 @@ export default class WorldContainer extends PureComponent {
               key={locationID}
               locationID={locationID}
               userID={this.props.userID}
-              playerToken={this.props.playerToken}
+              userToken={this.props.userToken}
               x={+coordinates[0]}
               y={+coordinates[1]}
               visible={hex.distanceBetween(locationID, locations[0]) <= visibility}

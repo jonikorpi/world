@@ -68,7 +68,7 @@ export default class PlayerContainer extends Component {
       method: "POST",
       headers: headers,
       body: JSON.stringify({
-        token: this.props.playerToken,
+        token: this.props.userToken,
         userID: this.props.userID,
         action: "spawn",
       }),

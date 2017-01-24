@@ -97,11 +97,11 @@ export default class Play extends PureComponent {
 
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        firebase.auth().currentUser.getToken(true).then((playerToken) => {
-          this.setState({ userID: user.uid, anonymous: user.isAnonymous, playerToken: playerToken });
+        firebase.auth().currentUser.getToken(true).then((userToken) => {
+          this.setState({ userID: user.uid, anonymous: user.isAnonymous, userToken: userToken });
         });
       } else {
-        this.setState({ userID: null, anonymous: null, playerToken: null });
+        this.setState({ userID: null, anonymous: null, userToken: null });
         this.signIn();
       }
     });
@@ -303,7 +303,7 @@ export default class Play extends PureComponent {
       method: "POST",
       headers: headers,
       body: JSON.stringify({
-        token: this.state.playerToken,
+        token: this.state.userToken,
         userID: this.state.userID,
         action: "self-destruct",
       }),
