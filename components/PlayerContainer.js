@@ -6,6 +6,7 @@ import reactFire from "reactfire";
 
 import hex from "../helpers/hex";
 
+import Limbo from "../components/Limbo";
 import WorldContainer from "../components/WorldContainer";
 import Camera from "../components/Camera";
 import Location from "../components/Location";
@@ -58,29 +59,6 @@ export default class PlayerContainer extends Component {
     );
   }
 
-  createPlayer = async () => {
-    const headers = new Headers({
-      "Content-Type": "application/json",
-    });
-
-    const response = await fetch("/", {
-      method: "POST",
-      headers: headers,
-      body: JSON.stringify({
-        token: this.props.userToken,
-        userID: this.props.userID,
-        action: "spawn",
-      }),
-    });
-
-    if (response.ok) {
-      console.log(await response.text());
-    }
-    else {
-      console.log(response);
-    }
-  }
-
   getLocations = (secretLocation) => {
     let locations = { [secretLocation]: true };
 
@@ -113,23 +91,7 @@ export default class PlayerContainer extends Component {
         )}
 
         {playerSecrets && !hasSomeLocations && (
-          <Entity
-            className="spawnButton interactable"
-            events={{
-              click: this.createPlayer,
-            }}
-            position={[0, userHeight + seaLevel, -2 * hex.width]}
-            geometry={{
-              primitive: "box",
-              width: 0.382,
-              height: 0.618,
-              depth: 0.382,
-            }}
-            material={{
-              shader: "flat",
-              color: "green",
-            }}
-          />
+          <Limbo {...this.props}/>
         )}
       </Entity>
     );
