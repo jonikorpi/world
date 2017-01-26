@@ -10,7 +10,7 @@ import PlayerContainer from "../components/PlayerContainer";
 
 let Tone, DuoSynth, Transport, Panner, Loop, FeedbackDelay;
 
-const env = process && process.env && process.env.NODE_ENV;
+const env = (process && process.env && process.env.NODE_ENV) || "development";
 
 export default class Play extends PureComponent {
   constructor(props) {
@@ -33,7 +33,7 @@ export default class Play extends PureComponent {
       seaLevel: -(userHeight / 2),
       playArea: [ 1.5, 1.5 ],
       fullScreen: false,
-      env: env || "development",
+      env: env,
     };
   }
 
@@ -51,6 +51,8 @@ export default class Play extends PureComponent {
   }
 
   clientSideRender = () => {
+    this.setupRollbar();
+
     if (this.state.env !== "production") {
       this.setupLogging();
     }
@@ -70,6 +72,17 @@ export default class Play extends PureComponent {
     // this.handleResize();
 
     this.setState({ clientSideRendered: true });
+  }
+
+  setupRollbar = () => {
+    window.Rollbar = require("rollbar-browser");
+    window.Rollbar.init({
+      accessToken: "6bc36469f4c04659996d7b00829d0d32",
+      captureUncaught: true,
+      payload: {
+        environment: env,
+      }
+    });
   }
 
   setupLogging = () => {

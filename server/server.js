@@ -38,8 +38,13 @@ server.use(rollbar.errorHandler(
 app.prepare().then(() => {
   // Page requests
   server.get("*", (req, res) => {
-    dev && console.log(req.method, req.originalUrl)
-    return handle(req, res)
+    try {
+      dev && console.log(req.method, req.originalUrl)
+      return handle(req, res)
+    } catch (error) {
+      dev && console.log(error);
+      rollbar.handleError(error);
+    }
   })
 
   // Player requests
