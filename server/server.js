@@ -196,9 +196,9 @@ const selfDestruct = async (userID) => {
 const move = async (userID, from, to) => {
   if (
        typeof from[0] !== "number"
-    && typeof from[1] !== "number"
-    && typeof to[0] !== "number"
-    && typeof to[1] !== "number"
+    || typeof from[1] !== "number"
+    || typeof to[0] !== "number"
+    || typeof to[1] !== "number"
   ) {
     throw new Error(`Invalid movement coordinates: ${from[0]},${from[1]} -> ${to[0]},${to[1]}`);
   }
