@@ -36,7 +36,7 @@ export default class Location extends PureComponent {
       this.unbindFirebase();
     }
     else {
-      if (!this.firebaseListeners.tile && !this.firebaseListeners.player) {
+      if (!this.firebaseListeners.location) {
         this.bindFirebase(xNext, yNext);
       }
     }
