@@ -18,7 +18,6 @@
     "firebase-admin": "^4.0.6",
     "jonikorpi-base-files": "^6.0.1",
     "next": "^2.0.0-beta",
-    "react-addons-perf": "^15.4.2",
     "react-mixin": "^3.0.5",
     "reactfire": "^1.0.0",
     "rollbar": "^0.6.3",
@@ -35,6 +34,7 @@
     "now-start": "NODE_ENV=production node --harmony-async-await server/server.js"
   },
   "devDependencies": {
-    "nodemon": "^1.11.0"
+    "nodemon": "^1.11.0",
+    "react-addons-perf": "^15.4.2"
   }
 }
