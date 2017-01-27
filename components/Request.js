@@ -43,7 +43,7 @@ export default class Request extends Component {
 
     if (response.ok && this.mounted) {
       const message = await response.text();
-      console.log(message)
+      message && console.log(message)
 
       if (this.mounted) {
         this.setState({
