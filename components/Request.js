@@ -11,6 +11,7 @@ export default class Request extends Component {
 
     this.state = {
       status: "sending",
+      started: Date.now(),
     };
   }
 
@@ -40,6 +41,8 @@ export default class Request extends Component {
         ...this.props.request,
       }),
     });
+
+    console.log((Date.now() - this.state.started) / 1000, `seconds for ${this.props.request.action}`);
 
     if (response.ok && this.mounted) {
       const message = await response.text();
