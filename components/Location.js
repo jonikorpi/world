@@ -60,7 +60,7 @@ export default class Location extends PureComponent {
   }
 
   render() {
-    const { visible, locationID } = {...this.props};
+    const { visible, locationID, userID } = {...this.props};
 
     let state = {};
     state = visible ? this.state.location : JSON.parse(sessionStorage.getItem(locationID));
@@ -73,7 +73,7 @@ export default class Location extends PureComponent {
             {...state}
           />
 
-          {visible && state.playerID && (
+          {visible && state.playerID && state.playerID !== userID && (
             <Player
               {...this.props}
               playerID={state.playerID}

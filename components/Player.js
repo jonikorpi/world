@@ -51,12 +51,12 @@ export default class Player extends PureComponent {
   //   this.props.synth.triggerAttackRelease(isOwnUnit ? "C4" : "E4", "4n");
   // }
 
-  moveNorth = () =>     { this.move(this.props.x, this.props.y-1); }
-  moveSouth = () =>     { this.move(this.props.x, this.props.y+1); }
-  moveNorthWest = () => { this.move(this.props.x-1, this.props.y); }
-  moveSouthEast = () => { this.move(this.props.x+1, this.props.y); }
-  moveNorthEast = () => { this.move(this.props.x+1, this.props.y-1); }
-  moveSouthWest = () => { this.move(this.props.x-1, this.props.y+1); }
+  moveNorth = () =>     { this.move(this.state.player.x, this.state.player.y-1); }
+  moveSouth = () =>     { this.move(this.state.player.x, this.state.player.y+1); }
+  moveNorthWest = () => { this.move(this.state.player.x-1, this.state.player.y); }
+  moveSouthEast = () => { this.move(this.state.player.x+1, this.state.player.y); }
+  moveNorthEast = () => { this.move(this.state.player.x+1, this.state.player.y-1); }
+  moveSouthWest = () => { this.move(this.state.player.x-1, this.state.player.y+1); }
 
   move = (x, y) => {
     const request = [{
@@ -84,17 +84,19 @@ export default class Player extends PureComponent {
   }
 
   render() {
-    const { x, y, userID, playerID } = {...this.props};
+    const { userID, playerID } = {...this.props};
     const player = this.state.player;
     const requests = this.state.requests;
+    const isSelf = userID === playerID;
 
-    const position = [
+    const x = player.x || 0;
+    const y = player.y || 0;
+
+    const position = !player ? [0,0,0] : [
       x * hex.size * 3/2,
       0,
       hex.size * Math.sqrt(3) * (y + x/2),
     ];
-
-    const isSelf = userID === playerID;
 
     return (
       <Entity
