@@ -39,12 +39,11 @@ export default class PlayerContainer extends Component {
 
   bindFirebase = (userID) => {
     this.bindAsObject(
-      firebase.database().ref(`playerSecrets/${userID}`),
-      "playerSecrets",
+      firebase.database().ref(`playerSettings/${userID}`),
+      "playerSettings",
       (error) => {
-        console.log("Player subscription cancelled:")
         console.log(error);
-        this.setState({playerSecrets: undefined})
+        this.setState({playerSettings: undefined})
       }
     );
 
@@ -52,7 +51,6 @@ export default class PlayerContainer extends Component {
       firebase.database().ref(`players/${userID}`),
       "player",
       (error) => {
-        console.log("Player subscription cancelled:")
         console.log(error);
         this.setState({player: undefined})
       }
@@ -72,17 +70,17 @@ export default class PlayerContainer extends Component {
   render() {
     const { userID, playArea, userHeight, seaLevel} = {...this.props};
     const player = this.state.player;
-    const playerSecrets = this.state.playerSecrets;
+    const playerSettings = this.state.playerSettings;
 
-    const secretLocation = playerSecrets && playerSecrets.location;
+    const hasLocation = player && typeof player.x === "number" && typeof player.y === "number";
+    const secretLocation = hasLocation && `${player.x},${player.y}`;
     const locations = secretLocation ? Object.keys(this.getLocations(secretLocation)) : [];
-    const hasSomeLocations = locations.length > 0;
 
     return (
       <Entity id="player">
         <Camera {...this.props}/>
 
-        {playerSecrets && hasSomeLocations && (
+        {player && hasLocation && (
           <WorldContainer
             {...this.props}
             locations={locations}
@@ -90,7 +88,7 @@ export default class PlayerContainer extends Component {
           />
         )}
 
-        {playerSecrets && !hasSomeLocations && (
+        {playerSettings && !hasLocation && (
           <Limbo {...this.props}/>
         )}
       </Entity>

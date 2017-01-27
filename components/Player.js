@@ -1,5 +1,8 @@
 import React, { PureComponent } from "react";
 import { Entity } from "aframe-react";
+import reactMixin from "react-mixin";
+import reactFire from "reactfire";
+import firebase from "firebase";
 
 import hex from "../helpers/hex";
 
@@ -13,6 +16,27 @@ export default class Player extends PureComponent {
     this.state = {
       requests: [],
     };
+  }
+
+  componentWillMount() {
+    this.bindFirebase(this.props.playerID);
+  }
+
+  bindFirebase = (playerID) => {
+    this.unbindFirebase();
+
+    this.bindAsObject(
+      firebase.database().ref(`players/${playerID}`),
+      "player",
+      (error) => {
+        console.log("Location subscription cancelled:", error)
+        this.unbindFirebase();
+      }
+    );
+  }
+
+  unbindFirebase = () => {
+    this.firebaseListeners.player && this.unbind("player");
   }
 
   // componentDidMount() {
@@ -60,12 +84,8 @@ export default class Player extends PureComponent {
   }
 
   render() {
-    const {
-      x, y,
-      userID,
-      playerID, locked, immuneUntil, type, turn, emote, action, health, attack,
-    } = {...this.props};
-
+    const { x, y, userID, playerID } = {...this.props};
+    const player = this.state.player;
     const requests = this.state.requests;
 
     const position = [
@@ -74,7 +94,7 @@ export default class Player extends PureComponent {
       hex.size * Math.sqrt(3) * (y + x/2),
     ];
 
-    const isOwnUnit = userID === playerID;
+    const isSelf = userID === playerID;
 
     return (
       <Entity
@@ -88,7 +108,7 @@ export default class Player extends PureComponent {
         position={position}
         material={{
           shader: "flat",
-          color: isOwnUnit ? "green" : "red",
+          color: player ? (isSelf ? "green" : "red") : "grey",
         }}
       >
         {requests && requests.map((request) => {
@@ -101,7 +121,7 @@ export default class Player extends PureComponent {
           );
         })}
 
-        {isOwnUnit &&
+        {isSelf &&
           <Entity>
             <Button
               onClick={this.moveNorth}
@@ -142,3 +162,5 @@ export default class Player extends PureComponent {
     );
   }
 }
+
+reactMixin(Player.prototype, reactFire);

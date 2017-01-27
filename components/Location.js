@@ -22,7 +22,7 @@ export default class Location extends PureComponent {
 
   componentDidUpdate() {
     if (this.props.visible) {
-      sessionStorage.setItem(this.props.locationID, JSON.stringify(this.state));
+      sessionStorage.setItem(this.props.locationID, JSON.stringify(this.state.location));
     }
   }
 
@@ -46,17 +46,8 @@ export default class Location extends PureComponent {
     this.unbindFirebase();
 
     this.bindAsObject(
-      firebase.database().ref(`locations/${x},${y}/tile`),
-      "tile",
-      (error) => {
-        console.log("Location subscription cancelled:", error)
-        this.unbindFirebase();
-      }
-    );
-
-    this.bindAsObject(
-      firebase.database().ref(`locations/${x},${y}/player`),
-      "player",
+      firebase.database().ref(`locations/${x},${y}`),
+      "location",
       (error) => {
         console.log("Location subscription cancelled:", error)
         this.unbindFirebase();
@@ -65,33 +56,27 @@ export default class Location extends PureComponent {
   }
 
   unbindFirebase = () => {
-    this.firebaseListeners.tile && this.unbind("tile");
-    this.firebaseListeners.player && this.unbind("player");
+    this.firebaseListeners.location && this.unbind("location");
   }
 
   render() {
     const { visible, locationID } = {...this.props};
 
     let state = {};
-    state = visible ? this.state : JSON.parse(sessionStorage.getItem(locationID));
+    state = visible ? this.state.location : JSON.parse(sessionStorage.getItem(locationID));
 
-    const tileProps = state && state.tile && {...state.tile};
-    const playerProps = state && state.player && {...state.player};
-
-    if (tileProps || playerProps) {
+    if (state) {
       return (
         <a-entity class="location">
-          {tileProps && (
-            <Tile
-              {...this.props}
-              {...tileProps}
-            />
-          )}
+          <Tile
+            {...this.props}
+            {...state}
+          />
 
-          {playerProps && playerProps.playerID && (
+          {visible && state.playerID && (
             <Player
               {...this.props}
-              {...playerProps}
+              playerID={state.playerID}
             />
           )}
         </a-entity>

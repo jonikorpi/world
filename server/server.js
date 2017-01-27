@@ -78,18 +78,14 @@ const handleRequest = async (request) => {
 
   // Token vs. UID check
   const userID = request.userID;
-  const token = request.token;
+  const token = await firebase.auth().verifyIdToken(request.token);
 
-  const decodedToken = await firebase.auth().verifyIdToken(token);
-
-  if (userID !== decodedToken.uid) {
+  if (userID !== token.uid) {
     throw new Error("You are not authenticated as this player.")
   }
 
   // Start appropriate action
-  const action = request.action;
-
-  switch (action) {
+  switch (request.action) {
     case "spawn":
       await spawn(userID);
       break;
@@ -109,9 +105,9 @@ const handleRequest = async (request) => {
 //
 // Spawn
 const spawn = async (userID) => {
-  // Check if player already has a monument
+  // Check if player is already ingame
   const locationsWithPlayers = await database.ref("locations")
-    .orderByChild("player/playerID")
+    .orderByChild("playerID")
     .equalTo(userID)
     .once("value")
   ;
@@ -130,15 +126,10 @@ const spawn = async (userID) => {
       Math.floor(Math.random() * 20) - 10,
     ];
 
-    const locationTransaction = await database.ref(`locations/${spawnLocation[0]},${spawnLocation[1]}/player`)
+    const locationTransaction = await database.ref(`locations/${spawnLocation[0]},${spawnLocation[1]}/playerID`)
       .transaction((player) => {
         if (player === null) {
-          return {
-            playerID: userID,
-            immuneUntil: Date.now() + 60*1000,
-            actionType: "spawn",
-            actionTurn: 0,
-          };
+          return userID;
         }
         else {
           return;
@@ -151,31 +142,35 @@ const spawn = async (userID) => {
     }
   }
 
-  // Add spawnLocation to playerSecrets
-  await database.ref(`playerSecrets/${userID}`)
+  // Add player
+  // TODO: fetch player from playerSEttings
+  await database.ref(`players/${userID}`)
     .update({
-      location: `${spawnLocation[0]},${spawnLocation[1]}`,
+      x: spawnLocation[0],
+      y: spawnLocation[1],
+      immuneUntil: Date.now() + 60,
     })
   ;
+
   return;
 };
 
 //
 // Self-destruct
 const selfDestruct = async (userID) => {
-  // Find all player players
+  // Find all player locations
   const locationsWithPlayers = await database.ref("locations")
-    .orderByChild("player/playerID")
+    .orderByChild("playerID")
     .equalTo(userID)
     .once("value")
   ;
 
-  // Destroy all player players
+  // Destroy all player locations
   if (locationsWithPlayers.numChildren() > 0) {
     locationsWithPlayers.forEach((locationWithPlayer) => {
-      locationWithPlayer.child("player").ref.transaction((player) => {
-        if (player) {
-          if (player.playerID === userID) {
+      locationWithPlayer.child("playerID").ref.transaction((playerID) => {
+        if (playerID) {
+          if (playerID === userID) {
             return null;
           }
           else {
@@ -189,8 +184,9 @@ const selfDestruct = async (userID) => {
     });
   }
 
-  // Remove player location index
-  await database.ref(`playerSecrets/${userID}/location`).remove();
+  // Remove player
+  await database.ref(`players/${userID}`).remove();
+
   return;
 };
 
@@ -198,13 +194,15 @@ const selfDestruct = async (userID) => {
 // Move
 
 const move = async (userID, from, to) => {
-  const fromReference = database.ref(`locations/${from[0]},${from[1]}/player`);
-  const toReference = database.ref(`locations/${to[0]},${to[1]}/player`);
+  const playerReference = database.ref(`players/${userID}`);
+  const fromReference = database.ref(`locations/${from[0]},${from[1]}/playerID`);
+  const toReference = database.ref(`locations/${to[0]},${to[1]}/playerID`);
 
-  // Lock moving player and make sure it can move
-  const lockTransaction = await fromReference.transaction((player) => {
+  // Lock moving player
+  // TODO: make sure the player can move
+  const lockTransaction = await playerReference.transaction((player) => {
     if (player) {
-      if (player.playerID === userID && !player.locked) {
+      if (!player.locked) {
         player.locked = true;
         return player;
       }
@@ -218,18 +216,16 @@ const move = async (userID, from, to) => {
   });
 
   // If there was no player or the locking didn't work, stop
-  let lockedPlayer = lockTransaction.snapshot.val();
+  const lockedPlayer = lockTransaction.snapshot.val();
 
   if (!lockedPlayer || !lockTransaction.committed) {
     throw new Error("Failed to start movement");
   }
 
   // Add moving player to target tile
-  lockedPlayer.locked = null;
-
-  const addTransaction = await toReference.transaction((player) => {
-    if (player === null) {
-      return lockedPlayer;
+  const addTransaction = await toReference.transaction((playerID) => {
+    if (playerID === null) {
+      return userID;
     }
     else {
       return;
@@ -238,9 +234,9 @@ const move = async (userID, from, to) => {
 
   if (addTransaction.committed) {
     // If that worked, remove moving player from origin tile
-    const removeTransaction = await fromReference.transaction((player) => {
-      if (player) {
-        if (player.playerID === userID) {
+    const removeTransaction = fromReference.transaction((playerID) => {
+      if (playerID) {
+        if (playerID === userID) {
           return null;
         }
         else {
@@ -253,9 +249,9 @@ const move = async (userID, from, to) => {
     });
   }
   else {
-    // Else remove lock from moving player and stop
-    const unlockTransaction = fromReference.transaction((player) => {
-      if (player && player.playerID === userID) {
+    // Else remove lock from the player and stop
+    const unlockTransaction = playerReference.transaction((player) => {
+      if (player) {
         player.locked = null;
         return player;
       }
@@ -267,12 +263,18 @@ const move = async (userID, from, to) => {
     throw new Error("Failed to add player to target tile");
   }
 
-  // On ultimate success, update location index in playerSecrets
-  await database.ref(`playerSecrets/${userID}`)
-    .update({
-      location: `${to[0]},${to[1]}`,
-    })
-  ;
+  // On ultimate success, update the player
+  await playerReference.transaction((player) => {
+    if (player) {
+      player.x = to[0];
+      player.y = to[1];
+      player.locked = null;
+      return player;
+    }
+    else {
+      return null;
+    }
+  });
 
   return;
 };
