@@ -208,7 +208,7 @@ const move = async (userID, from, to) => {
   const toReference = database.ref(`locations/${to[0]},${to[1]}/playerID`);
 
   // Lock moving player
-  // TODO: make sure the player can move
+  // TODO: make sure the player can move and remove resources
   const lockTransaction = await playerReference.transaction((player) => {
     if (player) {
       if (!player.locked) {
@@ -244,7 +244,10 @@ const move = async (userID, from, to) => {
   if (addTransaction.committed) {
     // If that worked, remove moving player from origin tile
     const removeTransaction = fromReference.transaction((playerID) => {
-      if (playerID) {
+      if (playerID === null) {
+        return null;
+      }
+      else {
         if (playerID === userID) {
           return null;
         }
@@ -252,14 +255,12 @@ const move = async (userID, from, to) => {
           return;
         }
       }
-      else {
-        return null;
-      }
     });
   }
   else {
     // Else remove lock from the player and stop
-    const unlockTransaction = playerReference.transaction((player) => {
+    // TODO: refund resources
+    const unlockTransaction = await playerReference.transaction((player) => {
       if (player) {
         player.locked = null;
         return player;
