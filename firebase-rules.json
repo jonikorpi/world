@@ -5,6 +5,7 @@
     ".indexOn": "playerID",
     "$locationID": {
       /* TODO generate complicated neighbour rules based on adj. locations */
+      /* Maybe check against player indexes instead of this node */
       /* (pos(playerid).bx + "" == $binx &&  pos(playerid).by + "" == $biny) || //and the other 5 adjacent bin coords */
       ".read": "auth != null",
 
@@ -22,7 +23,7 @@
     ".write": "auth.worldmaster === true",
     "$playerID": {
       /* TODO generate complicated neighbour rules based on adj. locations */
-      /* If no x/y, allow reading */
+      /* Maybe check against location indexes instead of this node */
       /* (pos(playerid).bx + "" == $binx &&  pos(playerid).by + "" == $biny) || //and the other 5 adjacent bin coords */
       ".read": "(auth != null && auth.uid === $playerID) || auth.worldmaster === true",
 
