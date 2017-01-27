@@ -64,7 +64,7 @@ export default class Player extends PureComponent {
       token: this.props.userToken,
       userID: this.props.userID,
       action: "move",
-      from: [this.props.x, this.props.y],
+      from: [this.state.player.x, this.state.player.y],
       to: [x, y],
     }];
 
