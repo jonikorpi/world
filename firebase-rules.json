@@ -1,5 +1,22 @@
 {"rules": {
 
+  "world": {
+    ".write": "auth.worldmaster === true",
+    ".read": "true",
+
+    "playersN": { ".validate": "newData.isNumber()" },
+    "playersSW": { ".validate": "newData.isNumber()" },
+    "playersSE": { ".validate": "newData.isNumber()" },
+
+    "ownerCenter": { ".validate": "newData.isString()" },
+    "ownerNW": { ".validate": "newData.isString()" },
+    "ownerNE": { ".validate": "newData.isString()" },
+    "ownerSE": { ".validate": "newData.isString()" },
+    "ownerSW": { ".validate": "newData.isString()" },
+
+    "$other": { ".validate": "false" }
+  },
+
   "locations": {
     ".write": "auth.worldmaster === true",
     ".indexOn": "playerID",
