@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import { Entity } from "aframe-react";
 import reactMixin from "react-mixin";
 import reactFire from "reactfire";
@@ -9,7 +9,7 @@ import hex from "../helpers/hex";
 import Button from "../components/Button";
 import Request from "../components/Request";
 
-export default class Player extends PureComponent {
+export default class Player extends Component {
   constructor(props) {
     super(props);
 
