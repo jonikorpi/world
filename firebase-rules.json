@@ -12,7 +12,11 @@
       "x": { ".validate": "newData.isNumber()" },
       "y": { ".validate": "newData.isNumber()" },
 
-      "tile": { ".validate": "newData.isString()" },
+      "rock":  { ".validate": "newData.isNumber()" },
+      "flora": { ".validate": "newData.isNumber()" },
+      "water": { ".validate": "newData.isNumber()" },
+      "heat":  { ".validate": "newData.isNumber()" },
+
       "playerID": { ".validate": "newData.isString()" },
 
       "$other": { ".validate": "false" }
@@ -30,8 +34,9 @@
       "x": { ".validate": "newData.isNumber()" },
       "y": { ".validate": "newData.isNumber()" },
 
-      "locked": { ".validate": "newData.isBoolean()" },
+      "locked":      { ".validate": "newData.isBoolean()" },
       "immuneUntil": { ".validate": "newData.isNumber()" },
+      "turn":        { ".validate": "newData.isNumber()" },
 
       "emoteType": { ".validate": "newData.isString()" },
       "emoteTurn": { ".validate": "newData.isNumber()" }, /* Use with `turnMounted` */
@@ -39,13 +44,22 @@
       "actionType": { ".validate": "newData.isString()" },
       "actionTurn": { ".validate": "newData.isNumber()" }, /* Use with `turnMounted` */
 
-      "originalMaxHealth": { ".validate": "newData.isNumber()" },
-      "maxHealth":         { ".validate": "newData.isNumber()" },
-      "currentHealth":     { ".validate": "newData.isNumber()" },
-      "originalAttack": { ".validate": "newData.isNumber()" },
-      "currentAttack":  { ".validate": "newData.isNumber()" },
+      "equipment": {
+        "$itemID": { ".validate": "newData.isNumber()" } /* Durability */
+      },
 
       "$other": { ".validate": "false" }
+    }
+  },
+
+  "playerSecrets": {
+    ".write": "auth.worldmaster === true",
+    "$playerID": {
+      ".read":  "(auth != null && auth.uid === $playerID) || auth.worldmaster === true",
+
+      "inventory": {
+        "$itemID": { ".validate": "newData.isBoolean()" }
+      }
     }
   },
 
