@@ -144,11 +144,13 @@ const spawn = async (userID) => {
 
   // Add player
   // TODO: fetch player from playerSEttings
+  const now = Date.now();
   await database.ref(`players/${userID}`)
     .update({
       x: spawnLocation[0],
       y: spawnLocation[1],
-      immuneUntil: Date.now() + 60,
+      immuneUntil: now + (60*1000),
+      lastActed: now,
     })
   ;
 
@@ -213,6 +215,7 @@ const move = async (userID, from, to) => {
     if (player) {
       if (!player.locked) {
         player.locked = true;
+        player.lastActed = Date.now();
         return player;
       }
       else {

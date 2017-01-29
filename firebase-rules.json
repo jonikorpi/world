@@ -53,6 +53,7 @@
 
       "locked":      { ".validate": "newData.isBoolean()" },
       "immuneUntil": { ".validate": "newData.isNumber()" },
+      "lastActed":   { ".validate": "newData.isNumber()" },
       "turn":        { ".validate": "newData.isNumber()" },
 
       "emoteType": { ".validate": "newData.isString()" },
