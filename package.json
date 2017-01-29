@@ -13,7 +13,7 @@
     "aframe-mouse-cursor-component": "^0.4.0",
     "aframe-react": "^3.4.1",
     "body-parser": "^1.16.0",
-    "express": "^4.14.0",
+    "express": "^4.14.1",
     "firebase": "^3.6.7",
     "firebase-admin": "^4.0.6",
     "jonikorpi-base-files": "^6.0.1",
@@ -34,13 +34,13 @@
     "now-start": "NODE_ENV=production node --harmony-async-await server/server.js"
   },
   "devDependencies": {
-    "babel-eslint": "7.0.0",
-    "eslint": "3.8.1",
+    "babel-eslint": "^7.1.1",
+    "eslint": "^3.14.1",
     "eslint-config-react-app": "^0.5.0",
-    "eslint-plugin-flowtype": "2.21.0",
-    "eslint-plugin-import": "2.0.1",
-    "eslint-plugin-jsx-a11y": "2.2.3",
-    "eslint-plugin-react": "6.4.1",
+    "eslint-plugin-flowtype": "^2.30.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^3.0.2",
+    "eslint-plugin-react": "^6.9.0",
     "nodemon": "^1.11.0",
     "react-addons-perf": "^15.4.2"
   }
