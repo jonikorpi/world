@@ -6,7 +6,7 @@ import Navigation from "../components/Navigation";
 import Loading from "../components/Loading";
 import Sky from "../components/Sky";
 // import Sea from "../components/Sea";
-import PlayerContainer from "../components/PlayerContainer";
+import UserContainer from "../components/UserContainer";
 
 let Tone, DuoSynth, Transport, Panner, Loop, FeedbackDelay;
 
@@ -353,7 +353,7 @@ export default class Play extends PureComponent {
             <Sky far={this.state.far} userHeight={this.state.userHeight} />
             {/* <Sea far={this.state.far} userHeight={this.state.userHeight} seaLevel={this.state.seaLevel} /> */}
 
-            <PlayerContainer
+            <UserContainer
               {...this.state}
               toggleVR={this.toggleVR}
               synth={this.synth}

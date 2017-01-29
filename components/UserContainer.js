@@ -11,7 +11,7 @@ import WorldContainer from "../components/WorldContainer";
 import Camera from "../components/Camera";
 import Location from "../components/Location";
 
-export default class PlayerContainer extends Component {
+export default class UserContainer extends Component {
   constructor(props) {
     super(props);
 
@@ -96,4 +96,4 @@ export default class PlayerContainer extends Component {
   }
 }
 
-reactMixin(PlayerContainer.prototype, reactFire);
+reactMixin(UserContainer.prototype, reactFire);
