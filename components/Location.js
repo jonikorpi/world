@@ -1,11 +1,9 @@
 import React, { PureComponent } from "react";
-import { Entity } from "aframe-react";
 import reactMixin from "react-mixin";
 import reactFire from "reactfire";
 import firebase from "firebase";
 
 import Tile from "../components/Tile";
-import Hero from "../components/Hero";
 
 export default class Location extends PureComponent {
   constructor(props) {
@@ -23,11 +21,17 @@ export default class Location extends PureComponent {
   componentDidUpdate() {
     if (this.props.visible) {
       sessionStorage.setItem(this.props.locationID, JSON.stringify(this.state.location));
+
+      const playerID = this.state.location.playerID;
+      const userID = this.props.userID;
+
+      if (playerID && playerID !== userID) {
+        this.props.mountHero(playerID);
+      }
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    const { x, y } = {...this.props};
     const visible = nextProps.visible;
     const xNext = nextProps.x;
     const yNext = nextProps.y;
@@ -60,26 +64,17 @@ export default class Location extends PureComponent {
   }
 
   render() {
-    const { visible, locationID, userID } = {...this.props};
+    const { visible, locationID } = {...this.props};
 
     let state = {};
     state = visible ? this.state.location : JSON.parse(sessionStorage.getItem(locationID));
 
     if (state) {
       return (
-        <a-entity class="location">
-          <Tile
-            {...this.props}
-            {...state}
-          />
-
-          {visible && state.playerID && state.playerID !== userID && (
-            <Hero
-              {...this.props}
-              playerID={state.playerID}
-            />
-          )}
-        </a-entity>
+        <Tile
+          {...this.props}
+          {...state}
+        />
       );
     }
     else {

@@ -4,11 +4,13 @@ import firebase from "firebase";
 import Head from "../components/Head";
 import Navigation from "../components/Navigation";
 import Loading from "../components/Loading";
+import Camera from "../components/Camera";
 import Sky from "../components/Sky";
 // import Sea from "../components/Sea";
 import UserContainer from "../components/UserContainer";
+import Assets from "../components/Assets";
 
-let Tone, DuoSynth, Transport, Panner, Loop, FeedbackDelay;
+let Tone, DuoSynth, Panner, Loop, FeedbackDelay;
 
 const env = (process && process.env && process.env.NODE_ENV) || "development";
 
@@ -139,7 +141,6 @@ export default class Play extends PureComponent {
   setupTone = () => {
     Tone = require("tone/Tone/core/Tone");
     DuoSynth = require("tone/Tone/instrument/DuoSynth");
-    Transport = require("tone/Tone/core/Transport");
     Panner = require("tone/Tone/component/Panner");
     Loop = require("tone/Tone/event/Loop");
     FeedbackDelay = require("tone/Tone/effect/FeedbackDelay");
@@ -331,8 +332,6 @@ export default class Play extends PureComponent {
   }
 
   render() {
-    const userID = this.state.userID;
-
     return (
       <div id="play">
         <style jsx>{`
@@ -350,6 +349,14 @@ export default class Play extends PureComponent {
             vr-mode-ui="enabled: false;"
             keyboard-shortcuts="enterVR: false; resetSensor: false;"
           >
+            <Assets/>
+
+            <Camera
+              far={this.state.far}
+              near={this.state.near}
+              inVR={this.state.inVR}
+              userHeight={this.state.userHeight}
+            />
             <Sky far={this.state.far} userHeight={this.state.userHeight} />
             {/* <Sea far={this.state.far} userHeight={this.state.userHeight} seaLevel={this.state.seaLevel} /> */}
 

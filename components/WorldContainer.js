@@ -4,17 +4,26 @@ import { Entity } from "aframe-react";
 import hex from "../helpers/hex";
 
 import Location from "../components/Location";
-import Assets from "../components/Assets";
-import Hero from "../components/Hero";
+import PlayerContainer from "../components/PlayerContainer";
 
 export default class WorldContainer extends PureComponent {
-  render() {
-    const {
-      locations, centerOn,
-      userID,
-      playArea, userHeight, seaLevel,
-     } = {...this.props};
+  mountHero = (playerID) => {
+    this.setState({
+      [playerID]: true
+    });
+  }
 
+  unmountHero = (playerID) => {
+    this.setState({
+      [playerID]: undefined
+    });
+  }
+
+  render() {
+    const { centerOn, userHeight, seaLevel, locations } = {...this.props};
+    const heroes = this.state;
+
+    const userLocation = locations[0];
     const visibility = 3;
     const centerOnArray = centerOn.split(",");
     const centerOnX = +centerOnArray[0] + visibility / 1.75;
@@ -29,13 +38,8 @@ export default class WorldContainer extends PureComponent {
           -hex.size * Math.sqrt(3) * (centerOnY + centerOnX/2),
         ]}
       >
-        <Hero playerID={userID} {...this.props}/>
-
-        <Assets/>
-
         {locations.map((locationID) => {
           const coordinates = locationID.split(",");
-
           return (
             <Location
               key={locationID}
@@ -44,11 +48,26 @@ export default class WorldContainer extends PureComponent {
               userToken={this.props.userToken}
               x={+coordinates[0]}
               y={+coordinates[1]}
-              visible={hex.distanceBetween(locationID, locations[0]) <= visibility}
+              visible={hex.distanceBetween(locationID, userLocation) <= visibility}
               synth={this.props.synth}
+              mountHero={this.mountHero}
             />
           )
         })}
+
+        {heroes && Object.keys(heroes).map((playerID) => {
+          return (
+            <PlayerContainer
+              key={playerID}
+              playerID={playerID}
+              userID={this.props.userID}
+              userToken={this.props.userToken}
+              unmountHero={this.unmountHero}
+            />
+          )
+        })}
+
+        {this.props.children}
       </Entity>
     );
   }

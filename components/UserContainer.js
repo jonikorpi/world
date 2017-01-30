@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Entity } from "aframe-react";
 import firebase from "firebase";
 import reactMixin from "react-mixin";
 import reactFire from "reactfire";
@@ -8,8 +7,7 @@ import hex from "../helpers/hex";
 
 import Limbo from "../components/Limbo";
 import WorldContainer from "../components/WorldContainer";
-import Camera from "../components/Camera";
-import Location from "../components/Location";
+import Hero from "../components/Hero";
 
 export default class UserContainer extends Component {
   constructor(props) {
@@ -27,8 +25,9 @@ export default class UserContainer extends Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.userID !== nextProps.userID) {
       if (this.props.userID) {
-        this.unbind("player");
+        this.unbind("hero");
         this.unbind("playerSecrets");
+        this.unbind("playerSettings");
       }
 
       if (nextProps.userID) {
@@ -46,13 +45,21 @@ export default class UserContainer extends Component {
         this.setState({playerSettings: undefined})
       }
     );
+    this.bindAsObject(
+      firebase.database().ref(`playerSecrets/${userID}`),
+      "playerSecrets",
+      (error) => {
+        console.log(error);
+        this.setState({playerSecrets: undefined})
+      }
+    );
 
     this.bindAsObject(
       firebase.database().ref(`heroes/${userID}`),
-      "player",
+      "hero",
       (error) => {
         console.log(error);
-        this.setState({player: undefined})
+        this.setState({hero: undefined})
       }
     );
   }
@@ -68,31 +75,31 @@ export default class UserContainer extends Component {
   }
 
   render() {
-    const { userID, playArea, userHeight, seaLevel} = {...this.props};
-    const player = this.state.player;
+    const hero = this.state.hero;
     const playerSettings = this.state.playerSettings;
+    const playerSecrets = this.state.playerSecrets;
 
-    const hasLocation = player && typeof player.x === "number" && typeof player.y === "number";
-    const secretLocation = hasLocation && `${player.x},${player.y}`;
+    const hasLocation = hero && typeof hero.x === "number" && typeof hero.y === "number";
+    const secretLocation = hasLocation && `${hero.x},${hero.y}`;
     const locations = secretLocation ? Object.keys(this.getLocations(secretLocation)) : [];
 
-    return (
-      <Entity id="player">
-        <Camera {...this.props}/>
-
-        {player && hasLocation && (
-          <WorldContainer
-            {...this.props}
-            locations={locations}
-            centerOn={secretLocation}
-          />
-        )}
-
-        {playerSettings && !hasLocation && (
-          <Limbo {...this.props}/>
-        )}
-      </Entity>
-    );
+    if (hero && hasLocation) {
+      return (
+        <WorldContainer
+          {...this.props}
+          locations={locations}
+          centerOn={secretLocation}
+        >
+          <Hero {...hero} isSelf={true}/>
+        </WorldContainer>
+      );
+    }
+    else if (playerSettings) {
+      return <Limbo {...this.props}/>
+    }
+    else {
+      return null;
+    }
   }
 }
 
