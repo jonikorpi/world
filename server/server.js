@@ -34,43 +34,8 @@ server.use(rollbar.errorHandler(
 ));
 
 //
-// Handle requests
-app.prepare().then(() => {
-  // Page requests
-  server.get("*", (req, res) => {
-    try {
-      dev && console.log(req.method, req.originalUrl)
-      return handle(req, res)
-    } catch (error) {
-      dev && console.log(error);
-      rollbar.handleError(error);
-    }
-  })
-
-  // Hero requests
-  server.post("*", async (req, res) => {
-    if (dev) {
-      console.log(req.method, req.originalUrl, req.body.userID, req.body.action);
-    }
-    try {
-      await handleRequest(req.body) && res.send();
-    } catch (error) {
-      dev && console.log(error);
-      rollbar.handleError(error);
-      res.status(500).send(error.message);
-    }
-  })
-
-  // Start server
-  server.listen(3000, (error) => {
-    if (error) throw error;
-    console.log("> Express & next.js ready on http://localhost:3000");
-  })
-});
-
-//
-// Handle and pass on requests
-const handleRequest = async (request) => {
+// Process and pass on requests
+const processRequest = async (request) => {
   // Version check
   if (request.version !== version) {
     throw new Error(`Client is outdated. Refreshing! (Version ${request.version} vs. ${version}.)`)
@@ -93,7 +58,7 @@ const handleRequest = async (request) => {
       await selfDestruct(userID);
       break;
     case "move":
-      await move(userID, request.from, request.to);
+      await move(userID, request.to);
       break;
     default:
       throw new Error("Unknown action type.")
@@ -195,19 +160,13 @@ const selfDestruct = async (userID) => {
 //
 // Move
 
-const move = async (userID, from, to) => {
-  if (
-       typeof from[0] !== "number"
-    || typeof from[1] !== "number"
-    || typeof to[0] !== "number"
-    || typeof to[1] !== "number"
-  ) {
-    throw new Error(`Invalid movement coordinates: ${from[0]},${from[1]} -> ${to[0]},${to[1]}`);
+const move = async (userID, to) => {
+  if ( typeof to[0] !== "number" || typeof to[1] !== "number") {
+    throw new Error(`Invalid movement coordinates: ${to[0]},${to[1]}`);
   }
 
   const playerReference = database.ref(`heroes/${userID}`);
-  const fromReference = database.ref(`locations/${from[0]},${from[1]}/playerID`);
-  const toReference = database.ref(`locations/${to[0]},${to[1]}/playerID`);
+  let from;
 
   // Lock moving player
   // TODO: make sure the player can move and remove resources
@@ -216,6 +175,7 @@ const move = async (userID, from, to) => {
       if (!player.locked) {
         player.locked = true;
         player.lastActed = Date.now();
+        from = [player.x, player.y];
         return player;
       }
       else {
@@ -235,6 +195,9 @@ const move = async (userID, from, to) => {
   }
 
   // Add moving player to target tile
+  const fromReference = database.ref(`locations/${from[0]},${from[1]}/playerID`);
+  const toReference = database.ref(`locations/${to[0]},${to[1]}/playerID`);
+
   const addTransaction = await toReference.transaction((playerID) => {
     if (playerID === null) {
       return userID;
@@ -246,7 +209,7 @@ const move = async (userID, from, to) => {
 
   if (addTransaction.committed) {
     // If that worked, remove moving player from origin tile
-    const removeTransaction = fromReference.transaction((playerID) => {
+    fromReference.transaction((playerID) => {
       if (playerID === null) {
         return null;
       }
@@ -263,7 +226,7 @@ const move = async (userID, from, to) => {
   else {
     // Else remove lock from the player and stop
     // TODO: refund resources
-    const unlockTransaction = await playerReference.transaction((player) => {
+    await playerReference.transaction((player) => {
       if (player) {
         player.locked = null;
         return player;
@@ -291,3 +254,38 @@ const move = async (userID, from, to) => {
 
   return;
 };
+
+//
+// Handle requests
+app.prepare().then(() => {
+  // Page requests
+  server.get("*", (req, res) => {
+    try {
+      dev && console.log(req.method, req.originalUrl)
+      return handle(req, res)
+    } catch (error) {
+      dev && console.log(error);
+      rollbar.handleError(error);
+    }
+  })
+
+  // Hero requests
+  server.post("*", async (req, res) => {
+    if (dev) {
+      console.log(req.method, req.originalUrl, req.body.userID, req.body.action);
+    }
+    try {
+      await processRequest(req.body) && res.send();
+    } catch (error) {
+      dev && console.log(error);
+      rollbar.handleError(error);
+      res.status(500).send(error.message);
+    }
+  })
+
+  // Start server
+  server.listen(3000, (error) => {
+    if (error) throw error;
+    console.log("> Express & next.js ready on http://localhost:3000");
+  })
+});

@@ -4,6 +4,7 @@ import reactFire from "reactfire";
 import firebase from "firebase";
 
 import Tile from "../components/Tile";
+import Action from "../components/Action";
 
 export default class Location extends PureComponent {
   constructor(props) {
@@ -65,7 +66,7 @@ export default class Location extends PureComponent {
   }
 
   render() {
-    const { visible, locationID } = {...this.props};
+    const { visible, locationID, x, y } = {...this.props};
 
     let state = {};
     state = visible ? this.state.location : JSON.parse(sessionStorage.getItem(locationID));
@@ -75,7 +76,17 @@ export default class Location extends PureComponent {
         <Tile
           {...this.props}
           {...state}
-        />
+        >
+          {this.state.location && !this.state.location.playerID && (
+            <Action
+              data={{
+                action: "move",
+                to: [x, y],
+              }}
+              {...this.props}
+            />
+          )}
+        </Tile>
       );
     }
     else {

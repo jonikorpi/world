@@ -4,38 +4,6 @@ import { Entity } from "aframe-react";
 import hex from "../helpers/hex";
 
 export default class Tile extends PureComponent {
-  constructor(props) {
-    super(props);
-
-    this.state = {};
-  }
-
-  handleStateEvent = (event) => {
-    const name = event.detail.state;
-    const type = event.type;
-    let boolean;
-
-    switch (type) {
-      case "stateadded":
-        boolean = true;
-        break;
-      case "stateremoved":
-        boolean = false;
-        break;
-      default:
-        console.log("Bad state event in Button");
-        return;
-    }
-
-    if (name && type && this._reactInternalInstance) {
-      this.setState({[name]: boolean});
-    }
-  }
-
-  handleClick = (event) => {
-    console.log(event);
-  }
-
   getCornerHeight(a, b, c) {
     if (a && b && c) {
       return Math.min(a, b, c);
@@ -46,11 +14,7 @@ export default class Tile extends PureComponent {
   }
 
   render() {
-    const {
-      x, y,
-      userID,
-      visible,
-    } = {...this.props};
+    const { x, y, visible } = {...this.props};
 
     const position = [
       x * hex.size * 3/2,
@@ -59,30 +23,28 @@ export default class Tile extends PureComponent {
     ];
 
     return (
-      <Entity
-        // className="interactable"
-        // events={{
-        //   click: this.handleClick,
-        //   stateadded: this.handleStateEvent,
-        //   stateremoved: this.handleStateEvent,
-        // }}
-        geometry={{
-          primitive: "circle",
-          segments: 6,
-          radius: hex.size * 0.944,
-          // buffer: false,
-          // skipCache: true,
-          // mergeTo: "#tile1",
-        }}
-        material={{
-          shader: "flat",
-          color: `hsl(30, 50%, ${visible ? 50 : 15}%)`,
-          // transparent: true,
-          // opacity: 0,
-        }}
-        rotation={[-90, 0, 0]}
-        position={position}
-      />
+      <Entity position={position}>
+        <Entity
+          geometry={{
+            primitive: "circle",
+            segments: 6,
+            radius: hex.size,
+            // buffer: false,
+            // skipCache: true,
+            // mergeTo: "#tile1",
+          }}
+          material={{
+            shader: "flat",
+            color: `hsl(30, 50%, ${visible ? 50 : 15}%)`,
+            // transparent: true,
+            // opacity: 0,
+          }}
+          rotation={[-90, 0, 0]}
+          // position={position}
+        />
+
+        {this.props.children}
+      </Entity>
     );
 
     // const angleToOrigin = Math.atan2(xPosition, zPosition) * (180/Math.PI);

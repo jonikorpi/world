@@ -8,6 +8,7 @@ import hex from "../helpers/hex";
 import Limbo from "../components/Limbo";
 import WorldContainer from "../components/WorldContainer";
 import Hero from "../components/Hero";
+import Action from "../components/Action";
 
 export default class UserContainer extends Component {
   constructor(props) {
@@ -77,7 +78,7 @@ export default class UserContainer extends Component {
   render() {
     const hero = this.state.hero;
     const playerSettings = this.state.playerSettings;
-    const playerSecrets = this.state.playerSecrets;
+    // const playerSecrets = this.state.playerSecrets;
 
     const hasLocation = hero && typeof hero.x === "number" && typeof hero.y === "number";
     const secretLocation = hasLocation && `${hero.x},${hero.y}`;
@@ -90,7 +91,12 @@ export default class UserContainer extends Component {
           locations={locations}
           centerOn={secretLocation}
         >
-          <Hero {...hero} isSelf={true}/>
+          <Hero {...hero} isSelf={true}>
+            <Action
+              data={{ action: "endTurn" }}
+              {...this.props}
+            />
+          </Hero>
         </WorldContainer>
       );
     }
