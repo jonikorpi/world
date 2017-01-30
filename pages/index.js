@@ -36,6 +36,7 @@ export default class Play extends PureComponent {
       playArea: [ 1.5, 1.5 ],
       fullScreen: false,
       env: env,
+      inputDevice: "unknown",
     };
   }
 
@@ -50,6 +51,9 @@ export default class Play extends PureComponent {
 
     window.removeEventListener("enter-vr", this.handleStartVR);
     window.removeEventListener("exit-vr", this.handleStopVR);
+
+    this.container.removeEventListener("mousemove", this.setInputToMouse);
+    this.container.removeEventListener("touchstart", this.setInputToTouch);
   }
 
   clientSideRender = () => {
@@ -72,6 +76,9 @@ export default class Play extends PureComponent {
 
     // window.addEventListener('resize', this.handleResize);
     // this.handleResize();
+
+    this.container.addEventListener("mousemove", this.setInputToMouse);
+    this.container.addEventListener("touchstart", this.setInputToTouch);
 
     this.setState({ clientSideRendered: true });
   }
@@ -309,6 +316,16 @@ export default class Play extends PureComponent {
     }
   }
 
+  setInputToMouse = () => {
+    this.setState({ inputDevice: "mouse" });
+    this.container.removeEventListener("mousemove", this.setInputToMouse);
+  }
+
+  setInputToTouch = () => {
+    this.setState({ inputDevice: "touch" });
+    this.container.removeEventListener("touchstart", this.setInputToTouch);
+  }
+
   selfDestruct = async () => {
     const headers = new Headers({
       "Content-Type": "application/json",
@@ -335,10 +352,19 @@ export default class Play extends PureComponent {
 
   render() {
     return (
-      <div id="play">
+      <div id="play" ref={ref => {this.container = ref;}}>
         <style jsx>{`
           #play {
             user-select: none;
+          }
+
+          #inputIndicator {
+            position: absolute;
+            bottom: 0; left: 0;
+            padding: 0.5rem;
+            font-size: 0.5rem;
+            font-weight: bold;
+            text-transform: uppercase;
           }
         `}</style>
 
@@ -379,6 +405,10 @@ export default class Play extends PureComponent {
             toggleVR={this.toggleVR}
             selfDestruct={this.selfDestruct}
           />
+        )}
+
+        {!this.state.fullScreen && (
+          <div id="inputIndicator">{this.state.inputDevice}</div>
         )}
       </div>
     );
