@@ -3,6 +3,8 @@ import { Entity } from "aframe-react";
 
 import hex from "../helpers/hex";
 
+import Tooltip from "../components/Tooltip";
+
 const version = process && process.env && process.env.GAME_VERSION;
 
 export default class Action extends PureComponent {
@@ -112,6 +114,8 @@ export default class Action extends PureComponent {
   }
 
   render() {
+    const hovered = this.state["cursor-hovered"];
+
     let hue;
     switch (this.state.status) {
       case "success":
@@ -124,7 +128,7 @@ export default class Action extends PureComponent {
         hue = 200;
     }
 
-    const lightness = this.state["cursor-hovered"] ? 85 : 50;
+    const lightness = hovered ? 85 : 50;
     const color = `hsl(${hue}, 50%, ${lightness}%)`;
 
     return (
@@ -164,6 +168,10 @@ export default class Action extends PureComponent {
             color: color,
           }}
         />
+
+        {hovered && (
+          <Tooltip/>
+        )}
       </a-entity>
     );
   }
