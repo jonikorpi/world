@@ -12,7 +12,7 @@ export default class Limbo extends PureComponent {
         <Action
           {...this.props}
           data={{
-            type: "spawn"
+            action: "spawn"
           }}
         />
       </Entity>

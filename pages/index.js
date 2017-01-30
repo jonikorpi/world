@@ -317,6 +317,7 @@ export default class Play extends PureComponent {
       method: "POST",
       headers: headers,
       body: JSON.stringify({
+        version: process && process.env && process.env.GAME_VERSION,
         token: this.state.userToken,
         userID: this.state.userID,
         action: "self-destruct",
