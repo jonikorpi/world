@@ -51,6 +51,7 @@
       "x": { ".validate": "newData.isNumber()" },
       "y": { ".validate": "newData.isNumber()" },
 
+      "faction":     { ".validate": "newData.isString()" },
       "locked":      { ".validate": "newData.isBoolean()" },
       "immuneUntil": { ".validate": "newData.isNumber()" },
       "lastActed":   { ".validate": "newData.isNumber()" },
