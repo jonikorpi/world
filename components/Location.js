@@ -18,14 +18,15 @@ export default class Location extends PureComponent {
     }
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(previousProps, previousState) {
     if (this.props.visible) {
       sessionStorage.setItem(this.props.locationID, JSON.stringify(this.state.location));
 
       const playerID = this.state.location.playerID;
+      const previousPlayerID = previousState.location.playerID;
       const userID = this.props.userID;
 
-      if (playerID && playerID !== userID) {
+      if (playerID && playerID !== userID && playerID !== previousPlayerID) {
         this.props.mountHero(playerID);
       }
     }
