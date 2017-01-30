@@ -48,7 +48,7 @@ export default class UserContainer extends Component {
     );
 
     this.bindAsObject(
-      firebase.database().ref(`players/${userID}`),
+      firebase.database().ref(`heroes/${userID}`),
       "player",
       (error) => {
         console.log(error);

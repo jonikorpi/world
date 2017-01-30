@@ -4,9 +4,9 @@
     ".write": "auth.worldmaster === true",
     ".read": "true",
 
-    "playersN": { ".validate": "newData.isNumber()" },
-    "playersSW": { ".validate": "newData.isNumber()" },
-    "playersSE": { ".validate": "newData.isNumber()" },
+    "heroesN": { ".validate": "newData.isNumber()" },
+    "heroesSW": { ".validate": "newData.isNumber()" },
+    "heroesSE": { ".validate": "newData.isNumber()" },
 
     "ownerCenter": { ".validate": "newData.isString()" },
     "ownerNW": { ".validate": "newData.isString()" },
@@ -40,7 +40,7 @@
     }
   },
 
-  "players": {
+  "heroes": {
     ".write": "auth.worldmaster === true",
     "$playerID": {
       // TODO generate complicated neighbour rules based on adj. locations
@@ -85,7 +85,7 @@
     "$playerID": {
       ".read":  "(auth != null && auth.uid === $playerID) || auth.worldmaster === true",
       ".write": "(auth != null && auth.uid === $playerID) || auth.worldmaster === true"
-      // TODO flag/mask/icon/logo + copy to players on spawn
+      // TODO flag/mask/icon/logo + copy to heroes on spawn
     }
   }
 

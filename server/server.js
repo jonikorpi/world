@@ -47,7 +47,7 @@ app.prepare().then(() => {
     }
   })
 
-  // Player requests
+  // Hero requests
   server.post("*", async (req, res) => {
     if (dev) {
       console.log(req.method, req.originalUrl, req.body.userID, req.body.action);
@@ -106,13 +106,13 @@ const handleRequest = async (request) => {
 // Spawn
 const spawn = async (userID) => {
   // Check if player is already ingame
-  const locationsWithPlayers = await database.ref("locations")
+  const locationsWithHeroes = await database.ref("locations")
     .orderByChild("playerID")
     .equalTo(userID)
     .once("value")
   ;
 
-  if (locationsWithPlayers.numChildren() > 0) {
+  if (locationsWithHeroes.numChildren() > 0) {
     throw new Error("Cannot spawn while you are still in the game.");
   }
 
@@ -145,7 +145,7 @@ const spawn = async (userID) => {
   // Add player
   // TODO: fetch player from playerSEttings
   const now = Date.now();
-  await database.ref(`players/${userID}`)
+  await database.ref(`heroes/${userID}`)
     .update({
       x: spawnLocation[0],
       y: spawnLocation[1],
@@ -161,16 +161,16 @@ const spawn = async (userID) => {
 // Self-destruct
 const selfDestruct = async (userID) => {
   // Find all player locations
-  const locationsWithPlayers = await database.ref("locations")
+  const locationsWithHeroes = await database.ref("locations")
     .orderByChild("playerID")
     .equalTo(userID)
     .once("value")
   ;
 
   // Destroy all player locations
-  if (locationsWithPlayers.numChildren() > 0) {
-    locationsWithPlayers.forEach((locationWithPlayer) => {
-      locationWithPlayer.child("playerID").ref.transaction((playerID) => {
+  if (locationsWithHeroes.numChildren() > 0) {
+    locationsWithHeroes.forEach((locationWithHero) => {
+      locationWithHero.child("playerID").ref.transaction((playerID) => {
         if (playerID) {
           if (playerID === userID) {
             return null;
@@ -187,7 +187,7 @@ const selfDestruct = async (userID) => {
   }
 
   // Remove player
-  await database.ref(`players/${userID}`).remove();
+  await database.ref(`heroes/${userID}`).remove();
 
   return;
 };
@@ -205,7 +205,7 @@ const move = async (userID, from, to) => {
     throw new Error(`Invalid movement coordinates: ${from[0]},${from[1]} -> ${to[0]},${to[1]}`);
   }
 
-  const playerReference = database.ref(`players/${userID}`);
+  const playerReference = database.ref(`heroes/${userID}`);
   const fromReference = database.ref(`locations/${from[0]},${from[1]}/playerID`);
   const toReference = database.ref(`locations/${to[0]},${to[1]}/playerID`);
 
@@ -228,9 +228,9 @@ const move = async (userID, from, to) => {
   });
 
   // If there was no player or the locking didn't work, stop
-  const lockedPlayer = lockTransaction.snapshot.val();
+  const lockedHero = lockTransaction.snapshot.val();
 
-  if (!lockedPlayer || !lockTransaction.committed) {
+  if (!lockedHero || !lockTransaction.committed) {
     throw new Error("Failed to start movement");
   }
 

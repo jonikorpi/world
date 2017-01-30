@@ -9,7 +9,7 @@ import hex from "../helpers/hex";
 import Button from "../components/Button";
 import Request from "../components/Request";
 
-export default class Player extends Component {
+export default class Hero extends Component {
   constructor(props) {
     super(props);
 
@@ -26,8 +26,8 @@ export default class Player extends Component {
     this.unbindFirebase();
 
     this.bindAsObject(
-      firebase.database().ref(`players/${playerID}`),
-      "player",
+      firebase.database().ref(`heroes/${playerID}`),
+      "hero",
       (error) => {
         console.log("Location subscription cancelled:", error)
         this.unbindFirebase();
@@ -36,7 +36,7 @@ export default class Player extends Component {
   }
 
   unbindFirebase = () => {
-    this.firebaseListeners.player && this.unbind("player");
+    this.firebaseListeners.hero && this.unbind("hero");
   }
 
   // componentDidMount() {
@@ -51,12 +51,12 @@ export default class Player extends Component {
   //   this.props.synth.triggerAttackRelease(isOwnUnit ? "C4" : "E4", "4n");
   // }
 
-  moveNorth = () =>     { this.move(this.state.player.x, this.state.player.y-1); }
-  moveSouth = () =>     { this.move(this.state.player.x, this.state.player.y+1); }
-  moveNorthWest = () => { this.move(this.state.player.x-1, this.state.player.y); }
-  moveSouthEast = () => { this.move(this.state.player.x+1, this.state.player.y); }
-  moveNorthEast = () => { this.move(this.state.player.x+1, this.state.player.y-1); }
-  moveSouthWest = () => { this.move(this.state.player.x-1, this.state.player.y+1); }
+  moveNorth = () =>     { this.move(this.state.hero.x, this.state.hero.y-1); }
+  moveSouth = () =>     { this.move(this.state.hero.x, this.state.hero.y+1); }
+  moveNorthWest = () => { this.move(this.state.hero.x-1, this.state.hero.y); }
+  moveSouthEast = () => { this.move(this.state.hero.x+1, this.state.hero.y); }
+  moveNorthEast = () => { this.move(this.state.hero.x+1, this.state.hero.y-1); }
+  moveSouthWest = () => { this.move(this.state.hero.x-1, this.state.hero.y+1); }
 
   move = (x, y) => {
     const request = [{
@@ -64,7 +64,7 @@ export default class Player extends Component {
       token: this.props.userToken,
       userID: this.props.userID,
       action: "move",
-      from: [this.state.player.x, this.state.player.y],
+      from: [this.state.hero.x, this.state.hero.y],
       to: [x, y],
     }];
 
@@ -85,14 +85,14 @@ export default class Player extends Component {
 
   render() {
     const { userID, playerID } = {...this.props};
-    const player = this.state.player;
+    const hero = this.state.hero;
     const requests = this.state.requests;
     const isSelf = userID === playerID;
 
-    const x = player.x || 0;
-    const y = player.y || 0;
+    const x = hero && hero.x || 0;
+    const y = hero && hero.y || 0;
 
-    const position = !player ? [0,0,0] : [
+    const position = !hero ? [0,0,0] : [
       x * hex.size * 3/2,
       0,
       hex.size * Math.sqrt(3) * (y + x/2),
@@ -110,7 +110,7 @@ export default class Player extends Component {
         position={position}
         material={{
           shader: "flat",
-          color: player ? (isSelf ? "green" : "red") : "grey",
+          color: hero ? (isSelf ? "green" : "red") : "grey",
         }}
       >
         {requests && requests.map((request) => {
@@ -165,4 +165,4 @@ export default class Player extends Component {
   }
 }
 
-reactMixin(Player.prototype, reactFire);
+reactMixin(Hero.prototype, reactFire);

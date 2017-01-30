@@ -5,7 +5,7 @@ import reactFire from "reactfire";
 import firebase from "firebase";
 
 import Tile from "../components/Tile";
-import Player from "../components/Player";
+import Hero from "../components/Hero";
 
 export default class Location extends PureComponent {
   constructor(props) {
@@ -74,7 +74,7 @@ export default class Location extends PureComponent {
           />
 
           {visible && state.playerID && state.playerID !== userID && (
-            <Player
+            <Hero
               {...this.props}
               playerID={state.playerID}
             />

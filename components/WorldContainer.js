@@ -5,7 +5,7 @@ import hex from "../helpers/hex";
 
 import Location from "../components/Location";
 import Assets from "../components/Assets";
-import Player from "../components/Player";
+import Hero from "../components/Hero";
 
 export default class WorldContainer extends PureComponent {
   render() {
@@ -29,7 +29,7 @@ export default class WorldContainer extends PureComponent {
           -hex.size * Math.sqrt(3) * (centerOnY + centerOnX/2),
         ]}
       >
-        <Player playerID={userID} {...this.props}/>
+        <Hero playerID={userID} {...this.props}/>
 
         <Assets/>
 
