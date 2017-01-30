@@ -43,6 +43,12 @@ acorn@^4.0.1, acorn@^4.0.3:
   version "4.0.4"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-4.0.4.tgz#17a8d6a7a6c4ef538b814ec9abac2779293bf30a"
 
+aframe-extras@^3.2.4:
+  version "3.2.4"
+  resolved "https://registry.yarnpkg.com/aframe-extras/-/aframe-extras-3.2.4.tgz#fbd710ac2998bdbbfc260b784d2eba30b67afd2f"
+  dependencies:
+    aframe-physics-system "^1.2.0"
+
 aframe-faceset-component@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/aframe-faceset-component/-/aframe-faceset-component-0.3.1.tgz#e09d0738017bc3d5f4a9ff0de4854ce91fba049f"
@@ -55,11 +61,12 @@ aframe-faceset-component@^0.3.1:
   version "0.2.0"
   resolved "https://github.com/andreasplesch/aframe-meshline-component.git#b79b46091326d277960cb2713f12e31a05d708e4"
 
-aframe-mouse-cursor-component@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/aframe-mouse-cursor-component/-/aframe-mouse-cursor-component-0.4.0.tgz#1000f1abb292320d63380d2442667f87b21625ca"
+aframe-physics-system@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/aframe-physics-system/-/aframe-physics-system-1.2.0.tgz#8af97970f8011633845e764b81e50bf1a72825b1"
   dependencies:
-    lodash.flattendeep "^4.4.0"
+    cannon "github:donmccurdy/cannon.js#v0.6.2-dev1"
+    three-to-cannon "^1.0.2"
 
 aframe-react@^3.4.1:
   version "3.4.1"
@@ -1054,6 +1061,10 @@ camelcase@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-3.0.0.tgz#32fc4b9fcdaf845fcdf7e73bb97cac2261f0ab0a"
 
+"cannon@github:donmccurdy/cannon.js#v0.6.2-dev1":
+  version "0.6.2"
+  resolved "https://codeload.github.com/donmccurdy/cannon.js/tar.gz/022e8ba53fa83abf0ad8a0e4fd08623123838a17"
+
 caseless@~0.11.0:
   version "0.11.0"
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.11.0.tgz#715b96ea9841593cc33067923f5ec60ebda4f7d7"
@@ -1565,7 +1576,7 @@ doctrine@1.5.0, doctrine@^1.2.2:
     esutils "^2.0.2"
     isarray "^1.0.0"
 
-"document-register-element@github:dmarcos/document-register-element#8ccc532b7":
+document-register-element@dmarcos/document-register-element#8ccc532b7:
   version "0.5.4"
   resolved "https://codeload.github.com/dmarcos/document-register-element/tar.gz/8ccc532b7"
 
@@ -3419,10 +3430,6 @@ lodash.escape@^3.0.0:
   dependencies:
     lodash._root "^3.0.0"
 
-lodash.flattendeep@^4.4.0:
-  version "4.4.0"
-  resolved "https://registry.yarnpkg.com/lodash.flattendeep/-/lodash.flattendeep-4.4.0.tgz#fb030917f86a3134e5bc9bec0d69e0013ddfedb2"
-
 lodash.isarguments@^3.0.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/lodash.isarguments/-/lodash.isarguments-3.1.0.tgz#2f573d85c6a24289ff00663b491c1d338ff3458a"
@@ -4303,11 +4310,11 @@ public-encrypt@^4.0.0:
     parse-asn1 "^5.0.0"
     randombytes "^2.0.1"
 
-punycode@1.3.2, punycode@^1.2.4:
+punycode@1.3.2, punycode@^1.2.4, punycode@^1.3.2:
   version "1.3.2"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-1.3.2.tgz#9653a036fb7c1ee42342f2325cceefea3926c48d"
 
-punycode@^1.3.2, punycode@^1.4.1:
+punycode@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-1.4.1.tgz#c0d5a63b2718800ad8e1eb0fa5269c84dd41845e"
 
@@ -5258,6 +5265,10 @@ thenify-all@^1.0.0:
   resolved "https://registry.yarnpkg.com/thenify/-/thenify-3.2.1.tgz#251fd1c80aff6e5cf57cb179ab1fcb724269bd11"
   dependencies:
     any-promise "^1.0.0"
+
+three-to-cannon@^1.0.2:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/three-to-cannon/-/three-to-cannon-1.0.3.tgz#a4c258a58fc3d5625448c9e0b673f0e7fd5a6822"
 
 three@^0.82.1:
   version "0.82.1"

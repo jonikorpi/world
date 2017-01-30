@@ -26,8 +26,8 @@ export default class WorldContainer extends PureComponent {
     const userLocation = locations[0];
     const visibility = 3;
     const centerOnArray = centerOn.split(",");
-    const centerOnX = +centerOnArray[0] + visibility / 1.75;
-    const centerOnY = +centerOnArray[1] + visibility / 1.75;
+    const centerOnX = +centerOnArray[0] + visibility / 1.5;
+    const centerOnY = +centerOnArray[1] + visibility / 1.5;
 
     return (
       <Entity

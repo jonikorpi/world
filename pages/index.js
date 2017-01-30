@@ -131,11 +131,12 @@ export default class Play extends PureComponent {
   }
 
   setupAframe = () => {
-    require("aframe");
+    const AFRAME = require("aframe");
     require("aframe-look-at-billboard-component");
     require("aframe-meshline-component");
     require("aframe-faceset-component");
-    require("aframe-mouse-cursor-component");
+    const controls = require("aframe-extras/src/controls");
+    controls.registerAll();
   }
 
   setupTone = () => {

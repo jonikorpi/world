@@ -31,18 +31,16 @@ export default class Camera extends PureComponent {
             userHeight: userHeight,
           }}
           // rotation={[-20, 0, 0]}
-          look-controls
-          wasd-controls
-          mouse-cursor
-          // universal-controls={{
-          //   movementControls: ["keyboard", "gamepad", "touch", "hmd"],
-          //   rotationControls: ["hmd", "gamepad", "mouse"],
-          //   movementSpeed:        100,
-          //   movementEasing:       100,
-          //   movementAcceleration: 100,
-          //   // rotationSensitivity:  0.05,
-          //   // fly: true,
-          // }}
+          universal-controls={{
+            movementEnabled: false,
+            // movementControls: ["keyboard", "gamepad", "touch", "hmd"],
+            rotationControls: ["hmd", "gamepad", "mouse"],
+            // movementSpeed:        100,
+            // movementEasing:       100,
+            // movementAcceleration: 100,
+            // rotationSensitivity:  0.05,
+            // fly: true,
+          }}
         >
           <Entity
             id="cursor"
@@ -56,10 +54,6 @@ export default class Camera extends PureComponent {
             cursor={{
               fuse: false,
             }}
-          />
-
-          <Entity
-            id="pointer"
             geometry={{
               primitive: "circle",
               radius: 0.005*pointerDistance,
@@ -70,6 +64,11 @@ export default class Camera extends PureComponent {
               shader: "flat",
               color: "yellow",
             }}
+          />
+
+          <Entity
+            id="pointer"
+
           />
         </Entity>
       </Entity>
