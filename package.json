@@ -3,7 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "now": {
-    "alias": "world-dev"
+    "aliases": [
+      "world-dev"
+    ],
+    "env": {
+      "NODE_ENV": "production"
+    }
   },
   "dependencies": {
     "aframe": "^0.4.0",
@@ -18,6 +23,7 @@
     "firebase-admin": "^4.0.6",
     "jonikorpi-base-files": "^6.0.1",
     "next": "^2.0.0-beta",
+    "react-addons-perf": "^15.4.2",
     "react-mixin": "^3.0.5",
     "reactfire": "^1.0.0",
     "rollbar": "^0.6.3",
@@ -29,9 +35,9 @@
     "build": "next build",
     "test": "",
     "eject": "",
-    "deploy": "now -e NODE_ENV=production -e GAME_VERSION=`git log -n 1 --pretty=format:'%H'` && curl https://api.rollbar.com/api/1/deploy/ -F access_token=22fca22d3936434eb8b69cc0c453d040 -F environment=production -F revision=`git log -n 1 --pretty=format:'%H'` -F local_username=`whoami` && firebase deploy",
+    "deploy": "now --alias -e GAME_VERSION=`git log -n 1 --pretty=format:'%H'` && curl https://api.rollbar.com/api/1/deploy/ -F access_token=22fca22d3936434eb8b69cc0c453d040 -F environment=production -F revision=`git log -n 1 --pretty=format:'%H'` -F local_username=`whoami` && firebase deploy",
     "alias": "now alias && now rm $(now-no-alias | json -a uid)",
-    "now-start": "NODE_ENV=production node --harmony-async-await server/server.js"
+    "now-start": "node --harmony-async-await server/server.js"
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",
@@ -41,7 +47,6 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^3.0.2",
     "eslint-plugin-react": "^6.9.0",
-    "nodemon": "^1.11.0",
-    "react-addons-perf": "^15.4.2"
+    "nodemon": "^1.11.0"
   }
 }
