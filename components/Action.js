@@ -124,7 +124,7 @@ export default class Action extends PureComponent {
         hue = 200;
     }
 
-    const lightness = this.state.hovered ? 85 : 50;
+    const lightness = this.state["cursor-hovered"] ? 85 : 50;
     const color = `hsl(${hue}, 50%, ${lightness}%)`;
 
     return (
