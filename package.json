@@ -27,7 +27,8 @@
     "reactfire": "^1.0.0",
     "rollbar": "^0.6.3",
     "rollbar-browser": "^1.9.2",
-    "tone": "^0.9.0"
+    "tone": "^0.9.0",
+    "whatwg-fetch": "^2.0.2"
   },
   "scripts": {
     "start": "firebase deploy && GAME_VERSION=`git log -n 1 --pretty=format:'%H'` nodemon --watch server --harmony-async-await server/server.js",

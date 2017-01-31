@@ -1,5 +1,6 @@
 import React, { PureComponent } from "react";
 import { Entity } from "aframe-react";
+import "whatwg-fetch";
 
 import hex from "../helpers/hex";
 
