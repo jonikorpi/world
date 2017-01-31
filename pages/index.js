@@ -49,11 +49,10 @@ export default class Play extends PureComponent {
     document.removeEventListener("mozfullscreenchange", this.handleFullScreenChange);
     document.removeEventListener("webkitfullscreenchange", this.handleFullScreenChange);
 
+    document.removeEventListener("pointerlockchange", this.handlePointerLockChange);
+
     window.removeEventListener("enter-vr", this.handleStartVR);
     window.removeEventListener("exit-vr", this.handleStopVR);
-
-    this.container.removeEventListener("mousemove", this.setInputToMouse);
-    this.container.removeEventListener("touchstart", this.setInputToTouch);
   }
 
   clientSideRender = () => {
@@ -71,14 +70,13 @@ export default class Play extends PureComponent {
     document.addEventListener("mozfullscreenchange", this.handleFullScreenChange);
     document.addEventListener("webkitfullscreenchange", this.handleFullScreenChange);
 
+    document.addEventListener("pointerlockchange", this.handlePointerLockChange);
+
     window.addEventListener("enter-vr", this.handleStartVR);
     window.addEventListener("exit-vr", this.handleStopVR);
 
     // window.addEventListener('resize', this.handleResize);
     // this.handleResize();
-
-    this.container.addEventListener("mousemove", this.setInputToMouse);
-    this.container.addEventListener("touchstart", this.setInputToTouch);
 
     this.setState({ clientSideRendered: true });
   }
@@ -316,14 +314,13 @@ export default class Play extends PureComponent {
     }
   }
 
-  setInputToMouse = () => {
-    this.setState({ inputDevice: "mouse" });
-    this.container.removeEventListener("mousemove", this.setInputToMouse);
-  }
-
-  setInputToTouch = () => {
-    this.setState({ inputDevice: "touch" });
-    this.container.removeEventListener("touchstart", this.setInputToTouch);
+  handlePointerLockChange = () => {
+    if (document.pointerLockElement) {
+      this.setState({ mouseLock: true });
+    }
+    else {
+      this.setState({ mouseLock: false });
+    }
   }
 
   selfDestruct = async () => {
@@ -357,15 +354,6 @@ export default class Play extends PureComponent {
           #play {
             user-select: none;
           }
-
-          #inputIndicator {
-            position: absolute;
-            bottom: 0; left: 0;
-            padding: 0.5rem;
-            font-size: 0.5rem;
-            font-weight: bold;
-            text-transform: uppercase;
-          }
         `}</style>
 
         <Head />
@@ -398,17 +386,13 @@ export default class Play extends PureComponent {
           <Loading />
         )}
 
-        {!this.state.fullScreen && (
+        {!this.state.fullScreen && !this.state.mouseLock && (
           <Navigation
             pathname={this.props.url.pathname}
             enterFullscreen={this.enterFullscreen}
             toggleVR={this.toggleVR}
             selfDestruct={this.selfDestruct}
           />
-        )}
-
-        {!this.state.fullScreen && (
-          <div id="inputIndicator">{this.state.inputDevice}</div>
         )}
       </div>
     );
