@@ -50,7 +50,10 @@ export default class Action extends PureComponent {
   }
 
   processAction = async () => {
-    this.setState({ started: Date.now() });
+    this.setState({
+      started: Date.now(),
+      status: "processing"
+    });
 
     const headers = new Headers({
       "Content-Type": "application/json",
@@ -119,6 +122,9 @@ export default class Action extends PureComponent {
 
     let hue;
     switch (this.state.status) {
+      case "processing":
+        hue = 50;
+        break;
       case "success":
         hue = 280;
         break;
@@ -129,7 +135,7 @@ export default class Action extends PureComponent {
         hue = 200;
     }
 
-    const lightness = hovered ? 85 : 50;
+    const lightness = hovered ? 76 : 50;
     const color = `hsl(${hue}, 50%, ${lightness}%)`;
 
     return (

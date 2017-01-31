@@ -7,18 +7,19 @@ const bind = require("aframe/src/utils/bind");
 const PI_2 = Math.PI / 2;
 const radToDeg = THREE.Math.radToDeg;
 
-AFRAME.registerComponent("modified-look-controls", {
+!AFRAME.components["modified-look-controls"] && AFRAME.registerComponent("modified-look-controls", {
   dependencies: ["position", "rotation"],
 
   schema: {
     enabled: {default: true},
     hmdEnabled: {default: true},
-    reverseMouseDrag: {default: true},
-    standing: {default: true}
+    reverseMouseDrag: {default: false},
+    standing: {default: true},
+    sensitivity: {default: 1}
   },
 
   init: function () {
-    var sceneEl = this.el.sceneEl;
+    // var sceneEl = this.el.sceneEl;
 
     this.previousHMDPosition = new THREE.Vector3();
     this.setupMouseControls();
@@ -26,12 +27,12 @@ AFRAME.registerComponent("modified-look-controls", {
     this.bindMethods();
 
     // Enable grab cursor class on canvas.
-    function enableGrabCursor () { sceneEl.canvas.classList.add("a-grab-cursor"); }
-    if (!sceneEl.canvas) {
-      sceneEl.addEventListener("render-target-loaded", enableGrabCursor);
-    } else {
-      enableGrabCursor();
-    }
+    // function enableGrabCursor () { sceneEl.canvas.classList.add("a-grab-cursor"); }
+    // if (!sceneEl.canvas) {
+    //   sceneEl.addEventListener("render-target-loaded", enableGrabCursor);
+    // } else {
+    //   enableGrabCursor();
+    // }
   },
 
   update: function (oldData) {
@@ -53,6 +54,7 @@ AFRAME.registerComponent("modified-look-controls", {
   },
 
   pause: function () {
+    this.releaseMouse();
     this.removeEventListeners();
   },
 
@@ -71,11 +73,15 @@ AFRAME.registerComponent("modified-look-controls", {
     this.onTouchStart = bind(this.onTouchStart, this);
     this.onTouchMove = bind(this.onTouchMove, this);
     this.onTouchEnd = bind(this.onTouchEnd, this);
+
+    this.onLockChange = bind(this.onLockChange, this);
+    this.captureMouse = bind(this.captureMouse, this);
   },
 
   setupMouseControls: function () {
     // The canvas where the scene is painted
-    this.mouseDown = false;
+    // this.mouseDown = false;
+    this.pointerlocked = false;
     this.pitchObject = new THREE.Object3D();
     this.yawObject = new THREE.Object3D();
     this.yawObject.position.y = 10;
@@ -106,13 +112,24 @@ AFRAME.registerComponent("modified-look-controls", {
 
     // Mouse Events
     canvasEl.addEventListener("mousedown", this.onMouseDown, false);
-    window.addEventListener("mousemove", this.onMouseMove, false);
-    window.addEventListener("mouseup", this.releaseMouse, false);
+    // window.addEventListener("mousemove", this.onMouseMove, false);
+    // window.addEventListener("mouseup", this.releaseMouse, false);
 
     // Touch events
     canvasEl.addEventListener("touchstart", this.onTouchStart);
     window.addEventListener("touchmove", this.onTouchMove);
     window.addEventListener("touchend", this.onTouchEnd);
+
+    // Locked mouse events
+    if (this.lockIsSupported) {
+      document.addEventListener("pointerlockchange", this.onLockChange, false);
+      document.addEventListener("mozpointerlockchange", this.onLockChange, false);
+      document.addEventListener("webkitpointerlockchange", this.onLockChange, false);
+
+      document.addEventListener("pointerlockerror", this.onLockError, false);
+      document.addEventListener("mozpointerlockerror", this.onLockError, false);
+      document.addEventListener("webkitpointerlockerror", this.onLockError, false);
+    }
   },
 
   removeEventListeners: function () {
@@ -122,14 +139,25 @@ AFRAME.registerComponent("modified-look-controls", {
 
     // Mouse Events
     canvasEl.removeEventListener("mousedown", this.onMouseDown);
-    canvasEl.removeEventListener("mousemove", this.onMouseMove);
-    canvasEl.removeEventListener("mouseup", this.releaseMouse);
-    canvasEl.removeEventListener("mouseout", this.releaseMouse);
+    // canvasEl.removeEventListener("mousemove", this.onMouseMove);
+    // canvasEl.removeEventListener("mouseup", this.releaseMouse);
+    // canvasEl.removeEventListener("mouseout", this.releaseMouse);
 
     // Touch events
     canvasEl.removeEventListener("touchstart", this.onTouchStart);
     canvasEl.removeEventListener("touchmove", this.onTouchMove);
     canvasEl.removeEventListener("touchend", this.onTouchEnd);
+
+    // Locked mouse events
+    if (this.lockIsSupported) {
+      document.removeEventListener("pointerlockchange", this.onLockChange.bind(this));
+      document.removeEventListener("mozpointerlockchange", this.onLockChange.bind(this));
+      document.removeEventListener("webkitpointerlockchange", this.onLockChange.bind(this));
+
+      document.removeEventListener("pointerlockerror", this.onLockError);
+      document.removeEventListener("mozpointerlockerror", this.onLockError);
+      document.removeEventListener("webkitpointerlockerror", this.onLockError);
+    }
   },
 
   updateOrientation: (function () {
@@ -240,33 +268,44 @@ AFRAME.registerComponent("modified-look-controls", {
   onMouseMove: function (event) {
     var pitchObject = this.pitchObject;
     var yawObject = this.yawObject;
-    var previousMouseEvent = this.previousMouseEvent;
+    // var previousMouseEvent = this.previousMouseEvent;
 
-    if (!this.mouseDown || !this.data.enabled) { return; }
+    if (/*!this.mouseDown ||*/ !this.data.enabled) { return; }
 
-    var movementX = event.movementX || event.mozMovementX;
-    var movementY = event.movementY || event.mozMovementY;
+    var movementX = event.movementX || event.mozMovementX || 0;
+    var movementY = event.movementY || event.mozMovementY || 0;
 
-    if (movementX === undefined || movementY === undefined) {
-      movementX = event.screenX - previousMouseEvent.screenX;
-      movementY = event.screenY - previousMouseEvent.screenY;
-    }
-    this.previousMouseEvent = event;
+    // if (movementX === undefined || movementY === undefined) {
+    //   movementX = event.screenX - previousMouseEvent.screenX;
+    //   movementY = event.screenY - previousMouseEvent.screenY;
+    // }
+    // this.previousMouseEvent = event;
 
-    yawObject.rotation.y -= movementX * 0.002;
-    pitchObject.rotation.x -= movementY * 0.002;
+    yawObject.rotation.y -= movementX * 0.002   * 1.5 * this.data.sensitivity;
+    pitchObject.rotation.x -= movementY * 0.002 * 1.5 * this.data.sensitivity;
     pitchObject.rotation.x = Math.max(-PI_2, Math.min(PI_2, pitchObject.rotation.x));
   },
 
   onMouseDown: function (event) {
-    this.mouseDown = true;
-    this.previousMouseEvent = event;
-    document.body.classList.add("a-grabbing");
+    // this.mouseDown = true;
+    // this.previousMouseEvent = event;
+    // document.body.classList.add("a-grabbing");
+
+    if (!this.pointerlocked) {
+      this.captureMouse();
+    }
   },
 
   releaseMouse: function () {
-    this.mouseDown = false;
-    document.body.classList.remove("a-grabbing");
+    // this.mouseDown = false;
+    // document.body.classList.remove("a-grabbing");
+
+    document.exitPointerLock = (
+         document.exitPointerLock
+      || document.mozExitPointerLock
+      || document.webkitExitPointerLock
+    );
+    document.exitPointerLock();
   },
 
   onTouchStart: function (e) {
@@ -294,7 +333,37 @@ AFRAME.registerComponent("modified-look-controls", {
 
   onTouchEnd: function () {
     this.touchStarted = false;
-  }
+  },
+
+  captureMouse: function () {
+    var canvasEl = this.el.sceneEl.canvas;
+
+    if (canvasEl.requestPointerLock) {
+      canvasEl.requestPointerLock();
+    } else if (canvasEl.mozRequestPointerLock) {
+      canvasEl.mozRequestPointerLock();
+    }
+  },
+
+  onLockChange: function (e) {
+    var canvas = this.el.sceneEl.canvas;
+
+    if (
+         document.pointerLockElement === canvas
+      || document.mozPointerLockElement === canvas
+    ) {
+      this.pointerlocked = true;
+      document.addEventListener("mousemove", this.onMouseMove, false);
+    } else {
+      this.pointerlocked = false;
+      document.removeEventListener("mousemove", this.onMouseMove);
+    }
+  },
+
+  onLockError: function (error) {
+    this.pointerlocked = false;
+    console.trace(error);
+  },
 });
 
 function isNullVector (vector) {
