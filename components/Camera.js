@@ -30,17 +30,7 @@ export default class Camera extends PureComponent {
             fov: inVR ? 80 : 80,
             userHeight: userHeight,
           }}
-          // rotation={[-20, 0, 0]}
-          universal-controls={{
-            movementEnabled: false,
-            // movementControls: ["keyboard", "gamepad", "touch", "hmd"],
-            rotationControls: ["hmd", "gamepad", "mouse"],
-            // movementSpeed:        100,
-            // movementEasing:       100,
-            // movementAcceleration: 100,
-            // rotationSensitivity:  0.05,
-            // fly: true,
-          }}
+          modified-look-controls
         >
           <Entity
             id="cursor"
@@ -64,11 +54,6 @@ export default class Camera extends PureComponent {
               shader: "flat",
               color: "yellow",
             }}
-          />
-
-          <Entity
-            id="pointer"
-
           />
         </Entity>
       </Entity>

@@ -36,7 +36,6 @@ export default class Play extends PureComponent {
       playArea: [ 1.5, 1.5 ],
       fullScreen: false,
       env: env,
-      inputDevice: "unknown",
     };
   }
 
@@ -140,8 +139,7 @@ export default class Play extends PureComponent {
     require("aframe-look-at-billboard-component");
     require("aframe-meshline-component");
     require("aframe-faceset-component");
-    const controls = require("aframe-extras/src/controls");
-    controls.registerAll();
+    require("../components/modified-look-controls");
   }
 
   setupTone = () => {
@@ -372,6 +370,7 @@ export default class Play extends PureComponent {
               near={this.state.near}
               inVR={this.state.inVR}
               userHeight={this.state.userHeight}
+              mouseLock={this.state.mouseLock}
             />
             <Sky far={this.state.far} userHeight={this.state.userHeight} />
             {/* <Sea far={this.state.far} userHeight={this.state.userHeight} seaLevel={this.state.seaLevel} /> */}

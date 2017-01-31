@@ -169,7 +169,7 @@ export default class Action extends PureComponent {
           }}
         />
 
-        {hovered && (
+        {hovered && this.props.data.action === "action" && (
           <Tooltip/>
         )}
       </a-entity>
