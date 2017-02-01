@@ -2,6 +2,7 @@ import React, { PureComponent } from "react";
 import { Entity } from "aframe-react";
 
 import hex from "../helpers/hex";
+import text from "../helpers/text";
 
 export default class HeroPanel extends PureComponent {
   constructor(props) {
@@ -66,14 +67,10 @@ export default class HeroPanel extends PureComponent {
         }}
         billboard
         text={{
+          ...text("black", "italic"),
           value: "UI Panel Test.\nHello world!",
-          align: "center",
-          color: "white",
-          lineHeight: 64 * 1.236,
           alphaTest: 0.05,
           opacity: this.state["cursor-hovered"] ? 1 : 0.236,
-          font: "/static/fonts/alegreya-black-italic.fnt",
-          shader: "sdf",
         }}
       >
 

@@ -2,6 +2,7 @@ import React, { PureComponent } from "react";
 import { Entity } from "aframe-react";
 
 import hex from "../helpers/hex";
+import text from "../helpers/text";
 
 export default class Tooltip extends PureComponent {
   constructor(props) {
@@ -53,13 +54,9 @@ export default class Tooltip extends PureComponent {
             opacity: 0,
           }}
           text={{
+            ...text(),
             value: this.props.text,
-            align: "center",
             baseline: "bottom",
-            color: "white",
-            lineHeight: 64 * 1.236,
-            font: "/static/fonts/alegreya.fnt",
-            shader: "sdf",
           }}
         />
       );
