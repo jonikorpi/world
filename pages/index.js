@@ -365,6 +365,8 @@ export default class Play extends PureComponent {
             keyboard-shortcuts="enterVR: false; resetSensor: false;"
           >
             <Assets/>
+            <Sky far={this.state.far} userHeight={this.state.userHeight} />
+            {/* <Sea far={this.state.far} userHeight={this.state.userHeight} seaLevel={this.state.seaLevel} /> */}
 
             <Camera
               far={this.state.far}
@@ -373,8 +375,6 @@ export default class Play extends PureComponent {
               userHeight={this.state.userHeight}
               mouseLock={this.state.mouseLock}
             />
-            <Sky far={this.state.far} userHeight={this.state.userHeight} />
-            {/* <Sea far={this.state.far} userHeight={this.state.userHeight} seaLevel={this.state.seaLevel} /> */}
 
             <UserContainer
               {...this.state}
