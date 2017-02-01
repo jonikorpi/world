@@ -52,7 +52,7 @@ export default class HeroPanel extends PureComponent {
           mouseenter: this.handleStateEvent,
           mouseleave: this.handleStateEvent,
         }}
-        position={[0, height * 0.5 + 1, 0]}
+        position={[0, height * 0.5 + 0.5, 0]}
         geometry={{
           primitive: "plane",
           width: width,
@@ -60,8 +60,9 @@ export default class HeroPanel extends PureComponent {
         }}
         material={{
           shader: "flat",
+          color: "black",
           transparent: true,
-          opacity: 0,
+          opacity: this.state["cursor-hovered"] ? 0.382 : 0,
         }}
         billboard
       >
