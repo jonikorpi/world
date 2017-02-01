@@ -20,7 +20,7 @@ export default class WorldContainer extends PureComponent {
   }
 
   render() {
-    const { centerOn, userHeight, seaLevel, locations } = {...this.props};
+    const { centerOn, userHeight, groundLevel, locations } = {...this.props};
     const heroes = this.state;
 
     const userLocation = locations[0];
@@ -34,7 +34,7 @@ export default class WorldContainer extends PureComponent {
         id="world"
         position={[
           -centerOnX * hex.size * 3/2,
-          userHeight + seaLevel,
+          userHeight + groundLevel,
           -hex.size * Math.sqrt(3) * (centerOnY + centerOnX/2),
         ]}
       >

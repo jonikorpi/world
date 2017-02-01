@@ -54,8 +54,8 @@ export default class Sky extends PureComponent {
           }}
           material={{
             shader: "gradient",
-            bottomColor: "0 0 0",
-            topColor: "0.146 0 0.146",
+            topColor:    "0.090, 0.090, 0.090",
+            bottomColor: "0.236, 0.236, 0.236",
             exponent: 0.382,
             offset: 0,
           }}
@@ -66,7 +66,7 @@ export default class Sky extends PureComponent {
           id="ambientLight"
           light={{
             type: "ambient",
-            color: "hsl(200, 62%, 6%)",
+            color: "hsl(218, 91%, 62%)",
           }}
         />
       </a-entity>

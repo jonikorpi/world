@@ -25,6 +25,7 @@ export default class Tile extends PureComponent {
     return (
       <Entity position={position}>
         <Entity
+          id={`${x},${y}-tile`}
           geometry={{
             primitive: "circle",
             segments: 6,
@@ -35,7 +36,7 @@ export default class Tile extends PureComponent {
           }}
           material={{
             shader: "flat",
-            color: `hsl(30, 50%, ${visible ? 50 : 15}%)`,
+            color: `hsl(0, 0%, ${visible ? 50 : 33}%)`,
             // transparent: true,
             // opacity: 0,
           }}
@@ -43,7 +44,7 @@ export default class Tile extends PureComponent {
           // position={position}
         />
 
-        {this.props.children}
+        {this.props.children ? this.props.children : null}
       </Entity>
     );
 

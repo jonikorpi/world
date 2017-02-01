@@ -126,7 +126,13 @@ export default class Action extends PureComponent {
   render() {
     const hovered = this.state["cursor-hovered"];
 
-    let hue;
+    let
+      hue = 0,
+      saturation = 50,
+      lightness = 50,
+      opacity = 0.056
+    ;
+
     switch (this.state.status) {
       case "processing":
         hue = 50;
@@ -138,11 +144,12 @@ export default class Action extends PureComponent {
         hue = 0;
         break;
       default:
-        hue = 200;
+        saturation = 0;
+        lightness = 0;
     }
 
-    const lightness = hovered ? 76 : 50;
-    const color = `hsl(${hue}, 50%, ${lightness}%)`;
+    if (hovered) { opacity = 1; }
+    const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
 
     const texts = {
       "spawn": "Click here to spawn.",
@@ -180,13 +187,15 @@ export default class Action extends PureComponent {
             primitive: "ring",
             segmentsTheta: 6,
             radiusOuter: hex.size,
-            radiusInner: hex.size * 0.91,
+            radiusInner: hex.size * 0.944,
           }}
           rotation={[-90, 0, 0]}
-          position={[0, 0.01, 0]}
+          position={[0, 0.02, 0]}
           material={{
             shader: "flat",
             color: color,
+            transparent: true,
+            opacity: opacity,
           }}
         />
 

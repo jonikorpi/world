@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import { Entity } from "aframe-react";
 
-export default class Sea extends PureComponent {
+export default class Ground extends PureComponent {
   // constructor(props) {
   //   super(props);
   //
@@ -72,11 +72,11 @@ export default class Sea extends PureComponent {
   render() {
     const size = this.props.far; //250;
     // const amplitude = 0.5;
-    const color = "black";
-    const seaLevel = this.props.userHeight + this.props.seaLevel - 0.01;
+    const color = "hsl(0, 0%, 38%)";
+    const groundLevel = this.props.userHeight + this.props.groundLevel - 0.01;
 
     return (
-      <a-entity id="sea">
+      <a-entity id="ground">
         <Entity
           className="interactable"
           geometry={{
@@ -96,11 +96,9 @@ export default class Sea extends PureComponent {
           material={{
             shader: "flat",
             color: color,
-            transparent: true,
-            opacity: 0.764,
           }}
           rotation={[-90, 0, 0]}
-          position={[0, seaLevel, 0]}
+          position={[0, groundLevel, 0]}
         />
       </a-entity>
     );
