@@ -7,8 +7,10 @@ import Action from "../components/Action";
 
 export default class Limbo extends PureComponent {
   render() {
+    const { userHeight, seaLevel } = {...this.props};
+
     return (
-      <Entity className="limbo">
+      <Entity className="limbo" position={[-2.5, userHeight + seaLevel, -4]}>
         <Action
           {...this.props}
           data={{

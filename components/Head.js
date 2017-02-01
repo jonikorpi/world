@@ -10,6 +10,7 @@ export default class Head extends PureComponent {
 
         <link rel="stylesheet" href="/static/reset.css"/>
         <link rel="stylesheet" href="/static/baseline.css"/>
+        <link rel="stylesheet" href="/static/fonts.css"/>
 
         {/* <link rel="manifest" href="%PUBLIC_URL%/assets/manifest.json?v=1.0"/>
         <meta name="apple-mobile-web-app-capable" content="yes"/>

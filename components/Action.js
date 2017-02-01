@@ -144,6 +144,12 @@ export default class Action extends PureComponent {
     const lightness = hovered ? 76 : 50;
     const color = `hsl(${hue}, 50%, ${lightness}%)`;
 
+    const texts = {
+      "spawn": "Click here to spawn.",
+      "move": "Click here to move.\nBeware: it’s buggy.",
+      "endTurn": "Clicking this does nothing. :)",
+    };
+
     return (
       <a-entity className="action">
         <Entity
@@ -184,8 +190,10 @@ export default class Action extends PureComponent {
           }}
         />
 
-        {hovered && this.props.data.action === "move" && (
-          <Tooltip/>
+        {hovered && (
+          <Tooltip
+            text={texts[this.props.data.action]}
+          />
         )}
       </a-entity>
     );

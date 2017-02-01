@@ -65,6 +65,16 @@ export default class HeroPanel extends PureComponent {
           opacity: this.state["cursor-hovered"] ? 0.382 : 0,
         }}
         billboard
+        text={{
+          value: "UI Panel Test.\nHello world!",
+          align: "center",
+          color: "white",
+          lineHeight: 64 * 1.236,
+          alphaTest: 0.05,
+          opacity: this.state["cursor-hovered"] ? 1 : 0.236,
+          font: "/static/fonts/alegreya-black-italic.fnt",
+          shader: "sdf",
+        }}
       >
 
       </Entity>

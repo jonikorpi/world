@@ -6,7 +6,7 @@ import Navigation from "../components/Navigation";
 import Loading from "../components/Loading";
 import Camera from "../components/Camera";
 import Sky from "../components/Sky";
-// import Sea from "../components/Sea";
+import Sea from "../components/Sea";
 import UserContainer from "../components/UserContainer";
 import Assets from "../components/Assets";
 
@@ -366,7 +366,7 @@ export default class Play extends PureComponent {
           >
             <Assets/>
             <Sky far={this.state.far} userHeight={this.state.userHeight} />
-            {/* <Sea far={this.state.far} userHeight={this.state.userHeight} seaLevel={this.state.seaLevel} /> */}
+            <Sea far={this.state.far} userHeight={this.state.userHeight} seaLevel={this.state.seaLevel} />
 
             <Camera
               far={this.state.far}

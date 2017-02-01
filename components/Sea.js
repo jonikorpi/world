@@ -73,11 +73,12 @@ export default class Sea extends PureComponent {
     const size = this.props.far; //250;
     // const amplitude = 0.5;
     const color = "black";
-    const seaLevel = this.props.userHeight + this.props.seaLevel;
+    const seaLevel = this.props.userHeight + this.props.seaLevel - 0.01;
 
     return (
       <a-entity id="sea">
         <Entity
+          className="interactable"
           geometry={{
             primitive: "plane",
             width: size,

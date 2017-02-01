@@ -15,7 +15,7 @@ export default class Tooltip extends PureComponent {
 
     this.timer = setTimeout(
       this.show,
-      500,
+      262,
     );
   }
 
@@ -34,8 +34,7 @@ export default class Tooltip extends PureComponent {
   }
 
   render() {
-    const width = hex.width;
-    const height = width * 1.618;
+    const width = hex.width * 3;
 
     if (this.state.visible) {
       return (
@@ -44,13 +43,23 @@ export default class Tooltip extends PureComponent {
           geometry={{
             primitive: "plane",
             width: width,
-            height: height,
+            height: "auto",
           }}
           billboard
-          position={[0, height * 0.5, 0]}
+          position={[0, 0.2, 0]}
           material={{
             shader: "flat",
+            transparent: true,
+            opacity: 0,
+          }}
+          text={{
+            value: this.props.text,
+            align: "center",
+            baseline: "bottom",
             color: "white",
+            lineHeight: 64 * 1.236,
+            font: "/static/fonts/alegreya.fnt",
+            shader: "sdf",
           }}
         />
       );
