@@ -61,7 +61,13 @@ aframe-react@^3.4.1:
   dependencies:
     style-attr "^1.2.0"
 
-aframe@^0.4.0:
+aframe-sticky-cursor-component@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/aframe-sticky-cursor-component/-/aframe-sticky-cursor-component-1.0.0.tgz#bcb909c7ad367b70acb258c5b42be4db853bda9b"
+  dependencies:
+    aframe "^0.4.1"
+
+aframe@^0.4.0, aframe@^0.4.1:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/aframe/-/aframe-0.4.1.tgz#cfdd8c1b53fb267c09fa55794fb2e9c87ed3bfca"
   dependencies:

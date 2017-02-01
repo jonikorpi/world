@@ -1,6 +1,8 @@
 import React, { PureComponent } from "react";
 import { Entity } from "aframe-react";
 
+import hex from "../helpers/hex";
+
 export default class Camera extends PureComponent {
   constructor(props) {
     super(props);
@@ -15,25 +17,22 @@ export default class Camera extends PureComponent {
   render() {
     const userHeight = this.props.userHeight;
     const inVR = this.props.inVR;
-    const pointerDistance = 0.5;
 
     return (
-      <Entity
-        id="cameraContainer"
-        rotation={[0, 30, 0]}
-      >
+      <a-entity id="cameraAndCursor">
         <Entity
-          id="camera"
-          camera={{
-            far: this.props.far * 1.75,
-            near: this.props.near,
-            fov: inVR ? 80 : 80,
-            userHeight: userHeight,
-          }}
-          modified-look-controls
+          id="cameraContainer"
+          rotation={[0, 30, 0]}
         >
           <Entity
-            id="cursor"
+            id="camera"
+            camera={{
+              far: this.props.far * 1.75,
+              near: this.props.near,
+              fov: inVR ? 80 : 80,
+              userHeight: userHeight,
+            }}
+            modified-look-controls
             raycaster={{
               far: this.props.far,
               near: this.props.near,
@@ -41,22 +40,28 @@ export default class Camera extends PureComponent {
               objects: ".interactable",
               recursive: true,
             }}
-            cursor={{
+            sticky-cursor={{
               fuse: false,
-            }}
-            geometry={{
-              primitive: "circle",
-              radius: 0.005*pointerDistance,
-              segments: 6,
-            }}
-            position={[0, 0, -pointerDistance]}
-            material={{
-              shader: "flat",
-              color: "yellow",
+              cursorId: "#cursor",
+              hoverDistance: 0.05,
             }}
           />
         </Entity>
-      </Entity>
+
+        <Entity
+          id="cursor"
+          geometry={{
+            primitive: "ring",
+            radiusOuter: hex.size * 0.236,
+            radiusInner: hex.size * 0.146,
+            // segmentsTheta: 382,
+          }}
+          material={{
+            shader: "flat",
+            color: "yellow",
+          }}
+        />
+      </a-entity>
     );
   }
 }
