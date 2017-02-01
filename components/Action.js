@@ -27,6 +27,12 @@ export default class Action extends PureComponent {
       case "stateremoved":
         boolean = false;
         break;
+      case "mouseenter":
+        boolean = true;
+        break;
+      case "mouseleave":
+        boolean = false;
+        break;
       default:
         console.log("Bad state event in Button");
         return;
@@ -158,6 +164,8 @@ export default class Action extends PureComponent {
             click: this.processAction,
             stateadded: this.handleStateEvent,
             stateremoved: this.handleStateEvent,
+            mouseenter: this.handleStateEvent,
+            mouseleave: this.handleStateEvent,
           }}
         />
 
