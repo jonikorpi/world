@@ -11,7 +11,7 @@
     }
   },
   "dependencies": {
-    "aframe": "^0.4.0",
+    "aframe": "https://github.com/aframevr/aframe.git",
     "aframe-faceset-component": "^0.3.1",
     "aframe-look-at-billboard-component": "https://github.com/blairmacintyre/aframe-look-at-billboard-component.git",
     "aframe-meshline-component": "https://github.com/andreasplesch/aframe-meshline-component.git",
