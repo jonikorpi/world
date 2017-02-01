@@ -45,21 +45,31 @@ export default class Sky extends PureComponent {
   render() {
 
     return (
-      <Entity
-        id="sky"
-        geometry={{
-          primitive: "sphere",
-          radius: this.props.far,
-        }}
-        material={{
-          shader: "gradient",
-          bottomColor: "0 0 0",
-          topColor: "0.146 0 0.146",
-          exponent: 0.382,
-          offset: 0,
-        }}
-        scale={[1, 1, -1]}
-      />
+      <a-entity id="skyContainer">
+        <Entity
+          id="sky"
+          geometry={{
+            primitive: "sphere",
+            radius: this.props.far,
+          }}
+          material={{
+            shader: "gradient",
+            bottomColor: "0 0 0",
+            topColor: "0.146 0 0.146",
+            exponent: 0.382,
+            offset: 0,
+          }}
+          scale={[1, 1, -1]}
+        />
+
+        <Entity
+          id="ambientLight"
+          light={{
+            type: "ambient",
+            color: "hsl(200, 62%, 6%)",
+          }}
+        />
+      </a-entity>
     );
   }
 }
