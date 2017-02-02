@@ -5,6 +5,7 @@ import reactFire from "reactfire";
 
 import hex from "../helpers/hex";
 
+import Assets from "../components/Assets";
 import Limbo from "../components/Limbo";
 import WorldContainer from "../components/WorldContainer";
 import Hero from "../components/Hero";
@@ -92,6 +93,8 @@ export default class UserContainer extends Component {
           locations={locations}
           centerOn={secretLocation}
         >
+          <Assets/>
+
           <Hero {...hero} isSelf={true}>
             <Action
               data={{ action: "endTurn" }}

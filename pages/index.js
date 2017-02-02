@@ -8,7 +8,6 @@ import Camera from "../components/Camera";
 import Sky from "../components/Sky";
 import Ground from "../components/Ground";
 import UserContainer from "../components/UserContainer";
-import Assets from "../components/Assets";
 
 let Tone, DuoSynth, Panner, Loop, FeedbackDelay;
 
@@ -367,7 +366,6 @@ export default class Play extends PureComponent {
             vr-mode-ui="enabled: false;"
             keyboard-shortcuts="enterVR: false; resetSensor: false;"
           >
-            <Assets/>
             <Sky far={this.state.far} userHeight={this.state.userHeight} />
             <Ground far={this.state.far} userHeight={this.state.userHeight} groundLevel={this.state.groundLevel} />
 
