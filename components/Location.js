@@ -77,7 +77,7 @@ export default class Location extends PureComponent {
           {...this.props}
           {...state}
         >
-          {this.state.location && !this.state.location.playerID && (
+          {visible && this.state.location && !this.state.location.playerID && (
             <Action
               data={{
                 action: "move",
