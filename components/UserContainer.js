@@ -69,7 +69,7 @@ export default class UserContainer extends Component {
   getLocations = (secretLocation) => {
     let locations = { [secretLocation]: true };
 
-    for (const neighbourID of hex.listNeighbouringTiles(secretLocation, 16)) {
+    for (const neighbourID of hex.listNeighbouringTiles(secretLocation, 1)) {
       locations[neighbourID] = true;
     }
 

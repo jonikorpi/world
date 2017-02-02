@@ -3,6 +3,8 @@ import { Entity } from "aframe-react";
 
 import hex from "../helpers/hex";
 
+import Action from "../components/Action";
+
 export default class Tile extends PureComponent {
   getCornerHeight(a, b, c) {
     if (a && b && c) {
@@ -25,26 +27,31 @@ export default class Tile extends PureComponent {
     return (
       <Entity position={position}>
         <Entity
-          id={`${x},${y}-tile`}
-          geometry={{
-            primitive: "circle",
-            segments: 6,
-            radius: hex.size,
-            // buffer: false,
-            // skipCache: true,
-            // mergeTo: "#tile1",
-          }}
-          material={{
-            shader: "flat",
-            color: `hsl(0, 0%, ${visible ? 50 : 33}%)`,
-            // transparent: true,
-            // opacity: 0,
-          }}
+          // geometry={{
+          //   primitive: "circle",
+          //   segments: 6,
+          //   radius: hex.size,
+          //   // buffer: false,
+          //   // skipCache: true,
+          //   // mergeTo: "#tile1",
+          // }}
+          // material={{
+          //   shader: "flat",
+          //   color: `hsl(0, 0%, ${visible ? 50 : 33}%)`,
+          //   // transparent: true,
+          //   // opacity: 0,
+          // }}
           rotation={[-90, 0, 0]}
           // position={position}
         />
 
-        {this.props.children ? this.props.children : null}
+        <Action
+          data={{
+            action: "move",
+            to: [x, y],
+          }}
+          {...this.props}
+        />
       </Entity>
     );
 

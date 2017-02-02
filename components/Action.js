@@ -160,6 +160,7 @@ export default class Action extends PureComponent {
     return (
       <a-entity className="action">
         <Entity
+          id={`clickable-thing-${this.props.x},${this.props.y}`}
           className="interactable"
           geometry={{
             primitive: "circle",
@@ -170,8 +171,8 @@ export default class Action extends PureComponent {
           position={[0, 0.01, 0]}
           material={{
             shader: "flat",
-            transparent: true,
-            opacity: 0,
+            // transparent: true,
+            // opacity: 0,
           }}
           events={{
             click: this.processAction,
@@ -182,7 +183,7 @@ export default class Action extends PureComponent {
           }}
         />
 
-        <Entity
+        {/*<Entity
           geometry={{
             primitive: "ring",
             segmentsTheta: 6,
@@ -197,13 +198,13 @@ export default class Action extends PureComponent {
             transparent: true,
             opacity: opacity,
           }}
-        />
+        />*/}
 
-        {hovered && (
+        {/*hovered && (
           <Tooltip
             text={texts[this.props.data.action]}
           />
-        )}
+        )*/}
       </a-entity>
     );
   }

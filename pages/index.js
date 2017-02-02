@@ -100,6 +100,8 @@ export default class Play extends PureComponent {
 
       window.setTimeout(() => {
         window.ReactPerf.stop();
+        console.log(window.ReactPerf.printInclusive());
+        console.log(window.ReactPerf.printExclusive());
         console.log(window.ReactPerf.printWasted());
       }, 8000);
     }, 1);

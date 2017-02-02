@@ -77,7 +77,7 @@ export default class Location extends PureComponent {
           {...this.props}
           {...state}
         >
-          {visible && this.state.location && !this.state.location.playerID && (
+          {/*visible && this.state.location && !this.state.location.playerID && (
             <Action
               data={{
                 action: "move",
@@ -85,7 +85,7 @@ export default class Location extends PureComponent {
               }}
               {...this.props}
             />
-          )}
+          )*/}
         </Tile>
       );
     }
