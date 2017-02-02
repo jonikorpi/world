@@ -78,7 +78,6 @@ export default class Ground extends PureComponent {
     return (
       <a-entity id="ground">
         <Entity
-          className="interactable"
           geometry={{
             primitive: "plane",
             width: size,
