@@ -305,7 +305,7 @@ const radToDeg = THREE.Math.radToDeg;
       || document.mozExitPointerLock
       || document.webkitExitPointerLock
     );
-    document.exitPointerLock();
+    document.exitPointerLock && document.exitPointerLock();
   },
 
   onTouchStart: function (e) {
