@@ -29,14 +29,21 @@ export default class WorldContainer extends PureComponent {
     const centerOnX = +centerOnArray[0];
     const centerOnY = +centerOnArray[1];
 
+    const currentPosition = [
+      -centerOnX * hex.size * 3/2,
+      userHeight + groundLevel,
+      -hex.size * Math.sqrt(3) * (centerOnY + centerOnX/2),
+    ];
+
     return (
       <Entity
         id="world"
-        position={[
-          -centerOnX * hex.size * 3/2,
-          userHeight + groundLevel,
-          -hex.size * Math.sqrt(3) * (centerOnY + centerOnX/2),
-        ]}
+        {...{[`animation__${centerOnX}-${centerOnY}`]: {
+          property: "position",
+          to: `${currentPosition[0]} ${currentPosition[1]} ${currentPosition[2]}`,
+          easing: "easeInOutQuad",
+          dur: 2000,
+        }}}
       >
         {locations.map((locationID) => {
           const coordinates = locationID.split(",");

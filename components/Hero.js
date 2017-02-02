@@ -34,7 +34,12 @@ export default class Hero extends PureComponent {
           depth: hex.width * 0.5,
           height: hex.width * 0.236,
         }}
-        position={position}
+        {...{[`animation__${position[0]}-${position[1]}-${position[2]}`]: {
+          property: "position",
+          to: `${position[0]} ${position[1]} ${position[2]}`,
+          easing: "easeInOutQuad",
+          dur: 2000,
+        }}}
         material={{
           shader: "flat",
           color: (isSelf ? "green" : "red"),
