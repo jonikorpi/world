@@ -7,6 +7,12 @@ import Hero from "../components/Hero";
 import Action from "../components/Action";
 
 export default class PlayerContainer extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {};
+  }
+
   componentWillMount() {
     this.bindFirebase(this.props.playerID);
   }
