@@ -55,10 +55,11 @@ export default class Play extends PureComponent {
   }
 
   clientSideRender = () => {
-    this.setupRollbar();
-
-    if (this.state.env !== "production") {
+    if (this.state.env === "development") {
       this.setupLogging();
+    }
+    else {
+      this.setupRollbar();
     }
 
     this.setupFirebase();
