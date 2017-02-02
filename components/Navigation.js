@@ -23,7 +23,7 @@ export default class Navigation extends PureComponent {
             display: flex;
           }
 
-          a, button {
+          a, button, h1 {
             font-size: 0.618rem;
             line-height: 0.75rem;
             padding: 0.5rem 0.25rem;
@@ -36,9 +36,14 @@ export default class Navigation extends PureComponent {
           .active {
             opacity: 0.382;
           }
+
+          h1 {
+            text-transform: uppercase;
+          }
         `}</style>
 
         <div className="navigation-wrapper">
+          <h1>Vuorovalta</h1>
           {links.map((link) =>
             <Link href={link.href} key={link.href}>
               <a className={this.props.pathname === link.href && "active"}>
