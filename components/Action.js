@@ -130,7 +130,7 @@ export default class Action extends PureComponent {
       hue = 0,
       saturation = 50,
       lightness = 50,
-      opacity = 0.056
+      opacity = 0
     ;
 
     switch (this.state.status) {
@@ -187,7 +187,7 @@ export default class Action extends PureComponent {
             primitive: "ring",
             segmentsTheta: 6,
             radiusOuter: hex.size,
-            radiusInner: hex.size * 0.944,
+            radiusInner: hex.size * 0.91,
           }}
           rotation={[-90, 0, 0]}
           position={[0, 0.02, 0]}
