@@ -18,31 +18,25 @@ export default class WorldContainer extends PureComponent {
   }
 
   render() {
-    const { centerOn, locations } = {...this.props};
+    const { centerPosition, locations } = {...this.props};
     const heroes = this.state;
 
     const userLocation = locations[0];
     const visibility = 3;
-    const centerOnArray = centerOn.split(",");
-    const centerOnX = +centerOnArray[0];
-    const centerOnY = +centerOnArray[1];
-
-    const currentPosition = [
-      -centerOnX * hex.size * 3/2,
-      0,
-      -hex.size * Math.sqrt(3) * (centerOnY + centerOnX/2),
-    ];
 
     return (
       <Entity
         id="world"
-        {...{[`animation__${centerOnX}-${centerOnY}`]: {
+        // position={centerPosition}
+        {...{[`animation__${centerPosition[0]}-${centerPosition[1]}`]: {
           property: "position",
-          to: `${currentPosition[0]} ${currentPosition[1]} ${currentPosition[2]}`,
+          to: `${centerPosition[0]} ${centerPosition[1]} ${centerPosition[2]}`,
           easing: "easeInOutQuad",
           dur: 2000,
         }}}
       >
+        {this.props.children}
+
         {locations.map((locationID) => {
           const coordinates = locationID.split(",");
           return (
@@ -71,8 +65,6 @@ export default class WorldContainer extends PureComponent {
             />
           )
         })}
-
-        {this.props.children}
       </Entity>
     );
   }

@@ -17,9 +17,13 @@ export default class Hero extends PureComponent {
   // }
 
   render() {
-    const { x, y, isSelf } = {...this.props};
+    const { x, y, isSelf, centerPosition } = {...this.props};
 
-    const position = isSelf ? [0,0,0] : [
+    const position = isSelf ? [
+      centerPosition[0]*-1,
+      centerPosition[1]*-1,
+      centerPosition[2]*-1,
+    ] : [
       x * hex.size * 3/2,
       0,
       hex.size * Math.sqrt(3) * (y + x/2),
@@ -27,13 +31,18 @@ export default class Hero extends PureComponent {
 
     return (
       <Entity
-        className="unit"
+        id={`hero-${this.props[".key"]}`}
+        className="hero"
         geometry={{
           primitive: "box",
           width: hex.width * 0.236,
           depth: hex.width * 0.5,
           height: hex.width * 0.236,
+          // buffer: false,
+          // skipCache: true,
+          mergeTo: "#tile1",
         }}
+        // position={position}
         {...{[`animation__${position[0]}-${position[1]}-${position[2]}`]: {
           property: "position",
           to: `${position[0]} ${position[1]} ${position[2]}`,

@@ -1,86 +1,45 @@
 import React, { PureComponent } from "react";
 import { Entity } from "aframe-react";
+import deepmerge from "deepmerge";
 
-import hex from "../helpers/hex";
+// import hex from "../helpers/hex";
 
 export default class Assets extends PureComponent {
   render() {
+    const assets = {
+      tile1: {
+        material: {
+          color: "#fff",
+        },
+      }
+    };
+
+    const sharedProps = {
+      geometry: {
+        primitive: "plane",
+        width: 0,
+        height: 0,
+        buffer: false,
+        skipCache: true,
+      },
+      material: {
+        shader: "flat",
+      },
+    };
+
     return (
       <a-entity id="assets">
-        <Entity
-          id="tile1"
-          geometry={{
-            primitive: "plane",
-            width: 0,
-            height: 0,
-            buffer: false,
-            skipCache: true,
-          }}
-          material={{
-            shader: "flat",
-            color: "white",
-          }}
-        />
+        {Object.keys(assets).map((assetID) => {
+          const props = deepmerge(sharedProps, assets[assetID]);
 
-        <Entity
-          id="tile2"
-          geometry={{
-            primitive: "plane",
-            width: 0,
-            height: 0,
-            buffer: false,
-            skipCache: true,
-          }}
-          material={{
-            shader: "flat",
-            color: "red",
-          }}
-        />
-
-        <Entity
-          id="tile3"
-          geometry={{
-            primitive: "plane",
-            width: 0,
-            height: 0,
-            buffer: false,
-            skipCache: true,
-          }}
-          material={{
-            shader: "flat",
-            color: "grey",
-          }}
-        />
-
-        <Entity
-          id="tile4"
-          geometry={{
-            primitive: "plane",
-            width: 0,
-            height: 0,
-            buffer: false,
-            skipCache: true,
-          }}
-          material={{
-            shader: "flat",
-            color: "orange",
-          }}
-        />
-
-        <Entity
-          id="tile5"
-          geometry={{
-            primitive: "plane",
-            width: 0,
-            height: 0,
-            buffer: false,
-            skipCache: true,
-          }}
-          material={{
-            shader: "flat",
-            color: "purple",
-          }}
-        />
+          return (
+            <Entity
+              key={assetID}
+              id={assetID}
+              {...props}
+            />
+          );
+        })}
       </a-entity>
     );
   }

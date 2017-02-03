@@ -10,6 +10,7 @@ import WorldContainer from "../components/WorldContainer";
 import Hero from "../components/Hero";
 import Action from "../components/Action";
 import HeroPanel from "../components/HeroPanel";
+import Assets from "../components/Assets";
 
 export default class UserContainer extends Component {
   constructor(props) {
@@ -84,27 +85,42 @@ export default class UserContainer extends Component {
     const hasLocation = hero && typeof hero.x === "number" && typeof hero.y === "number";
     const secretLocation = hasLocation && `${hero.x},${hero.y}`;
     const locations = secretLocation ? Object.keys(this.getLocations(secretLocation)) : [];
+    let centerPosition = [0,0,0];
 
-    if (hero && hasLocation) {
+    if (hasLocation) {
+      const centerPositionArray = secretLocation.split(",");
+      const centerCoordinates = [
+        +centerPositionArray[0],
+        +centerPositionArray[1],
+      ];
+      centerPosition = [
+        -centerCoordinates[0] * hex.size * 3/2,
+        0,
+        -hex.size * Math.sqrt(3) * (centerCoordinates[1] + centerCoordinates[0]/2),
+      ];
+    }
+
+    if (hasLocation) {
       return (
         <a-entity>
           <WorldContainer
             {...this.props}
             locations={locations}
-            centerOn={secretLocation}
+            centerPosition={centerPosition}
+          >
+            <Assets/>
+            <Hero {...hero} isSelf={true} centerPosition={centerPosition}>
+              <Action
+                data={{ action: "endTurn" }}
+                {...this.props}
+              />
+            </Hero>
+          </WorldContainer>
+
+          <HeroPanel
+            {...hero}
+            {...playerSecrets}
           />
-
-          <Hero {...hero} isSelf={true}>
-            <Action
-              data={{ action: "endTurn" }}
-              {...this.props}
-            />
-
-            <HeroPanel
-              {...hero}
-              {...playerSecrets}
-            />
-          </Hero>
         </a-entity>
       );
     }
