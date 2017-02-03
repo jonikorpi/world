@@ -5,7 +5,6 @@ import reactFire from "reactfire";
 
 import hex from "../helpers/hex";
 
-import Assets from "../components/Assets";
 import Limbo from "../components/Limbo";
 import WorldContainer from "../components/WorldContainer";
 import Hero from "../components/Hero";
@@ -88,12 +87,12 @@ export default class UserContainer extends Component {
 
     if (hero && hasLocation) {
       return (
-        <WorldContainer
-          {...this.props}
-          locations={locations}
-          centerOn={secretLocation}
-        >
-          <Assets/>
+        <a-entity>
+          <WorldContainer
+            {...this.props}
+            locations={locations}
+            centerOn={secretLocation}
+          />
 
           <Hero {...hero} isSelf={true}>
             <Action
@@ -106,7 +105,7 @@ export default class UserContainer extends Component {
               {...playerSecrets}
             />
           </Hero>
-        </WorldContainer>
+        </a-entity>
       );
     }
     else if (playerSettings) {

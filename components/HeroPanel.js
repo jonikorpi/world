@@ -45,35 +45,45 @@ export default class HeroPanel extends PureComponent {
 
     return (
       <Entity
-        className="panel interactable"
-        events={{
-          click: this.props.onClick,
-          stateadded: this.handleStateEvent,
-          stateremoved: this.handleStateEvent,
-          mouseenter: this.handleStateEvent,
-          mouseleave: this.handleStateEvent,
-        }}
-        position={[0, height * 0.5 + 0.5, 0]}
-        geometry={{
-          primitive: "plane",
-          width: width,
-          height: height,
-        }}
-        material={{
-          shader: "flat",
-          color: "black",
-          transparent: true,
-          opacity: this.state["cursor-hovered"] ? 0.382 : 0,
-        }}
         billboard
-        text={{
-          ...text("black", "italic"),
-          value: "UI Panel Test.\nHello world!",
-          alphaTest: 0.05,
-          opacity: this.state["cursor-hovered"] ? 1 : 0.236,
-        }}
+        position={[
+          0,
+          height * 0.75,
+          0,
+        ]}
       >
-
+        <Entity
+          className="panel interactable"
+          events={{
+            click: this.props.onClick,
+            stateadded: this.handleStateEvent,
+            stateremoved: this.handleStateEvent,
+            mouseenter: this.handleStateEvent,
+            mouseleave: this.handleStateEvent,
+          }}
+          position={[
+            0,
+            0,
+            -hex.size * 3 * 2,
+          ]}
+          geometry={{
+            primitive: "plane",
+            width: width,
+            height: height,
+          }}
+          material={{
+            shader: "flat",
+            color: "black",
+            transparent: true,
+            opacity: this.state["cursor-hovered"] ? 0.382 : 0,
+          }}
+          text={{
+            ...text("black", "italic"),
+            value: "UI Panel Test.\nHello world!",
+            alphaTest: 0.05,
+            opacity: this.state["cursor-hovered"] ? 1 : 0.236,
+          }}
+        />
       </Entity>
     );
   }

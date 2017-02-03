@@ -73,7 +73,7 @@ export default class Ground extends PureComponent {
     const size = this.props.far; //250;
     // const amplitude = 0.5;
     const color = "hsl(0, 0%, 38%)";
-    const groundLevel = this.props.userHeight + this.props.groundLevel - 0.01;
+    const groundLevel = -1 * this.props.userHeight + this.props.groundLevel - 0.01;
 
     return (
       <a-entity id="ground">

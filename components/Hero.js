@@ -19,7 +19,7 @@ export default class Hero extends PureComponent {
   render() {
     const { x, y, isSelf } = {...this.props};
 
-    const position = [
+    const position = isSelf ? [0,0,0] : [
       x * hex.size * 3/2,
       0,
       hex.size * Math.sqrt(3) * (y + x/2),

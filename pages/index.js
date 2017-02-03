@@ -8,6 +8,7 @@ import Camera from "../components/Camera";
 import Sky from "../components/Sky";
 import Ground from "../components/Ground";
 import UserContainer from "../components/UserContainer";
+import Assets from "../components/Assets";
 
 let Tone, DuoSynth, Panner, Loop, FeedbackDelay;
 
@@ -31,7 +32,7 @@ export default class Play extends PureComponent {
       far: 1000,
       near: 0.1,
       userHeight: userHeight,
-      groundLevel: -(userHeight / 2),
+      groundLevel: -(userHeight / 2.618),
       playArea: [ 1.5, 1.5 ],
       fullScreen: false,
       env: env,
@@ -367,6 +368,8 @@ export default class Play extends PureComponent {
             vr-mode-ui="enabled: false;"
             keyboard-shortcuts="enterVR: false; resetSensor: false;"
           >
+            <Assets/>
+
             <Sky far={this.state.far} userHeight={this.state.userHeight} />
             <Ground far={this.state.far} userHeight={this.state.userHeight} groundLevel={this.state.groundLevel} />
 
@@ -375,6 +378,7 @@ export default class Play extends PureComponent {
               near={this.state.near}
               inVR={this.state.inVR}
               userHeight={this.state.userHeight}
+              groundLevel={this.state.groundLevel}
               mouseLock={this.state.mouseLock}
             />
 

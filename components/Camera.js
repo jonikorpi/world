@@ -15,21 +15,26 @@ export default class Camera extends PureComponent {
   }
 
   render() {
-    const userHeight = this.props.userHeight;
+    const { userHeight, groundLevel } = {...this.props};
     const inVR = this.props.inVR;
 
     return (
       <a-entity id="cameraAndCursor">
         <Entity
           id="cameraContainer"
-          rotation={[0, 40, 0]}
+          // rotation={[0, 40, 0]}
+          position={[
+            0,
+            groundLevel,
+            0,
+          ]}
         >
           <Entity
             id="camera"
             position={[
               0,
               0,
-              hex.size * 3 * 2
+              hex.size * 3 * 2,
             ]}
             camera={{
               far: this.props.far * 1.75,
