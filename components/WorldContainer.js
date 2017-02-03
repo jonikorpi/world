@@ -8,15 +8,13 @@ import PlayerContainer from "../components/PlayerContainer";
 
 export default class WorldContainer extends PureComponent {
   mountHero = (playerID) => {
-    this.setState({
-      [playerID]: true
-    });
+    if (!this.state[playerID]) {
+      this.setState({ [playerID]: true });
+    }
   }
 
   unmountHero = (playerID) => {
-    this.setState({
-      [playerID]: undefined
-    });
+    this.setState({ [playerID]: undefined });
   }
 
   render() {

@@ -24,6 +24,7 @@ export default class PlayerContainer extends Component {
       firebase.database().ref(`heroes/${playerID}`),
       "hero",
       (error) => {
+        console.log("Unmounting hero", playerID);
         this.props.unmountHero(playerID);
       }
     );
