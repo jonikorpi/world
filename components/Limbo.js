@@ -10,7 +10,7 @@ export default class Limbo extends PureComponent {
     const { userHeight, groundLevel } = {...this.props};
 
     return (
-      <Entity className="limbo" position={[-2.5, userHeight + groundLevel, -4]}>
+      <Entity className="limbo" position={[0, 0.1, 0]}>
         <Action
           {...this.props}
           data={{
