@@ -53,6 +53,10 @@ aframe-faceset-component@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/aframe-faceset-component/-/aframe-faceset-component-0.3.1.tgz#e09d0738017bc3d5f4a9ff0de4854ce91fba049f"
 
+aframe-lerp-component@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/aframe-lerp-component/-/aframe-lerp-component-1.0.1.tgz#93c3711c90ace89bad8f4ac96c813fbf73622158"
+
 "aframe-look-at-billboard-component@https://github.com/blairmacintyre/aframe-look-at-billboard-component.git":
   version "0.2.0"
   resolved "https://github.com/blairmacintyre/aframe-look-at-billboard-component.git#5f22260a1d2df0df7395fa95750403eebc2bb665"

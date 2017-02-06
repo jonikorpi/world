@@ -14,6 +14,7 @@
     "aframe": "https://github.com/aframevr/aframe.git",
     "aframe-animation-component": "^3.2.1",
     "aframe-faceset-component": "^0.3.1",
+    "aframe-lerp-component": "^1.0.1",
     "aframe-look-at-billboard-component": "https://github.com/blairmacintyre/aframe-look-at-billboard-component.git",
     "aframe-meshline-component": "https://github.com/andreasplesch/aframe-meshline-component.git",
     "aframe-react": "^3.4.1",

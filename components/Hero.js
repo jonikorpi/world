@@ -42,13 +42,10 @@ export default class Hero extends PureComponent {
           // skipCache: true,
           mergeTo: "#tile1",
         }}
-        // position={position}
-        {...{[`animation__${position[0]}-${position[1]}-${position[2]}`]: {
-          property: "position",
-          to: `${position[0]} ${position[1]} ${position[2]}`,
-          easing: "easeInOutQuad",
-          dur: 2000,
-        }}}
+        position={position}
+        lerp={{
+          duration: 1000,
+        }}
         material={{
           shader: "flat",
           color: (isSelf ? "green" : "red"),

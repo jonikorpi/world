@@ -27,13 +27,10 @@ export default class WorldContainer extends PureComponent {
     return (
       <Entity
         id="world"
-        // position={centerPosition}
-        {...{[`animation__${centerPosition[0]}-${centerPosition[1]}`]: {
-          property: "position",
-          to: `${centerPosition[0]} ${centerPosition[1]} ${centerPosition[2]}`,
-          easing: "easeInOutQuad",
-          dur: 2000,
-        }}}
+        position={centerPosition}
+        lerp={{
+          duration: 1000,
+        }}
       >
         {this.props.children}
 
