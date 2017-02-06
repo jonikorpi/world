@@ -1,6 +1,5 @@
 import React, { PureComponent } from "react";
 import { Entity } from "aframe-react";
-import deepmerge from "deepmerge";
 
 // import hex from "../helpers/hex";
 
@@ -30,7 +29,7 @@ export default class Assets extends PureComponent {
     return (
       <a-entity id="assets">
         {Object.keys(assets).map((assetID) => {
-          const props = deepmerge(sharedProps, assets[assetID]);
+          const props = {...sharedProps, ...assets[assetID]};
 
           return (
             <Entity
