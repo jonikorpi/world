@@ -142,8 +142,9 @@ export default class Play extends PureComponent {
     require("aframe-meshline-component");
     require("aframe-faceset-component");
     require("aframe-sticky-cursor-component");
-    require("aframe-animation-component");
+    // require("aframe-animation-component");
     require("aframe-lerp-component");
+    require("aframe-physics-system");
     require("../components/modified-look-controls");
   }
 
