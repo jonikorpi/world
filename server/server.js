@@ -71,53 +71,45 @@ const processRequest = async (request) => {
 // Spawn
 const spawn = async (userID) => {
   // Check if player is already ingame
-  const locationsWithHeroes = await database.ref("locations")
-    .orderByChild("playerID")
-    .equalTo(userID)
-    .once("value")
-    ;
+  const existingPlayer = await database.ref(`players/${userID}`).once("value");
 
-  if (locationsWithHeroes.numChildren() > 0) {
+  if (existingPlayer.val() !== null) {
     throw new Error("Cannot spawn while you are still in the game.");
   }
 
-  // Find a spawn location
-  let spawnFound = false;
-  let spawnLocation;
+  // Generate a spawn location
+  // TODO:
+  // - avoid collisions with entities
+  // - make this non-random
+  // - use system specified in design
+  const radius = 3;
+  const angle = Math.random() * Math.PI * 2;
+  const x = Math.cos(angle) * radius;
+  const y = Math.sin(angle) * radius;
+  const roundedX = Math.round(x);
+  const roundedY = Math.round(y);
 
-  while (!spawnFound) {
-    spawnLocation = [
-      Math.floor(Math.random() * 20) - 10,
-      Math.floor(Math.random() * 20) - 10,
-    ];
+  // Create player
+  const now = firebase.database.ServerValue.TIMESTAMP;
+  const updates = {
+    [`players/${userID}`]: {
+      sectorID: `${x},${y}`,
+      immuneUntil: Date.now() + (10 * 1000),
+      turn: 0,
+    },
+    [`playerSecrets/${userID}`]: true,
+    [`playerPositions/${userID}`]: {
+      "x": x,
+      "y": y,
+      "v": 0,
+      "t": now,
+      "~x": roundedX,
+      "~y": roundedY,
+    },
+    [`sectorPlayers/${roundedX},${roundedY}/${userID}`]: true,
+  };
 
-    const locationTransaction = await database.ref(`locations/${spawnLocation[0]},${spawnLocation[1]}/playerID`)
-      .transaction((player) => {
-        if (player === null) {
-          return userID;
-        }
-        else {
-          return;
-        }
-      })
-      ;
-
-    if (locationTransaction.committed) {
-      spawnFound = true;
-    }
-  }
-
-  // Add player
-  // TODO: fetch player from playerSEttings
-  const now = Date.now();
-  await database.ref(`heroes/${userID}`)
-    .update({
-      x: spawnLocation[0],
-      y: spawnLocation[1],
-      immuneUntil: now + (60 * 1000),
-      lastActed: now,
-    })
-    ;
+  await database.ref().update(updates);
 
   return;
 };
@@ -125,34 +117,28 @@ const spawn = async (userID) => {
 //
 // Self-destruct
 const selfDestruct = async (userID) => {
-  // Find all player locations
-  const locationsWithHeroes = await database.ref("locations")
-    .orderByChild("playerID")
-    .equalTo(userID)
+  // Find all sectors that have indexed this player
+  const sectorsWithPlayer = await database.ref("sectorPlayers")
+    .orderByChild(userID)
+    .startAt(true)
     .once("value")
-    ;
+  ;
 
-  // Destroy all player locations
-  if (locationsWithHeroes.numChildren() > 0) {
-    locationsWithHeroes.forEach((locationWithHero) => {
-      locationWithHero.child("playerID").ref.transaction((playerID) => {
-        if (playerID) {
-          if (playerID === userID) {
-            return null;
-          }
-          else {
-            return;
-          }
-        }
-        else {
-          return null;
-        }
-      });
+  // Destroy all of those indexes
+  if (sectorsWithPlayer.numChildren() > 0) {
+    sectorsWithPlayer.forEach((sector) => {
+      sector.child(userID).ref.remove();
     });
   }
 
   // Remove player
-  await database.ref(`heroes/${userID}`).remove();
+  const updates = {
+    [`players/${userID}`]: null,
+    [`playerSecrets/${userID}`]: null,
+    [`playerPositions/${userID}`]: null,
+  };
+
+  await database.ref().update(updates);
 
   return;
 };

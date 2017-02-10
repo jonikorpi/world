@@ -19,25 +19,28 @@
         "x": { ".validate": "newData.isNumber()" },
         "y": { ".validate": "newData.isNumber()" },
         "v": { ".validate": "newData.isNumber()" },
-        "d": { ".validate": "newData.isNumber() && newData.val() === now" },
+        "t": { ".validate": "newData.isNumber() && newData.val() === now" },
         "~x": { ".validate": "newData.isNumber()" },
         "~y": { ".validate": "newData.isNumber()" },
         "$other": { ".validate": "false" }
       }
     },
-    "sectors": {
+    "sectorPlayers": {
       ".write": "auth.worldmaster === true",
       "$sectorID": {
         ".read": "auth != null",
         // TODO:
         // - read if playerID.sector is this or adjascent sector
-        "players": {
-          "playerID": { ".validate": "newData.isBoolean()"   }
-        },
-        "collidables": {
-          "$positionID": { ".validate": "newData.isString()"   }
-        },
-        "$other": { ".validate": "false" }
+        "$playerID": { ".validate": "newData.isBoolean()" }
+      }
+    },
+    "sectorCollidables": {
+      ".write": "auth.worldmaster === true",
+      "$sectorID": {
+        ".read": "auth != null",
+        // TODO:
+        // - read if playerID.sector is this or adjascent sector
+        "$positionID": { ".validate": "newData.isString()" }
       }
     },
     "players": {
@@ -47,10 +50,9 @@
         "sectorID": { ".validate": "newData.isString()" },
         "faction": { ".validate": "newData.isString()" },
         "immuneUntil": { ".validate": "newData.isNumber()" },
-        "lastActed": { ".validate": "newData.isNumber()" },
         "turn": { ".validate": "newData.isNumber()" },
         "emoteType": { ".validate": "newData.isString()" },
-        "emoteTime": { ".validate": "newData.isNumber()" }, /* Use with `turnMounted` */
+        "emoteTime": { ".validate": "newData.isNumber()" },
         "actionType": { ".validate": "newData.isString()" },
         "actionTurn": { ".validate": "newData.isNumber()" }, /* Use with `turnMounted` */
         "equipment": {
