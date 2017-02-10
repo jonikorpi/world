@@ -15,7 +15,7 @@
         //   && (v <= player.maxV) // maybe try to delay this if maxV has changed recently
         //   && (oldTime - newTime < 5000)
         //   || (newX === oldX && newY === oldY && newV === oldV && new~X === old~X && new~Y === old~Y)
-        ".write": "(auth.uid === $playerID) || auth.worldmaster === true",
+        ".write": "(auth.uid === $playerID)",
         "x": { ".validate": "newData.isNumber()" },
         "y": { ".validate": "newData.isNumber()" },
         "v": { ".validate": "newData.isNumber()" },
@@ -26,7 +26,6 @@
       }
     },
     "sectorPlayers": {
-      ".write": "auth.worldmaster === true",
       "$sectorID": {
         ".read": "auth != null",
         // TODO:
@@ -35,7 +34,6 @@
       }
     },
     "sectorCollidables": {
-      ".write": "auth.worldmaster === true",
       "$sectorID": {
         ".read": "auth != null",
         // TODO:
@@ -44,7 +42,6 @@
       }
     },
     "players": {
-      ".write": "auth.worldmaster === true",
       "$playerID": {
         ".read": "(auth != null && auth.uid === $playerID)",
         "sectorID": { ".validate": "newData.isString()" },
@@ -63,9 +60,8 @@
       }
     },
     "playerSecrets": {
-      ".write": "auth.worldmaster === true",
       "$playerID": {
-        ".read": "(auth != null && auth.uid === $playerID) || auth.worldmaster === true",
+        ".read": "(auth != null && auth.uid === $playerID)",
         "inventory": {
           "$itemID": { ".validate": "newData.isBoolean()"   }
         }
@@ -73,8 +69,8 @@
     },
     "playerSettings": {
       "$playerID": {
-        ".read": "(auth != null && auth.uid === $playerID) || auth.worldmaster === true",
-        ".write": "(auth != null && auth.uid === $playerID) || auth.worldmaster === true"
+        ".read": "(auth != null && auth.uid === $playerID)",
+        ".write": "(auth != null && auth.uid === $playerID)"
         // TODO flag + copy to players on spawn
       }
     }
