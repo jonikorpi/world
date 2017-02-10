@@ -1,6 +1,8 @@
 import React, { PureComponent } from "react";
 import { Entity } from "aframe-react";
 
+import camera from "../helpers/camera";
+
 export default class Ground extends PureComponent {
   // constructor(props) {
   //   super(props);
@@ -70,10 +72,10 @@ export default class Ground extends PureComponent {
   // }
 
   render() {
-    const size = this.props.far; //250;
+    const size = camera.far; //250;
     // const amplitude = 0.5;
     const color = "hsl(0, 0%, 38%)";
-    const groundLevel = -1 * this.props.userHeight + this.props.groundLevel - 0.01;
+    const groundLevel = -1 * camera.userHeight + camera.groundLevel - 0.01;
 
     return (
       <a-entity id="ground">

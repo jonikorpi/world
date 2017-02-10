@@ -5,7 +5,7 @@ const serviceAccount = require("./secret.json");
 
 firebase.initializeApp({
   credential: firebase.credential.cert(serviceAccount),
-  databaseURL: "https://world-15e5d.firebaseio.com"
+  databaseURL: "https://valtameri-e1fd0.firebaseio.com"
 });
 
 const database = firebase.database();
@@ -30,7 +30,7 @@ server.use(bodyParser.json());
 const rollbar = require("rollbar");
 server.use(rollbar.errorHandler(
   "22fca22d3936434eb8b69cc0c453d040",
-  {environment: process.env.NODE_ENV || "development"}
+  { environment: process.env.NODE_ENV || "development" }
 ));
 
 //
@@ -75,7 +75,7 @@ const spawn = async (userID) => {
     .orderByChild("playerID")
     .equalTo(userID)
     .once("value")
-  ;
+    ;
 
   if (locationsWithHeroes.numChildren() > 0) {
     throw new Error("Cannot spawn while you are still in the game.");
@@ -100,7 +100,7 @@ const spawn = async (userID) => {
           return;
         }
       })
-    ;
+      ;
 
     if (locationTransaction.committed) {
       spawnFound = true;
@@ -114,10 +114,10 @@ const spawn = async (userID) => {
     .update({
       x: spawnLocation[0],
       y: spawnLocation[1],
-      immuneUntil: now + (60*1000),
+      immuneUntil: now + (60 * 1000),
       lastActed: now,
     })
-  ;
+    ;
 
   return;
 };
@@ -130,7 +130,7 @@ const selfDestruct = async (userID) => {
     .orderByChild("playerID")
     .equalTo(userID)
     .once("value")
-  ;
+    ;
 
   // Destroy all player locations
   if (locationsWithHeroes.numChildren() > 0) {
@@ -161,7 +161,7 @@ const selfDestruct = async (userID) => {
 // Move
 
 const move = async (userID, to) => {
-  if ( typeof to[0] !== "number" || typeof to[1] !== "number") {
+  if (typeof to[0] !== "number" || typeof to[1] !== "number") {
     throw new Error(`Invalid movement coordinates: ${to[0]},${to[1]}`);
   }
 

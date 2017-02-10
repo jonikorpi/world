@@ -2,6 +2,7 @@ import React, { PureComponent } from "react";
 import { Entity } from "aframe-react";
 
 import hex from "../helpers/hex";
+import camera from "../helpers/camera";
 
 export default class Camera extends PureComponent {
   constructor(props) {
@@ -15,7 +16,7 @@ export default class Camera extends PureComponent {
   }
 
   render() {
-    const { userHeight, groundLevel } = {...this.props};
+    const { far, near, userHeight, groundLevel } = {...camera};
     const inVR = this.props.inVR;
 
     return (
@@ -37,15 +38,15 @@ export default class Camera extends PureComponent {
               hex.size * 3 * 2,
             ]}
             camera={{
-              far: this.props.far * 1.75,
-              near: this.props.near,
+              far: far * 1.75,
+              near: near,
               fov: inVR ? 80 : 80,
               userHeight: userHeight,
             }}
             modified-look-controls
             raycaster={{
-              far: this.props.far,
-              near: this.props.near,
+              far: far,
+              near: near,
               interval: 80,
               objects: ".interactable",
               recursive: true,

@@ -1,93 +1,80 @@
-{"rules": {
-
-  "world": {
-    ".write": "auth.worldmaster === true",
-    ".read": "true",
-
-    "heroesN": { ".validate": "newData.isNumber()" },
-    "heroesSW": { ".validate": "newData.isNumber()" },
-    "heroesSE": { ".validate": "newData.isNumber()" },
-
-    "ownerCenter": { ".validate": "newData.isString()" },
-    "ownerNW": { ".validate": "newData.isString()" },
-    "ownerNE": { ".validate": "newData.isString()" },
-    "ownerSE": { ".validate": "newData.isString()" },
-    "ownerSW": { ".validate": "newData.isString()" },
-
-    "$other": { ".validate": "false" }
-  },
-
-  "locations": {
-    ".write": "auth.worldmaster === true",
-    ".indexOn": "playerID",
-    "$locationID": {
-      // TODO generate complicated neighbour rules based on adj. locations
-      // Maybe check against player indexes instead of this node
-      // (pos(playerid).bx + "" == $binx &&  pos(playerid).by + "" == $biny) || //and the other 5 adjacent bin coords
-      ".read": "auth != null",
-
-      "x": { ".validate": "newData.isNumber()" },
-      "y": { ".validate": "newData.isNumber()" },
-
-      "rock":  { ".validate": "newData.isNumber()" },
-      "flora": { ".validate": "newData.isNumber()" },
-      "water": { ".validate": "newData.isNumber()" },
-      "heat":  { ".validate": "newData.isNumber()" },
-
-      "playerID": { ".validate": "newData.isString()" },
-
-      "$other": { ".validate": "false" }
-    }
-  },
-
-  "heroes": {
-    ".write": "auth.worldmaster === true",
-    "$playerID": {
-      // TODO generate complicated neighbour rules based on adj. locations
-      // Maybe check against location indexes instead of this node
-      // (pos(playerid).bx + "" == $binx &&  pos(playerid).by + "" == $biny) || //and the other 5 adjacent bin coords
-      ".read": "(auth != null && auth.uid === $playerID) || auth.worldmaster === true",
-
-      "x": { ".validate": "newData.isNumber()" },
-      "y": { ".validate": "newData.isNumber()" },
-
-      "faction":     { ".validate": "newData.isString()" },
-      "locked":      { ".validate": "newData.isBoolean()" },
-      "immuneUntil": { ".validate": "newData.isNumber()" },
-      "lastActed":   { ".validate": "newData.isNumber()" },
-      "turn":        { ".validate": "newData.isNumber()" },
-
-      "emoteType": { ".validate": "newData.isString()" },
-      "emoteTurn": { ".validate": "newData.isNumber()" }, /* Use with `turnMounted` */
-
-      "actionType": { ".validate": "newData.isString()" },
-      "actionTurn": { ".validate": "newData.isNumber()" }, /* Use with `turnMounted` */
-
-      "equipment": {
-        "$itemID": { ".validate": "newData.isNumber()" } /* Durability */
-      },
-
-      "$other": { ".validate": "false" }
-    }
-  },
-
-  "playerSecrets": {
-    ".write": "auth.worldmaster === true",
-    "$playerID": {
-      ".read":  "(auth != null && auth.uid === $playerID) || auth.worldmaster === true",
-
-      "inventory": {
-        "$itemID": { ".validate": "newData.isBoolean()" }
+{
+  "rules": {
+    "playerPositions": {
+      "$playerID": {
+        ".read": "auth != null",
+        // TODO:
+        // - read if auth.uid === $playerID
+        // - read if playerID.sector is same or adjascent sector as userID.sector
+        // - validate
+        //   (~x % 1) === 0 && (~y % 1) === 0
+        //   && (x <= ~x && x >= ~x-1)
+        //   && (y <= ~y && y >= ~y-1)
+        //   && !player.sector.collidables.hasChild("" + ~x + "," + ~y)
+        //   && ((oldX - newX) * (oldX - newX))^2 <= ((oldTime - newTime) / 1000 * newV)^2
+        //   && (v <= player.maxV) // maybe try to delay this if maxV has changed recently
+        //   && (oldTime - newTime < 5000)
+        //   || (newX === oldX && newY === oldY && newV === oldV && new~X === old~X && new~Y === old~Y)
+        ".write": "(auth.uid === $playerID) || auth.worldmaster === true",
+        "x": { ".validate": "newData.isNumber()" },
+        "y": { ".validate": "newData.isNumber()" },
+        "v": { ".validate": "newData.isNumber()" },
+        "d": { ".validate": "newData.isNumber() && newData.val() === now" },
+        "~x": { ".validate": "newData.isNumber()" },
+        "~y": { ".validate": "newData.isNumber()" },
+        "$other": { ".validate": "false" }
+      }
+    },
+    "sectors": {
+      ".write": "auth.worldmaster === true",
+      "$sectorID": {
+        ".read": "auth != null",
+        // TODO:
+        // - read if playerID.sector is this or adjascent sector
+        "players": {
+          "playerID": { ".validate": "newData.isBoolean()"   }
+        },
+        "collidables": {
+          "$positionID": { ".validate": "newData.isString()"   }
+        },
+        "$other": { ".validate": "false" }
+      }
+    },
+    "players": {
+      ".write": "auth.worldmaster === true",
+      "$playerID": {
+        ".read": "(auth != null && auth.uid === $playerID)",
+        "sectorID": { ".validate": "newData.isString()" },
+        "faction": { ".validate": "newData.isString()" },
+        "immuneUntil": { ".validate": "newData.isNumber()" },
+        "lastActed": { ".validate": "newData.isNumber()" },
+        "turn": { ".validate": "newData.isNumber()" },
+        "emoteType": { ".validate": "newData.isString()" },
+        "emoteTime": { ".validate": "newData.isNumber()" }, /* Use with `turnMounted` */
+        "actionType": { ".validate": "newData.isString()" },
+        "actionTurn": { ".validate": "newData.isNumber()" }, /* Use with `turnMounted` */
+        "equipment": {
+          "$itemID": { ".validate": "newData.isNumber()"   } /* Durability */
+        },
+        // TODO: flag, copied from playerSettings
+        "$other": { ".validate": "false" }
+      }
+    },
+    "playerSecrets": {
+      ".write": "auth.worldmaster === true",
+      "$playerID": {
+        ".read": "(auth != null && auth.uid === $playerID) || auth.worldmaster === true",
+        "inventory": {
+          "$itemID": { ".validate": "newData.isBoolean()"   }
+        }
+      }
+    },
+    "playerSettings": {
+      "$playerID": {
+        ".read": "(auth != null && auth.uid === $playerID) || auth.worldmaster === true",
+        ".write": "(auth != null && auth.uid === $playerID) || auth.worldmaster === true"
+        // TODO flag + copy to players on spawn
       }
     }
-  },
-
-  "playerSettings": {
-    "$playerID": {
-      ".read":  "(auth != null && auth.uid === $playerID) || auth.worldmaster === true",
-      ".write": "(auth != null && auth.uid === $playerID) || auth.worldmaster === true"
-      // TODO flag/mask/icon/logo + copy to heroes on spawn
-    }
   }
-
-}}
+}

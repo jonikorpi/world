@@ -1,6 +1,8 @@
 import React, { PureComponent } from "react";
 import { Entity } from "aframe-react";
 
+import camera from "../helpers/camera";
+
 export default class Sky extends PureComponent {
   constructor(props) {
     super(props);
@@ -43,14 +45,13 @@ export default class Sky extends PureComponent {
   }
 
   render() {
-
     return (
       <a-entity id="skyContainer">
         <Entity
           id="sky"
           geometry={{
             primitive: "sphere",
-            radius: this.props.far,
+            radius: camera.far,
           }}
           material={{
             shader: "gradient",

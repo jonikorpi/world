@@ -1,13 +1,12 @@
-import React, {PureComponent} from "react";
+import React, { PureComponent } from "react";
 import firebase from "firebase";
 
 import Head from "../components/Head";
 import Navigation from "../components/Navigation";
 import Loading from "../components/Loading";
-import Camera from "../components/Camera";
 import Sky from "../components/Sky";
 import Ground from "../components/Ground";
-import UserContainer from "../components/UserContainer";
+import Lobby from "../components/Lobby";
 
 let Tone, DuoSynth, Panner, Loop, FeedbackDelay;
 
@@ -16,8 +15,6 @@ const env = (process && process.env && process.env.NODE_ENV) || "development";
 export default class Play extends PureComponent {
   constructor(props) {
     super(props);
-
-    const userHeight = 1.6;
 
     this.state = {
       userID: null,
@@ -28,11 +25,6 @@ export default class Play extends PureComponent {
       inVR: false,
       // width: window.innerWidth,
       // height: window.innerHeight,
-      far: 1000,
-      near: 0.1,
-      userHeight: userHeight,
-      groundLevel: -(userHeight / 2.618),
-      playArea: [ 1.5, 1.5 ],
       fullScreen: false,
       env: env,
     };
@@ -110,9 +102,9 @@ export default class Play extends PureComponent {
   setupFirebase = () => {
     if (firebase.apps.length === 0) {
       firebase.initializeApp({
-        apiKey: "AIzaSyACFgRvXI8-2G9ANckoXhrXFYiXsrguveE",
-        authDomain: "world-15e5d.firebaseapp.com",
-        databaseURL: "https://world-15e5d.firebaseio.com"
+        apiKey: "AIzaSyD95iK1r5QskM9VunjKe_e0lknuRyDVV4M",
+        authDomain: "valtameri-e1fd0.firebaseapp.com",
+        databaseURL: "https://valtameri-e1fd0.firebaseio.com"
       });
     }
 
@@ -137,7 +129,7 @@ export default class Play extends PureComponent {
   }
 
   setupAframe = () => {
-    const AFRAME = require("aframe");
+    require("aframe");
     require("aframe-look-at-billboard-component");
     require("aframe-meshline-component");
     require("aframe-faceset-component");
@@ -191,7 +183,7 @@ export default class Play extends PureComponent {
     }, '34m').start();
 
     new Loop(time => {
-    // Trigger D4 after 5 measures and hold for 1 full measure + two 1/4 notes
+      // Trigger D4 after 5 measures and hold for 1 full measure + two 1/4 notes
       rightSynth.triggerAttackRelease('D4', '1:2', '+5:0');
       // Switch to E4 after one more measure
       rightSynth.setNote('E4', '+6:0');
@@ -227,12 +219,12 @@ export default class Play extends PureComponent {
       harmonicity: 1,
       volume: -25,
       voice0: {
-        oscillator: {type: 'sawtooth'},
+        oscillator: { type: 'sawtooth' },
         envelope,
         filterEnvelope
       },
       voice1: {
-        oscillator: {type: 'sine'},
+        oscillator: { type: 'sine' },
         envelope,
         filterEnvelope
       },
@@ -243,14 +235,14 @@ export default class Play extends PureComponent {
 
   signIn = () => {
     console.log("Signing in anonymously");
-    firebase.auth().signInAnonymously().catch(function(error) {
+    firebase.auth().signInAnonymously().catch(function (error) {
       console.log(error);
     });
   }
 
   signOut = () => {
     console.log("Signing out");
-    firebase.auth().signOut().catch(function(error) {
+    firebase.auth().signOut().catch(function (error) {
       console.log(error);
     });
   }
@@ -286,7 +278,7 @@ export default class Play extends PureComponent {
     const elem = document.documentElement;
 
     if (
-         !document.fullscreenElement
+      !document.fullscreenElement
       && !document.mozFullScreenElement
       && !document.webkitFullscreenElement
       && !document.msFullscreenElement
@@ -310,10 +302,10 @@ export default class Play extends PureComponent {
       document.webkitFullscreenElement;
 
     if (fullscreenElement) {
-      this.setState({fullScreen: true})
+      this.setState({ fullScreen: true })
     }
     else {
-      this.setState({fullScreen: false})
+      this.setState({ fullScreen: false })
     }
   }
 
@@ -351,8 +343,12 @@ export default class Play extends PureComponent {
   }
 
   render() {
+    const props = {
+      toggleVR: this.toggleVR,
+    };
+
     return (
-      <div id="play" ref={ref => {this.container = ref;}}>
+      <div id="play" ref={ref => { this.container = ref; }}>
         <style jsx>{`
           #play {
             user-select: none;
@@ -361,30 +357,16 @@ export default class Play extends PureComponent {
 
         <Head />
 
-        {this.state.clientSideRendered ? (
+        {this.state.clientSideRendered && this.state.userID && this.state.haveConnectedOnce ? (
           <a-scene
-            ref={ref => {this.scene = ref;}}
+            ref={ref => { this.scene = ref; }}
             // stats={process.env.NODE_ENV === "production" ? undefined : true}
             vr-mode-ui="enabled: false;"
             keyboard-shortcuts="enterVR: false; resetSensor: false;"
           >
-            <Sky far={this.state.far} userHeight={this.state.userHeight} />
-            <Ground far={this.state.far} userHeight={this.state.userHeight} groundLevel={this.state.groundLevel} />
-
-            <Camera
-              far={this.state.far}
-              near={this.state.near}
-              inVR={this.state.inVR}
-              userHeight={this.state.userHeight}
-              groundLevel={this.state.groundLevel}
-              mouseLock={this.state.mouseLock}
-            />
-
-            <UserContainer
-              {...this.state}
-              toggleVR={this.toggleVR}
-              synth={this.synth}
-            />
+            <Sky/>
+            <Ground />
+            <Lobby {...this.state} {...props} />
           </a-scene>
         ) : (
           <Loading />

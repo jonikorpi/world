@@ -5,14 +5,14 @@ import reactFire from "reactfire";
 
 import hex from "../helpers/hex";
 
-import Limbo from "../components/Limbo";
+import Camera from "../components/Camera";
 import WorldContainer from "../components/WorldContainer";
 import Hero from "../components/Hero";
 import Action from "../components/Action";
 import HeroPanel from "../components/HeroPanel";
 import Assets from "../components/Assets";
 
-export default class UserContainer extends Component {
+export default class World extends Component {
   constructor(props) {
     super(props);
 
@@ -100,37 +100,34 @@ export default class UserContainer extends Component {
       ];
     }
 
-    if (hasLocation) {
-      return (
-        <a-entity>
-          <WorldContainer
-            {...this.props}
-            locations={locations}
-            centerPosition={centerPosition}
-          >
-            <Assets/>
-            <Hero {...hero} isSelf={true} centerPosition={centerPosition}>
-              <Action
-                data={{ action: "endTurn" }}
-                {...this.props}
-              />
-            </Hero>
-          </WorldContainer>
+    return (
+      <a-entity id="world">
+        <Camera
+          inVR={this.props.inVR}
+          mouseLock={this.props.mouseLock}
+        />
 
-          <HeroPanel
-            {...hero}
-            {...playerSecrets}
-          />
-        </a-entity>
-      );
-    }
-    else if (playerSettings) {
-      return <Limbo {...this.props}/>
-    }
-    else {
-      return null;
-    }
+        <WorldContainer
+          {...this.props}
+          locations={locations}
+          centerPosition={centerPosition}
+        >
+          <Assets/>
+          <Hero {...hero} isSelf={true} centerPosition={centerPosition}>
+            <Action
+              data={{ action: "endTurn" }}
+              {...this.props}
+            />
+          </Hero>
+        </WorldContainer>
+
+        <HeroPanel
+          {...hero}
+          {...playerSecrets}
+        />
+      </a-entity>
+    );
   }
 }
 
-reactMixin(UserContainer.prototype, reactFire);
+reactMixin(World.prototype, reactFire);
