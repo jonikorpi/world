@@ -17,7 +17,6 @@
     "aframe-lerp-component": "^1.0.1",
     "aframe-look-at-billboard-component": "https://github.com/blairmacintyre/aframe-look-at-billboard-component.git",
     "aframe-meshline-component": "https://github.com/andreasplesch/aframe-meshline-component.git",
-    "aframe-physics-system": "^1.2.0",
     "aframe-react": "^3.4.1",
     "aframe-sticky-cursor-component": "^1.0.0",
     "body-parser": "^1.16.0",
