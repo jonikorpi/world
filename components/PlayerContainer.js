@@ -4,6 +4,7 @@ import reactFire from "reactfire";
 import firebase from "firebase";
 
 import Player from "../components/Player";
+import PlayerPosition from "../components/PlayerPosition";
 import Action from "../components/Action";
 
 export default class PlayerContainer extends Component {
@@ -43,15 +44,17 @@ export default class PlayerContainer extends Component {
     }
 
     return (
-      <Player {...player}>
-        <Action
-          data={{
-            action: "attack",
-            playerID: playerID
-          }}
-          {...this.props}
-        />
-      </Player>
+      <PlayerPosition playerID={playerID}>
+        <Player {...player}>
+          <Action
+            data={{
+              action: "attack",
+              playerID: playerID
+            }}
+            {...this.props}
+          />
+        </Player>
+      </PlayerPosition>
     );
   }
 }

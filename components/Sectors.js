@@ -3,7 +3,7 @@ import React, { PureComponent } from "react";
 import Sector from "../components/Sector";
 
 const getAdjascentSectorIDs = (centerX, centerY) => {
-  let sectorIDs = [`${centerX},${centerY}`];
+  let sectorIDs = [];
 
   for   (let x = -1; x <= 1; x++) {
     for (let y = -1; y <= 1; y++) {

@@ -50,6 +50,10 @@ export default class Sector extends Component {
     return (
       <div className="sector">
         {players && players.map((playerID) => {
+          if (playerID === this.props.userID) {
+            return null;
+          }
+
           return (
             <PlayerContainer
               key={playerID}

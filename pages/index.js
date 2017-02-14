@@ -301,21 +301,13 @@ export default class Play extends PureComponent {
 
     return (
       <div id="play" ref={ref => { this.container = ref; }}>
-        <style jsx>{`
-          #game {
-            user-select: none;
-          }
-        `}</style>
-
         <Head />
 
-        <div id="game">
-          {this.state.clientSideRendered && this.state.userID && this.state.haveConnectedOnce ? (
-            <Lobby {...this.state} {...props} />
-          ) : (
-            <Loading />
-          )}
-        </div>
+        {this.state.clientSideRendered && this.state.userID && this.state.haveConnectedOnce ? (
+          <Lobby {...this.state} {...props} />
+        ) : (
+          <Loading />
+        )}
 
         {!this.state.fullScreen && !this.state.mouseLock && (
           <Navigation

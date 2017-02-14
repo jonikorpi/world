@@ -49,6 +49,17 @@ export default class Lobby extends Component {
     if (sectorID) {
       return (
         <div id="world">
+          <style jsx>{`
+            #world {
+              user-select: none;
+              position: absolute;
+              left: 50vw;
+              top: 50vh;
+              --playerPositionX: 0rem;
+              --playerPositionY: 0rem;
+              --worldScale: 1;
+            }
+          `}</style>
           <Sectors {...this.props} sectorID={sectorID} />
           <User {...this.props} />
         </div>
