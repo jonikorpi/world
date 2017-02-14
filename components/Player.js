@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 
-export default class Hero extends PureComponent {
+export default class Player extends PureComponent {
   // componentDidMount() {
   //   const isOwnUnit = this.props.userID === this.props.unit.userID;
   //
@@ -28,10 +28,11 @@ export default class Hero extends PureComponent {
 
     return (
       <div
-        id={`hero-${this.props[".key"]}`}
-        className="hero"
+        id={`player-${this.props[".key"]}`}
+        className="player"
       >
         {this.props.children}
+        player
       </div>
     );
   }

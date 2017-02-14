@@ -1,30 +1,5 @@
 {
   "rules": {
-    "playerPositions": {
-      "$playerID": {
-        ".read": "auth != null",
-        // TODO:
-        // - read if auth.uid === $playerID
-        // - read if playerID.sector is same or adjascent sector as userID.sector
-        // - validate
-        //   (~x % 1) === 0 && (~y % 1) === 0
-        //   && (x <= ~x && x >= ~x-1)
-        //   && (y <= ~y && y >= ~y-1)
-        //   && !player.sector.collidables.hasChild("" + ~x + "," + ~y)
-        //   && ((oldX - newX) * (oldX - newX))^2 <= ((oldTime - newTime) / 1000 * newV)^2
-        //   && (v <= player.maxV) // maybe try to delay this if maxV has changed recently
-        //   && (oldTime - newTime < 5000)
-        //   || (newX === oldX && newY === oldY && newV === oldV && new~X === old~X && new~Y === old~Y)
-        ".write": "(auth.uid === $playerID)",
-        "x": { ".validate": "newData.isNumber()" },
-        "y": { ".validate": "newData.isNumber()" },
-        "v": { ".validate": "newData.isNumber()" },
-        "t": { ".validate": "newData.isNumber() && newData.val() === now" },
-        "~x": { ".validate": "newData.isNumber()" },
-        "~y": { ".validate": "newData.isNumber()" },
-        "$other": { ".validate": "false" }
-      }
-    },
     "sectorPlayers": {
       "$sectorID": {
         ".read": "auth != null",
@@ -33,17 +8,29 @@
         "$playerID": { ".validate": "newData.isBoolean()" }
       }
     },
-    "sectorCollidables": {
+    "sectorEntities": {
       "$sectorID": {
         ".read": "auth != null",
         // TODO:
         // - read if playerID.sector is this or adjascent sector
-        "$positionID": { ".validate": "newData.isString()" }
+        "$positionID": {
+          "type": {
+            ".validate": "newData.isString()"
+          },
+          "items": {
+            "$itemID": {
+              ".validate": "newData.isString()"
+            }
+          }
+        }
       }
     },
     "players": {
       "$playerID": {
-        ".read": "(auth != null && auth.uid === $playerID)",
+        ".read": "auth != null",
+        // TODO:
+        // - read if auth.uid === $playerID
+        // - read if playerID.sector is same or adjascent sector as userID.sector
         "sectorID": { ".validate": "newData.isString()" },
         "faction": { ".validate": "newData.isString()" },
         "immuneUntil": { ".validate": "newData.isNumber()" },
@@ -72,6 +59,62 @@
         ".read": "(auth != null && auth.uid === $playerID)",
         ".write": "(auth != null && auth.uid === $playerID)"
         // TODO flag + copy to players on spawn
+      }
+    },
+    "playerPositions": {
+      "$playerID": {
+        ".read": "auth != null",
+        // TODO:
+        // - read if auth.uid === $playerID
+        // - read if playerID.sector is same or adjascent sector as userID.sector
+        // - validate
+        //   (~x % 1) === 0 && (~y % 1) === 0
+        //   && (x <= ~x && x >= ~x-1)
+        //   && (y <= ~y && y >= ~y-1)
+        //   && !player.sector.collidables.hasChild("" + ~x + "," + ~y)
+        //   && ((oldX - newX) * (oldX - newX))^2 <= ((oldTime - newTime) / 1000 * newV)^2
+        //   && (v <= player.maxV) // maybe try to delay this if maxV has changed recently
+        //   && (oldTime - newTime < 5000)
+        //   || (newX === oldX && newY === oldY && newV === oldV && new~X === old~X && new~Y === old~Y)
+        ".write": "(auth.uid === $playerID)",
+        "x": {
+          ".validate": "newData.isNumber()"
+        },
+        "y": {
+          ".validate": "newData.isNumber()"
+        },
+        "v": {
+          ".validate": "newData.isNumber()"
+        },
+        "t": {
+          ".validate": "newData.isNumber() && newData.val() === now"
+        },
+        "~x": {
+          ".validate": "newData.isNumber()"
+        },
+        "~y": {
+          ".validate": "newData.isNumber()"
+        },
+        "$other": {
+          ".validate": "false"
+        }
+      }
+    },
+    "entities": {
+      "$entityID": {
+        ".read": "auth != null",
+        // TODO:
+        // - read if auth.uid === $playerID
+        // - read if entityID.sector is same or adjascent sector as userID.sector
+        "sectorID": {
+          ".validate": "newData.isString()"
+        },
+        "type": {
+          ".validate": "newData.isString()"
+        },
+        "$other": {
+          ".validate": "false"
+        }
       }
     }
   }

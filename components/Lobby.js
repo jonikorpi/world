@@ -4,7 +4,8 @@ import reactMixin from "react-mixin";
 import reactFire from "reactfire";
 
 import Limbo from "../components/Limbo";
-import World from "../components/World";
+import Sectors from "../components/Sectors";
+import User from "../components/User";
 
 export default class Lobby extends Component {
   constructor(props) {
@@ -46,7 +47,12 @@ export default class Lobby extends Component {
     const sectorID = this.state.sectorID && this.state.sectorID[".value"];
 
     if (sectorID) {
-      return <World {...this.props} />;
+      return (
+        <div id="world">
+          <Sectors {...this.props} sectorID={sectorID} />
+          <User {...this.props} />
+        </div>
+      );
     } else {
       return <Limbo {...this.props} />;
     };

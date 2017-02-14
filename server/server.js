@@ -93,7 +93,7 @@ const spawn = async (userID) => {
   const now = firebase.database.ServerValue.TIMESTAMP;
   const updates = {
     [`players/${userID}`]: {
-      sectorID: `${x},${y}`,
+      sectorID: `${roundedX},${roundedY}`,
       immuneUntil: Date.now() + (10 * 1000),
       turn: 0,
     },

@@ -3,11 +3,9 @@ import firebase from "firebase";
 import reactMixin from "react-mixin";
 import reactFire from "reactfire";
 
-import WorldContainer from "../components/WorldContainer";
-import Hero from "../components/Hero";
-import Action from "../components/Action";
+import Player from "../components/Player";
 
-export default class World extends Component {
+export default class User extends Component {
   constructor(props) {
     super(props);
 
@@ -23,7 +21,7 @@ export default class World extends Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.userID !== nextProps.userID) {
       if (this.props.userID) {
-        this.unbind("hero");
+        this.unbind("player");
         this.unbind("playerSecrets");
         this.unbind("playerSettings");
       }
@@ -53,11 +51,11 @@ export default class World extends Component {
     );
 
     this.bindAsObject(
-      firebase.database().ref(`heroes/${userID}`),
-      "hero",
+      firebase.database().ref(`players/${userID}`),
+      "player",
       (error) => {
         console.log(error);
-        this.setState({hero: undefined})
+        this.setState({player: undefined})
       }
     );
   }
@@ -73,25 +71,21 @@ export default class World extends Component {
   // }
 
   render() {
-    const hero = this.state.hero;
+    const player = this.state.player;
     const playerSettings = this.state.playerSettings;
     const playerSecrets = this.state.playerSecrets || {};
 
-    return (
-      <div id="world">
-        <WorldContainer
-          {...this.props}
-        >
-          <Hero {...hero} isSelf={true}>
-            <Action
-              data={{ action: "endTurn" }}
-              {...this.props}
-            />
-          </Hero>
-        </WorldContainer>
-      </div>
-    );
+    if (player) {
+      return (
+        <Player {...player} isSelf={true}>
+
+        </Player>
+      );
+    }
+    else {
+      return null;
+    }
   }
 }
 
-reactMixin(World.prototype, reactFire);
+reactMixin(User.prototype, reactFire);

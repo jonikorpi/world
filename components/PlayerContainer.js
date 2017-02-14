@@ -3,7 +3,7 @@ import reactMixin from "react-mixin";
 import reactFire from "reactfire";
 import firebase from "firebase";
 
-import Hero from "../components/Hero";
+import Player from "../components/Player";
 import Action from "../components/Action";
 
 export default class PlayerContainer extends Component {
@@ -21,29 +21,29 @@ export default class PlayerContainer extends Component {
     this.unbindFirebase();
 
     this.bindAsObject(
-      firebase.database().ref(`heroes/${playerID}`),
-      "hero",
+      firebase.database().ref(`players/${playerID}`),
+      "player",
       (error) => {
-        console.log("Unmounting hero", playerID);
-        this.props.unmountHero(playerID);
+        // console.log("Unmounting player", playerID);
+        // this.props.unmountPlayer(playerID);
       }
     );
   }
 
   unbindFirebase = () => {
-    this.firebaseListeners.hero && this.unbind("hero");
+    this.firebaseListeners.player && this.unbind("player");
   }
 
   render() {
     const { playerID } = {...this.props};
-    const hero = this.state.hero;
+    const player = this.state.player;
 
-    if (!hero) {
+    if (!player) {
       return null;
     }
 
     return (
-      <Hero {...hero}>
+      <Player {...player}>
         <Action
           data={{
             action: "attack",
@@ -51,7 +51,7 @@ export default class PlayerContainer extends Component {
           }}
           {...this.props}
         />
-      </Hero>
+      </Player>
     );
   }
 }
