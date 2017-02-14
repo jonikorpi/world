@@ -20,14 +20,6 @@
     }
   },
   "dependencies": {
-    "aframe": "^0.5.0",
-    "aframe-animation-component": "^3.2.1",
-    "aframe-faceset-component": "^0.3.1",
-    "aframe-lerp-component": "^1.0.2",
-    "aframe-look-at-billboard-component": "https://github.com/blairmacintyre/aframe-look-at-billboard-component.git",
-    "aframe-meshline-component": "https://github.com/andreasplesch/aframe-meshline-component.git",
-    "aframe-react": "^3.4.1",
-    "aframe-sticky-cursor-component": "^1.0.0",
     "body-parser": "^1.16.0",
     "express": "^4.14.1",
     "firebase": "^3.6.9",

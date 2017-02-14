@@ -1,12 +1,9 @@
 import React, { Component } from "react";
-import { Entity } from "aframe-react";
+
 import firebase from "firebase";
 import reactMixin from "react-mixin";
 import reactFire from "reactfire";
 
-// import hex from "../helpers/hex";
-
-import Camera from "../components/Camera";
 import Action from "../components/Action";
 
 export default class Limbo extends Component {
@@ -57,19 +54,14 @@ export default class Limbo extends Component {
 
   render() {
     return (
-      <Entity id="limbo" position={[0, 0.1, 0]}>
-        <Camera
-          inVR={this.props.inVR}
-          mouseLock={this.props.mouseLock}
-        />
-
+      <div id="limbo">
         <Action
           {...this.props}
           data={{
             action: "spawn"
           }}
         />
-      </Entity>
+      </div>
     );
   }
 }

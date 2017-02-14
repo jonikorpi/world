@@ -1,7 +1,4 @@
 import React, { PureComponent } from "react";
-import { Entity } from "aframe-react";
-
-import hex from "../helpers/hex";
 
 export default class Hero extends PureComponent {
   // componentDidMount() {
@@ -19,40 +16,23 @@ export default class Hero extends PureComponent {
   render() {
     const { x, y, isSelf, centerPosition } = {...this.props};
 
-    const position = isSelf ? [
-      centerPosition[0]*-1,
-      centerPosition[1]*-1,
-      centerPosition[2]*-1,
-    ] : [
-      x * hex.size * 3/2,
-      0,
-      hex.size * Math.sqrt(3) * (y + x/2),
-    ];
+    // const position = isSelf ? [
+    //   centerPosition[0]*-1,
+    //   centerPosition[1]*-1,
+    //   centerPosition[2]*-1,
+    // ] : [
+    //   x * hex.size * 3/2,
+    //   0,
+    //   hex.size * Math.sqrt(3) * (y + x/2),
+    // ];
 
     return (
-      <Entity
+      <div
         id={`hero-${this.props[".key"]}`}
         className="hero"
-        geometry={{
-          primitive: "box",
-          width: hex.width * 0.236,
-          depth: hex.width * 0.5,
-          height: hex.width * 0.236,
-          // buffer: false,
-          // skipCache: true,
-          mergeTo: "#tile1",
-        }}
-        position={position}
-        lerp={{
-          duration: 1000,
-        }}
-        material={{
-          shader: "flat",
-          color: (isSelf ? "green" : "red"),
-        }}
       >
         {this.props.children}
-      </Entity>
+      </div>
     );
   }
 }

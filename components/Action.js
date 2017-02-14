@@ -1,10 +1,5 @@
 import React, { PureComponent } from "react";
-import { Entity } from "aframe-react";
 import "whatwg-fetch";
-
-import hex from "../helpers/hex";
-
-import Tooltip from "../components/Tooltip";
 
 const version = process && process.env && process.env.GAME_VERSION;
 
@@ -158,53 +153,11 @@ export default class Action extends PureComponent {
     };
 
     return (
-      <a-entity className="action">
-        <Entity
-          className="interactable"
-          geometry={{
-            primitive: "circle",
-            segments: 6,
-            radius: hex.size,
-          }}
-          rotation={[-90, 0, 0]}
-          position={[0, 0.01, 0]}
-          material={{
-            shader: "flat",
-            transparent: true,
-            opacity: 0,
-          }}
-          events={{
-            click: this.processAction,
-            stateadded: this.handleStateEvent,
-            stateremoved: this.handleStateEvent,
-            mouseenter: this.handleStateEvent,
-            mouseleave: this.handleStateEvent,
-          }}
-        />
-
-        <Entity
-          geometry={{
-            primitive: "ring",
-            segmentsTheta: 6,
-            radiusOuter: hex.size,
-            radiusInner: hex.size * 0.91,
-          }}
-          rotation={[-90, 0, 0]}
-          position={[0, 0.02, 0]}
-          material={{
-            shader: "flat",
-            color: color,
-            transparent: true,
-            opacity: opacity,
-          }}
-        />
-
-        {hovered && (
-          <Tooltip
-            text={texts[this.props.data.action]}
-          />
-        )}
-      </a-entity>
+      <button
+        onClick={this.processAction}
+      >
+        {this.props.data.action}
+      </button>
     );
   }
 }

@@ -4,8 +4,6 @@ import firebase from "firebase";
 import Head from "../components/Head";
 import Navigation from "../components/Navigation";
 import Loading from "../components/Loading";
-import Sky from "../components/Sky";
-import Ground from "../components/Ground";
 import Lobby from "../components/Lobby";
 
 let Tone, DuoSynth, Panner, Loop, FeedbackDelay;
@@ -22,7 +20,6 @@ export default class Play extends PureComponent {
       connected: false,
       haveConnectedOnce: false,
       clientSideRendered: false,
-      inVR: false,
       // width: window.innerWidth,
       // height: window.innerHeight,
       fullScreen: false,
@@ -39,8 +36,6 @@ export default class Play extends PureComponent {
     document.removeEventListener("mozfullscreenchange", this.handleFullScreenChange);
     document.removeEventListener("webkitfullscreenchange", this.handleFullScreenChange);
 
-    document.removeEventListener("pointerlockchange", this.handlePointerLockChange);
-
     window.removeEventListener("enter-vr", this.handleStartVR);
     window.removeEventListener("exit-vr", this.handleStopVR);
   }
@@ -54,14 +49,11 @@ export default class Play extends PureComponent {
     }
 
     this.setupFirebase();
-    this.setupAframe();
     // this.setupTone();
 
     document.addEventListener("fullscreenchange", this.handleFullScreenChange);
     document.addEventListener("mozfullscreenchange", this.handleFullScreenChange);
     document.addEventListener("webkitfullscreenchange", this.handleFullScreenChange);
-
-    document.addEventListener("pointerlockchange", this.handlePointerLockChange);
 
     window.addEventListener("enter-vr", this.handleStartVR);
     window.addEventListener("exit-vr", this.handleStopVR);
@@ -126,17 +118,6 @@ export default class Play extends PureComponent {
         this.setState({ connected: false });
       }
     });
-  }
-
-  setupAframe = () => {
-    require("aframe");
-    require("aframe-look-at-billboard-component");
-    require("aframe-meshline-component");
-    require("aframe-faceset-component");
-    require("aframe-sticky-cursor-component");
-    require("aframe-animation-component");
-    require("aframe-lerp-component");
-    require("../components/modified-look-controls");
   }
 
   setupTone = () => {
@@ -254,26 +235,6 @@ export default class Play extends PureComponent {
   //   });
   // }
 
-  handleStartVR = () => {
-    console.log("Entering VR");
-
-    this.setState({ inVR: true });
-  }
-
-  handleStopVR = () => {
-    console.log("Exiting VR");
-
-    this.setState({ inVR: false });
-  }
-
-  toggleVR = () => {
-    if (this.state.inVR) {
-      this.scene.exitVR();
-    } else {
-      this.scene.enterVR();
-    }
-  }
-
   enterFullscreen = () => {
     const elem = document.documentElement;
 
@@ -309,15 +270,6 @@ export default class Play extends PureComponent {
     }
   }
 
-  handlePointerLockChange = () => {
-    if (document.pointerLockElement) {
-      this.setState({ mouseLock: true });
-    }
-    else {
-      this.setState({ mouseLock: false });
-    }
-  }
-
   selfDestruct = async () => {
     const headers = new Headers({
       "Content-Type": "application/json",
@@ -350,27 +302,20 @@ export default class Play extends PureComponent {
     return (
       <div id="play" ref={ref => { this.container = ref; }}>
         <style jsx>{`
-          #play {
+          #game {
             user-select: none;
           }
         `}</style>
 
         <Head />
 
-        {this.state.clientSideRendered && this.state.userID && this.state.haveConnectedOnce ? (
-          <a-scene
-            ref={ref => { this.scene = ref; }}
-            // stats={process.env.NODE_ENV === "production" ? undefined : true}
-            vr-mode-ui="enabled: false;"
-            keyboard-shortcuts="enterVR: false; resetSensor: false;"
-          >
-            <Sky/>
-            <Ground />
+        <div id="game">
+          {this.state.clientSideRendered && this.state.userID && this.state.haveConnectedOnce ? (
             <Lobby {...this.state} {...props} />
-          </a-scene>
-        ) : (
-          <Loading />
-        )}
+          ) : (
+            <Loading />
+          )}
+        </div>
 
         {!this.state.fullScreen && !this.state.mouseLock && (
           <Navigation

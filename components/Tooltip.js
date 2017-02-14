@@ -1,8 +1,4 @@
 import React, { PureComponent } from "react";
-import { Entity } from "aframe-react";
-
-import hex from "../helpers/hex";
-import text from "../helpers/text";
 
 export default class Tooltip extends PureComponent {
   constructor(props) {
@@ -35,30 +31,13 @@ export default class Tooltip extends PureComponent {
   }
 
   render() {
-    const width = hex.width * 3;
-
     if (this.state.visible) {
       return (
-        <Entity
+        <div
           className="tooltip"
-          geometry={{
-            primitive: "plane",
-            width: width,
-            height: "auto",
-          }}
-          billboard
-          position={[0, 0.2, 0]}
-          material={{
-            shader: "flat",
-            transparent: true,
-            opacity: 0,
-          }}
-          text={{
-            ...text(),
-            value: this.props.text,
-            baseline: "bottom",
-          }}
-        />
+        >
+          {this.props.text}
+        </div>
       );
     }
     else {
