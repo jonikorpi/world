@@ -16,3 +16,5 @@ npm-debug.log
 .firebaserc
 
 .vscode
+
+.secret.json
