@@ -34,21 +34,15 @@ export default class PlayerPosition extends Component {
   };
 
   render() {
-    const { playerID } = { ...this.props };
     const playerPosition = this.state.playerPosition;
 
-    if (!playerPosition || !playerPosition.x) {
+    if (!playerPosition || playerPosition.x === null) {
       return null;
     }
 
-    if (this.body) {
-      Matter.Body.set(
-        this.body,
-        {
-          position: { x: playerPosition.x, y: playerPosition.y },
-          velocity: { x: playerPosition.vx, y: playerPosition.vy },
-        },
-      );
+    if (this.physics && this.physics.body) {
+      Matter.Body.setPosition(this.physics.body, { x: playerPosition.x, y: playerPosition.y });
+      Matter.Body.setVelocity(this.physics.body, { x: playerPosition.vx, y: playerPosition.vy });
     }
 
     const xTransform = `calc( (${playerPosition.x}vmin - (1vmin * var(--playerPositionX))) * var(--worldScale) )`;
@@ -67,7 +61,7 @@ export default class PlayerPosition extends Component {
             isStatic: true,
           },
         ]}
-        ref={(b) => this.body = b.body}
+        ref={(c) => this.physics = c}
       >
         <div
           className="playerPosition"
