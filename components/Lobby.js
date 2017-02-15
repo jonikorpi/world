@@ -53,9 +53,9 @@ export default class Lobby extends Component {
               position: absolute;
               left: 50vw;
               top: 50vh;
-              --playerPositionX: 0rem;
-              --playerPositionY: 0rem;
-              --worldScale: 1;
+              --playerPositionX: 0;
+              --playerPositionY: 0;
+              --worldScale: 10vmin;
             }
           `
             }

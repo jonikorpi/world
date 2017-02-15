@@ -23,7 +23,7 @@ export default class PlayerPosition extends Component {
       error => {
         // console.log("Unmounting player", playerID);
         // this.props.unmountPlayer(playerID);
-      },
+      }
     );
   };
 
@@ -39,8 +39,8 @@ export default class PlayerPosition extends Component {
       return null;
     }
 
-    const xTransform = `calc((${playerPosition.x}rem - var(--playerPositionX)) * var(--worldScale))`;
-    const yTransform = `calc((${playerPosition.y}rem - var(--playerPositionY)) * var(--worldScale))`;
+    const xTransform = `calc( (${playerPosition.x} - var(--playerPositionX)) * var(--worldScale) )`;
+    const yTransform = `calc( (${playerPosition.y} - var(--playerPositionY)) * var(--worldScale) )`;
 
     const transform = `translate3d(${xTransform}, ${yTransform}, 0)`;
 
@@ -49,7 +49,7 @@ export default class PlayerPosition extends Component {
         className="playerPosition"
         style={{
           WebkitTransform: transform,
-          transform: transform,
+          transform: transform
         }}
       >
         <style jsx>
