@@ -43,6 +43,8 @@ export default class MovementPlane extends PureComponent {
     this.setState({
       x: relativeCoordinates[0],
       y: relativeCoordinates[1],
+      vx: 0,
+      vy: 0,
       t: firebase.database.ServerValue.TIMESTAMP,
       "~x": Math.round(relativeCoordinates[0]),
       "~y": Math.round(relativeCoordinates[1]),

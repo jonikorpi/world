@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import reactMixin from "react-mixin";
 import reactFire from "reactfire";
 import firebase from "firebase";
+import { Body } from "react-game-kit";
+import Matter from "matter-js";
 
 export default class PlayerPosition extends Component {
   constructor(props) {
@@ -39,29 +41,52 @@ export default class PlayerPosition extends Component {
       return null;
     }
 
+    if (this.body) {
+      Matter.Body.set(
+        this.body,
+        {
+          position: { x: playerPosition.x, y: playerPosition.y },
+          velocity: { x: playerPosition.vx, y: playerPosition.vy },
+        },
+      );
+    }
+
     const xTransform = `calc( (${playerPosition.x}vmin - (1vmin * var(--playerPositionX))) * var(--worldScale) )`;
     const yTransform = `calc( (${playerPosition.y}vmin - (1vmin * var(--playerPositionY))) * var(--worldScale) )`;
 
     const transform = `translate3d(${xTransform}, ${yTransform}, 0)`;
 
     return (
-      <div
-        className="playerPosition"
-        style={{
-          WebkitTransform: transform,
-          transform: transform
-        }}
+      <Body
+        args={[
+          playerPosition.x,
+          playerPosition.y,
+          1,
+          1,
+          {
+            isStatic: true,
+          },
+        ]}
+        ref={(b) => this.body = b.body}
       >
-        <style jsx>{`
-          .playerPosition {
-            position: absolute;
-            left: 0; top: 0;
-            will-change: transform;
-          }
-        `}</style>
+        <div
+          className="playerPosition"
+          style={{
+            WebkitTransform: transform,
+            transform: transform
+          }}
+        >
+          <style jsx>{`
+            .playerPosition {
+              position: absolute;
+              left: 0; top: 0;
+              will-change: transform;
+            }
+          `}</style>
 
-        {this.props.children}
-      </div>
+          {this.props.children}
+        </div>
+      </Body>
     );
   }
 }

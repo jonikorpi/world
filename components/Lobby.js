@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import firebase from "firebase";
 import reactMixin from "react-mixin";
 import reactFire from "reactfire";
+import { Loop, World } from "react-game-kit";
 
 import Limbo from "../components/Limbo";
 import Sectors from "../components/Sectors";
@@ -78,8 +79,12 @@ export default class Lobby extends Component {
               --worldScale: ${maxScale};
             }
           `}</style>
-          <User {...this.props} />
-          <Sectors {...this.props} sectorID={sectorID} />
+          <Loop>
+            <World gravity={{ x: 0, y: 0, }}>
+              <User {...this.props} />
+              <Sectors {...this.props} sectorID={sectorID} />
+            </World>
+          </Loop>
         </div>
       );
     } else {

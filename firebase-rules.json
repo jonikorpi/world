@@ -83,7 +83,10 @@
           "y": {
             ".validate": "newData.isNumber()"
           },
-          "v": {
+          "vx": {
+            ".validate": "newData.isNumber()"
+          },
+          "vy": {
             ".validate": "newData.isNumber()"
           },
           "t": {

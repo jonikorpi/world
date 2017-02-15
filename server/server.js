@@ -102,7 +102,8 @@ const spawn = async userID => {
       position: {
         x: x,
         y: y,
-        v: 0,
+        vx: 0,
+        vy: 0,
         t: now,
         "~x": roundedX,
         "~y": roundedY
