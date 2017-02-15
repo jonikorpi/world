@@ -4,7 +4,7 @@ import reactMixin from "react-mixin";
 import reactFire from "reactfire";
 
 import Entity from "../components/Entity";
-import PlayerContainer from "../components/PlayerContainer";
+import PlayerState from "../components/PlayerState";
 
 const filterOutFirebaseKeys = key => {
   return key !== ".value" && key !== ".key";
@@ -56,7 +56,7 @@ export default class Sector extends Component {
             }
 
             return (
-              <PlayerContainer
+              <PlayerState
                 key={playerID}
                 playerID={playerID}
                 userID={this.props.userID}

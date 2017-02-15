@@ -21,6 +21,12 @@ export default class Sectors extends PureComponent {
 
     return (
       <div id="sectors">
+        <style jsx>{`
+          #sectors {
+            position: absolute;
+            left: 50%; top: 50%;
+          }
+        `}</style>
         {sectorIDs.map(sectorID => {
           return (
             <Sector

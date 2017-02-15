@@ -24,6 +24,7 @@
     "firebase": "^3.6.9",
     "firebase-admin": "^4.1.0",
     "jonikorpi-base-files": "^6.0.1",
+    "lodash.throttle": "^4.1.1",
     "next": "^2.0.0-beta",
     "react-addons-perf": "^15.4.2",
     "react-mixin": "^3.0.5",

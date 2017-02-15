@@ -4,6 +4,7 @@ import reactMixin from "react-mixin";
 import reactFire from "reactfire";
 
 import Player from "../components/Player";
+import MovementPlane from "../components/MovementPlane";
 
 export default class User extends Component {
   constructor(props) {
@@ -50,21 +51,11 @@ export default class User extends Component {
       }
     );
 
-    this.bindAsObject(firebase.database().ref(`players/${userID}`), "player", error => {
+    this.bindAsObject(firebase.database().ref(`players/${userID}/state`), "player", error => {
       console.log(error);
       this.setState({ player: undefined });
     });
   };
-
-  // getLocations = (secretLocation) => {
-  //   let locations = { [secretLocation]: true };
-
-  //   for (const neighbourID of hex.listNeighbouringTiles(secretLocation, 16)) {
-  //     locations[neighbourID] = true;
-  //   }
-
-  //   return locations;
-  // }
 
   render() {
     const player = this.state.player;
@@ -72,7 +63,22 @@ export default class User extends Component {
     const playerSecrets = this.state.playerSecrets || {};
 
     if (player) {
-      return <Player {...player} isSelf={true} />;
+      return (
+        <div id="user">
+          <style jsx>{`
+            #userCenterer {
+              position: absolute;
+              left: 50%; top: 50%;
+            }
+          `}</style>
+
+          <MovementPlane {...this.props} />
+
+          <div id="userCenterer">
+            <Player {...player} isSelf={true} />
+          </div>
+        </div>
+      );
     } else {
       return null;
     }

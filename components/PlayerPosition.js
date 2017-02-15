@@ -52,16 +52,12 @@ export default class PlayerPosition extends Component {
           transform: transform
         }}
       >
-        <style jsx>
-          {
-            `
+        <style jsx>{`
           .playerPosition {
             position: absolute;
             left: 0; top: 0;
           }
-        `
-          }
-        </style>
+        `}</style>
 
         {this.props.children}
       </div>

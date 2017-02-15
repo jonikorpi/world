@@ -146,7 +146,12 @@ export default class Action extends PureComponent {
     };
 
     return (
-      <button onClick={this.processAction}>
+      <button className="action" onClick={this.processAction}>
+        <style jsx>{`
+          .action {
+            pointer-events: all;
+          }
+        `}</style>
         {this.props.data.action}
       </button>
     );

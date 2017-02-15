@@ -16,7 +16,6 @@ export default class Play extends PureComponent {
 
     this.state = {
       userID: null,
-      anonymous: null,
       connected: false,
       haveConnectedOnce: false,
       clientSideRendered: false,
@@ -108,10 +107,10 @@ export default class Play extends PureComponent {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         firebase.auth().currentUser.getToken(true).then(userToken => {
-          this.setState({ userID: user.uid, anonymous: user.isAnonymous, userToken: userToken });
+          this.setState({ userID: user.uid, userToken: userToken });
         });
       } else {
-        this.setState({ userID: null, anonymous: null, userToken: null });
+        this.setState({ userID: null, userToken: null });
         this.signIn();
       }
     });
@@ -227,14 +226,14 @@ export default class Play extends PureComponent {
 
   signIn = () => {
     console.log("Signing in anonymously");
-    firebase.auth().signInAnonymously().catch(function(error) {
+    firebase.auth().signInAnonymously().catch(function (error) {
       console.log(error);
     });
   };
 
   signOut = () => {
     console.log("Signing out");
-    firebase.auth().signOut().catch(function(error) {
+    firebase.auth().signOut().catch(function (error) {
       console.log(error);
     });
   };
