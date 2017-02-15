@@ -23,7 +23,7 @@ export default class Sectors extends PureComponent {
       <div id="sectors">
         <style jsx>{`
           #sectors {
-            position: absolute;
+            position: fixed;
             left: 50%; top: 50%;
           }
         `}</style>

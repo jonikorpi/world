@@ -313,6 +313,13 @@ export default class Play extends PureComponent {
           this.container = ref;
         }}
       >
+        <style jsx>{`
+          #play {
+            overflow: hidden;
+            width: 100%;
+          }
+        `}</style>
+
         <Head />
 
         {this.state.clientSideRendered && this.state.userID && this.state.haveConnectedOnce

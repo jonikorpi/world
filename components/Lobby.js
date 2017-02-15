@@ -7,6 +7,9 @@ import Limbo from "../components/Limbo";
 import Sectors from "../components/Sectors";
 import User from "../components/User";
 
+const maxScale = 10;
+const minScale = 1;
+
 export default class Lobby extends Component {
   constructor(props) {
     super(props);
@@ -18,6 +21,14 @@ export default class Lobby extends Component {
     if (this.props.userID) {
       this.bindFirebase(this.props.userID);
     }
+  }
+
+  componentDidMount() {
+    window.addEventListener("scroll", this.handleScroll);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleScroll);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -32,6 +43,12 @@ export default class Lobby extends Component {
     }
   }
 
+  handleScroll = (event) => {
+    const scrolled = 1 - (window.pageYOffset / (document.body.clientHeight - window.innerHeight));
+    const scale = scrolled * (maxScale - minScale) + minScale;
+    this.worldRef.style.setProperty("--worldScale", `${scale}vmin`);
+  }
+
   bindFirebase = userID => {
     this.bindAsObject(firebase.database().ref(`players/${userID}/sectorID`), "sectorID", error => {
       console.log(error);
@@ -44,18 +61,17 @@ export default class Lobby extends Component {
 
     if (sectorID) {
       return (
-        <div id="world">
+        <div id="world" ref={c => this.worldRef = c}>
           <style jsx>{`
             #world {
               user-select: none;
               pointer-events: none;
               width: 100%;
               height: 100vh;
-              overflow: hidden;
-              position: relative;
+              margin-bottom: 50vh;
               --playerPositionX: 0;
               --playerPositionY: 0;
-              --worldScale: 10vmin;
+              --worldScale: ${maxScale}vmin;
             }
           `}</style>
           <User {...this.props} />

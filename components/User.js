@@ -67,7 +67,7 @@ export default class User extends Component {
         <div id="user">
           <style jsx>{`
             #userCenterer {
-              position: absolute;
+              position: fixed;
               left: 50%; top: 50%;
             }
           `}</style>
