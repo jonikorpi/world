@@ -29,7 +29,7 @@ export default class Player extends PureComponent {
     return (
       <div id={`player-${this.props[".key"]}`} className="player">
         <style jsx>{`
-          .player {
+          .playerModel {
             width: 1rem;
             height: 1rem;
             border-radius: 50%;
@@ -39,7 +39,9 @@ export default class Player extends PureComponent {
           }
         `}</style>
 
-        {/*{this.props.children}*/}
+        <div className="playerModel" />
+
+        {this.props.children}
 
       </div>
     );
