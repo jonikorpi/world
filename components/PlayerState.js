@@ -7,7 +7,7 @@ import Player from "../components/Player";
 import PlayerPosition from "../components/PlayerPosition";
 import Action from "../components/Action";
 
-export default class PlayerContainer extends Component {
+export default class PlayerState extends Component {
   constructor(props) {
     super(props);
 
@@ -21,7 +21,7 @@ export default class PlayerContainer extends Component {
   bindFirebase = playerID => {
     this.unbindFirebase();
 
-    this.bindAsObject(firebase.database().ref(`players/${playerID}`), "player", error => {
+    this.bindAsObject(firebase.database().ref(`players/${playerID}/state`), "player", error => {
       // console.log("Unmounting player", playerID);
       // this.props.unmountPlayer(playerID);
     });
@@ -45,7 +45,7 @@ export default class PlayerContainer extends Component {
           <Action
             data={{
               action: "attack",
-              playerID: playerID,
+              playerID: playerID
             }}
             {...this.props}
           />
@@ -55,4 +55,4 @@ export default class PlayerContainer extends Component {
   }
 }
 
-reactMixin(PlayerContainer.prototype, reactFire);
+reactMixin(PlayerState.prototype, reactFire);
