@@ -2,14 +2,9 @@ import React, { Component } from "react";
 import firebase from "firebase";
 import reactMixin from "react-mixin";
 import reactFire from "reactfire";
-import { Loop, World } from "react-game-kit";
 
 import Limbo from "../components/Limbo";
-import Sectors from "../components/Sectors";
-import User from "../components/User";
-
-const maxScale = 1;
-const minScale = 0.1;
+import WorldContainer from "../components/WorldContainer";
 
 export default class Lobby extends Component {
   constructor(props) {
@@ -44,16 +39,6 @@ export default class Lobby extends Component {
     }
   }
 
-  handleScroll = () => {
-    requestAnimationFrame(this.updateScale);
-  }
-
-  updateScale = () => {
-    const scrolled = 1 - (window.pageYOffset / (document.body.clientHeight - window.innerHeight));
-    const scale = scrolled * (maxScale - minScale) + minScale;
-    this.worldRef.style.setProperty("--worldScale", `${scale}`);
-  }
-
   bindFirebase = userID => {
     this.bindAsObject(firebase.database().ref(`players/${userID}/sectorID`), "sectorID", error => {
       console.log(error);
@@ -65,28 +50,7 @@ export default class Lobby extends Component {
     const sectorID = this.state.sectorID && this.state.sectorID[".value"];
 
     if (sectorID) {
-      return (
-        <div id="world" ref={c => this.worldRef = c}>
-          <style jsx>{`
-            #world {
-              user-select: none;
-              pointer-events: none;
-              width: 100%;
-              height: 100vh;
-              margin-bottom: 50vh;
-              --playerPositionX: 0;
-              --playerPositionY: 0;
-              --worldScale: ${maxScale};
-            }
-          `}</style>
-          <Loop>
-            <World gravity={{ x: 0, y: 0, }}>
-              <User {...this.props} />
-              <Sectors {...this.props} sectorID={sectorID} />
-            </World>
-          </Loop>
-        </div>
-      );
+      return <WorldContainer {...this.props} sectorID={sectorID} />;
     } else {
       return <Limbo {...this.props} />;
     }
