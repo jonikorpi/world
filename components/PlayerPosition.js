@@ -18,7 +18,7 @@ export default class PlayerPosition extends Component {
     this.unbindFirebase();
 
     this.bindAsObject(
-      firebase.database().ref(`playerPositions/${playerID}`),
+      firebase.database().ref(`players/${playerID}/position`),
       "playerPosition",
       error => {
         // console.log("Unmounting player", playerID);

@@ -95,18 +95,20 @@ const spawn = async userID => {
   const updates = {
     [`players/${userID}`]: {
       sectorID: `${roundedX},${roundedY}`,
-      immuneUntil: Date.now() + 10 * 1000,
-      turn: 0
+      state: {
+        immuneUntil: Date.now() + 10 * 1000,
+        turn: 0
+      },
+      position: {
+        x: x,
+        y: y,
+        v: 0,
+        t: now,
+        "~x": roundedX,
+        "~y": roundedY
+      }
     },
     [`playerSecrets/${userID}`]: true,
-    [`playerPositions/${userID}`]: {
-      x: x,
-      y: y,
-      v: 0,
-      t: now,
-      "~x": roundedX,
-      "~y": roundedY
-    },
     [`sectorPlayers/${roundedX},${roundedY}/${userID}`]: true
   };
 
@@ -135,8 +137,7 @@ const selfDestruct = async userID => {
   // Remove player
   const updates = {
     [`players/${userID}`]: null,
-    [`playerSecrets/${userID}`]: null,
-    [`playerPositions/${userID}`]: null
+    [`playerSecrets/${userID}`]: null
   };
 
   await database.ref().update(updates);

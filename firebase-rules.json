@@ -32,37 +32,73 @@
         ".read": "auth != null",
         // TODO:
         // - read if auth.uid === $playerID
-        // - read if playerID.sector is same or adjascent sector as userID.sector
+        // - read if playerID.sectorID is same or adjascent sector as userID.sectorID
         "sectorID": {
           ".validate": "newData.isString()"
         },
-        "faction": {
-          ".validate": "newData.isString()"
-        },
-        "immuneUntil": {
-          ".validate": "newData.isNumber()"
-        },
-        "turn": {
-          ".validate": "newData.isNumber()"
-        },
-        "emoteType": {
-          ".validate": "newData.isString()"
-        },
-        "emoteTime": {
-          ".validate": "newData.isNumber()"
-        },
-        "actionType": {
-          ".validate": "newData.isString()"
-        },
-        "actionTurn": {
-          ".validate": "newData.isNumber()"
-        }, /* Use with `turnMounted` */
-        "equipment": {
-          "$itemID": {
+        "state": {
+          // TODO: flag, copied from playerSettings
+          "faction": {
+            ".validate": "newData.isString()"
+          },
+          "immuneUntil": {
             ".validate": "newData.isNumber()"
-          } /* Durability */
+          },
+          "turn": {
+            ".validate": "newData.isNumber()"
+          },
+          "emoteType": {
+            ".validate": "newData.isString()"
+          },
+          "emoteTime": {
+            ".validate": "newData.isNumber()"
+          },
+          "actionType": {
+            ".validate": "newData.isString()"
+          },
+          "actionTurn": {
+            ".validate": "newData.isNumber()"
+          }, /* Use with `turnMounted` */
+          "equipment": {
+            "$itemID": {
+              ".validate": "newData.isNumber()"
+            } /* Durability */
+          }
         },
-        // TODO: flag, copied from playerSettings
+        "position": {
+          ".write": "(auth.uid === $playerID)",
+          // TODO:
+          // - validate
+          //   (~x % 1) === 0 && (~y % 1) === 0
+          //   && (x <= ~x && x >= ~x-1)
+          //   && (y <= ~y && y >= ~y-1)
+          //   && !player.sector.collidables.hasChild("" + ~x + "," + ~y)
+          //   && ((oldX - newX) * (oldX - newX))^2 <= ((oldTime - newTime) / 1000 * newV)^2
+          //   && (v <= player.maxV) // maybe try to delay this if maxV has changed recently
+          //   && (oldTime - newTime < 5000)
+          //   || (newX === oldX && newY === oldY && newV === oldV && new~X === old~X && new~Y === old~Y)
+          "x": {
+            ".validate": "newData.isNumber()"
+          },
+          "y": {
+            ".validate": "newData.isNumber()"
+          },
+          "v": {
+            ".validate": "newData.isNumber()"
+          },
+          "t": {
+            ".validate": "newData.isNumber() && newData.val() === now"
+          },
+          "~x": {
+            ".validate": "newData.isNumber()"
+          },
+          "~y": {
+            ".validate": "newData.isNumber()"
+          },
+          "$other": {
+            ".validate": "false"
+          }
+        },
         "$other": {
           ".validate": "false"
         }
@@ -83,45 +119,6 @@
         ".read": "(auth != null && auth.uid === $playerID)",
         ".write": "(auth != null && auth.uid === $playerID)"
         // TODO flag + copy to players on spawn
-      }
-    },
-    "playerPositions": {
-      "$playerID": {
-        ".read": "auth != null",
-        // TODO:
-        // - read if auth.uid === $playerID
-        // - read if playerID.sector is same or adjascent sector as userID.sector
-        // - validate
-        //   (~x % 1) === 0 && (~y % 1) === 0
-        //   && (x <= ~x && x >= ~x-1)
-        //   && (y <= ~y && y >= ~y-1)
-        //   && !player.sector.collidables.hasChild("" + ~x + "," + ~y)
-        //   && ((oldX - newX) * (oldX - newX))^2 <= ((oldTime - newTime) / 1000 * newV)^2
-        //   && (v <= player.maxV) // maybe try to delay this if maxV has changed recently
-        //   && (oldTime - newTime < 5000)
-        //   || (newX === oldX && newY === oldY && newV === oldV && new~X === old~X && new~Y === old~Y)
-        ".write": "(auth.uid === $playerID)",
-        "x": {
-          ".validate": "newData.isNumber()"
-        },
-        "y": {
-          ".validate": "newData.isNumber()"
-        },
-        "v": {
-          ".validate": "newData.isNumber()"
-        },
-        "t": {
-          ".validate": "newData.isNumber() && newData.val() === now"
-        },
-        "~x": {
-          ".validate": "newData.isNumber()"
-        },
-        "~y": {
-          ".validate": "newData.isNumber()"
-        },
-        "$other": {
-          ".validate": "false"
-        }
       }
     },
     "entities": {
