@@ -27,7 +27,7 @@ export default class MovementPlane extends PureComponent {
     const width = this.worldRef.clientWidth;
     const height = this.worldRef.clientHeight;
     const center = [width / 2, height / 2];
-    const scale = parseInt(window.getComputedStyle(this.worldRef).getPropertyValue("--worldScale"), 10) / 100;
+    const scale = +window.getComputedStyle(this.worldRef).getPropertyValue("--worldScale") / 100;
     const scaleDimension = width < height ? width : height;
     const unit = scaleDimension * scale;
 

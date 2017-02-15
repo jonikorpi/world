@@ -7,8 +7,8 @@ import Limbo from "../components/Limbo";
 import Sectors from "../components/Sectors";
 import User from "../components/User";
 
-const maxScale = 10;
-const minScale = 1;
+const maxScale = 1;
+const minScale = 0.1;
 
 export default class Lobby extends Component {
   constructor(props) {
@@ -50,7 +50,7 @@ export default class Lobby extends Component {
   updateScale = () => {
     const scrolled = 1 - (window.pageYOffset / (document.body.clientHeight - window.innerHeight));
     const scale = scrolled * (maxScale - minScale) + minScale;
-    this.worldRef.style.setProperty("--worldScale", `${scale}vmin`);
+    this.worldRef.style.setProperty("--worldScale", `${scale}`);
   }
 
   bindFirebase = userID => {
@@ -75,7 +75,7 @@ export default class Lobby extends Component {
               margin-bottom: 50vh;
               --playerPositionX: 0;
               --playerPositionY: 0;
-              --worldScale: ${maxScale}vmin;
+              --worldScale: ${maxScale};
             }
           `}</style>
           <User {...this.props} />

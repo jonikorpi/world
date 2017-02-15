@@ -39,8 +39,8 @@ export default class PlayerPosition extends Component {
       return null;
     }
 
-    const xTransform = `calc( (${playerPosition.x} - var(--playerPositionX)) * var(--worldScale) )`;
-    const yTransform = `calc( (${playerPosition.y} - var(--playerPositionY)) * var(--worldScale) )`;
+    const xTransform = `calc( (${playerPosition.x}vmin - (1vmin * var(--playerPositionX))) * var(--worldScale) )`;
+    const yTransform = `calc( (${playerPosition.y}vmin - (1vmin * var(--playerPositionY))) * var(--worldScale) )`;
 
     const transform = `translate3d(${xTransform}, ${yTransform}, 0)`;
 
@@ -56,6 +56,7 @@ export default class PlayerPosition extends Component {
           .playerPosition {
             position: absolute;
             left: 0; top: 0;
+            will-change: transform;
           }
         `}</style>
 

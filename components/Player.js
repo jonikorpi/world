@@ -30,15 +30,16 @@ export default class Player extends PureComponent {
       <div id={`player-${this.props[".key"]}`} className="player">
         <style jsx>{`
           .player {
-            width: calc( var(--worldScale) * 0.5 );
-            height: calc( var(--worldScale) * 0.5 );
+            width: 1rem;
+            height: 1rem;
             border-radius: 50%;
             background: white;
-            transform: translate(-50%, -50%);
+            will-change: transform;
+            transform: translate3d(-50%, -50%, 0) scale(var(--worldScale));
           }
         `}</style>
 
-        {this.props.children}
+        {/*{this.props.children}*/}
 
       </div>
     );
