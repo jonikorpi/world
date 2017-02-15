@@ -43,7 +43,11 @@ export default class Lobby extends Component {
     }
   }
 
-  handleScroll = (event) => {
+  handleScroll = () => {
+    requestAnimationFrame(this.updateScale);
+  }
+
+  updateScale = () => {
     const scrolled = 1 - (window.pageYOffset / (document.body.clientHeight - window.innerHeight));
     const scale = scrolled * (maxScale - minScale) + minScale;
     this.worldRef.style.setProperty("--worldScale", `${scale}vmin`);
