@@ -6,9 +6,9 @@ import reactFire from "reactfire";
 import Entity from "../components/Entity";
 import PlayerContainer from "../components/PlayerContainer";
 
-const filterOutFirebaseKeys = (key) => {
+const filterOutFirebaseKeys = key => {
   return key !== ".value" && key !== ".key";
-}
+};
 
 export default class Sector extends Component {
   constructor(props) {
@@ -21,25 +21,25 @@ export default class Sector extends Component {
     this.bindFirebase(this.props.sectorID);
   }
 
-  bindFirebase = (sectorID) => {
+  bindFirebase = sectorID => {
     this.bindAsObject(
       firebase.database().ref(`sectorPlayers/${sectorID}`),
       "sectorPlayers",
-      (error) => {
+      error => {
         console.log(error);
-        this.setState({ sectorPlayers: undefined })
-      }
+        this.setState({ sectorPlayers: undefined });
+      },
     );
 
     this.bindAsObject(
       firebase.database().ref(`sectorEntities/${sectorID}`),
       "sectorEntities",
-      (error) => {
+      error => {
         console.log(error);
-        this.setState({ sectorEntities: undefined })
-      }
+        this.setState({ sectorEntities: undefined });
+      },
     );
-  }
+  };
 
   render() {
     const { sectorPlayers, sectorEntities } = { ...this.state };
@@ -49,32 +49,34 @@ export default class Sector extends Component {
 
     return (
       <div className="sector">
-        {players && players.map((playerID) => {
-          if (playerID === this.props.userID) {
-            return null;
-          }
+        {players &&
+          players.map(playerID => {
+            if (playerID === this.props.userID) {
+              return null;
+            }
 
-          return (
-            <PlayerContainer
-              key={playerID}
-              playerID={playerID}
-              userID={this.props.userID}
-              userToken={this.props.userToken}
-            />
-          )
-        })}
+            return (
+              <PlayerContainer
+                key={playerID}
+                playerID={playerID}
+                userID={this.props.userID}
+                userToken={this.props.userToken}
+              />
+            );
+          })}
 
-        {entities && entities.map((positionID) => {
-          return (
-            <Entity
-              key={positionID}
-              positionID={positionID}
-              {...sectorEntities[positionID]}
-              userID={this.props.userID}
-              userToken={this.props.userToken}
-            />
-          )
-        })}
+        {entities &&
+          entities.map(positionID => {
+            return (
+              <Entity
+                key={positionID}
+                positionID={positionID}
+                {...sectorEntities[positionID]}
+                userID={this.props.userID}
+                userToken={this.props.userToken}
+              />
+            );
+          })}
 
       </div>
     );

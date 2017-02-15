@@ -10,7 +10,7 @@ export default class Action extends PureComponent {
     this.state = {};
   }
 
-  handleStateEvent = (event) => {
+  handleStateEvent = event => {
     const name = event.detail.state;
     const type = event.type;
     let boolean;
@@ -34,9 +34,9 @@ export default class Action extends PureComponent {
     }
 
     if (name && type && this._reactInternalInstance) {
-      this.setState({[name]: boolean});
+      this.setState({ [name]: boolean });
     }
-  }
+  };
 
   componentDidMount() {
     this.mounted = true;
@@ -53,7 +53,7 @@ export default class Action extends PureComponent {
   processAction = async () => {
     this.setState({
       started: Date.now(),
-      status: "processing"
+      status: "processing",
     });
 
     const headers = new Headers({
@@ -75,7 +75,7 @@ export default class Action extends PureComponent {
 
     if (response.ok && this.mounted) {
       const message = await response.text();
-      message && console.log(message)
+      message && console.log(message);
 
       if (this.mounted) {
         this.setState({
@@ -83,8 +83,7 @@ export default class Action extends PureComponent {
           message: message,
         });
       }
-    }
-    else if (this.mounted) {
+    } else if (this.mounted) {
       const error = await response.text();
 
       if (this.mounted) {
@@ -102,31 +101,23 @@ export default class Action extends PureComponent {
     }
 
     if (this.mounted) {
-      this.timer = setTimeout(
-        this.clearAction,
-        3000,
-      );
+      this.timer = setTimeout(this.clearAction, 3000);
     }
-  }
+  };
 
   clearAction = () => {
     if (this.mounted) {
       this.setState({
         message: undefined,
         status: undefined,
-      })
+      });
     }
-  }
+  };
 
   render() {
     const hovered = this.state["cursor-hovered"];
 
-    let
-      hue = 0,
-      saturation = 50,
-      lightness = 50,
-      opacity = 0
-    ;
+    let hue = 0, saturation = 50, lightness = 50, opacity = 0;
 
     switch (this.state.status) {
       case "processing":
@@ -143,19 +134,19 @@ export default class Action extends PureComponent {
         lightness = 0;
     }
 
-    if (hovered) { opacity = 1; }
+    if (hovered) {
+      opacity = 1;
+    }
     const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
 
     const texts = {
-      "spawn": "Click here to spawn.",
-      "move": "Click here to move.\nBeware: it’s buggy.",
-      "endTurn": "Clicking this does nothing. :)",
+      spawn: "Click here to spawn.",
+      move: "Click here to move.\nBeware: it’s buggy.",
+      endTurn: "Clicking this does nothing. :)",
     };
 
     return (
-      <button
-        onClick={this.processAction}
-      >
+      <button onClick={this.processAction}>
         {this.props.data.action}
       </button>
     );

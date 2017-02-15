@@ -1,16 +1,15 @@
-import React, {PureComponent} from "react";
+import React, { PureComponent } from "react";
 import Link from "next/prefetch";
 
 export default class Navigation extends PureComponent {
   render() {
-    const links = [
-      { title: "Play", href: "/" },
-      { title: "About", href: "/about" }
-    ];
+    const links = [{ title: "Play", href: "/" }, { title: "About", href: "/about" }];
 
     return (
       <nav className="navigation">
-        <style jsx>{`
+        <style jsx>
+          {
+            `
           .navigation {
             position: relative;
             display: flex;
@@ -40,20 +39,22 @@ export default class Navigation extends PureComponent {
           h1 {
             text-transform: uppercase;
           }
-        `}</style>
+        `
+          }
+        </style>
 
         <div className="navigation-wrapper">
           <h1>Vuorovalta</h1>
-          {links.map((link) =>
+          {links.map(link => (
             <Link href={link.href} key={link.href}>
               <a className={this.props.pathname === link.href && "active"}>
                 {link.title}
               </a>
             </Link>
-          )}
+          ))}
         </div>
 
-        {this.props.pathname === "/" && (
+        {this.props.pathname === "/" &&
           <div className="navigation-wrapper">
             <button type="button" onClick={this.props.selfDestruct}>
               RESTART
@@ -64,8 +65,7 @@ export default class Navigation extends PureComponent {
             <button type="button" onClick={this.props.enterFullscreen}>
               FULL
             </button>
-          </div>
-        )}
+          </div>}
       </nav>
     );
   }

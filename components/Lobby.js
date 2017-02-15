@@ -32,16 +32,12 @@ export default class Lobby extends Component {
     }
   }
 
-  bindFirebase = (userID) => {
-    this.bindAsObject(
-      firebase.database().ref(`players/${userID}/sectorID`),
-      "sectorID",
-      (error) => {
-        console.log(error);
-        this.setState({ sectorID: undefined})
-      }
-    );
-  }
+  bindFirebase = userID => {
+    this.bindAsObject(firebase.database().ref(`players/${userID}/sectorID`), "sectorID", error => {
+      console.log(error);
+      this.setState({ sectorID: undefined });
+    });
+  };
 
   render() {
     const sectorID = this.state.sectorID && this.state.sectorID[".value"];
@@ -49,7 +45,9 @@ export default class Lobby extends Component {
     if (sectorID) {
       return (
         <div id="world">
-          <style jsx>{`
+          <style jsx>
+            {
+              `
             #world {
               user-select: none;
               position: absolute;
@@ -59,14 +57,16 @@ export default class Lobby extends Component {
               --playerPositionY: 0rem;
               --worldScale: 1;
             }
-          `}</style>
+          `
+            }
+          </style>
           <Sectors {...this.props} sectorID={sectorID} />
           <User {...this.props} />
         </div>
       );
     } else {
       return <Limbo {...this.props} />;
-    };
+    }
   }
 }
 

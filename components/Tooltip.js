@@ -10,10 +10,7 @@ export default class Tooltip extends PureComponent {
   componentDidMount() {
     this.mounted = true;
 
-    this.timer = setTimeout(
-      this.show,
-      262,
-    );
+    this.timer = setTimeout(this.show, 262);
   }
 
   componentWillUnmount() {
@@ -28,19 +25,16 @@ export default class Tooltip extends PureComponent {
     if (this.mounted) {
       this.setState({ visible: true });
     }
-  }
+  };
 
   render() {
     if (this.state.visible) {
       return (
-        <div
-          className="tooltip"
-        >
+        <div className="tooltip">
           {this.props.text}
         </div>
       );
-    }
-    else {
+    } else {
       return null;
     }
   }

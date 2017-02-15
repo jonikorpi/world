@@ -1,4 +1,4 @@
-import React, {PureComponent} from "react";
+import React, { PureComponent } from "react";
 
 import Head from "../components/Head";
 import Navigation from "../components/Navigation";
@@ -13,7 +13,7 @@ export default class Play extends PureComponent {
     return (
       <div>
         <Head />
-        <Navigation pathname={this.props.url.pathname}/>
+        <Navigation pathname={this.props.url.pathname} />
       </div>
     );
   }

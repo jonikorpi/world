@@ -1,5 +1,3 @@
-let world = {
-
-};
+let world = {};
 
 export default world;

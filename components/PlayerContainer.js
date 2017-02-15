@@ -18,25 +18,21 @@ export default class PlayerContainer extends Component {
     this.bindFirebase(this.props.playerID);
   }
 
-  bindFirebase = (playerID) => {
+  bindFirebase = playerID => {
     this.unbindFirebase();
 
-    this.bindAsObject(
-      firebase.database().ref(`players/${playerID}`),
-      "player",
-      (error) => {
-        // console.log("Unmounting player", playerID);
-        // this.props.unmountPlayer(playerID);
-      }
-    );
-  }
+    this.bindAsObject(firebase.database().ref(`players/${playerID}`), "player", error => {
+      // console.log("Unmounting player", playerID);
+      // this.props.unmountPlayer(playerID);
+    });
+  };
 
   unbindFirebase = () => {
     this.firebaseListeners.player && this.unbind("player");
-  }
+  };
 
   render() {
-    const { playerID } = {...this.props};
+    const { playerID } = { ...this.props };
     const player = this.state.player;
 
     if (!player) {
@@ -49,7 +45,7 @@ export default class PlayerContainer extends Component {
           <Action
             data={{
               action: "attack",
-              playerID: playerID
+              playerID: playerID,
             }}
             {...this.props}
           />

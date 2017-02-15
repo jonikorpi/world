@@ -32,25 +32,25 @@ export default class Limbo extends Component {
     }
   }
 
-  bindFirebase = (userID) => {
+  bindFirebase = userID => {
     this.bindAsObject(
       firebase.database().ref(`playerSettings/${userID}`),
       "playerSettings",
-      (error) => {
+      error => {
         console.log(error);
-        this.setState({ playerSettings: undefined })
-      }
+        this.setState({ playerSettings: undefined });
+      },
     );
 
     this.bindAsObject(
       firebase.database().ref(`playerSecrets/${userID}`),
       "playerSecrets",
-      (error) => {
+      error => {
         console.log(error);
-        this.setState({ playerSecrets: undefined })
-      }
+        this.setState({ playerSecrets: undefined });
+      },
     );
-  }
+  };
 
   render() {
     return (
@@ -58,7 +58,7 @@ export default class Limbo extends Component {
         <Action
           {...this.props}
           data={{
-            action: "spawn"
+            action: "spawn",
           }}
         />
       </div>

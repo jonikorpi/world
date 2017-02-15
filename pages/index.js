@@ -8,7 +8,7 @@ import Lobby from "../components/Lobby";
 
 let Tone, DuoSynth, Panner, Loop, FeedbackDelay;
 
-const env = (process && process.env && process.env.NODE_ENV) || "development";
+const env = process && process.env && process.env.NODE_ENV || "development";
 
 export default class Play extends PureComponent {
   constructor(props) {
@@ -43,8 +43,7 @@ export default class Play extends PureComponent {
   clientSideRender = () => {
     if (this.state.env === "development") {
       this.setupLogging();
-    }
-    else {
+    } else {
       this.setupRollbar();
     }
 
@@ -62,7 +61,7 @@ export default class Play extends PureComponent {
     // this.handleResize();
 
     this.setState({ clientSideRendered: true });
-  }
+  };
 
   setupRollbar = () => {
     window.Rollbar = require("rollbar-browser");
@@ -71,38 +70,44 @@ export default class Play extends PureComponent {
       captureUncaught: true,
       payload: {
         environment: env,
-      }
+      },
     });
-  }
+  };
 
   setupLogging = () => {
     window.ReactPerf = require("react-addons-perf");
     // firebase.database.enableLogging(true);
 
-    window.setTimeout(() => {
-      window.ReactPerf.start();
+    window.setTimeout(
+      () => {
+        window.ReactPerf.start();
 
-      window.setTimeout(() => {
-        window.ReactPerf.stop();
-        console.log(window.ReactPerf.printInclusive());
-        console.log(window.ReactPerf.printExclusive());
-        console.log(window.ReactPerf.printWasted());
-      }, 8000);
-    }, 1);
-  }
+        window.setTimeout(
+          () => {
+            window.ReactPerf.stop();
+            console.log(window.ReactPerf.printInclusive());
+            console.log(window.ReactPerf.printExclusive());
+            console.log(window.ReactPerf.printWasted());
+          },
+          8000,
+        );
+      },
+      1,
+    );
+  };
 
   setupFirebase = () => {
     if (firebase.apps.length === 0) {
       firebase.initializeApp({
         apiKey: "AIzaSyD95iK1r5QskM9VunjKe_e0lknuRyDVV4M",
         authDomain: "valtameri-e1fd0.firebaseapp.com",
-        databaseURL: "https://valtameri-e1fd0.firebaseio.com"
+        databaseURL: "https://valtameri-e1fd0.firebaseio.com",
       });
     }
 
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        firebase.auth().currentUser.getToken(true).then((userToken) => {
+        firebase.auth().currentUser.getToken(true).then(userToken => {
           this.setState({ userID: user.uid, anonymous: user.isAnonymous, userToken: userToken });
         });
       } else {
@@ -118,7 +123,7 @@ export default class Play extends PureComponent {
         this.setState({ connected: false });
       }
     });
-  }
+  };
 
   setupTone = () => {
     Tone = require("tone/Tone/core/Tone");
@@ -132,7 +137,7 @@ export default class Play extends PureComponent {
 
     let leftPanner = new Panner(-0.5).toMaster();
     let rightPanner = new Panner(0.5).toMaster();
-    let echo = new FeedbackDelay('16n', 0.2);
+    let echo = new FeedbackDelay("16n", 0.2);
     let delay = Tone.context.createDelay(6.0);
     let delayFade = Tone.context.createGain();
 
@@ -149,43 +154,49 @@ export default class Play extends PureComponent {
     delay.connect(Tone.context.destination);
     delay.connect(delay);
 
-    new Loop(time => {
-      leftSynth.triggerAttackRelease('C5', '1:2', time);
-      leftSynth.setNote('D5', '+0:2');
+    new Loop(
+      time => {
+        leftSynth.triggerAttackRelease("C5", "1:2", time);
+        leftSynth.setNote("D5", "+0:2");
 
-      leftSynth.triggerAttackRelease('E4', '0:2', '+6:0');
+        leftSynth.triggerAttackRelease("E4", "0:2", "+6:0");
 
-      leftSynth.triggerAttackRelease('G4', '0:2', '+11:2');
+        leftSynth.triggerAttackRelease("G4", "0:2", "+11:2");
 
-      leftSynth.triggerAttackRelease('E5', '2:0', '+19:0');
-      leftSynth.setNote('G5', '+19:1:2');
-      leftSynth.setNote('A5', '+19:3:0');
-      leftSynth.setNote('G5', '+19:4:2');
-    }, '34m').start();
+        leftSynth.triggerAttackRelease("E5", "2:0", "+19:0");
+        leftSynth.setNote("G5", "+19:1:2");
+        leftSynth.setNote("A5", "+19:3:0");
+        leftSynth.setNote("G5", "+19:4:2");
+      },
+      "34m",
+    ).start();
 
-    new Loop(time => {
-      // Trigger D4 after 5 measures and hold for 1 full measure + two 1/4 notes
-      rightSynth.triggerAttackRelease('D4', '1:2', '+5:0');
-      // Switch to E4 after one more measure
-      rightSynth.setNote('E4', '+6:0');
+    new Loop(
+      time => {
+        // Trigger D4 after 5 measures and hold for 1 full measure + two 1/4 notes
+        rightSynth.triggerAttackRelease("D4", "1:2", "+5:0");
+        // Switch to E4 after one more measure
+        rightSynth.setNote("E4", "+6:0");
 
-      // Trigger B3 after 11 measures + two 1/4 notes + two 1/16 notes. Hold for one measure
-      rightSynth.triggerAttackRelease('B3', '1m', '+11:2:2');
-      // Switch to G3 after a 1/2 note more
-      rightSynth.setNote('G3', '+12:0:2');
+        // Trigger B3 after 11 measures + two 1/4 notes + two 1/16 notes. Hold for one measure
+        rightSynth.triggerAttackRelease("B3", "1m", "+11:2:2");
+        // Switch to G3 after a 1/2 note more
+        rightSynth.setNote("G3", "+12:0:2");
 
-      // Trigger G4 after 23 measures + two 1/4 notes. Hold for a half note.
-      rightSynth.triggerAttackRelease('G4', '0:2', '+23:2');
-    }, '37m').start();
+        // Trigger G4 after 23 measures + two 1/4 notes. Hold for a half note.
+        rightSynth.triggerAttackRelease("G4", "0:2", "+23:2");
+      },
+      "37m",
+    ).start();
 
     Tone.Transport.start();
-  }
+  };
 
   makeSynth = () => {
     const envelope = {
       attack: 0.1,
       release: 4,
-      releaseCurve: 'linear'
+      releaseCurve: "linear",
     };
 
     const filterEnvelope = {
@@ -193,40 +204,40 @@ export default class Play extends PureComponent {
       octaves: 2,
       attack: 0,
       decay: 0,
-      release: 1000
+      release: 1000,
     };
 
     return new DuoSynth({
       harmonicity: 1,
       volume: -25,
       voice0: {
-        oscillator: { type: 'sawtooth' },
+        oscillator: { type: "sawtooth" },
         envelope,
-        filterEnvelope
+        filterEnvelope,
       },
       voice1: {
-        oscillator: { type: 'sine' },
+        oscillator: { type: "sine" },
         envelope,
-        filterEnvelope
+        filterEnvelope,
       },
       vibratoRate: 0.5,
-      vibratoAmount: 0.1
+      vibratoAmount: 0.1,
     });
-  }
+  };
 
   signIn = () => {
     console.log("Signing in anonymously");
-    firebase.auth().signInAnonymously().catch(function (error) {
+    firebase.auth().signInAnonymously().catch(function(error) {
       console.log(error);
     });
-  }
+  };
 
   signOut = () => {
     console.log("Signing out");
-    firebase.auth().signOut().catch(function (error) {
+    firebase.auth().signOut().catch(function(error) {
       console.log(error);
     });
-  }
+  };
 
   // handleResize() {
   //   this.setState({
@@ -239,10 +250,10 @@ export default class Play extends PureComponent {
     const elem = document.documentElement;
 
     if (
-      !document.fullscreenElement
-      && !document.mozFullScreenElement
-      && !document.webkitFullscreenElement
-      && !document.msFullscreenElement
+      !document.fullscreenElement &&
+      !document.mozFullScreenElement &&
+      !document.webkitFullscreenElement &&
+      !document.msFullscreenElement
     ) {
       if (elem.requestFullscreen) {
         elem.requestFullscreen();
@@ -254,21 +265,19 @@ export default class Play extends PureComponent {
         elem.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
       }
     }
-  }
+  };
 
   handleFullScreenChange = () => {
-    const fullscreenElement =
-      document.fullscreenElement ||
+    const fullscreenElement = document.fullscreenElement ||
       document.mozFullScreenElement ||
       document.webkitFullscreenElement;
 
     if (fullscreenElement) {
-      this.setState({ fullScreen: true })
+      this.setState({ fullScreen: true });
+    } else {
+      this.setState({ fullScreen: false });
     }
-    else {
-      this.setState({ fullScreen: false })
-    }
-  }
+  };
 
   selfDestruct = async () => {
     const headers = new Headers({
@@ -288,11 +297,10 @@ export default class Play extends PureComponent {
 
     if (response.ok) {
       console.log(await response.text());
-    }
-    else {
+    } else {
       console.log(response);
     }
-  }
+  };
 
   render() {
     const props = {
@@ -300,23 +308,26 @@ export default class Play extends PureComponent {
     };
 
     return (
-      <div id="play" ref={ref => { this.container = ref; }}>
+      <div
+        id="play"
+        ref={ref => {
+          this.container = ref;
+        }}
+      >
         <Head />
 
-        {this.state.clientSideRendered && this.state.userID && this.state.haveConnectedOnce ? (
-          <Lobby {...this.state} {...props} />
-        ) : (
-          <Loading />
-        )}
+        {this.state.clientSideRendered && this.state.userID && this.state.haveConnectedOnce
+          ? <Lobby {...this.state} {...props} />
+          : <Loading />}
 
-        {!this.state.fullScreen && !this.state.mouseLock && (
+        {!this.state.fullScreen &&
+          !this.state.mouseLock &&
           <Navigation
             pathname={this.props.url.pathname}
             enterFullscreen={this.enterFullscreen}
             toggleVR={this.toggleVR}
             selfDestruct={this.selfDestruct}
-          />
-        )}
+          />}
       </div>
     );
   }

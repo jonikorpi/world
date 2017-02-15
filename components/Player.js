@@ -14,7 +14,7 @@ export default class Player extends PureComponent {
   // }
 
   render() {
-    const { x, y, isSelf, centerPosition } = {...this.props};
+    const { x, y, isSelf, centerPosition } = { ...this.props };
 
     // const position = isSelf ? [
     //   centerPosition[0]*-1,
@@ -27,12 +27,9 @@ export default class Player extends PureComponent {
     // ];
 
     return (
-      <div
-        id={`player-${this.props[".key"]}`}
-        className="player"
-      >
+      <div id={`player-${this.props[".key"]}`} className="player">
         {this.props.children}
-        player
+
       </div>
     );
   }

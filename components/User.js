@@ -32,33 +32,29 @@ export default class User extends Component {
     }
   }
 
-  bindFirebase = (userID) => {
+  bindFirebase = userID => {
     this.bindAsObject(
       firebase.database().ref(`playerSettings/${userID}`),
       "playerSettings",
-      (error) => {
+      error => {
         console.log(error);
-        this.setState({playerSettings: undefined})
+        this.setState({ playerSettings: undefined });
       }
     );
     this.bindAsObject(
       firebase.database().ref(`playerSecrets/${userID}`),
       "playerSecrets",
-      (error) => {
+      error => {
         console.log(error);
-        this.setState({playerSecrets: undefined})
+        this.setState({ playerSecrets: undefined });
       }
     );
 
-    this.bindAsObject(
-      firebase.database().ref(`players/${userID}`),
-      "player",
-      (error) => {
-        console.log(error);
-        this.setState({player: undefined})
-      }
-    );
-  }
+    this.bindAsObject(firebase.database().ref(`players/${userID}`), "player", error => {
+      console.log(error);
+      this.setState({ player: undefined });
+    });
+  };
 
   // getLocations = (secretLocation) => {
   //   let locations = { [secretLocation]: true };
@@ -76,13 +72,8 @@ export default class User extends Component {
     const playerSecrets = this.state.playerSecrets || {};
 
     if (player) {
-      return (
-        <Player {...player} isSelf={true}>
-
-        </Player>
-      );
-    }
-    else {
+      return <Player {...player} isSelf={true} />;
+    } else {
       return null;
     }
   }

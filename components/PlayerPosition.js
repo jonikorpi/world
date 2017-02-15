@@ -14,25 +14,25 @@ export default class PlayerPosition extends Component {
     this.bindFirebase(this.props.playerID);
   }
 
-  bindFirebase = (playerID) => {
+  bindFirebase = playerID => {
     this.unbindFirebase();
 
     this.bindAsObject(
       firebase.database().ref(`playerPositions/${playerID}`),
       "playerPosition",
-      (error) => {
+      error => {
         // console.log("Unmounting player", playerID);
         // this.props.unmountPlayer(playerID);
-      }
+      },
     );
-  }
+  };
 
   unbindFirebase = () => {
     this.firebaseListeners.playerPosition && this.unbind("playerPosition");
-  }
+  };
 
   render() {
-    const { playerID } = {...this.props};
+    const { playerID } = { ...this.props };
     const playerPosition = this.state.playerPosition;
 
     if (!playerPosition || !playerPosition.x) {
@@ -52,12 +52,16 @@ export default class PlayerPosition extends Component {
           transform: transform,
         }}
       >
-        <style jsx>{`
+        <style jsx>
+          {
+            `
           .playerPosition {
             position: absolute;
             left: 0; top: 0;
           }
-        `}</style>
+        `
+          }
+        </style>
 
         {this.props.children}
       </div>

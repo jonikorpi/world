@@ -1,5 +1,3 @@
-let item = {
-
-};
+let item = {};
 
 export default item;

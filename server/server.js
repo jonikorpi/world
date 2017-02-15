@@ -28,17 +28,18 @@ server.use(bodyParser.json());
 //
 // Setup rollbar
 const rollbar = require("rollbar");
-server.use(rollbar.errorHandler(
-  "22fca22d3936434eb8b69cc0c453d040",
-  { environment: process.env.NODE_ENV || "development" }
-));
+server.use(
+  rollbar.errorHandler("22fca22d3936434eb8b69cc0c453d040", {
+    environment: process.env.NODE_ENV || "development"
+  })
+);
 
 //
 // Process and pass on requests
-const processRequest = async (request) => {
+const processRequest = async request => {
   // Version check
   if (request.version !== version) {
-    throw new Error(`Client is outdated. Refreshing! (Version ${request.version} vs. ${version}.)`)
+    throw new Error(`Client is outdated. Refreshing! (Version ${request.version} vs. ${version}.)`);
   }
 
   // Token vs. UID check
@@ -46,7 +47,7 @@ const processRequest = async (request) => {
   const token = await firebase.auth().verifyIdToken(request.token);
 
   if (userID !== token.uid) {
-    throw new Error("You are not authenticated as this player.")
+    throw new Error("You are not authenticated as this player.");
   }
 
   // Start appropriate action
@@ -61,15 +62,15 @@ const processRequest = async (request) => {
       await move(userID, request.to);
       break;
     default:
-      throw new Error("Unknown action type.")
+      throw new Error("Unknown action type.");
   }
 
   return true;
-}
+};
 
 //
 // Spawn
-const spawn = async (userID) => {
+const spawn = async userID => {
   // Check if player is already ingame
   const existingPlayer = await database.ref(`players/${userID}`).once("value");
 
@@ -94,19 +95,19 @@ const spawn = async (userID) => {
   const updates = {
     [`players/${userID}`]: {
       sectorID: `${roundedX},${roundedY}`,
-      immuneUntil: Date.now() + (10 * 1000),
-      turn: 0,
+      immuneUntil: Date.now() + 10 * 1000,
+      turn: 0
     },
     [`playerSecrets/${userID}`]: true,
     [`playerPositions/${userID}`]: {
-      "x": x,
-      "y": y,
-      "v": 0,
-      "t": now,
+      x: x,
+      y: y,
+      v: 0,
+      t: now,
       "~x": roundedX,
-      "~y": roundedY,
+      "~y": roundedY
     },
-    [`sectorPlayers/${roundedX},${roundedY}/${userID}`]: true,
+    [`sectorPlayers/${roundedX},${roundedY}/${userID}`]: true
   };
 
   await database.ref().update(updates);
@@ -116,17 +117,17 @@ const spawn = async (userID) => {
 
 //
 // Self-destruct
-const selfDestruct = async (userID) => {
+const selfDestruct = async userID => {
   // Find all sectors that have indexed this player
-  const sectorsWithPlayer = await database.ref("sectorPlayers")
+  const sectorsWithPlayer = await database
+    .ref("sectorPlayers")
     .orderByChild(userID)
     .startAt(true)
-    .once("value")
-  ;
+    .once("value");
 
   // Destroy all of those indexes
   if (sectorsWithPlayer.numChildren() > 0) {
-    sectorsWithPlayer.forEach((sector) => {
+    sectorsWithPlayer.forEach(sector => {
       sector.child(userID).ref.remove();
     });
   }
@@ -135,7 +136,7 @@ const selfDestruct = async (userID) => {
   const updates = {
     [`players/${userID}`]: null,
     [`playerSecrets/${userID}`]: null,
-    [`playerPositions/${userID}`]: null,
+    [`playerPositions/${userID}`]: null
   };
 
   await database.ref().update(updates);
@@ -156,19 +157,17 @@ const move = async (userID, to) => {
 
   // Lock moving player
   // TODO: make sure the player can move and remove resources
-  const lockTransaction = await playerReference.transaction((player) => {
+  const lockTransaction = await playerReference.transaction(player => {
     if (player) {
       if (!player.locked) {
         player.locked = true;
         player.lastActed = Date.now();
         from = [player.x, player.y];
         return player;
-      }
-      else {
+      } else {
         return;
       }
-    }
-    else {
+    } else {
       return null;
     }
   });
@@ -184,40 +183,35 @@ const move = async (userID, to) => {
   const fromReference = database.ref(`locations/${from[0]},${from[1]}/playerID`);
   const toReference = database.ref(`locations/${to[0]},${to[1]}/playerID`);
 
-  const addTransaction = await toReference.transaction((playerID) => {
+  const addTransaction = await toReference.transaction(playerID => {
     if (playerID === null) {
       return userID;
-    }
-    else {
+    } else {
       return;
     }
   });
 
   if (addTransaction.committed) {
     // If that worked, remove moving player from origin tile
-    fromReference.transaction((playerID) => {
+    fromReference.transaction(playerID => {
       if (playerID === null) {
         return null;
-      }
-      else {
+      } else {
         if (playerID === userID) {
           return null;
-        }
-        else {
+        } else {
           return;
         }
       }
     });
-  }
-  else {
+  } else {
     // Else remove lock from the player and stop
     // TODO: refund resources
-    await playerReference.transaction((player) => {
+    await playerReference.transaction(player => {
       if (player) {
         player.locked = null;
         return player;
-      }
-      else {
+      } else {
         return null;
       }
     });
@@ -226,14 +220,13 @@ const move = async (userID, to) => {
   }
 
   // On ultimate success, update the player
-  await playerReference.transaction((player) => {
+  await playerReference.transaction(player => {
     if (player) {
       player.x = to[0];
       player.y = to[1];
       player.locked = null;
       return player;
-    }
-    else {
+    } else {
       return null;
     }
   });
@@ -247,13 +240,13 @@ app.prepare().then(() => {
   // Page requests
   server.get("*", (req, res) => {
     try {
-      dev && console.log(req.method, req.originalUrl)
-      return handle(req, res)
+      dev && console.log(req.method, req.originalUrl);
+      return handle(req, res);
     } catch (error) {
       dev && console.log(error);
       rollbar.handleError(error);
     }
-  })
+  });
 
   // Hero requests
   server.post("*", async (req, res) => {
@@ -261,17 +254,17 @@ app.prepare().then(() => {
       console.log(req.method, req.originalUrl, req.body.userID, req.body.action);
     }
     try {
-      await processRequest(req.body) && res.send();
+      (await processRequest(req.body)) && res.send();
     } catch (error) {
       dev && console.log(error);
       rollbar.handleError(error);
       res.status(500).send(error.message);
     }
-  })
+  });
 
   // Start server
-  server.listen(3000, (error) => {
+  server.listen(3000, error => {
     if (error) throw error;
     console.log("> Express & next.js ready on http://localhost:3000");
-  })
+  });
 });

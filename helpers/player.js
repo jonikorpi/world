@@ -1,5 +1,3 @@
-let player = {
-
-};
+let player = {};
 
 export default player;

@@ -14,7 +14,7 @@ export default class Entity extends PureComponent {
   // }
 
   render() {
-    const { x, y, isSelf, centerPosition } = {...this.props};
+    const { x, y, isSelf, centerPosition } = { ...this.props };
 
     // const position = isSelf ? [
     //   centerPosition[0]*-1,
@@ -27,10 +27,7 @@ export default class Entity extends PureComponent {
     // ];
 
     return (
-      <div
-        id={`entity-${this.props[".key"]}`}
-        className="entity"
-      >
+      <div id={`entity-${this.props[".key"]}`} className="entity">
         {this.props.children}
         entity
       </div>

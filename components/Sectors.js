@@ -5,7 +5,7 @@ import Sector from "../components/Sector";
 const getAdjascentSectorIDs = (centerX, centerY) => {
   let sectorIDs = [];
 
-  for   (let x = -1; x <= 1; x++) {
+  for (let x = -1; x <= 1; x++) {
     for (let y = -1; y <= 1; y++) {
       sectorIDs.push(`${centerX + x},${centerY + y}`);
     }
@@ -21,7 +21,7 @@ export default class Sectors extends PureComponent {
 
     return (
       <div id="sectors">
-        {sectorIDs.map((sectorID) => {
+        {sectorIDs.map(sectorID => {
           return (
             <Sector
               key={sectorID}
@@ -29,7 +29,7 @@ export default class Sectors extends PureComponent {
               userID={this.props.userID}
               userToken={this.props.userToken}
             />
-          )
+          );
         })}
       </div>
     );

@@ -5,7 +5,9 @@
         ".read": "auth != null",
         // TODO:
         // - read if playerID.sector is this or adjascent sector
-        "$playerID": { ".validate": "newData.isBoolean()" }
+        "$playerID": {
+          ".validate": "newData.isBoolean()"
+        }
       }
     },
     "sectorEntities": {
@@ -31,26 +33,48 @@
         // TODO:
         // - read if auth.uid === $playerID
         // - read if playerID.sector is same or adjascent sector as userID.sector
-        "sectorID": { ".validate": "newData.isString()" },
-        "faction": { ".validate": "newData.isString()" },
-        "immuneUntil": { ".validate": "newData.isNumber()" },
-        "turn": { ".validate": "newData.isNumber()" },
-        "emoteType": { ".validate": "newData.isString()" },
-        "emoteTime": { ".validate": "newData.isNumber()" },
-        "actionType": { ".validate": "newData.isString()" },
-        "actionTurn": { ".validate": "newData.isNumber()" }, /* Use with `turnMounted` */
+        "sectorID": {
+          ".validate": "newData.isString()"
+        },
+        "faction": {
+          ".validate": "newData.isString()"
+        },
+        "immuneUntil": {
+          ".validate": "newData.isNumber()"
+        },
+        "turn": {
+          ".validate": "newData.isNumber()"
+        },
+        "emoteType": {
+          ".validate": "newData.isString()"
+        },
+        "emoteTime": {
+          ".validate": "newData.isNumber()"
+        },
+        "actionType": {
+          ".validate": "newData.isString()"
+        },
+        "actionTurn": {
+          ".validate": "newData.isNumber()"
+        }, /* Use with `turnMounted` */
         "equipment": {
-          "$itemID": { ".validate": "newData.isNumber()"   } /* Durability */
+          "$itemID": {
+            ".validate": "newData.isNumber()"
+          } /* Durability */
         },
         // TODO: flag, copied from playerSettings
-        "$other": { ".validate": "false" }
+        "$other": {
+          ".validate": "false"
+        }
       }
     },
     "playerSecrets": {
       "$playerID": {
         ".read": "(auth != null && auth.uid === $playerID)",
         "inventory": {
-          "$itemID": { ".validate": "newData.isBoolean()"   }
+          "$itemID": {
+            ".validate": "newData.isBoolean()"
+          }
         }
       }
     },
