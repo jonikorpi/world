@@ -94,7 +94,8 @@ const spawn = async userID => {
   const now = firebase.database.ServerValue.TIMESTAMP;
   const updates = {
     [`players/${userID}`]: {
-      sectorID: `${roundedX},${roundedY}`,
+      // sectorID: `${roundedX},${roundedY}`,
+      sectorID: "0,0",
       state: {
         immuneUntil: Date.now() + 10 * 1000,
         turn: 0
@@ -110,7 +111,8 @@ const spawn = async userID => {
       }
     },
     [`playerSecrets/${userID}`]: true,
-    [`sectorPlayers/${roundedX},${roundedY}/${userID}`]: true
+    // [`sectorPlayers/${roundedX},${roundedY}/${userID}`]: true
+    [`sectorPlayers/0,0/${userID}`]: true
   };
 
   await database.ref().update(updates);
