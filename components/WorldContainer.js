@@ -38,6 +38,10 @@ export default class WorldContainer extends PureComponent {
     this.worldRef.style.setProperty("--worldScale", `${scale}`);
   }
 
+  handleWorldInit = (engine) => {
+    engine.enableSleeping = true;
+  }
+
   render() {
     return (
       <div id="world" ref={c => this.worldRef = c}>
@@ -54,7 +58,7 @@ export default class WorldContainer extends PureComponent {
           }
         `}</style>
         <Loop>
-          <World gravity={{ x: 0, y: 0, }}>
+          <World gravity={{ x: 0, y: 0, }} onInit={this.handleWorldInit}>
             <User {...this.props} />
             <Sectors {...this.props} />
           </World>

@@ -31,6 +31,7 @@ export default class UserBody extends PureComponent {
     this.constraint = Matter.Constraint.create({
       bodyA: this.body.body,
       pointB: { x: 0, y: 0 },
+      // stiffness: 1,
     });
     Matter.World.add(this.context.engine.world, this.constraint);
   }
@@ -68,12 +69,22 @@ export default class UserBody extends PureComponent {
   }
 
   handleEngineUpdate = () => {
-    const { body } = { ...this.body };
+    const body = this.body.body;
     const position = body && body.position;
     const velocity = body && body.velocity;
+    const maxVelocity = 0.001;
 
-    // TODO: cap velocity
-    // Matter.Body.setVelocity(body, { x: vx, y: vy });
+    Matter.Body.setVelocity(body, {
+      x: maxVelocity,
+      y: maxVelocity,
+    });
+
+    // if (velocity.x > maxVelocity || velocity.y > maxVelocity) {
+    //   Matter.Body.setVelocity(body, {
+    //     x: velocity.x > maxVelocity ? maxVelocity : velocity.x,
+    //     y: velocity.y > maxVelocity ? maxVelocity : velocity.y,
+    //   });
+    // }
 
     // TODO: handle angle
 

@@ -57,6 +57,8 @@ export default class PlayerBody extends Component {
 
     // TODO: render angle
 
+    // TODO: maybe modify CSS variable instead of re-rendering
+
     const xTransform = `calc( (${engineX}vmin - (1vmin * var(--playerPositionX))) * var(--worldScale) )`;
     const yTransform = `calc( (${engineY}vmin - (1vmin * var(--playerPositionY))) * var(--worldScale) )`;
 
