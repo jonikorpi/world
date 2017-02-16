@@ -14,10 +14,7 @@ export default class UserBody extends PureComponent {
   constructor(props) {
     super(props);
 
-    this.state = {
-      x: 0,
-      y: 0,
-    };
+    this.state = {};
 
     this.updateFirebaseHandler = throttle(this.updateFirebase, 1000);
   }
@@ -30,6 +27,12 @@ export default class UserBody extends PureComponent {
   componentDidMount() {
     this.fetchPosition();
     Matter.Events.on(this.context.engine, "afterUpdate", this.handleEngineUpdate);
+
+    this.constraint = Matter.Constraint.create({
+      bodyA: this.body.body,
+      pointB: { x: 0, y: 0 },
+    });
+    Matter.World.add(this.context.engine.world, this.constraint);
   }
 
   componentWillUnmount() {
@@ -52,57 +55,59 @@ export default class UserBody extends PureComponent {
   }
 
   updateFirebase = () => {
-    // this.positionRef.set(this.state, (error) => {
-    //   if (error) {
-    //     this.fetchPosition();
-    //   }
-    // });
-  }
+    let state = { ...this.state };
+    state["~x"] = Math.round(state.x);
+    state["~y"] = Math.round(state.y);
+    state.t = firebase.database.ServerValue.TIMESTAMP;
 
-  updateState = (x, y) => {
-    this.setState({
-      x: x,
-      y: y,
-      vx: 0,
-      vy: 0,
-      t: firebase.database.ServerValue.TIMESTAMP,
-      "~x": Math.round(x),
-      "~y": Math.round(y),
+    this.positionRef.set(state, (error) => {
+      if (error) {
+        this.fetchPosition();
+      }
     });
   }
 
   handleEngineUpdate = () => {
     const { body } = { ...this.body };
     const position = body && body.position;
+    const velocity = body && body.velocity;
 
-    if (position) {
+    // TODO: cap velocity
+    // Matter.Body.setVelocity(body, { x: vx, y: vy });
+
+    // TODO: handle angle
+
+    if (position && velocity && position.x !== this.state.x && position.y !== this.state.y) {
       this.setState({
         x: position.x,
-        x: position.y,
+        y: position.y,
+        vx: velocity.x,
+        vy: velocity.y,
       });
     }
   }
 
   moveTowards = (relativeX, relativeY) => {
-    const { body } = { ...this.body };
-
-    console.log(this.state.x + relativeX, this.state.y + relativeY);
-
-    // Matter.Body.setPosition(body, { x: props.x, y: props.y });
-    // Matter.Body.setVelocity(body, { x: props.vx, y: props.vy });
+    this.constraint.pointB = {
+      x: this.body.body.position.x + relativeX,
+      y: this.body.body.position.y + relativeY,
+    };
   }
 
   render() {
     const {x, y} = { ...this.state };
 
     if (x !== null && y !== null) {
+      // TODO: render angle
       this.worldRef.style.setProperty("--playerPositionX", x);
       this.worldRef.style.setProperty("--playerPositionY", y);
+    } else {
+      return null;
     }
 
     return (
       <Body
-        args={[x, y, 1, 1]}
+        args={[0, 0, 1, 1]}
         ref={(c) => this.body = c}
       >
         <MovementPlane

@@ -34,6 +34,8 @@ export default class PlayerBody extends Component {
 
     Matter.Body.setPosition(body, { x: props.x, y: props.y });
     Matter.Body.setVelocity(body, { x: props.vx, y: props.vy });
+
+    // TODO: handle angle
   }
 
   handleEngineUpdate = () => {
@@ -52,6 +54,8 @@ export default class PlayerBody extends Component {
   render() {
     const {x, y, vx, vy} = { ...this.props };
     const {engineX, engineY} = { ...this.state };
+
+    // TODO: render angle
 
     const xTransform = `calc( (${engineX}vmin - (1vmin * var(--playerPositionX))) * var(--worldScale) )`;
     const yTransform = `calc( (${engineY}vmin - (1vmin * var(--playerPositionY))) * var(--worldScale) )`;
