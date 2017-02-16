@@ -4,7 +4,7 @@ import reactMixin from "react-mixin";
 import reactFire from "reactfire";
 
 import Player from "../components/Player";
-import MovementPlane from "../components/MovementPlane";
+import UserBody from "../components/UserBody";
 
 export default class User extends Component {
   constructor(props) {
@@ -59,22 +59,22 @@ export default class User extends Component {
 
   render() {
     const player = this.state.player;
-    const playerSettings = this.state.playerSettings;
+    const playerSettings = this.state.playerSettings || {};
     const playerSecrets = this.state.playerSecrets || {};
 
     if (player) {
       return (
         <div id="user">
-          <style jsx>{`
-            #userCenterer {
-              position: fixed;
-              left: 50%; top: 50%;
-            }
-          `}</style>
-
-          <MovementPlane {...this.props} />
+          <UserBody userID={this.props.userID} />
 
           <div id="userCenterer">
+            <style jsx>{`
+              #userCenterer {
+                position: fixed;
+                left: 50%; top: 50%;
+              }
+            `}</style>
+
             <Player {...player} isSelf={true} />
           </div>
         </div>

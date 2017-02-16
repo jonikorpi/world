@@ -324,7 +324,8 @@ export default class Play extends PureComponent {
 
         {this.state.clientSideRendered && this.state.userID && this.state.haveConnectedOnce
           ? <Lobby {...this.state} {...props} />
-          : <Loading />}
+          : <Loading />
+        }
 
         {!this.state.fullScreen &&
           !this.state.mouseLock &&

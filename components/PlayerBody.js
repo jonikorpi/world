@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from "react";
-import firebase from "firebase";
 import { Body } from "react-game-kit";
 import Matter from "matter-js";
 
@@ -40,8 +39,9 @@ export default class PlayerBody extends Component {
   handleEngineUpdate = () => {
     const { body } = { ...this.body };
     const position = body && body.position;
+    const {engineX, engineY} = { ...this.state };
 
-    if (position) {
+    if (position && (engineX !== position.x || engineY !== position.y)) {
       this.setState({
         engineX: position.x,
         engineY: position.y,
@@ -61,10 +61,7 @@ export default class PlayerBody extends Component {
     return (
       <Body
         args={[
-          x,
-          y,
-          1,
-          1,
+          x, y, 1, 1,
           {
             isStatic: true,
             velocity: { x: vx, y: vy },

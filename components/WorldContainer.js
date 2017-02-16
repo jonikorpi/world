@@ -1,15 +1,13 @@
 import React, { PureComponent } from "react";
-import firebase from "firebase";
 import { Loop, World } from "react-game-kit";
 
-import Limbo from "../components/Limbo";
 import Sectors from "../components/Sectors";
 import User from "../components/User";
 
 const maxScale = 1;
 const minScale = 0.1;
 
-export default class Lobby extends PureComponent {
+export default class WorldContainer extends PureComponent {
   componentDidMount() {
     window.addEventListener("scroll", this.handleScroll);
   }
