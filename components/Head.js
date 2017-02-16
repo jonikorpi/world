@@ -3,10 +3,12 @@ import HeadInjection from "next/head";
 
 export default class Head extends PureComponent {
   render() {
+    const scaling = this.props.disableScaling ? ", user-scalable=no" : "";
+
     return (
       <HeadInjection>
         <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="viewport" content={`width=device-width, initial-scale=1${scaling}`} />
 
         <link rel="stylesheet" href="/static/reset.css" />
         <link rel="stylesheet" href="/static/baseline.css" />

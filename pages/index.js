@@ -320,7 +320,7 @@ export default class Play extends PureComponent {
           }
         `}</style>
 
-        <Head />
+        <Head disableScaling />
 
         {this.state.clientSideRendered && this.state.userID && this.state.haveConnectedOnce
           ? <Lobby {...this.state} {...props} />
