@@ -22,7 +22,7 @@ export default class PlayerBody extends Component {
     Matter.Events.on(this.context.engine, "afterUpdate", this.handleEngineUpdate);
   }
 
-  componentWillMount() {
+  componentWillUnmount() {
     Matter.Events.off(this.context.engine, "afterUpdate", this.handleEngineUpdate);
   }
 
