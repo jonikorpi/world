@@ -19,8 +19,7 @@ export default class UserBody extends PureComponent {
     };
 
     this.initialFetchDone = false;
-    this.previousState = {};
-    this.updateFirebaseHandler = throttle(this.updateFirebase, 1000, { leader: true });
+    this.updateFirebaseHandler = throttle(this.updateFirebase, 1000, {});
   }
 
   componentWillMount() {
@@ -53,25 +52,35 @@ export default class UserBody extends PureComponent {
       }
       else {
         this.initialFetchDone = true;
+        this.previousState = { x: 0, y: 0 };
       }
     });
   }
 
   updateFirebase = (x, y, vx, vy) => {
-    if (this.initialFetchDone && (this.previousState.x !== x || this.previousState.y !== y)) {
+    if (
+      this.initialFetchDone
+      && (
+        Math.abs(vx) > 0.001
+        || Math.abs(vy) > 0.001
+      )
+      && (
+        Math.abs(this.previousState.x - x) > 0.001
+        || Math.abs(this.previousState.y - y) > 0.001
+      )
+    ) {
       const state = {
         x: x,
         y: y,
-        vx: vx,
-        vy: vy,
+        vx: Math.abs(vx) > 0.001 ? vx : 0,
+        vy: Math.abs(vy) > 0.001 ? vy : 0,
         "~x": Math.round(x),
         "~y": Math.round(y),
         t: firebase.database.ServerValue.TIMESTAMP,
       };
 
-      console.log(state);
-
       this.previousState = state;
+      // console.log("updating firebase");
 
       this.positionRef.set(state, (error) => {
         if (error) {
@@ -79,11 +88,13 @@ export default class UserBody extends PureComponent {
         }
       });
     }
+    else {
+      // console.log("not updating firebase");
+    }
   }
 
   handleEngineBeforeUpdate = () => {
     const body = this.body.body;
-    const velocity = body && body.velocity;
     const target = this.state.target;
 
     const stopWithin = 0.2;
@@ -104,13 +115,14 @@ export default class UserBody extends PureComponent {
           y: body.position.y,
         },
         {
-          x: (target.x - body.position.x) / body.mass * 500,
-          y: (target.y - body.position.y) / body.mass * 500,
+          x: (target.x - body.position.x) / body.mass * 200,
+          y: (target.y - body.position.y) / body.mass * 200,
         },
       );
     }
 
     // TODO: compare x+y together instead
+    const velocity = body && body.velocity;
     const maxV = 0.1;
     const absoluteX = Math.abs(velocity.x);
     const absoluteY = Math.abs(velocity.y);
@@ -164,7 +176,6 @@ export default class UserBody extends PureComponent {
             density: 7850,
             frictionStatic: 0.01,
             frictionAir: 0.1,
-            inertia: Infinity,
           }]}
           ref={(c) => this.body = c}
         >

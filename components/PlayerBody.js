@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Body } from "react-game-kit";
 import Matter from "matter-js";
+import firebase from "firebase";
 
 export default class PlayerBody extends Component {
   static contextTypes = {
@@ -14,6 +15,14 @@ export default class PlayerBody extends Component {
       engineX: 0,
       engineY: 0,
     };
+
+    this.clockSkew = 0;
+  }
+
+  componentWillMount() {
+    firebase.database().ref("/.info/serverTimeOffset").on("value", (value) => {
+      this.clockSkew = value.val();
+    });
   }
 
   componentDidMount() {
@@ -24,6 +33,7 @@ export default class PlayerBody extends Component {
   componentWillUnmount() {
     Matter.Events.off(this.context.engine, "beforeUpdate", this.handleEngineBeforeUpdate);
     Matter.Events.off(this.context.engine, "afterUpdate", this.handleEngineAfterUpdate);
+    firebase.database().ref("/.info/serverTimeOffset").off("value");
   }
 
   componentWillReceiveProps(nextProps) {
@@ -32,19 +42,32 @@ export default class PlayerBody extends Component {
 
   handleEngineBeforeUpdate = () => {
     const { body } = { ...this.body };
-    // const timeElapsed = (Date.now() - this.props.t) / 1000;
-    // console.log(this.context.engine.timing.timestamp, this.props.t, timeElapsed);
-
-    // var test = 400 + 100 * Math.sin(this.context.engine.timing.timestamp);
+    const elapsedSeconds = (Date.now() - this.props.t + this.clockSkew) / 1000;
+    const timeBoost = elapsedSeconds > 5 ? 0 : elapsedSeconds * 10;
 
     Matter.Body.applyForce(
       body,
       body.position,
       {
-        x: ((this.props.x + this.props.vx) - body.position.x) / body.mass * 500,
-        y: ((this.props.y + this.props.vy) - body.position.y) / body.mass * 500,
+        x: (this.props.x + (this.props.vx * timeBoost) - body.position.x) / body.mass * 500,
+        y: (this.props.y + (this.props.vy * timeBoost) - body.position.y) / body.mass * 500,
       }
     );
+
+    // TODO: compare x+y together instead
+    const velocity = body && body.velocity;
+    const maxV = 0.15;
+    const absoluteX = Math.abs(velocity.x);
+    const absoluteY = Math.abs(velocity.y);
+    const xIsTooFast = absoluteX > maxV;
+    const yIsTooFast = absoluteY > maxV;
+
+    if (xIsTooFast || yIsTooFast) {
+      Matter.Body.setVelocity(body, {
+        x: xIsTooFast ? (maxV * Math.sign(velocity.x)) : velocity.x,
+        y: yIsTooFast ? (maxV * Math.sign(velocity.y)) : velocity.y,
+      });
+    }
 
     // TODO: calculate angle with Matter.Vector.angle from velocity
   }
@@ -81,10 +104,10 @@ export default class PlayerBody extends Component {
           {
             //isStatic: true,
             velocity: { x: vx, y: vy },
+            inertia: Infinity,
             density: 7850,
             frictionStatic: 0.01,
             frictionAir: 0.1,
-            inertia: Infinity,
           },
         ]}
         ref={(c) => this.body = c}

@@ -39,7 +39,7 @@ export default class WorldContainer extends PureComponent {
   }
 
   handleWorldInit = (engine) => {
-    engine.enableSleeping = true;
+    // engine.enableSleeping = true;
   }
 
   render() {
