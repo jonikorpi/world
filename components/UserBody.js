@@ -70,7 +70,16 @@ export default class UserBody extends PureComponent {
     const body = this.body.body;
     const position = body && body.position;
     const velocity = body && body.velocity;
-    const maxV = 0.1;
+    const maxV = 1;
+    const {targetX, targetY} = this.state.target;
+
+    if (targetX && targetY) {
+      Matter.Body.applyForce(
+        body,
+        { x: 0, y: -0.1 },
+        { x: targetX, y: targetY },
+      );
+    }
 
     // TODO: compare x+y together instead
     if (velocity.x > maxV || velocity.y > maxV) {
@@ -94,10 +103,16 @@ export default class UserBody extends PureComponent {
         },
       });
     }
+
+    // TODO: render angle
+    this.worldRef.style.setProperty("--playerPositionX", position.x);
+    this.worldRef.style.setProperty("--playerPositionY", position.y);
   }
 
   moveTowards = (relativeX, relativeY) => {
     const body = this.body.body;
+
+    console.log("moveTowards", relativeX, relativeY);
 
     this.setState({
       target: {
@@ -108,26 +123,20 @@ export default class UserBody extends PureComponent {
   }
 
   render() {
-    const {x, y} = { ...this.state };
-
-    if (x !== null && y !== null) {
-      // TODO: render angle
-      this.worldRef.style.setProperty("--playerPositionX", x);
-      this.worldRef.style.setProperty("--playerPositionY", y);
-    } else {
-      return null;
-    }
-
     return (
-      <Body
-        args={[0, 0, 1, 1]}
-        ref={(c) => this.body = c}
-      >
+      <div id="userBody">
+        <Body
+          args={[0, 0, 1, 1]}
+          ref={(c) => this.body = c}
+        >
+          <div />
+        </Body>
+
         <MovementPlane
           moveTowards={this.moveTowards}
           worldRef={this.worldRef}
         />
-      </Body>
+      </div>
     );
   }
 }

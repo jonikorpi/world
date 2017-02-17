@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 
 export default class MovementPlane extends PureComponent {
-  handleClick = (reactEvent) => {
+  moveTowards = (x, y) => {
     const worldRef = this.props.worldRef;
     const width = worldRef.clientWidth;
     const height = worldRef.clientHeight;
@@ -10,16 +10,16 @@ export default class MovementPlane extends PureComponent {
     const scaleDimension = width < height ? width : height;
     const unit = scaleDimension * scale;
 
-    const event = reactEvent.nativeEvent;
-    const x = event.clientX;
-    const y = event.clientY;
-
-    const relativeCoordinates = [
+    this.props.moveTowards(
       (x - center[0]) / unit,
       (y - center[1]) / unit,
-    ];
+    );
+  }
 
-    this.props.moveTowards(relativeCoordinates[0], relativeCoordinates[1]);
+  handleClick = (reactEvent) => {
+    const event = reactEvent.nativeEvent;
+
+    this.moveTowards(event.clientX, event.clientY);
   }
 
   render() {
