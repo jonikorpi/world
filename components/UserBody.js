@@ -15,10 +15,11 @@ export default class UserBody extends PureComponent {
     super(props);
 
     this.state = {
-      position: {},
       target: {},
     };
 
+    this.initialFetchDone = false;
+    this.previousState = {};
     this.updateFirebaseHandler = throttle(this.updateFirebase, 1000);
   }
 
@@ -29,80 +30,90 @@ export default class UserBody extends PureComponent {
 
   componentDidMount() {
     this.fetchPosition();
-    Matter.Events.on(this.context.engine, "afterUpdate", this.handleEngineUpdate);
+    Matter.Events.on(this.context.engine, "beforeUpdate", this.handleEngineBeforeUpdate);
+    Matter.Events.on(this.context.engine, "afterUpdate", this.handleEngineAfterUpdate);
   }
 
   componentWillUnmount() {
-    Matter.Events.off(this.context.engine, "afterUpdate", this.handleEngineUpdate);
-  }
-
-  componentDidUpdate() {
-    if (this.initialFetchDone) {
-      this.updateFirebaseHandler();
-    }
-    else {
-      this.initialFetchDone = true;
-    }
+    Matter.Events.off(this.context.engine, "beforeUpdate", this.handleEngineBeforeUpdate);
+    Matter.Events.off(this.context.engine, "afterUpdate", this.handleEngineAfterUpdate);
   }
 
   fetchPosition = () => {
-    this.positionRef.once("value").then(position => {
-      this.setState({
-        position: { ...position.val() },
-      });
-    });
-  }
-
-  updateFirebase = () => {
-    let state = { ...this.state.position };
-    state["~x"] = Math.round(state.x);
-    state["~y"] = Math.round(state.y);
-    state.t = firebase.database.ServerValue.TIMESTAMP;
-
-    this.positionRef.set(state, (error) => {
-      if (error) {
-        this.fetchPosition();
-      }
-    });
-  }
-
-  handleEngineUpdate = () => {
     const body = this.body.body;
-    const position = body && body.position;
-    const velocity = body && body.velocity;
-    const maxV = 1;
-    const {targetX, targetY} = this.state.target;
 
-    if (targetX && targetY) {
+    this.positionRef.once("value").then(position => {
+      const {x, y, vx, vy} = { ...position.val() };
+
+      this.initialFetchDone = true;
+      Matter.Body.setVelocity(body, { x: vx, y: vy });
+      Matter.Body.setPosition(body, { x: x, y: y });
+    });
+  }
+
+  updateFirebase = (x, y, vx, vy) => {
+    if (this.initialFetchDone && (this.previousState.x !== x || this.previousState.y !== y)) {
+      const state = {
+        x: x,
+        y: y,
+        vx: vx,
+        vy: vy,
+        "~x": Math.round(x),
+        "~y": Math.round(y),
+        t: firebase.database.ServerValue.TIMESTAMP,
+      };
+
+      console.log(state);
+
+      this.previousState = state;
+
+      this.positionRef.set(state, (error) => {
+        if (error) {
+          this.fetchPosition();
+        }
+      });
+    }
+  }
+
+  handleEngineBeforeUpdate = () => {
+    const body = this.body.body;
+    const velocity = body && body.velocity;
+    const target = this.state.target;
+    const maxV = 1;
+
+    if (target.x && target.y) {
       Matter.Body.applyForce(
         body,
-        { x: 0, y: -0.1 },
-        { x: targetX, y: targetY },
+        body.position,
+        {
+          x: (target.x - body.position.x) * 0.00000001,
+          y: (target.y - body.position.y) * 0.00000001,
+        },
       );
-    }
-
-    // TODO: compare x+y together instead
-    if (velocity.x > maxV || velocity.y > maxV) {
-      Matter.Body.setVelocity(body, {
-        x: velocity.x > maxV ? maxV : velocity.x,
-        y: velocity.y > maxV ? maxV : velocity.y,
-      });
     }
 
     // TODO: handle angle
 
-    const state = this.state.position;
+    // TODO: compare x+y together instead
+    // if (velocity.x > maxV || velocity.y > maxV) {
+    //   Matter.Body.setVelocity(body, {
+    //     x: velocity.x > maxV ? maxV : velocity.x,
+    //     y: velocity.y > maxV ? maxV : velocity.y,
+    //   });
+    // }
+  }
 
-    if (position && velocity && position.x !== state.x && position.y !== state.y) {
-      this.setState({
-        position: {
-          x: position.x,
-          y: position.y,
-          vx: velocity.x,
-          vy: velocity.y,
-        },
-      });
-    }
+  handleEngineAfterUpdate = () => {
+    const body = this.body.body;
+    const position = body && body.position;
+    const velocity = body && body.velocity;
+
+    this.updateFirebaseHandler(
+      position.x,
+      position.y,
+      velocity.x,
+      velocity.y,
+    );
 
     // TODO: render angle
     this.worldRef.style.setProperty("--playerPositionX", position.x);
