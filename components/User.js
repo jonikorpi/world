@@ -63,6 +63,7 @@ export default class User extends Component {
     const playerSecrets = this.state.playerSecrets || {};
 
     if (player) {
+
       return (
         <div id="user">
           <UserBody userID={this.props.userID} />
