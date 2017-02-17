@@ -40,7 +40,7 @@
     "build": "next build",
     "test": "",
     "eject": "",
-    "deploy-live": "now --alias -e GAME_VERSION=`git log -n 1 --pretty=format:'%H'` && curl https://api.rollbar.com/api/1/deploy/ -F access_token=22fca22d3936434eb8b69cc0c453d040 -F environment=production -F revision=`git log -n 1 --pretty=format:'%H'` -F local_username=`whoami` && firebase deploy",
+    "deploy-live": "now -e GAME_VERSION=`git log -n 1 --pretty=format:'%H'` && curl https://api.rollbar.com/api/1/deploy/ -F access_token=22fca22d3936434eb8b69cc0c453d040 -F environment=production -F revision=`git log -n 1 --pretty=format:'%H'` -F local_username=`whoami` && firebase deploy && now alias",
     "deploy-testing": "now -e GAME_VERSION=`git log -n 1 --pretty=format:'%H'` && curl https://api.rollbar.com/api/1/deploy/ -F access_token=22fca22d3936434eb8b69cc0c453d040 -F environment=testing -F revision=`git log -n 1 --pretty=format:'%H'` -F local_username=`whoami` && firebase deploy",
     "prune": "now rm $(now-no-alias | json -a uid)",
     "now-start": "node --harmony-async-await server/server.js"
