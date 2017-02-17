@@ -30,12 +30,12 @@ export default class Player extends PureComponent {
       <div id={`player-${this.props[".key"]}`} className="player">
         <style jsx>{`
           .playerModel {
-            width: 1rem;
-            height: 1rem;
+            width: calc(var(--worldScale) * 1vmin);
+            height: calc(var(--worldScale) * 1vmin);
             border-radius: 50% 50% 0 0;
             background: white;
             will-change: transform;
-            transform: translate3d(-50%, -50%, 0) scale(var(--worldScale));
+            transform: translate3d(-50%, -50%, 0) rotate(var(--userAngle));
           }
         `}</style>
 
