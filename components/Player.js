@@ -32,7 +32,7 @@ export default class Player extends PureComponent {
           .playerModel {
             width: 1rem;
             height: 1rem;
-            border-radius: 50%;
+            border-radius: 50% 50% 0 0;
             background: white;
             will-change: transform;
             transform: translate3d(-50%, -50%, 0) scale(var(--worldScale));
