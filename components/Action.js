@@ -152,7 +152,7 @@ export default class Action extends PureComponent {
             pointer-events: all;
           }
         `}</style>
-        {this.props.data.action}
+        {/*{this.props.data.action}*/}
       </button>
     );
   }
