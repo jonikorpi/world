@@ -14,7 +14,10 @@ export default class UserBody extends PureComponent {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      position: {},
+      target: {},
+    };
 
     this.updateFirebaseHandler = throttle(this.updateFirebase, 1000);
   }
@@ -27,13 +30,6 @@ export default class UserBody extends PureComponent {
   componentDidMount() {
     this.fetchPosition();
     Matter.Events.on(this.context.engine, "afterUpdate", this.handleEngineUpdate);
-
-    this.constraint = Matter.Constraint.create({
-      bodyA: this.body.body,
-      pointB: { x: 0, y: 0 },
-      // stiffness: 1,
-    });
-    Matter.World.add(this.context.engine.world, this.constraint);
   }
 
   componentWillUnmount() {
@@ -51,12 +47,14 @@ export default class UserBody extends PureComponent {
 
   fetchPosition = () => {
     this.positionRef.once("value").then(position => {
-      this.setState({ ...position.val() });
+      this.setState({
+        position: { ...position.val() },
+      });
     });
   }
 
   updateFirebase = () => {
-    let state = { ...this.state };
+    let state = { ...this.state.position };
     state["~x"] = Math.round(state.x);
     state["~y"] = Math.round(state.y);
     state.t = firebase.database.ServerValue.TIMESTAMP;
@@ -72,37 +70,41 @@ export default class UserBody extends PureComponent {
     const body = this.body.body;
     const position = body && body.position;
     const velocity = body && body.velocity;
-    const maxVelocity = 0.001;
+    const maxV = 0.1;
 
-    Matter.Body.setVelocity(body, {
-      x: maxVelocity,
-      y: maxVelocity,
-    });
-
-    // if (velocity.x > maxVelocity || velocity.y > maxVelocity) {
-    //   Matter.Body.setVelocity(body, {
-    //     x: velocity.x > maxVelocity ? maxVelocity : velocity.x,
-    //     y: velocity.y > maxVelocity ? maxVelocity : velocity.y,
-    //   });
-    // }
+    // TODO: compare x+y together instead
+    if (velocity.x > maxV || velocity.y > maxV) {
+      Matter.Body.setVelocity(body, {
+        x: velocity.x > maxV ? maxV : velocity.x,
+        y: velocity.y > maxV ? maxV : velocity.y,
+      });
+    }
 
     // TODO: handle angle
 
-    if (position && velocity && position.x !== this.state.x && position.y !== this.state.y) {
+    const state = this.state.position;
+
+    if (position && velocity && position.x !== state.x && position.y !== state.y) {
       this.setState({
-        x: position.x,
-        y: position.y,
-        vx: velocity.x,
-        vy: velocity.y,
+        position: {
+          x: position.x,
+          y: position.y,
+          vx: velocity.x,
+          vy: velocity.y,
+        },
       });
     }
   }
 
   moveTowards = (relativeX, relativeY) => {
-    this.constraint.pointB = {
-      x: this.body.body.position.x + relativeX,
-      y: this.body.body.position.y + relativeY,
-    };
+    const body = this.body.body;
+
+    this.setState({
+      target: {
+        x: body.position.x + relativeX,
+        y: body.position.y + relativeY,
+      },
+    });
   }
 
   render() {
