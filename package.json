@@ -40,7 +40,7 @@
   },
   "scripts": {
     "firebase": "firebase deploy",
-    "start": " GAME_VERSION=`git log -n 1 --pretty=format:'%H'` nodemon --watch server --harmony-async-await server/server.js",
+    "start": "GAME_VERSION=`git log -n 1 --pretty=format:'%H'` nodemon --watch server --harmony-async-await server/server.js",
     "build": "next build",
     "test": "",
     "eject": "",
