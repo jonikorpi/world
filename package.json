@@ -8,7 +8,10 @@
     ],
     "env": {
       "NODE_ENV": "production"
-    }
+    },
+    "files": [
+      "./.secret.json"
+    ]
   },
   "eslintConfig": {
     "extends": "react-app",
@@ -25,7 +28,7 @@
     "firebase-admin": "^4.1.0",
     "jonikorpi-base-files": "^6.0.1",
     "lodash.throttle": "^4.1.1",
-    "next": "^2.0.0-beta",
+    "next": "^2.0.0-beta.20",
     "react-addons-perf": "^15.4.2",
     "react-game-kit": "^0.0.2",
     "react-mixin": "^3.0.5",
@@ -36,12 +39,13 @@
     "whatwg-fetch": "^2.0.2"
   },
   "scripts": {
-    "start": "firebase deploy && GAME_VERSION=`git log -n 1 --pretty=format:'%H'` nodemon --watch server --harmony-async-await server/server.js",
+    "firebase": "firebase deploy",
+    "start": " GAME_VERSION=`git log -n 1 --pretty=format:'%H'` nodemon --watch server --harmony-async-await server/server.js",
     "build": "next build",
     "test": "",
     "eject": "",
-    "deploy-live": "now -e GAME_VERSION=`git log -n 1 --pretty=format:'%H'` && curl https://api.rollbar.com/api/1/deploy/ -F access_token=22fca22d3936434eb8b69cc0c453d040 -F environment=production -F revision=`git log -n 1 --pretty=format:'%H'` -F local_username=`whoami` && firebase deploy && now alias",
-    "deploy-testing": "now -e GAME_VERSION=`git log -n 1 --pretty=format:'%H'` && curl https://api.rollbar.com/api/1/deploy/ -F access_token=22fca22d3936434eb8b69cc0c453d040 -F environment=testing -F revision=`git log -n 1 --pretty=format:'%H'` -F local_username=`whoami` && firebase deploy",
+    "deploy-live": "now -e GAME_VERSION=`git log -n 1 --pretty=format:'%H'` && curl https://api.rollbar.com/api/1/deploy/ -F access_token=22fca22d3936434eb8b69cc0c453d040 -F environment=production -F revision=`git log -n 1 --pretty=format:'%H'` -F local_username=`whoami` && npm run firebase && now alias",
+    "deploy-testing": "now -e GAME_VERSION=`git log -n 1 --pretty=format:'%H'` && curl https://api.rollbar.com/api/1/deploy/ -F access_token=22fca22d3936434eb8b69cc0c453d040 -F environment=testing -F revision=`git log -n 1 --pretty=format:'%H'` -F local_username=`whoami` && npm run firebase",
     "prune": "now rm $(now-no-alias | json -a uid)",
     "now-start": "node --harmony-async-await server/server.js"
   },
