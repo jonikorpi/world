@@ -131,6 +131,15 @@ export default class UserBody extends PureComponent {
         forceVector,
       );
 
+      const targetAngle = Matter.Vector.angle(
+        { x: target.x, y: target.y },
+        body.position
+      );
+
+      Matter.Body.setAngle(
+        body,
+        body.angle + (targetAngle - body.angle) * 0.2,
+      );
     }
   }
 
@@ -149,7 +158,7 @@ export default class UserBody extends PureComponent {
     // TODO: render angle
     this.worldRef.style.setProperty("--userPositionX", position.x);
     this.worldRef.style.setProperty("--userPositionY", position.y);
-    this.worldRef.style.setProperty("--userAngle", body.angle + "rad");
+    this.worldRef.style.setProperty("--userAngle", body.angle - 1.5708 + "rad");
   }
 
   moveTowards = (relativeX, relativeY) => {
