@@ -3,6 +3,8 @@ import { Body } from "react-game-kit";
 import Matter from "matter-js";
 import firebase from "firebase";
 
+import rendering from "../helpers/rendering";
+
 const xTransform = `calc( ((var(--playerPositionX) * 1vmin) - (1vmin * var(--userPositionX))) * var(--worldScale) )`;
 const yTransform = `calc( ((var(--playerPositionY) * 1vmin) - (1vmin * var(--userPositionY))) * var(--worldScale) )`;
 
@@ -72,7 +74,7 @@ export default class PlayerBody extends Component {
 
     Matter.Body.setAngle(
       body,
-      body.angle + (targetAngle - body.angle) * 0.2,
+      rendering.angleLerp(body.angle, targetAngle, 4 / 60),
     );
   }
 

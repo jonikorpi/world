@@ -6,16 +6,7 @@ import throttle from "lodash.throttle";
 
 import MovementPlane from "../components/MovementPlane";
 
-
-const shortAngleDist = (a0, a1) => {
-  var max = Math.PI * 2;
-  var da = (a1 - a0) % max;
-  return 2 * da % max - da;
-}
-
-const angleLerp = (a0, a1, t) => {
-  return a0 + shortAngleDist(a0, a1) * t;
-}
+import rendering from "../helpers/rendering";
 
 export default class UserBody extends PureComponent {
   static contextTypes = {
@@ -129,7 +120,7 @@ export default class UserBody extends PureComponent {
 
       Matter.Body.setAngle(
         body,
-        angleLerp(body.angle, targetAngle, 4 / 60)
+        rendering.angleLerp(body.angle, targetAngle, 4 / 60)
       );
 
       console.log(body.angle, body.speed)
