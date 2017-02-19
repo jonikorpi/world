@@ -76,7 +76,6 @@ export default class UserBody extends PureComponent {
   }
 
   updateFirebase = (x, y, vx, vy) => {
-    console.count("updating firebase");
     const state = {
       x: x,
       y: y,
