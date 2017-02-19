@@ -38,31 +38,6 @@ export default class PlayerBody extends Component {
     const { body } = { ...this.body };
     const elapsedSeconds = (Date.now() - this.props.t + this.clockSkew) / 1000;
     const timeBoost = elapsedSeconds > 2 ? 0 : elapsedSeconds * 60;
-
-    Matter.Body.applyForce(
-      body,
-      body.position,
-      {
-        x: (this.props.x + (this.props.vx * timeBoost) - body.position.x) / body.mass * 80000,
-        y: (this.props.y + (this.props.vy * timeBoost) - body.position.y) / body.mass * 80000,
-      }
-    );
-
-    // TODO: compare x+y together instead
-    const velocity = body && body.velocity;
-    const maxV = 0.15;
-    const absoluteX = Math.abs(velocity.x);
-    const absoluteY = Math.abs(velocity.y);
-    const xIsTooFast = absoluteX > maxV;
-    const yIsTooFast = absoluteY > maxV;
-
-    if (xIsTooFast || yIsTooFast) {
-      Matter.Body.setVelocity(body, {
-        x: xIsTooFast ? (maxV * Math.sign(velocity.x)) : velocity.x,
-        y: yIsTooFast ? (maxV * Math.sign(velocity.y)) : velocity.y,
-      });
-    }
-
     const maxAllowedPositionSkew = 2;
 
     if (
@@ -78,9 +53,21 @@ export default class PlayerBody extends Component {
       });
     }
 
+    let positionVector = {
+      x: this.props.x + (this.props.vx * timeBoost),
+      y: this.props.y + (this.props.vy * timeBoost),
+    };
+
+    let forceVector = {
+      x: (positionVector.x - body.position.x) / body.mass * 80000,
+      y: (positionVector.y - body.position.y) / body.mass * 80000,
+    };
+
+    Matter.Body.applyForce(body, body.position, forceVector);
+
     const targetAngle = Matter.Vector.angle(
-      body.velocity,
-      body.position
+      positionVector,
+      body.position,
     );
 
     Matter.Body.setAngle(
