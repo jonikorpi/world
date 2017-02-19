@@ -39,7 +39,7 @@ export default class PlayerBody extends Component {
   handleEngineBeforeUpdate = () => {
     const { body } = { ...this.body };
     const elapsedSeconds = (Date.now() - this.props.t + this.clockSkew) / 1000;
-    const timeBoost = elapsedSeconds > 2.2 ? 0 : (1 + elapsedSeconds) * 60;
+    const timeBoost = elapsedSeconds > 1.3 ? 0 : (2 + elapsedSeconds) * 60;
     const maxAllowedPositionSkew = 2;
 
     const stopWithin = 0.1;
