@@ -54,7 +54,7 @@ export default class WorldContainer extends PureComponent {
             margin-bottom: 50vh;
             --userPositionX: 0;
             --userPositionY: 0;
-            --userAngle: 0rad;
+            --playerAngle: 0rad;
             --worldScale: ${maxScale};
           }
         `}</style>

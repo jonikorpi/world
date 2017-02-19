@@ -3,6 +3,9 @@ import { Body } from "react-game-kit";
 import Matter from "matter-js";
 import firebase from "firebase";
 
+const xTransform = `calc( ((var(--playerPositionX) * 1vmin) - (1vmin * var(--userPositionX))) * var(--worldScale) )`;
+const yTransform = `calc( ((var(--playerPositionY) * 1vmin) - (1vmin * var(--userPositionY))) * var(--worldScale) )`;
+
 export default class PlayerBody extends Component {
   static contextTypes = {
     engine: PropTypes.object
@@ -10,11 +13,6 @@ export default class PlayerBody extends Component {
 
   constructor(props) {
     super(props);
-
-    this.state = {
-      engineX: 0,
-      engineY: 0,
-    };
 
     this.clockSkew = 0;
   }
@@ -80,33 +78,28 @@ export default class PlayerBody extends Component {
       });
     }
 
-    // TODO: calculate angle with Matter.Vector.angle from velocity
+    const targetAngle = Matter.Vector.angle(
+      body.velocity,
+      body.position
+    );
+
+    Matter.Body.setAngle(
+      body,
+      body.angle + (targetAngle - body.angle) * 0.2,
+    );
   }
 
   handleEngineAfterUpdate = () => {
     const { body } = { ...this.body };
     const position = body && body.position;
-    const {engineX, engineY} = { ...this.state };
 
-    if (position && (engineX !== position.x || engineY !== position.y)) {
-      this.setState({
-        engineX: position.x,
-        engineY: position.y,
-      });
-    }
+    this.positionRef.style.setProperty("--playerPositionX", position.x);
+    this.positionRef.style.setProperty("--playerPositionY", position.y);
+    this.positionRef.style.setProperty("--playerAngle", body.angle - 1.5708 + "rad");
   }
 
   render() {
     const {x, y, vx, vy} = { ...this.props };
-    const {engineX, engineY} = { ...this.state };
-
-    // TODO: modify CSS variable instead of re-rendering
-    // TODO: render --playerAngle
-
-    const xTransform = `calc( (${engineX}vmin - (1vmin * var(--userPositionX))) * var(--worldScale) )`;
-    const yTransform = `calc( (${engineY}vmin - (1vmin * var(--userPositionY))) * var(--worldScale) )`;
-
-    const transform = `translate3d(${xTransform}, ${yTransform}, 0)`;
 
     return (
       <Body
@@ -122,16 +115,14 @@ export default class PlayerBody extends Component {
       >
         <div
           className="playerPosition"
-          style={{
-            WebkitTransform: transform,
-            transform: transform
-          }}
+          ref={(c) => this.positionRef = c}
         >
           <style jsx>{`
             .playerPosition {
               position: absolute;
               left: 0; top: 0;
               will-change: transform;
+              transform: translate3d(${xTransform}, ${yTransform}, 0);
             }
           `}</style>
 

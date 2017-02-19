@@ -35,7 +35,7 @@ export default class Player extends PureComponent {
             border-radius: 50% 50% 0 0;
             background: white;
             will-change: transform;
-            transform: translate3d(-50%, -50%, 0) rotate(var(--userAngle));
+            transform: translate3d(-50%, -50%, 0) rotate(var(--playerAngle));
           }
         `}</style>
 
