@@ -123,8 +123,6 @@ export default class UserBody extends PureComponent {
         rendering.angleLerp(body.angle, targetAngle, 4 / 60)
       );
 
-      console.log(body.angle, body.speed)
-
       let forceVector = {
         x: (target.x - body.position.x) / body.mass,
         y: (target.y - body.position.y) / body.mass,

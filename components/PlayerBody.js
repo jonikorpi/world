@@ -39,8 +39,18 @@ export default class PlayerBody extends Component {
   handleEngineBeforeUpdate = () => {
     const { body } = { ...this.body };
     const elapsedSeconds = (Date.now() - this.props.t + this.clockSkew) / 1000;
-    const timeBoost = elapsedSeconds > 2 ? 0 : elapsedSeconds * 60;
+    const timeBoost = elapsedSeconds > 2.2 ? 0 : (1 + elapsedSeconds) * 60;
     const maxAllowedPositionSkew = 2;
+
+    const stopWithin = 0.2;
+    const xDistance = Math.abs(this.props.x - body.position.x);
+    const yDistance = Math.abs(this.props.y - body.position.y);
+    const shouldAccelerate = (
+      this.props.x && this.props.y
+      && (
+        xDistance > stopWithin || yDistance > stopWithin
+      )
+    );
 
     if (
       timeBoost === 0
@@ -61,11 +71,22 @@ export default class PlayerBody extends Component {
     };
 
     let forceVector = {
-      x: (positionVector.x - body.position.x) / body.mass * 80000,
-      y: (positionVector.y - body.position.y) / body.mass * 80000,
+      x: (positionVector.x - body.position.x) / body.mass,
+      y: (positionVector.y - body.position.y) / body.mass,
     };
 
-    Matter.Body.applyForce(body, body.position, forceVector);
+    if (shouldAccelerate) {
+      const speedLimit = 1 * 1.146;
+      const magnitudeLimit = speedLimit / 60 / body.mass;
+
+      const speed = Matter.Vector.magnitude(forceVector);
+
+      if (speed > magnitudeLimit) {
+        forceVector = Matter.Vector.div(forceVector, speed / magnitudeLimit);
+      }
+
+      Matter.Body.applyForce(body, body.position, forceVector);
+    }
 
     const targetAngle = Matter.Vector.angle(
       positionVector,
@@ -96,7 +117,7 @@ export default class PlayerBody extends Component {
           //isStatic: true,
           velocity: { x: vx, y: vy },
           inertia: Infinity,
-          density: 100000,
+          density: 105.414,
           frictionStatic: 0.01,
           frictionAir: 0.1,
         }]}
