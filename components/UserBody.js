@@ -21,7 +21,7 @@ export default class UserBody extends PureComponent {
     };
 
     this.initialFetchDone = false;
-    this.updateFirebaseHandler = throttle(this.updateFirebase, 1000, {});
+    this.updateFirebaseHandler = throttle(this.updateFirebase, 1000);
   }
 
   componentWillMount() {
@@ -59,7 +59,7 @@ export default class UserBody extends PureComponent {
     });
   }
 
-  updateFirebase = (x, y, vx, vy) => {
+  tryUpdatingFirebase = (x, y, vx, vy) => {
     if (
       this.initialFetchDone
       && (
@@ -71,28 +71,29 @@ export default class UserBody extends PureComponent {
         || Math.abs(this.previousState.y - y) > 0.001
       )
     ) {
-      const state = {
-        x: x,
-        y: y,
-        vx: Math.abs(vx) > 0.001 ? vx : 0,
-        vy: Math.abs(vy) > 0.001 ? vy : 0,
-        "~x": Math.round(x),
-        "~y": Math.round(y),
-        t: firebase.database.ServerValue.TIMESTAMP,
-      };
-
-      this.previousState = state;
-      // console.log("updating firebase");
-
-      this.positionRef.set(state, (error) => {
-        if (error) {
-          this.fetchPosition();
-        }
-      });
+      this.updateFirebaseHandler(x, y, vx, vy);
     }
-    else {
-      // console.log("not updating firebase");
-    }
+  }
+
+  updateFirebase = (x, y, vx, vy) => {
+    console.count("updating firebase");
+    const state = {
+      x: x,
+      y: y,
+      vx: Math.abs(vx) > 0.001 ? vx : 0,
+      vy: Math.abs(vy) > 0.001 ? vy : 0,
+      "~x": Math.round(x),
+      "~y": Math.round(y),
+      t: firebase.database.ServerValue.TIMESTAMP,
+    };
+
+    this.previousState = state;
+
+    this.positionRef.set(state, (error) => {
+      if (error) {
+        this.fetchPosition();
+      }
+    });
   }
 
   handleEngineBeforeUpdate = () => {
@@ -147,7 +148,7 @@ export default class UserBody extends PureComponent {
     const position = body && body.position;
     const velocity = body && body.velocity;
 
-    this.updateFirebaseHandler(
+    this.tryUpdatingFirebase(
       position.x,
       position.y,
       velocity.x,
