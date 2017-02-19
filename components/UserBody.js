@@ -6,6 +6,17 @@ import throttle from "lodash.throttle";
 
 import MovementPlane from "../components/MovementPlane";
 
+
+const shortAngleDist = (a0, a1) => {
+  var max = Math.PI * 2;
+  var da = (a1 - a0) % max;
+  return 2 * da % max - da;
+}
+
+const angleLerp = (a0, a1, t) => {
+  return a0 + shortAngleDist(a0, a1) * t;
+}
+
 export default class UserBody extends PureComponent {
   static contextTypes = {
     engine: PropTypes.object
@@ -111,6 +122,18 @@ export default class UserBody extends PureComponent {
       const speedLimit = 1;
       const magnitudeLimit = speedLimit / 60 / body.mass;
 
+      const targetAngle = Matter.Vector.angle(
+        { x: target.x, y: target.y },
+        body.position
+      );
+
+      Matter.Body.setAngle(
+        body,
+        angleLerp(body.angle, targetAngle, 4 / 60)
+      );
+
+      console.log(body.angle, body.speed)
+
       let forceVector = {
         x: (target.x - body.position.x) / body.mass,
         y: (target.y - body.position.y) / body.mass,
@@ -124,21 +147,8 @@ export default class UserBody extends PureComponent {
 
       Matter.Body.applyForce(
         body,
-        {
-          x: body.position.x,
-          y: body.position.y,
-        },
-        forceVector,
-      );
-
-      const targetAngle = Matter.Vector.angle(
-        { x: target.x, y: target.y },
-        body.position
-      );
-
-      Matter.Body.setAngle(
-        body,
-        body.angle + (targetAngle - body.angle) * 0.2,
+        body.position,
+        Matter.Vector.rotate(forceVector, body.angle - targetAngle),
       );
     }
   }
