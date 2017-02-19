@@ -43,7 +43,7 @@ export default class PlayerBody extends Component {
   handleEngineBeforeUpdate = () => {
     const { body } = { ...this.body };
     const elapsedSeconds = (Date.now() - this.props.t + this.clockSkew) / 1000;
-    const timeBoost = elapsedSeconds > 5 ? 0 : elapsedSeconds * 10;
+    const timeBoost = elapsedSeconds > 2 ? 0 : elapsedSeconds * 60;
 
     Matter.Body.applyForce(
       body,
