@@ -42,7 +42,7 @@ export default class PlayerBody extends Component {
     const timeBoost = elapsedSeconds > 2.2 ? 0 : (1 + elapsedSeconds) * 60;
     const maxAllowedPositionSkew = 2;
 
-    const stopWithin = 0.2;
+    const stopWithin = 0.1;
     const xDistance = Math.abs(this.props.x - body.position.x);
     const yDistance = Math.abs(this.props.y - body.position.y);
     const shouldAccelerate = (
