@@ -110,17 +110,14 @@ export default class PlayerBody extends Component {
 
     return (
       <Body
-        args={[
-          x, y, 1, 1,
-          {
-            //isStatic: true,
-            velocity: { x: vx, y: vy },
-            inertia: Infinity,
-            density: 100000,
-            frictionStatic: 0.01,
-            frictionAir: 0.1,
-          },
-        ]}
+        args={[x, y, 0.5, 1, {
+          //isStatic: true,
+          velocity: { x: vx, y: vy },
+          inertia: Infinity,
+          density: 100000,
+          frictionStatic: 0.01,
+          frictionAir: 0.1,
+        }]}
         ref={(c) => this.body = c}
       >
         <div

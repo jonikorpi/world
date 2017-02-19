@@ -30,7 +30,7 @@ export default class Player extends PureComponent {
       <div id={`player-${this.props[".key"]}`} className="player">
         <style jsx>{`
           .playerModel {
-            width: calc(var(--worldScale) * 1vmin);
+            width: calc(var(--worldScale) * 0.5vmin);
             height: calc(var(--worldScale) * 1vmin);
             border-radius: 50% 50% 0 0;
             background: white;
