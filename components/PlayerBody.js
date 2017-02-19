@@ -110,7 +110,7 @@ export default class PlayerBody extends Component {
 
     return (
       <Body
-        args={[x, y, 0.5, 1, {
+        args={[x, y, 1, 0.5, {
           //isStatic: true,
           inertia: Infinity,
           density: 105.414,

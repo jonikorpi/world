@@ -176,7 +176,7 @@ export default class UserBody extends PureComponent {
     return (
       <div id="userBody">
         <Body
-          args={[0, 0, 0.5, 1, {
+          args={[0, 0, 1, 0.5, {
             density: 105.414,
             frictionStatic: 0.01,
             frictionAir: 0.1,
