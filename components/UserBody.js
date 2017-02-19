@@ -180,6 +180,7 @@ export default class UserBody extends PureComponent {
             density: 105.414,
             frictionStatic: 0.01,
             frictionAir: 0.1,
+            angle: 90 * (Math.PI / 180),
           }]}
           ref={(c) => this.body = c}
         >

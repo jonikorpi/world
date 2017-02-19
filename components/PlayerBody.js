@@ -63,8 +63,8 @@ export default class PlayerBody extends Component {
     }
 
     let positionVector = {
-      x: this.props.x + (this.props.vx * timeBoost),
-      y: this.props.y + (this.props.vy * timeBoost),
+      x: this.props.x + (this.props.vx * (1 + timeBoost)),
+      y: this.props.y + (this.props.vy * (1 + timeBoost)),
     };
 
     let forceVector = {
@@ -112,11 +112,15 @@ export default class PlayerBody extends Component {
       <Body
         args={[x, y, 0.5, 1, {
           //isStatic: true,
-          velocity: { x: vx, y: vy },
           inertia: Infinity,
           density: 105.414,
           frictionStatic: 0.01,
           frictionAir: 0.1,
+          velocity: { x: vx, y: vy },
+          angle: Matter.Vector.angle(
+            { x: x, y: y },
+            { x: x + vx, y: y + vy }
+          ),
         }]}
         ref={(c) => this.body = c}
       >
