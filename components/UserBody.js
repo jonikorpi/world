@@ -108,32 +108,29 @@ export default class UserBody extends PureComponent {
     );
 
     if (shouldAccelerate) {
+      const speedLimit = 1;
+      const magnitudeLimit = speedLimit / 60 / body.mass;
+
+      let forceVector = {
+        x: (target.x - body.position.x) / body.mass,
+        y: (target.y - body.position.y) / body.mass,
+      };
+
+      const speed = Matter.Vector.magnitude(forceVector);
+
+      if (speed > magnitudeLimit) {
+        forceVector = Matter.Vector.div(forceVector, speed / magnitudeLimit);
+      }
+
       Matter.Body.applyForce(
         body,
         {
           x: body.position.x,
           y: body.position.y,
         },
-        {
-          x: (target.x - body.position.x) / body.mass / 26,
-          y: (target.y - body.position.y) / body.mass / 26,
-        },
+        forceVector,
       );
-    }
 
-    // TODO: compare x+y together instead
-    const velocity = body && body.velocity;
-    const maxV = 0.1;
-    const absoluteX = Math.abs(velocity.x);
-    const absoluteY = Math.abs(velocity.y);
-    const xIsTooFast = absoluteX > maxV;
-    const yIsTooFast = absoluteY > maxV;
-
-    if (xIsTooFast || yIsTooFast) {
-      Matter.Body.setVelocity(body, {
-        x: xIsTooFast ? (maxV * Math.sign(velocity.x)) : velocity.x,
-        y: yIsTooFast ? (maxV * Math.sign(velocity.y)) : velocity.y,
-      });
     }
   }
 
@@ -173,7 +170,7 @@ export default class UserBody extends PureComponent {
       <div id="userBody">
         <Body
           args={[0, 0, 0.5, 1, {
-            density: 100,
+            density: 105.414,
             frictionStatic: 0.01,
             frictionAir: 0.1,
           }]}
