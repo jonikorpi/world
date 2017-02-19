@@ -36,10 +36,6 @@ export default class PlayerBody extends Component {
     firebase.database().ref("/.info/serverTimeOffset").off("value");
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { body } = { ...this.body };
-  }
-
   handleEngineBeforeUpdate = () => {
     const { body } = { ...this.body };
     const elapsedSeconds = (Date.now() - this.props.t + this.clockSkew) / 1000;
@@ -49,8 +45,8 @@ export default class PlayerBody extends Component {
       body,
       body.position,
       {
-        x: (this.props.x + (this.props.vx * timeBoost) - body.position.x) / body.mass * 500,
-        y: (this.props.y + (this.props.vy * timeBoost) - body.position.y) / body.mass * 500,
+        x: (this.props.x + (this.props.vx * timeBoost) - body.position.x) / body.mass * 80000,
+        y: (this.props.y + (this.props.vy * timeBoost) - body.position.y) / body.mass * 80000,
       }
     );
 
@@ -66,6 +62,21 @@ export default class PlayerBody extends Component {
       Matter.Body.setVelocity(body, {
         x: xIsTooFast ? (maxV * Math.sign(velocity.x)) : velocity.x,
         y: yIsTooFast ? (maxV * Math.sign(velocity.y)) : velocity.y,
+      });
+    }
+
+    const maxAllowedPositionSkew = 2;
+
+    if (
+      timeBoost === 0
+      && (
+        Math.abs(this.props.x - body.position.x) > maxAllowedPositionSkew
+        || Math.abs(this.props.y - body.position.y) > maxAllowedPositionSkew
+      )
+    ) {
+      Matter.Body.setPosition(body, {
+        x: this.props.x,
+        y: this.props.y,
       });
     }
 
@@ -105,7 +116,7 @@ export default class PlayerBody extends Component {
             //isStatic: true,
             velocity: { x: vx, y: vy },
             inertia: Infinity,
-            density: 7850,
+            density: 100000,
             frictionStatic: 0.01,
             frictionAir: 0.1,
           },

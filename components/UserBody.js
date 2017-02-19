@@ -115,8 +115,8 @@ export default class UserBody extends PureComponent {
           y: body.position.y,
         },
         {
-          x: (target.x - body.position.x) / body.mass * 200,
-          y: (target.y - body.position.y) / body.mass * 200,
+          x: (target.x - body.position.x) / body.mass / 26,
+          y: (target.y - body.position.y) / body.mass / 26,
         },
       );
     }
@@ -173,7 +173,7 @@ export default class UserBody extends PureComponent {
       <div id="userBody">
         <Body
           args={[0, 0, 1, 1, {
-            density: 7850,
+            density: 100,
             frictionStatic: 0.01,
             frictionAir: 0.1,
           }]}
