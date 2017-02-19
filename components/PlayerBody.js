@@ -53,11 +53,8 @@ export default class PlayerBody extends Component {
     );
 
     if (
-      timeBoost === 0
-      && (
-        Math.abs(this.props.x - body.position.x) > maxAllowedPositionSkew
-        || Math.abs(this.props.y - body.position.y) > maxAllowedPositionSkew
-      )
+      Math.abs(this.props.x - body.position.x) > maxAllowedPositionSkew
+      || Math.abs(this.props.y - body.position.y) > maxAllowedPositionSkew
     ) {
       Matter.Body.setPosition(body, {
         x: this.props.x,
