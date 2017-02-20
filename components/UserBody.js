@@ -160,7 +160,7 @@ export default class UserBody extends PureComponent {
       <div id="userBody">
         <Body
           args={[0, 0, 1, 0.5, {
-            density: 105.414,
+            density: 106,
             frictionStatic: 0.01,
             frictionAir: 0.1,
             angle: 90 * (Math.PI / 180),

@@ -111,7 +111,7 @@ export default class PlayerBody extends Component {
           args={[x, y, 1, 0.5, {
             //isStatic: true,
             inertia: Infinity,
-            density: 105.414,
+            density: 106,
             frictionStatic: 0.01,
             frictionAir: 0.1,
             velocity: { x: vx, y: vy },
