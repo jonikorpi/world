@@ -27,10 +27,12 @@ export default class Play extends PureComponent {
   }
 
   componentDidMount() {
+    this.mounted = true;
     this.clientSideRender();
   }
 
   componentWillUnmount() {
+    this.mounted = false;
     document.removeEventListener("fullscreenchange", this.handleFullScreenChange);
     document.removeEventListener("mozfullscreenchange", this.handleFullScreenChange);
     document.removeEventListener("webkitfullscreenchange", this.handleFullScreenChange);
@@ -105,21 +107,27 @@ export default class Play extends PureComponent {
     }
 
     firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        firebase.auth().currentUser.getToken(true).then(userToken => {
-          this.setState({ userID: user.uid, userToken: userToken });
-        });
-      } else {
-        this.setState({ userID: null, userToken: null });
-        this.signIn();
+      if (this.mounted) {
+        console.log("authstate");
+        if (user) {
+          firebase.auth().currentUser.getToken(true).then(userToken => {
+            this.setState({ userID: user.uid, userToken: userToken });
+          });
+        } else {
+          this.setState({ userID: null, userToken: null });
+          this.signIn();
+        }
       }
     });
 
     firebase.database().ref(".info/connected").on("value", online => {
-      if (online.val() === true) {
-        this.setState({ connected: true, haveConnectedOnce: true });
-      } else {
-        this.setState({ connected: false });
+      if (this.mounted) {
+        console.log("connected");
+        if (online.val() === true) {
+          this.setState({ connected: true, haveConnectedOnce: true });
+        } else {
+          this.setState({ connected: false });
+        }
       }
     });
   };
