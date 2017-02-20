@@ -137,7 +137,7 @@ export default class PlayerBody extends Component {
           <div />
         </Body>
 
-        <MovementReticle x={x} y={y} />
+        {/*<MovementReticle x={x} y={y} />*/}
 
         <div className="playerPosition">
           {this.props.children}
