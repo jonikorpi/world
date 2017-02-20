@@ -6,6 +6,7 @@ import firebase from "firebase";
 import MovementReticle from "../components/MovementReticle";
 
 import rendering from "../helpers/rendering";
+import movement from "../helpers/movement";
 
 const xTransform = `calc( ((var(--playerPositionX) * 1vmin) - (1vmin * var(--userPositionX))) * var(--worldScale) )`;
 const yTransform = `calc( ((var(--playerPositionY) * 1vmin) - (1vmin * var(--userPositionY))) * var(--worldScale) )`;
@@ -39,20 +40,10 @@ export default class PlayerBody extends Component {
   }
 
   handleEngineBeforeUpdate = () => {
-    const { body } = { ...this.body };
-    const elapsedSeconds = (Date.now() - this.props.t + this.clockSkew) / 1000;
-    const timeBoost = elapsedSeconds > 1.2 ? 0 : (3 + elapsedSeconds) * 60;
+    const body = this.body.body;
+    const target = { x: this.props.x, y: this.props.y };
+    const shouldAccelerate = movement.shouldAccelerate(0.2, target, body.position);
     const maxAllowedPositionSkew = 1.5;
-
-    const stopWithin = 0.1;
-    const xDistance = Math.abs(this.props.x - body.position.x);
-    const yDistance = Math.abs(this.props.y - body.position.y);
-    const shouldAccelerate = (
-      this.props.x && this.props.y
-      && (
-        xDistance > stopWithin || yDistance > stopWithin
-      )
-    );
 
     if (
       Math.abs(this.props.x - body.position.x) > maxAllowedPositionSkew
@@ -64,38 +55,42 @@ export default class PlayerBody extends Component {
       });
     }
 
-    let positionVector = {
-      x: this.props.x + (this.props.vx * (1 + timeBoost)),
-      y: this.props.y + (this.props.vy * (1 + timeBoost)),
-    };
-
-    let forceVector = {
-      x: (positionVector.x - body.position.x) / body.mass,
-      y: (positionVector.y - body.position.y) / body.mass,
-    };
-
     if (shouldAccelerate) {
       const speedLimit = 1 * 1.09;
       const magnitudeLimit = speedLimit / 60 / body.mass;
 
-      const speed = Matter.Vector.magnitude(forceVector);
+      const elapsedSeconds = (Date.now() - this.props.t + this.clockSkew) / 1000;
+      const reckoning = elapsedSeconds > 1.2 ? 0 : (3 + elapsedSeconds) * 60;
 
-      if (speed > magnitudeLimit) {
-        forceVector = Matter.Vector.div(forceVector, speed / magnitudeLimit);
-      }
+      const velocityVector = Matter.Vector.mult({
+        x: this.props.vx,
+        y: this.props.vy,
+      }, 1 + reckoning);
 
-      Matter.Body.applyForce(body, body.position, forceVector);
+      let positionVector = {
+        x: this.props.x + velocityVector.x,
+        y: this.props.y + velocityVector.y,
+      };
+
+      let forceVector = {
+        x: (positionVector.x - body.position.x) / body.mass,
+        y: (positionVector.y - body.position.y) / body.mass,
+      };
+
+      const clampedForceVector = movement.clampSpeed(forceVector, magnitudeLimit);
+
+      const targetAngle = Matter.Vector.angle(
+        positionVector,
+        body.position,
+      );
+
+      Matter.Body.applyForce(body, body.position, clampedForceVector);
+
+      Matter.Body.setAngle(
+        body,
+        rendering.angleLerp(body.angle, targetAngle, 4 / 60),
+      );
     }
-
-    const targetAngle = Matter.Vector.angle(
-      positionVector,
-      body.position,
-    );
-
-    Matter.Body.setAngle(
-      body,
-      rendering.angleLerp(body.angle, targetAngle, 4 / 60),
-    );
   }
 
   handleEngineAfterUpdate = () => {

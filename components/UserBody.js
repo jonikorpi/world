@@ -8,6 +8,7 @@ import MovementPlane from "../components/MovementPlane";
 import MovementReticle from "../components/MovementReticle";
 
 import rendering from "../helpers/rendering";
+import movement from "../helpers/movement";
 
 export default class UserBody extends PureComponent {
   static contextTypes = {
@@ -45,15 +46,11 @@ export default class UserBody extends PureComponent {
     const body = this.body.body;
 
     this.positionRef.once("value").then(position => {
-      const {x, y, vx, vy} = { ...position.val() };
+      const {x, y} = { ...position.val() };
 
       Matter.Body.setPosition(body, { x: x, y: y });
-      // TODO: set angle from velocity vector here or in engine update
 
-      if (this.initialFetchDone) {
-        Matter.Body.setVelocity(body, { x: vx, y: vy });
-      }
-      else {
+      if (!this.initialFetchDone) {
         this.initialFetchDone = true;
         this.previousState = { x: 0, y: 0 };
       }
@@ -99,16 +96,7 @@ export default class UserBody extends PureComponent {
   handleEngineBeforeUpdate = () => {
     const body = this.body.body;
     const target = this.state.target;
-
-    const stopWithin = 0.2;
-    const xDistance = Math.abs(target.x - body.position.x);
-    const yDistance = Math.abs(target.y - body.position.y);
-    const shouldAccelerate = (
-      target.x && target.y
-      && (
-        xDistance > stopWithin || yDistance > stopWithin
-      )
-    );
+    const shouldAccelerate = movement.shouldAccelerate(0.2, this.state.target, body.position);
 
     if (shouldAccelerate) {
       const speedLimit = 1;
@@ -124,21 +112,17 @@ export default class UserBody extends PureComponent {
         rendering.angleLerp(body.angle, targetAngle, 4 / 60)
       );
 
-      let forceVector = {
+      const forceVector = {
         x: (target.x - body.position.x) / body.mass,
         y: (target.y - body.position.y) / body.mass,
       };
 
-      const speed = Matter.Vector.magnitude(forceVector);
-
-      if (speed > magnitudeLimit) {
-        forceVector = Matter.Vector.div(forceVector, speed / magnitudeLimit);
-      }
+      const clampedForceVector = movement.clampSpeed(forceVector, magnitudeLimit);
 
       Matter.Body.applyForce(
         body,
         body.position,
-        Matter.Vector.rotate(forceVector, body.angle - targetAngle),
+        Matter.Vector.rotate(clampedForceVector, body.angle - targetAngle),
       );
     }
   }
@@ -162,8 +146,6 @@ export default class UserBody extends PureComponent {
 
   moveTowards = (relativeX, relativeY) => {
     const body = this.body.body;
-
-    console.log("moveTowards", relativeX, relativeY);
 
     this.setState({
       target: {
