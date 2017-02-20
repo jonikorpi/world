@@ -60,7 +60,7 @@ export default class PlayerBody extends Component {
       const magnitudeLimit = speedLimit / 60 / body.mass;
 
       const elapsedSeconds = (Date.now() - this.props.t + this.clockSkew) / 1000;
-      const reckoning = elapsedSeconds > 1.2 ? 0 : (3 + elapsedSeconds) * 60;
+      const reckoning = elapsedSeconds > 1.15 ? 0 : (4 + elapsedSeconds) * 60;
 
       const velocityVector = Matter.Vector.mult({
         x: this.props.vx,
@@ -88,7 +88,7 @@ export default class PlayerBody extends Component {
 
       Matter.Body.setAngle(
         body,
-        rendering.angleLerp(body.angle, targetAngle, 4 / 60),
+        rendering.angleLerp(body.angle, targetAngle, 3 / 60),
       );
     }
   }
