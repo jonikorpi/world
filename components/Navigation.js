@@ -44,7 +44,7 @@ export default class Navigation extends PureComponent {
         </style>
 
         <div className="navigation-wrapper">
-          <h1>Vuorovalta</h1>
+          <h1>VALTAMERI</h1>
           {links.map(link => (
             <Link href={link.href} key={link.href}>
               <a className={this.props.pathname === link.href && "active"}>
@@ -58,9 +58,6 @@ export default class Navigation extends PureComponent {
           <div className="navigation-wrapper">
             <button type="button" onClick={this.props.selfDestruct}>
               RESTART
-            </button>
-            <button type="button" onClick={this.props.toggleVR}>
-              VR
             </button>
             <button type="button" onClick={this.props.enterFullscreen}>
               FULL
