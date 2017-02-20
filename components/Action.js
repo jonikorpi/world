@@ -150,6 +150,8 @@ export default class Action extends PureComponent {
         <style jsx>{`
           .action {
             pointer-events: all;
+            width: 100%;
+            padding: 2rem;
           }
         `}</style>
         {this.props.data.action === "spawn" ? this.props.data.action : null}
