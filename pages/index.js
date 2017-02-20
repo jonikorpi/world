@@ -298,7 +298,7 @@ export default class Play extends PureComponent {
         version: process && process.env && process.env.GAME_VERSION,
         token: this.state.userToken,
         userID: this.state.userID,
-        action: "self-destruct",
+        action: "selfDestruct",
       }),
     });
 
