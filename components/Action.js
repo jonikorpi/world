@@ -3,6 +3,8 @@ import "whatwg-fetch";
 
 const version = process && process.env && process.env.GAME_VERSION;
 
+const outlineSize = 2;
+
 export default class Action extends PureComponent {
   constructor(props) {
     super(props);
@@ -126,13 +128,24 @@ export default class Action extends PureComponent {
             left: 0; top: 0; bottom: 0;
             width: 100%;
             outline: none;
+            text-shadow:
+               ${outlineSize}px  ${outlineSize}px 0 black,
+              -${outlineSize}px -${outlineSize}px 0 black,
+               ${outlineSize}px -${outlineSize}px 0 black,
+              -${outlineSize}px  ${outlineSize}px 0 black,
+              -${outlineSize}px  0px 0 black,
+               ${outlineSize}px  0px 0 black,
+               0px -${outlineSize}px 0 black,
+               0px  ${outlineSize}px 0 black
+            ;
           }
 
           .actionLabel {
+            pointer-events: none;
             position: absolute;
             left: 50%; bottom: 100%;
             white-space: nowrap;
-            transform: translate(-50%, -0.5rem);
+            transform: translate(-50%, -0.382rem);
           }
         `}</style>
 

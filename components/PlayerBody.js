@@ -4,12 +4,14 @@ import Matter from "matter-js";
 import firebase from "firebase";
 
 import MovementReticle from "../components/MovementReticle";
+import Reticle from "../components/Reticle";
 
 import rendering from "../helpers/rendering";
 import movement from "../helpers/movement";
 
 const xTransform = `calc( ((var(--playerPositionX) * 1vmin) - (1vmin * var(--userPositionX))) * var(--worldScale) )`;
 const yTransform = `calc( ((var(--playerPositionY) * 1vmin) - (1vmin * var(--userPositionY))) * var(--worldScale) )`;
+const transform = `translate3d(${xTransform}, ${yTransform}, 0)`;
 
 export default class PlayerBody extends Component {
   static contextTypes = {
@@ -106,7 +108,17 @@ export default class PlayerBody extends Component {
     const {x, y, vx, vy} = { ...this.props };
 
     return (
-      <div className="playerBody">
+      <div className="playerBody" ref={(c) => this.positionRef = c}>
+        <style jsx>{`
+          .playerPosition {
+            position: absolute;
+            left: 0; top: 0;
+            will-change: transform;
+            transform: ${transform};
+            z-index: 2;
+          }
+        `}</style>
+
         <Body
           args={[x, y, 1, 0.5, {
             //isStatic: true,
@@ -127,21 +139,13 @@ export default class PlayerBody extends Component {
 
         <MovementReticle x={x} y={y} />
 
-        <div
-          className="playerPosition"
-          ref={(c) => this.positionRef = c}
-        >
-          <style jsx>{`
-            .playerPosition {
-              position: absolute;
-              left: 0; top: 0;
-              will-change: transform;
-              transform: translate3d(${xTransform}, ${yTransform}, 0);
-            }
-          `}</style>
-
+        <div className="playerPosition">
           {this.props.children}
         </div>
+
+        <Reticle size={1} transform={transform}>
+          {this.props.action}
+        </Reticle>
       </div>
     );
   }

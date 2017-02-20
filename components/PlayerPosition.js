@@ -40,9 +40,9 @@ export default class PlayerPosition extends Component {
     }
 
     return (
-      <PlayerBody {...playerPosition}>
+      <PlayerBody {...this.props} {...playerPosition}>
         {this.props.children}
-      </PlayerBody>
+      </PlayerBody >
     );
   }
 }
