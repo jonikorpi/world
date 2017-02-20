@@ -3,6 +3,8 @@ import { Body } from "react-game-kit";
 import Matter from "matter-js";
 import firebase from "firebase";
 
+import MovementReticle from "../components/MovementReticle";
+
 import rendering from "../helpers/rendering";
 
 const xTransform = `calc( ((var(--playerPositionX) * 1vmin) - (1vmin * var(--userPositionX))) * var(--worldScale) )`;
@@ -109,21 +111,27 @@ export default class PlayerBody extends Component {
     const {x, y, vx, vy} = { ...this.props };
 
     return (
-      <Body
-        args={[x, y, 1, 0.5, {
-          //isStatic: true,
-          inertia: Infinity,
-          density: 105.414,
-          frictionStatic: 0.01,
-          frictionAir: 0.1,
-          velocity: { x: vx, y: vy },
-          angle: Matter.Vector.angle(
-            { x: x, y: y },
-            { x: x + vx, y: y + vy }
-          ),
-        }]}
-        ref={(c) => this.body = c}
-      >
+      <div className="playerBody">
+        <Body
+          args={[x, y, 1, 0.5, {
+            //isStatic: true,
+            inertia: Infinity,
+            density: 105.414,
+            frictionStatic: 0.01,
+            frictionAir: 0.1,
+            velocity: { x: vx, y: vy },
+            angle: Matter.Vector.angle(
+              { x: x, y: y },
+              { x: x + vx, y: y + vy }
+            ),
+          }]}
+          ref={(c) => this.body = c}
+        >
+          <div />
+        </Body>
+
+        <MovementReticle x={x} y={y} />
+
         <div
           className="playerPosition"
           ref={(c) => this.positionRef = c}
@@ -139,7 +147,7 @@ export default class PlayerBody extends Component {
 
           {this.props.children}
         </div>
-      </Body>
+      </div>
     );
   }
 }

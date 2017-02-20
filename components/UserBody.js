@@ -5,6 +5,7 @@ import Matter from "matter-js";
 import throttle from "lodash.throttle";
 
 import MovementPlane from "../components/MovementPlane";
+import MovementReticle from "../components/MovementReticle";
 
 import rendering from "../helpers/rendering";
 
@@ -191,6 +192,10 @@ export default class UserBody extends PureComponent {
           moveTowards={this.moveTowards}
           worldRef={this.worldRef}
         />
+
+        {this.state.target.x && (
+          <MovementReticle {...this.state.target} />
+        )}
       </div>
     );
   }
