@@ -62,6 +62,8 @@ export default class User extends Component {
     const playerSettings = this.state.playerSettings || {};
     const playerSecrets = this.state.playerSecrets || {};
 
+    const range = 10;
+
     if (player) {
 
       return (
@@ -74,7 +76,23 @@ export default class User extends Component {
                 position: fixed;
                 left: 50%; top: 50%;
               }
+
+              .rangeIndicator {
+                position: absolute;
+                left: 0; top: 0;
+                border-radius: 50%;
+                transform: translate(-50%, -50%);
+                border: 1px solid grey;
+              }
             `}</style>
+
+            <div
+              className="rangeIndicator"
+              style={{
+                width:  `calc( var(--worldScale) * ${range}vmin )`,
+                height: `calc( var(--worldScale) * ${range}vmin )`,
+              }}
+            />
 
             <Player {...player} isSelf={true} />
           </div>
