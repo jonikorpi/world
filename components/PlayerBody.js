@@ -41,8 +41,8 @@ export default class PlayerBody extends Component {
   handleEngineBeforeUpdate = () => {
     const { body } = { ...this.body };
     const elapsedSeconds = (Date.now() - this.props.t + this.clockSkew) / 1000;
-    const timeBoost = elapsedSeconds > 1.3 ? 0 : (2 + elapsedSeconds) * 60;
-    const maxAllowedPositionSkew = 2;
+    const timeBoost = elapsedSeconds > 1.2 ? 0 : (3 + elapsedSeconds) * 60;
+    const maxAllowedPositionSkew = 1.5;
 
     const stopWithin = 0.1;
     const xDistance = Math.abs(this.props.x - body.position.x);
@@ -75,7 +75,7 @@ export default class PlayerBody extends Component {
     };
 
     if (shouldAccelerate) {
-      const speedLimit = 1 * 1.146;
+      const speedLimit = 1 * 1.09;
       const magnitudeLimit = speedLimit / 60 / body.mass;
 
       const speed = Matter.Vector.magnitude(forceVector);
