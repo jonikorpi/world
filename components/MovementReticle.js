@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 
-export default class MovementPlane extends PureComponent {
+export default class MovementReticle extends PureComponent {
   render() {
     const xTransform = `calc( ((${this.props.x} * 1vmin) - (1vmin * var(--userPositionX))) * var(--worldScale) )`;
     const yTransform = `calc( ((${this.props.y} * 1vmin) - (1vmin * var(--userPositionY))) * var(--worldScale) )`;

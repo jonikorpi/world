@@ -41,15 +41,18 @@ export default class PlayerState extends Component {
 
     return (
       <PlayerPosition playerID={playerID}>
-        <Player {...player}>
-          {/*<Action
-            data={{
-              action: "attack",
-              playerID: playerID
-            }}
-            {...this.props}
-          />*/}
-        </Player>
+        <Player
+          {...player}
+          action={
+            <Action
+              data={{
+                action: "attack",
+                playerID: playerID
+              }}
+              {...this.props}
+            />
+          }
+        />
       </PlayerPosition>
     );
   }

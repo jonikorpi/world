@@ -10,34 +10,6 @@ export default class Action extends PureComponent {
     this.state = {};
   }
 
-  handleStateEvent = event => {
-    const name = event.detail.state;
-    const type = event.type;
-    let boolean;
-
-    switch (type) {
-      case "stateadded":
-        boolean = true;
-        break;
-      case "stateremoved":
-        boolean = false;
-        break;
-      case "mouseenter":
-        boolean = true;
-        break;
-      case "mouseleave":
-        boolean = false;
-        break;
-      default:
-        console.log("Bad state event in Button");
-        return;
-    }
-
-    if (name && type && this._reactInternalInstance) {
-      this.setState({ [name]: boolean });
-    }
-  };
-
   componentDidMount() {
     this.mounted = true;
   }
@@ -115,9 +87,7 @@ export default class Action extends PureComponent {
   };
 
   render() {
-    const hovered = this.state["cursor-hovered"];
-
-    let hue = 0, saturation = 50, lightness = 50, opacity = 0;
+    let hue = 0, saturation = 50, lightness = 50;
 
     switch (this.state.status) {
       case "processing":
@@ -131,30 +101,44 @@ export default class Action extends PureComponent {
         break;
       default:
         saturation = 0;
-        lightness = 0;
+        lightness = 100;
     }
 
-    if (hovered) {
-      opacity = 1;
-    }
     const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
 
     const texts = {
-      spawn: "Click here to spawn.",
-      move: "Click here to move.\nBeware: it’s buggy.",
-      endTurn: "Clicking this does nothing. :)",
+      spawn: "Spawn",
+      attack: "Attack",
     };
 
     return (
-      <button className="action" onClick={this.processAction}>
+      <button
+        className="action"
+        onClick={this.processAction}
+        style={{
+          color: color,
+        }}
+      >
         <style jsx>{`
           .action {
             pointer-events: all;
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
             width: 100%;
-            padding: 2rem;
+            outline: none;
+          }
+
+          .actionLabel {
+            position: absolute;
+            left: 50%; bottom: 100%;
+            white-space: nowrap;
+            transform: translate(-50%, -0.5rem);
           }
         `}</style>
-        {this.props.data.action === "spawn" ? this.props.data.action : null}
+
+        <div className="actionLabel">
+          {texts[this.props.data.action]}
+        </div>
       </button>
     );
   }
