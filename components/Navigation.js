@@ -60,7 +60,7 @@ export default class Navigation extends PureComponent {
               RESTART
             </button>
             <button type="button" onClick={this.props.enterFullscreen}>
-              FULL
+              FULLSCREEN
             </button>
           </div>}
       </nav>
