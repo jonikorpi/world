@@ -38,6 +38,9 @@
         },
         "state": {
           // TODO: flag, copied from playerSettings
+          "health": {
+            ".validate": "newData.isNumber()"
+          },
           "faction": {
             ".validate": "newData.isString()"
           },

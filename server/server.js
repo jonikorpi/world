@@ -97,8 +97,8 @@ const spawn = async userID => {
       // sectorID: `${roundedX},${roundedY}`,
       sectorID: "0,0",
       state: {
+        health: 10,
         immuneUntil: Date.now() + 10 * 1000,
-        turn: 0
       },
       position: {
         x: x,
