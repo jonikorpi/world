@@ -55,6 +55,17 @@ export default class Limbo extends Component {
   render() {
     return (
       <div id="limbo">
+        <style jsx>{`
+          #limbo {
+            position: fixed;
+            left: 50%; top: 50%;
+            width: 20vmin;
+            height: 20vmin;
+            transform: translate(-50%, -50%);
+            border: 1px solid white;
+          }
+        `}</style>
+
         <Action
           {...this.props}
           data={{
