@@ -20,7 +20,5 @@
 html {
   font-size: 133%; /* Fallback: used if browser doesn't support calc() */
   font-size: calc(0.875em + 0.5vw + 0.5vh + 0.25vmin);
-  color: #fff;
-  background: #000;
   font-family: "Alegreya", serif;
 }

@@ -6,6 +6,8 @@ import Navigation from "../components/Navigation";
 import Loading from "../components/Loading";
 import Lobby from "../components/Lobby";
 
+import colors from "../helpers/colors";
+
 let Tone, DuoSynth, Panner, Loop, FeedbackDelay;
 
 const env = process && process.env && process.env.NODE_ENV || "development";
@@ -322,6 +324,11 @@ export default class Play extends PureComponent {
         }}
       >
         <style jsx>{`
+          :global(body) {
+            background: ${colors.sea};
+            color: ${colors.bright};
+          }
+
           #play {
             overflow: hidden;
             width: 100%;

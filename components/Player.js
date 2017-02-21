@@ -1,5 +1,7 @@
 import React, { PureComponent } from "react";
 
+import colors from "../helpers/colors";
+
 export default class Player extends PureComponent {
   render() {
     const { isSelf, health, immuneUntil } = { ...this.props };
@@ -16,12 +18,11 @@ export default class Player extends PureComponent {
             border-radius: 38% 38% 23% 23%;
             will-change: transform;
             transform: translate3d(-50%, -50%, 0) rotate(var(--playerAngle));
-            color: black;
+            background: black;
           }
 
           .health {
             transform: rotate( calc(var(--playerAngle) * -1) );
-            color: black;
             font-weight: bold;
             font-size: calc(var(--worldScale) * 0.5vmin);
             width: 100%;
@@ -33,7 +34,7 @@ export default class Player extends PureComponent {
         <div
           className="playerModel"
           style={{
-            backgroundColor: isSelf || immune ? "white" : "red",
+            color: isSelf || immune ? colors.bright : "red",
           }}
         >
           <div className="health">{health}</div>
