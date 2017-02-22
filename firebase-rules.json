@@ -41,6 +41,12 @@
           "health": {
             ".validate": "newData.isNumber()"
           },
+          "meleeRange": {
+            ".validate": "newData.isNumber()"
+          },
+          "attackRange": {
+            ".validate": "newData.isNumber()"
+          },
           "faction": {
             ".validate": "newData.isString()"
           },
@@ -66,6 +72,9 @@
             "$itemID": {
               ".validate": "newData.isNumber()"
             } /* Durability */
+          },
+          "$other": {
+            ".validate": "false"
           }
         },
         "position": {
