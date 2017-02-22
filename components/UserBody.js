@@ -139,10 +139,12 @@ export default class UserBody extends PureComponent {
       velocity.y,
     );
 
-    this.worldRef.style.setProperty("--userPositionX", position.x);
-    this.worldRef.style.setProperty("--userPositionY", position.y);
-    this.worldRef.style.setProperty("--playerVelocity", Math.abs(velocity.x) + Math.abs(velocity.y));
-    this.worldRef.style.setProperty("--playerAngle", body.angle - 1.5708 + "rad");
+    this.props.setWorldAttributes({
+      "--userPositionX": position.x,
+      "--userPositionY": position.y,
+      "--playerVelocity": Math.abs(velocity.x) + Math.abs(velocity.y),
+      "--playerAngle": body.angle - 1.5708 + "rad",
+    });
   }
 
   moveTowards = (relativeX, relativeY) => {

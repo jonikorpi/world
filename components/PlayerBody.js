@@ -4,6 +4,7 @@ import Matter from "matter-js";
 import firebase from "firebase";
 
 // import MovementReticle from "../components/MovementReticle";
+import Player from "../components/Player";
 import Reticle from "../components/Reticle";
 import RangeIndicator from "../components/RangeIndicator";
 
@@ -22,10 +23,13 @@ export default class PlayerBody extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {};
+
     this.clockSkew = 0;
   }
 
   componentWillMount() {
+    this.worldRef = document.querySelector("#world");
     firebase.database().ref("/.info/serverTimeOffset").on("value", (value) => {
       this.clockSkew = value.val();
     });
@@ -105,13 +109,28 @@ export default class PlayerBody extends Component {
     this.positionRef.style.setProperty("--playerPositionY", position.y);
     this.positionRef.style.setProperty("--playerVelocity", Math.abs(velocity.x) + Math.abs(velocity.y));
     this.positionRef.style.setProperty("--playerAngle", body.angle - 1.5708 + "rad");
+
+    this.updateRanges(position);
+  }
+
+  updateRanges = (position) => {
+    const styles = window.getComputedStyle(this.worldRef);
+    const userX = styles.getPropertyValue("--userPositionX");
+    const userY = styles.getPropertyValue("--userPositionY");
+    const distance = Math.sqrt( Math.pow(userX - position.x, 2) + Math.pow(userY - position.y, 2) );
+
+    this.setState({
+      inMeleeRange: this.props.userMeleeRange - distance >= 0,
+      inRangedRange: this.props.userRangedRange - distance >= 0,
+    })
   }
 
   render() {
     const {x, y, vx, vy} = { ...this.props };
+    const {inMeleeRange, inRangedRange} = { ...this.state };
 
-    const meleeRange = 8;
-    const rangedRange = 18;
+    const meleeRange = 4;
+    const rangedRange = 9;
 
     return (
       <div className="playerBody" ref={(c) => this.positionRef = c}>
@@ -146,11 +165,14 @@ export default class PlayerBody extends Component {
         {/*<MovementReticle x={x} y={y} />*/}
 
         <div className="playerPosition">
-          {this.props.children}
+          <Player
+            {...this.props.playerState}
+            {...this.state}
+          />
         </div>
 
         <Reticle size={1} transform={transform}>
-          {this.props.action}
+          {(inMeleeRange || inRangedRange) && this.props.action}
           <RangeIndicator type="danger" range={meleeRange}/>
           <RangeIndicator type="danger" range={rangedRange}/>
         </Reticle>

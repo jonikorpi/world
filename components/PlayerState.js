@@ -3,7 +3,6 @@ import reactMixin from "react-mixin";
 import reactFire from "reactfire";
 import firebase from "firebase";
 
-import Player from "../components/Player";
 import PlayerPosition from "../components/PlayerPosition";
 import Action from "../components/Action";
 
@@ -43,6 +42,7 @@ export default class PlayerState extends Component {
       <PlayerPosition
         {...this.props}
         playerID={playerID}
+        playerState={player}
         action={
           <Action
             data={{
@@ -52,9 +52,7 @@ export default class PlayerState extends Component {
             {...this.props}
           />
         }
-      >
-        <Player {...player} />
-      </PlayerPosition>
+      />
     );
   }
 }

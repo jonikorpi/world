@@ -7,7 +7,7 @@ import Player from "../components/Player";
 import UserBody from "../components/UserBody";
 import RangeIndicator from "../components/RangeIndicator";
 
-export default class User extends Component {
+export default class UserState extends Component {
   constructor(props) {
     super(props);
 
@@ -63,14 +63,15 @@ export default class User extends Component {
     const playerSettings = this.state.playerSettings || {};
     const playerSecrets = this.state.playerSecrets || {};
 
-    const meleeRange = 8;
-    const rangedRange = 18;
+    const meleeRange = 4;
+    const rangedRange = 9;
+
+    this.props.setUserRanges(meleeRange, rangedRange);
 
     if (player) {
-
       return (
         <div id="user">
-          <UserBody userID={this.props.userID} />
+          <UserBody userID={this.props.userID} setWorldAttributes={this.props.setWorldAttributes} />
 
           <div id="userCenterer">
             <style jsx>{`
@@ -93,4 +94,4 @@ export default class User extends Component {
   }
 }
 
-reactMixin(User.prototype, reactFire);
+reactMixin(UserState.prototype, reactFire);

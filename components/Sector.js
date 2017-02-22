@@ -59,8 +59,7 @@ export default class Sector extends Component {
               <PlayerState
                 key={playerID}
                 playerID={playerID}
-                userID={this.props.userID}
-                userToken={this.props.userToken}
+                {...this.props}
               />
             );
           })}
@@ -72,8 +71,7 @@ export default class Sector extends Component {
                 key={positionID}
                 positionID={positionID}
                 {...sectorEntities[positionID]}
-                userID={this.props.userID}
-                userToken={this.props.userToken}
+                {...this.props}
               />
             );
           })}

@@ -34,6 +34,8 @@ export default class Sectors extends PureComponent {
               sectorID={sectorID}
               userID={this.props.userID}
               userToken={this.props.userToken}
+              userMeleeRange={this.props.userMeleeRange}
+              userRangedRange={this.props.userRangedRange}
             />
           );
         })}

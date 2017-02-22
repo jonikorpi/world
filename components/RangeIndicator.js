@@ -20,8 +20,8 @@ export default class RangeIndicator extends PureComponent {
         className="rangeIndicator"
         style={{
           border: border,
-          width:  `calc( var(--worldScale) * ${range}vmin )`,
-          height: `calc( var(--worldScale) * ${range}vmin )`,
+          width:  `calc( var(--worldScale) * ${range * 2}vmin )`,
+          height: `calc( var(--worldScale) * ${range * 2}vmin )`,
         }}
       >
         <style jsx>{`

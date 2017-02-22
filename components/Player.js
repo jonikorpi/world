@@ -4,8 +4,7 @@ import colors from "../helpers/colors";
 
 export default class Player extends PureComponent {
   render() {
-    const { isSelf, health, immuneUntil } = { ...this.props };
-
+    const { isSelf, health, immuneUntil, inMeleeRange, inRangedRange } = { ...this.props };
     const immune = immuneUntil > Date.now();
 
     return (
@@ -33,6 +32,7 @@ export default class Player extends PureComponent {
             will-change: transform;
             transform: translate3d(-50%, -50%, 0) rotate(var(--playerAngle));
             background: black;
+            border: 1px solid transparent;
           }
 
           .health {
@@ -51,6 +51,7 @@ export default class Player extends PureComponent {
           className="playerModel"
           style={{
             color: isSelf || immune ? colors.bright : "red",
+            borderColor: inRangedRange ? (inMeleeRange ? "red" : "yellow") : "transparent",
           }}
         >
           <div className="health">{health}</div>
