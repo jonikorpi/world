@@ -4,22 +4,13 @@ import colors from "../helpers/colors";
 
 export default class RangeIndicator extends PureComponent {
   render() {
-    const { range, type } = { ...this.props };
-    let border;
-
-    switch (type) {
-      case "danger":
-        border = `1px solid red`;
-        break;
-      default:
-        border = `1px dashed black`;
-    }
+    const { range } = { ...this.props };
 
     return (
       <div
         className="rangeIndicator"
         style={{
-          border: border,
+          border: `1px solid black`,
           width:  `calc( var(--worldScale) * ${range * 2}vmin )`,
           height: `calc( var(--worldScale) * ${range * 2}vmin )`,
         }}

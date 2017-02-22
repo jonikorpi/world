@@ -46,7 +46,7 @@ export default class Reticle extends PureComponent {
   }
 
   render() {
-    const { size, transform } = { ...this.props };
+    const { size, transform, hideBorders } = { ...this.props };
     const { targeted } = { ...this.state };
 
     const reticleSize = targeted ? `${size * 2}rem` : `calc(var(--worldScale) * ${size * 1.5}vmin)`
@@ -57,8 +57,9 @@ export default class Reticle extends PureComponent {
         style={{
           width: reticleSize,
           height: reticleSize,
-          WebkitTransform: `${transform} translate(-50%, -50%)`,
-          transform: `${transform} translate(-50%, -50%)`,
+          WebkitTransform: `${transform || ""} translate(-50%, -50%)`,
+          transform: `${transform || ""} translate(-50%, -50%)`,
+          borderWidth: hideBorders ? 0 : reticleThickness,
         }}
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={this.handleMouseLeave}
@@ -72,7 +73,7 @@ export default class Reticle extends PureComponent {
             position: absolute;
             left: 0; top: 0;
             will-change: transform;
-            border: ${reticleThickness}rem solid transparent;
+            border: 0 solid transparent;
             z-index: 3;
             transition: border 162ms ease-in-out;
           }

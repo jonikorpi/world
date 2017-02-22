@@ -173,8 +173,8 @@ export default class PlayerBody extends Component {
 
         <Reticle size={1} transform={transform}>
           {(inMeleeRange || inRangedRange) && this.props.action}
-          <RangeIndicator type="danger" range={meleeRange}/>
-          <RangeIndicator type="danger" range={rangedRange}/>
+          <RangeIndicator range={meleeRange}/>
+          <RangeIndicator range={rangedRange}/>
         </Reticle>
       </div>
     );

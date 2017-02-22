@@ -5,6 +5,7 @@ import reactFire from "reactfire";
 
 import Player from "../components/Player";
 import UserBody from "../components/UserBody";
+import Reticle from "../components/Reticle";
 import RangeIndicator from "../components/RangeIndicator";
 
 export default class UserState extends Component {
@@ -71,7 +72,12 @@ export default class UserState extends Component {
     if (player) {
       return (
         <div id="user">
-          <UserBody userID={this.props.userID} setWorldAttributes={this.props.setWorldAttributes} />
+          <UserBody
+            userID={this.props.userID}
+            setWorldAttributes={this.props.setWorldAttributes}
+            meleeRange={meleeRange}
+            rangedRange={rangedRange}
+          />
 
           <div id="userCenterer">
             <style jsx>{`
@@ -81,10 +87,15 @@ export default class UserState extends Component {
               }
             `}</style>
 
-            <RangeIndicator range={meleeRange}/>
-            <RangeIndicator range={rangedRange}/>
+            <Player
+              {...player}
+              isSelf={true}
+            />
 
-            <Player {...player} isSelf={true} />
+            <Reticle size={1} hideBorders>
+              <RangeIndicator range={meleeRange}/>
+              <RangeIndicator range={rangedRange}/>
+            </Reticle>
           </div>
         </div>
       );
