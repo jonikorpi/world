@@ -1,8 +1,9 @@
 import React, { PureComponent } from "react";
 import "whatwg-fetch";
 
-const version = process && process.env && process.env.GAME_VERSION;
+import colors from "../helpers/colors";
 
+const version = process && process.env && process.env.GAME_VERSION;
 const outlineSize = 2;
 
 export default class Action extends PureComponent {
@@ -129,14 +130,14 @@ export default class Action extends PureComponent {
             width: 100%;
             outline: none;
             text-shadow:
-               ${outlineSize}px  ${outlineSize}px 0 black,
-              -${outlineSize}px -${outlineSize}px 0 black,
-               ${outlineSize}px -${outlineSize}px 0 black,
-              -${outlineSize}px  ${outlineSize}px 0 black,
-              -${outlineSize}px  0px 0 black,
-               ${outlineSize}px  0px 0 black,
-               0px -${outlineSize}px 0 black,
-               0px  ${outlineSize}px 0 black
+               ${outlineSize}px  ${outlineSize}px 0 ${colors.sea},
+              -${outlineSize}px -${outlineSize}px 0 ${colors.sea},
+               ${outlineSize}px -${outlineSize}px 0 ${colors.sea},
+              -${outlineSize}px  ${outlineSize}px 0 ${colors.sea},
+              -${outlineSize}px  0px 0 ${colors.sea},
+               ${outlineSize}px  0px 0 ${colors.sea},
+               0px -${outlineSize}px 0 ${colors.sea},
+               0px  ${outlineSize}px 0 ${colors.sea}
             ;
           }
 
