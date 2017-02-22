@@ -99,9 +99,11 @@ export default class PlayerBody extends Component {
   handleEngineAfterUpdate = () => {
     const { body } = { ...this.body };
     const position = body && body.position;
+    const velocity = body && body.velocity;
 
     this.positionRef.style.setProperty("--playerPositionX", position.x);
     this.positionRef.style.setProperty("--playerPositionY", position.y);
+    this.positionRef.style.setProperty("--playerVelocity", Math.abs(velocity.y) + Math.abs(velocity.x));
     this.positionRef.style.setProperty("--playerAngle", body.angle - 1.5708 + "rad");
   }
 
