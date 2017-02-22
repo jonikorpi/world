@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "now": {
-    "aliases": [
+    "alias": [
       "valtameri-dev"
     ],
     "env": {
