@@ -111,7 +111,8 @@ export default class Action extends PureComponent {
 
     const texts = {
       spawn: "Spawn",
-      attack: "Attack",
+      meleeAttack: "Melee attack",
+      rangedAttack: "Ranged attack",
     };
 
     return (

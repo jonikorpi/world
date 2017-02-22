@@ -182,6 +182,9 @@ export default class PlayerBody extends Component {
         </div>
 
         <Reticle size={1} transform={transform}>
+          <RangeIndicator range={meleeRange}/>
+          <RangeIndicator range={rangedRange}/>
+
           {(inRangedRange && !inMeleeRange ) && (
             <Action
               data={{
@@ -201,9 +204,6 @@ export default class PlayerBody extends Component {
               {...actionProps}
             />
           )}
-
-          <RangeIndicator range={meleeRange}/>
-          <RangeIndicator range={rangedRange}/>
         </Reticle>
       </div>
     );
