@@ -141,7 +141,7 @@ export default class UserBody extends PureComponent {
 
     this.worldRef.style.setProperty("--userPositionX", position.x);
     this.worldRef.style.setProperty("--userPositionY", position.y);
-    this.worldRef.style.setProperty("--playerVelocity", Math.abs(velocity.x + velocity.y));
+    this.worldRef.style.setProperty("--playerVelocity", Math.abs(velocity.x) + Math.abs(velocity.y));
     this.worldRef.style.setProperty("--playerAngle", body.angle - 1.5708 + "rad");
   }
 

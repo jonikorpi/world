@@ -103,7 +103,7 @@ export default class PlayerBody extends Component {
 
     this.positionRef.style.setProperty("--playerPositionX", position.x);
     this.positionRef.style.setProperty("--playerPositionY", position.y);
-    this.positionRef.style.setProperty("--playerVelocity", Math.abs(velocity.x + velocity.y));
+    this.positionRef.style.setProperty("--playerVelocity", Math.abs(velocity.x) + Math.abs(velocity.y));
     this.positionRef.style.setProperty("--playerAngle", body.angle - 1.5708 + "rad");
   }
 
