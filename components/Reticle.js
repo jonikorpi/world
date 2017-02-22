@@ -25,7 +25,8 @@ export default class Reticle extends PureComponent {
   }
 
   handleUntarget = () => {
-    this.timer = setTimeout(this.untarget, 414);
+    // this.timer = setTimeout(this.untarget, 414);
+    this.untarget();
   }
 
   untarget = () => {

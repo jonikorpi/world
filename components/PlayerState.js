@@ -4,7 +4,6 @@ import reactFire from "reactfire";
 import firebase from "firebase";
 
 import PlayerPosition from "../components/PlayerPosition";
-import Action from "../components/Action";
 
 export default class PlayerState extends Component {
   constructor(props) {
@@ -31,7 +30,6 @@ export default class PlayerState extends Component {
   };
 
   render() {
-    const { playerID } = { ...this.props };
     const player = this.state.player;
 
     if (!player) {
@@ -39,20 +37,7 @@ export default class PlayerState extends Component {
     }
 
     return (
-      <PlayerPosition
-        {...this.props}
-        playerID={playerID}
-        playerState={player}
-        action={
-          <Action
-            data={{
-              action: "attack",
-              playerID: playerID
-            }}
-            {...this.props}
-          />
-        }
-      />
+      <PlayerPosition {...this.props} {...player} />
     );
   }
 }

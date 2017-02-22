@@ -7,6 +7,7 @@ import firebase from "firebase";
 import Player from "../components/Player";
 import Reticle from "../components/Reticle";
 import RangeIndicator from "../components/RangeIndicator";
+import Action from "../components/Action";
 
 import rendering from "../helpers/rendering";
 import movement from "../helpers/movement";
@@ -130,11 +131,16 @@ export default class PlayerBody extends Component {
   }
 
   render() {
-    const {x, y, vx, vy} = { ...this.props };
+    const {x, y, vx, vy, userID, userToken, playerID} = { ...this.props };
     const {inMeleeRange, inRangedRange} = { ...this.state };
 
     const meleeRange = 4;
     const rangedRange = 9;
+
+    const actionProps = {
+      userID: userID,
+      userToken: userToken,
+    };
 
     return (
       <div className="playerBody" ref={(c) => this.positionRef = c}>
@@ -170,13 +176,32 @@ export default class PlayerBody extends Component {
 
         <div className="playerPosition">
           <Player
-            {...this.props.playerState}
+            {...this.props}
             {...this.state}
           />
         </div>
 
         <Reticle size={1} transform={transform}>
-          {(inMeleeRange || inRangedRange) && this.props.action}
+          {(inRangedRange && !inMeleeRange ) && (
+            <Action
+              data={{
+                action: "rangedAttack",
+                playerID: playerID
+              }}
+              {...actionProps}
+            />
+          )}
+
+          {(inMeleeRange ) && (
+            <Action
+              data={{
+                action: "meleeAttack",
+                playerID: playerID
+              }}
+              {...actionProps}
+            />
+          )}
+
           <RangeIndicator range={meleeRange}/>
           <RangeIndicator range={rangedRange}/>
         </Reticle>
