@@ -62,7 +62,8 @@ export default class User extends Component {
     const playerSettings = this.state.playerSettings || {};
     const playerSecrets = this.state.playerSecrets || {};
 
-    const range = 10;
+    const meleeRange = 8;
+    const rangedRange = 18;
 
     if (player) {
 
@@ -82,15 +83,23 @@ export default class User extends Component {
                 left: 0; top: 0;
                 border-radius: 50%;
                 transform: translate(-50%, -50%);
-                border: 1px solid grey;
+                border: 1px dashed black;
               }
             `}</style>
 
             <div
               className="rangeIndicator"
               style={{
-                width:  `calc( var(--worldScale) * ${range}vmin )`,
-                height: `calc( var(--worldScale) * ${range}vmin )`,
+                width:  `calc( var(--worldScale) * ${meleeRange}vmin )`,
+                height: `calc( var(--worldScale) * ${meleeRange}vmin )`,
+              }}
+            />
+
+            <div
+              className="rangeIndicator"
+              style={{
+                width:  `calc( var(--worldScale) * ${rangedRange}vmin )`,
+                height: `calc( var(--worldScale) * ${rangedRange}vmin )`,
               }}
             />
 
