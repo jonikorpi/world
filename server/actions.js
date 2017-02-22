@@ -89,7 +89,7 @@ actions.selfDestruct = async userID => {
 
 //
 // Attacks
-actions.attack = async (userID, request, rangeType) => {
+actions.attack = async (userID, request, rangeType, damageModifier) => {
   const attackerFetch = await database.ref(`players/${userID}`).once("value");
   const attacker = attackerFetch.val();
 
@@ -109,7 +109,7 @@ actions.attack = async (userID, request, rangeType) => {
       return;
     }
     else {
-      player.state.health -= 1;
+      player.state.health -= 1 * damageModifier;
       return player;
     }
   });
@@ -122,12 +122,12 @@ actions.attack = async (userID, request, rangeType) => {
 }
 
 actions.meleeAttack = async (userID, request) => {
-  await actions.attack(userID, request, "meleeRange");
+  await actions.attack(userID, request, "meleeRange", 2);
   return;
 }
 
 actions.rangedAttack = async (userID, request) => {
-  await actions.attack(userID, request, "rangedRange");
+  await actions.attack(userID, request, "rangedRange", 1);
   return;
 }
 
