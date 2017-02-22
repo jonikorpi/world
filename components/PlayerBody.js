@@ -118,11 +118,15 @@ export default class PlayerBody extends Component {
     const userX = styles.getPropertyValue("--userPositionX");
     const userY = styles.getPropertyValue("--userPositionY");
     const distance = Math.sqrt( Math.pow(userX - position.x, 2) + Math.pow(userY - position.y, 2) );
+    const inMeleeRange = this.props.userMeleeRange - distance >= 0;
+    const inRangedRange = this.props.userRangedRange - distance >= 0;
 
-    this.setState({
-      inMeleeRange: this.props.userMeleeRange - distance >= 0,
-      inRangedRange: this.props.userRangedRange - distance >= 0,
-    })
+    if (this.state.inMeleeRange !== inMeleeRange || this.state.inRangedRange !== inRangedRange) {
+      this.setState({
+        inMeleeRange: this.props.userMeleeRange - distance >= 0,
+        inRangedRange: this.props.userRangedRange - distance >= 0,
+      });
+    }
   }
 
   render() {
