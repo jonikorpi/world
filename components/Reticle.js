@@ -6,6 +6,8 @@ const reticleColor = "red";
 export default class Reticle extends PureComponent {
   componentDidMount() {
     this.mounted = true;
+
+    this.state = {};
   }
 
   componentWillUnmount() {
