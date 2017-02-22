@@ -10,7 +10,7 @@ import RangeIndicator from "../components/RangeIndicator";
 import Action from "../components/Action";
 
 import rendering from "../helpers/rendering";
-import movement from "../helpers/movement";
+import maths from "../helpers/maths";
 
 const xTransform = `calc( ((var(--playerPositionX) * 1vmin) - (1vmin * var(--userPositionX))) * var(--worldScale) )`;
 const yTransform = `calc( ((var(--playerPositionY) * 1vmin) - (1vmin * var(--userPositionY))) * var(--worldScale) )`;
@@ -50,7 +50,7 @@ export default class PlayerBody extends Component {
   handleEngineBeforeUpdate = () => {
     const body = this.body.body;
     const target = { x: this.props.x, y: this.props.y };
-    const shouldAccelerate = movement.shouldAccelerate(0.2, target, body.position);
+    const shouldAccelerate = maths.shouldAccelerate(0.2, target, body.position);
     const maxAllowedPositionSkew = 1.5;
 
     if (
@@ -85,7 +85,7 @@ export default class PlayerBody extends Component {
         y: (positionVector.y - body.position.y) / body.mass,
       };
 
-      const clampedForceVector = movement.clampSpeed(forceVector, magnitudeLimit);
+      const clampedForceVector = maths.clampSpeed(forceVector, magnitudeLimit);
 
       const targetAngle = Matter.Vector.angle(
         positionVector,
@@ -118,7 +118,7 @@ export default class PlayerBody extends Component {
     const styles = window.getComputedStyle(this.worldRef);
     const userX = styles.getPropertyValue("--userPositionX");
     const userY = styles.getPropertyValue("--userPositionY");
-    const distance = Math.sqrt( Math.pow(userX - position.x, 2) + Math.pow(userY - position.y, 2) );
+    const distance = maths.distanceBetween(userX, userY, position.x, position.y);
     const inMeleeRange = this.props.userMeleeRange - distance >= 0;
     const inRangedRange = this.props.userRangedRange - distance >= 0;
 
@@ -131,11 +131,8 @@ export default class PlayerBody extends Component {
   }
 
   render() {
-    const {x, y, vx, vy, userID, userToken, playerID} = { ...this.props };
+    const {x, y, vx, vy, userID, userToken, playerID, meleeRange, rangedRange} = { ...this.props };
     const {inMeleeRange, inRangedRange} = { ...this.state };
-
-    const meleeRange = 4;
-    const rangedRange = 9;
 
     const actionProps = {
       userID: userID,

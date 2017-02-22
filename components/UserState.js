@@ -64,8 +64,8 @@ export default class UserState extends Component {
     const playerSettings = this.state.playerSettings || {};
     const playerSecrets = this.state.playerSecrets || {};
 
-    const meleeRange = 4;
-    const rangedRange = 9;
+    const meleeRange = (player && player.meleeRange) || 0;
+    const rangedRange = (player && player.rangedRange) || 0;
 
     this.props.setUserRanges(meleeRange, rangedRange);
 

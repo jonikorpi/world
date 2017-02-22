@@ -8,7 +8,7 @@ import MovementPlane from "../components/MovementPlane";
 import MovementReticle from "../components/MovementReticle";
 
 import rendering from "../helpers/rendering";
-import movement from "../helpers/movement";
+import maths from "../helpers/maths";
 
 export default class UserBody extends PureComponent {
   static contextTypes = {
@@ -96,7 +96,7 @@ export default class UserBody extends PureComponent {
   handleEngineBeforeUpdate = () => {
     const body = this.body.body;
     const target = this.state.target;
-    const shouldAccelerate = movement.shouldAccelerate(0.2, this.state.target, body.position);
+    const shouldAccelerate = maths.shouldAccelerate(0.2, this.state.target, body.position);
 
     if (shouldAccelerate) {
       const speedLimit = 1;
@@ -117,7 +117,7 @@ export default class UserBody extends PureComponent {
         y: (target.y - body.position.y) / body.mass,
       };
 
-      const clampedForceVector = movement.clampSpeed(forceVector, magnitudeLimit);
+      const clampedForceVector = maths.clampSpeed(forceVector, magnitudeLimit);
 
       Matter.Body.applyForce(
         body,

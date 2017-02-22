@@ -1,5 +1,8 @@
 const firebase = require("firebase-admin");
 const database = firebase.database();
+
+const maths = require("../helpers/maths.js");
+
 let actions = {};
 
 //
@@ -33,6 +36,8 @@ actions.spawn = async userID => {
       state: {
         health: 10,
         immuneUntil: Date.now() + 10 * 1000,
+        meleeRange: 4,
+        rangedRange: 9,
       },
       position: {
         x: x,
@@ -81,6 +86,50 @@ actions.selfDestruct = async userID => {
 
   return;
 };
+
+//
+// Attacks
+actions.attack = async (userID, request, rangeType) => {
+  const attackerFetch = await database.ref(`players/${userID}`).once("value");
+  const attacker = attackerFetch.val();
+
+  const attackTransaction = await database.ref(`players/${request.playerID}`).transaction((player) => {
+    if (player === null) {
+      return null;
+    }
+
+    if (
+      maths.distanceBetween(
+        attacker.position.x, attacker.position.y,
+        player.position.x, player.position.y
+      )
+      >
+      attacker.state[rangeType]
+    ) {
+      return;
+    }
+    else {
+      player.state.health -= 1;
+      return player;
+    }
+  });
+
+  if (!attackTransaction.snapshot.val() || !attackTransaction.committed) {
+    throw new Error("Failed to attack");
+  }
+
+  return;
+}
+
+actions.meleeAttack = async (userID, request) => {
+  await actions.attack(userID, request, "meleeRange");
+  return;
+}
+
+actions.rangedAttack = async (userID, request) => {
+  await actions.attack(userID, request, "rangedRange");
+  return;
+}
 
 //
 // Move
