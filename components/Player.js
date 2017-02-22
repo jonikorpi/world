@@ -20,9 +20,7 @@ export default class Player extends PureComponent {
             transform:
               translate(-50%, -50%)
               rotate(var(--playerAngle))
-              scale(calc( 1 + var(--playerVelocity) * 3 ))
-              translateY(calc( 100% * var(--playerVelocity) * 3 ))
-              scale(1, calc( 1 + var(--playerVelocity) * 3 ))
+              scale( calc( 1 + var(--playerVelocity) * 5 ) )
             ;
             background: ${colors.bright};
           }
