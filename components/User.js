@@ -5,6 +5,7 @@ import reactFire from "reactfire";
 
 import Player from "../components/Player";
 import UserBody from "../components/UserBody";
+import RangeIndicator from "../components/RangeIndicator";
 
 export default class User extends Component {
   constructor(props) {
@@ -77,31 +78,10 @@ export default class User extends Component {
                 position: fixed;
                 left: 50%; top: 50%;
               }
-
-              .rangeIndicator {
-                position: absolute;
-                left: 0; top: 0;
-                border-radius: 50%;
-                transform: translate(-50%, -50%);
-                border: 1px dashed black;
-              }
             `}</style>
 
-            <div
-              className="rangeIndicator"
-              style={{
-                width:  `calc( var(--worldScale) * ${meleeRange}vmin )`,
-                height: `calc( var(--worldScale) * ${meleeRange}vmin )`,
-              }}
-            />
-
-            <div
-              className="rangeIndicator"
-              style={{
-                width:  `calc( var(--worldScale) * ${rangedRange}vmin )`,
-                height: `calc( var(--worldScale) * ${rangedRange}vmin )`,
-              }}
-            />
+            <RangeIndicator range={meleeRange}/>
+            <RangeIndicator range={rangedRange}/>
 
             <Player {...player} isSelf={true} />
           </div>

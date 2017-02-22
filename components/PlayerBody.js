@@ -3,8 +3,9 @@ import { Body } from "react-game-kit";
 import Matter from "matter-js";
 import firebase from "firebase";
 
-import MovementReticle from "../components/MovementReticle";
+// import MovementReticle from "../components/MovementReticle";
 import Reticle from "../components/Reticle";
+import RangeIndicator from "../components/RangeIndicator";
 
 import rendering from "../helpers/rendering";
 import movement from "../helpers/movement";
@@ -107,6 +108,9 @@ export default class PlayerBody extends Component {
   render() {
     const {x, y, vx, vy} = { ...this.props };
 
+    const meleeRange = 8;
+    const rangedRange = 18;
+
     return (
       <div className="playerBody" ref={(c) => this.positionRef = c}>
         <style jsx>{`
@@ -145,6 +149,8 @@ export default class PlayerBody extends Component {
 
         <Reticle size={1} transform={transform}>
           {this.props.action}
+          <RangeIndicator type="danger" range={meleeRange}/>
+          <RangeIndicator type="danger" range={rangedRange}/>
         </Reticle>
       </div>
     );
