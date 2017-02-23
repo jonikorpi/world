@@ -21,8 +21,8 @@
   "dependencies": {
     "body-parser": "^1.16.1",
     "express": "^4.14.1",
-    "firebase": "^3.6.9",
-    "firebase-admin": "^4.1.0",
+    "firebase": "^3.6.10",
+    "firebase-admin": "^4.1.1",
     "jonikorpi-base-files": "^6.0.1",
     "lodash.throttle": "^4.1.1",
     "next": "^2.0.0-beta.31",
@@ -49,12 +49,12 @@
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",
-    "eslint": "^3.15.0",
+    "eslint": "^3.16.1",
     "eslint-config-react-app": "^0.5.1",
     "eslint-plugin-flowtype": "^2.30.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^4.0.0",
-    "eslint-plugin-react": "^6.9.0",
+    "eslint-plugin-react": "^6.10.0",
     "nodemon": "^1.11.0"
   }
 }
