@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react";
 import { Body } from "react-game-kit";
 import Matter from "matter-js";
 import firebase from "firebase";
+import throttle from "lodash.throttle";
 
 // import MovementReticle from "../components/MovementReticle";
 import Player from "../components/Player";
@@ -27,6 +28,7 @@ export default class PlayerBody extends Component {
     this.state = {};
 
     this.clockSkew = 0;
+    this.updateRangesHandler = throttle(this.updateRanges, 100);
   }
 
   componentWillMount() {
@@ -111,7 +113,7 @@ export default class PlayerBody extends Component {
     this.positionRef.style.setProperty("--playerVelocity", Math.abs(velocity.x) + Math.abs(velocity.y));
     this.positionRef.style.setProperty("--playerAngle", body.angle - 1.5708 + "rad");
 
-    this.updateRanges(position);
+    this.updateRangesHandler(position);
   }
 
   updateRanges = (position) => {
