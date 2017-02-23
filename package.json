@@ -39,9 +39,9 @@
   },
   "scripts": {
     "firebase": "firebase deploy",
-    "start": "GAME_VERSION=`git log -n 1 --pretty=format:'%H'` nodemon --watch server --harmony-async-await ./server/server.js",
+    "start": "GAME_VERSION=`git log -n 1 --pretty=format:'%H'` nodemon --watch server ./server/server.js",
     "build": "next build",
-    "now-start": "node --harmony-async-await ./server/server.js",
+    "now-start": "node ./server/server.js",
     "now-build": "next build",
     "deploy-live": "now -e GAME_VERSION=`git log -n 1 --pretty=format:'%H'` && curl https://api.rollbar.com/api/1/deploy/ -F access_token=22fca22d3936434eb8b69cc0c453d040 -F environment=production -F revision=`git log -n 1 --pretty=format:'%H'` -F local_username=`whoami` && npm run firebase && now alias",
     "deploy-testing": "now -e GAME_VERSION=`git log -n 1 --pretty=format:'%H'` && curl https://api.rollbar.com/api/1/deploy/ -F access_token=22fca22d3936434eb8b69cc0c453d040 -F environment=testing -F revision=`git log -n 1 --pretty=format:'%H'` -F local_username=`whoami` && npm run firebase",
