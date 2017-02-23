@@ -23,6 +23,7 @@ export default class Player extends PureComponent {
             ;
             background: black;
             border: 1px solid transparent;
+            transition: border 262ms ease-in;
           }
 
           .health {

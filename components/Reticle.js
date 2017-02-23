@@ -52,42 +52,60 @@ export default class Reticle extends PureComponent {
     const { size, transform, hideBorders } = { ...this.props };
     const { targeted } = { ...this.state };
 
-    const reticleSize = targeted ? `${size / 4}rem` : `calc(var(--worldScale) * ${size}vmin)`
+    const reticleSize = `calc(var(--worldScale) * ${size * 2}vmin)`
 
     return (
       <div
-        className={`reticle ${targeted ? "targeted" : "not-targeted"}`}
+        className={`reticleContainer ${targeted ? "targeted" : "not-targeted"}`}
         style={{
-          width: reticleSize,
-          height: reticleSize,
-          WebkitTransform: `${transform || ""} translate(-50%, -50%)`,
-          transform: `${transform || ""} translate(-50%, -50%)`,
-          borderWidth: hideBorders ? 0 : reticleThickness,
+          WebkitTransform: transform,
+          transform: transform,
         }}
-        onMouseEnter={this.handleMouseEnter}
-        onMouseLeave={this.handleMouseLeave}
-        onTouchStart={this.handleTouchStart}
-        onTouchEnd={this.handleTouchEnd}
-        onClick={this.handleClick}
       >
         <style jsx>{`
+          .reticleContainer {
+            position: absolute;
+            left: 0; top: 0;
+            z-index: 3;
+          }
+
+          .targeted {
+            z-index: 4;
+          }
+
           .reticle {
             pointer-events: all;
             position: absolute;
-            left: 0; top: 0;
             will-change: transform;
             border: 0 solid transparent;
-            z-index: 3;
-            transition: border 162ms ease-in-out;
+            transition: 162ms ease-in-out;
+            transition-property: border-color, transform, opacity;
+            transform: translate(-50%, -50%) scale(0.5);
+            opacity: 0;
           }
 
-          .reticle.targeted {
+          .targeted .reticle {
             border-color: ${reticleColor};
-            z-index: 4;
+            transform: translate(-50%, -50%);
+            opacity: 1;
           }
         `}</style>
 
-        {targeted && this.props.children}
+        <div
+          className="reticle"
+          style={{
+            width: reticleSize,
+            height: reticleSize,
+            borderWidth: hideBorders ? 0 : reticleThickness,
+          }}
+          onMouseEnter={this.handleMouseEnter}
+          onMouseLeave={this.handleMouseLeave}
+          onTouchStart={this.handleTouchStart}
+          onTouchEnd={this.handleTouchEnd}
+          onClick={this.handleClick}
+        >
+          {targeted && this.props.children}
+        </div>
       </div>
     );
   }

@@ -10,7 +10,6 @@ export default class RangeIndicator extends PureComponent {
       <div
         className="rangeIndicator"
         style={{
-          border: `1px solid black`,
           width:  `calc( var(--worldScale) * ${range * 20}vmin )`,
           height: `calc( var(--worldScale) * ${range * 20}vmin )`,
         }}
@@ -22,6 +21,13 @@ export default class RangeIndicator extends PureComponent {
             left: 50%; top: 50%;
             border-radius: 50%;
             transform: translate(-50%, -50%);
+            border: 1px solid black;
+            animation: entry 618ms ease-out;
+          }
+
+          @keyframes entry {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
           }
         `}</style>
       </div>
