@@ -38,7 +38,7 @@ export default class Reticle extends PureComponent {
   }
 
   handleMouseEnter = () => { this.target(); }
-  handleMouseLeave = () => { this.handleUntarget(); }
+  handleMouseLeave = () => { this.untarget(); }
   handleTouchEnd = () => { this.handleUntarget(); }
 
   handleTouchStart = (event) => {
