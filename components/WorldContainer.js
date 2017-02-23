@@ -4,8 +4,8 @@ import { Loop, World } from "react-game-kit";
 import Sectors from "../components/Sectors";
 import UserState from "../components/UserState";
 
-const maxScale = 5;
-const minScale = 0.5;
+const maxScale = 0.5;
+const minScale = 0.1;
 
 export default class WorldContainer extends PureComponent {
   constructor(props) {

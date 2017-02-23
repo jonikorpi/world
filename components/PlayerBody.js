@@ -13,8 +13,8 @@ import Action from "../components/Action";
 import rendering from "../helpers/rendering";
 import maths from "../helpers/maths";
 
-const xTransform = `calc( ((var(--playerPositionX) * 1vmin) - (1vmin * var(--userPositionX))) * var(--worldScale) )`;
-const yTransform = `calc( ((var(--playerPositionY) * 1vmin) - (1vmin * var(--userPositionY))) * var(--worldScale) )`;
+const xTransform = `calc( ((var(--playerPositionX) * 10vmin) - (10vmin * var(--userPositionX))) * var(--worldScale) )`;
+const yTransform = `calc( ((var(--playerPositionY) * 10vmin) - (10vmin * var(--userPositionY))) * var(--worldScale) )`;
 const transform = `translate3d(${xTransform}, ${yTransform}, 0)`;
 
 export default class PlayerBody extends Component {
@@ -180,7 +180,7 @@ export default class PlayerBody extends Component {
           />
         </div>
 
-        <Reticle size={1} transform={transform}>
+        <Reticle size={10} transform={transform}>
           <RangeIndicator range={meleeRange}/>
           <RangeIndicator range={rangedRange}/>
 

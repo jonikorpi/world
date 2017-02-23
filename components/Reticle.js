@@ -52,7 +52,7 @@ export default class Reticle extends PureComponent {
     const { size, transform, hideBorders } = { ...this.props };
     const { targeted } = { ...this.state };
 
-    const reticleSize = targeted ? `${size * 2}rem` : `calc(var(--worldScale) * ${size * 1.5}vmin)`
+    const reticleSize = targeted ? `${size / 4}rem` : `calc(var(--worldScale) * ${size}vmin)`
 
     return (
       <div

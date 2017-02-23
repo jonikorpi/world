@@ -12,22 +12,25 @@ export default class Player extends PureComponent {
         <style jsx>{`
           .playerModel {
             position: absolute;
-            width:  calc(var(--worldScale) * 0.5vmin);
-            height: calc(var(--worldScale) * 1vmin);
+            width:  5vmin;
+            height: 10vmin;
             border-radius: 38% 38% 23% 23%;
             will-change: transform;
-            transform: translate3d(-50%, -50%, 0) rotate(var(--playerAngle));
+            transform:
+              translate3d(-50%, -50%, 0)
+              rotate(var(--playerAngle))
+              scale( var(--worldScale) )
+            ;
             background: black;
             border: 1px solid transparent;
           }
 
           .health {
-            transform: rotate( calc(var(--playerAngle) * -1) );
+            position: absolute;
+            left: 2vmin; top: 2vmin;
             font-weight: bold;
-            font-size: calc(var(--worldScale) * 0.5vmin);
-            width: 100%;
-            text-align: center;
-            line-height: 2.25;
+            font-size: 0.75rem;
+            line-height: 1;
           }
         `}</style>
 
@@ -37,9 +40,9 @@ export default class Player extends PureComponent {
             color: isSelf || immune ? colors.bright : "red",
             borderColor: inRangedRange ? (inMeleeRange ? "red" : "yellow") : "transparent",
           }}
-        >
-          <div className="health">{health}</div>
-        </div>
+        />
+
+        <div className="health">{health}</div>
 
       </div>
     );

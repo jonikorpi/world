@@ -92,7 +92,7 @@ export default class UserState extends Component {
               isSelf={true}
             />
 
-            <Reticle size={1} hideBorders>
+            <Reticle size={10} hideBorders>
               <RangeIndicator range={meleeRange}/>
               <RangeIndicator range={rangedRange}/>
             </Reticle>
