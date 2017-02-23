@@ -10,20 +10,6 @@ export default class Player extends PureComponent {
     return (
       <div id={`player-${this.props[".key"]}`} className="player">
         <style jsx>{`
-          .playerRipple {
-            position: absolute;
-            width:  calc(var(--worldScale) * 0.5vmin);
-            height: calc(var(--worldScale) * 1vmin);
-            border-radius: 38% 38% 23% 23%;
-            will-change: transform;
-            transform:
-              translate(-50%, -50%)
-              rotate(var(--playerAngle))
-              scale( calc( 1 + var(--playerVelocity) * 5 ) )
-            ;
-            background: ${colors.bright};
-          }
-
           .playerModel {
             position: absolute;
             width:  calc(var(--worldScale) * 0.5vmin);
@@ -44,8 +30,6 @@ export default class Player extends PureComponent {
             line-height: 2.25;
           }
         `}</style>
-
-        <div className="playerRipple"/>
 
         <div
           className="playerModel"
