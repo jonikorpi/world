@@ -28,10 +28,12 @@ export default class Player extends PureComponent {
 
           .health {
             position: absolute;
-            left: 2vmin; top: 2vmin;
             font-weight: bold;
-            font-size: 0.75rem;
+            font-size: 1.5rem;
             line-height: 1;
+            will-change: transform;
+            transform-origin: -5vmin -5vmin;
+            transform: translate(5vmin, 5vmin) scale(var(--worldScale));
           }
         `}</style>
 
