@@ -40,7 +40,7 @@ export default class Lobby extends Component {
   }
 
   bindFirebase = userID => {
-    this.bindAsObject(firebase.database().ref(`players/${userID}/sectorID`), "sectorID", error => {
+    this.bindAsObject(firebase.database().ref(`players/${userID}/position/~~xy`), "sectorID", error => {
       console.log(error);
       this.setState({ sectorID: undefined });
     });

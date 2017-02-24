@@ -23,7 +23,7 @@ export default class Sector extends Component {
 
   bindFirebase = sectorID => {
     this.bindAsObject(
-      firebase.database().ref(`sectorPlayers/${sectorID}`),
+      firebase.database().ref(`players`).orderByChild("position/~~xy").equalTo(sectorID),
       "sectorPlayers",
       error => {
         console.log(error);

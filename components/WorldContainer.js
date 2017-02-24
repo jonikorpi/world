@@ -25,18 +25,6 @@ export default class WorldContainer extends PureComponent {
     window.removeEventListener("scroll", this.handleScroll);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.userID !== nextProps.userID) {
-      if (this.props.userID) {
-        this.unbind("sectorID");
-      }
-
-      if (nextProps.userID) {
-        this.bindFirebase(nextProps.userID);
-      }
-    }
-  }
-
   handleScroll = () => {
     requestAnimationFrame(this.updateScale);
   }

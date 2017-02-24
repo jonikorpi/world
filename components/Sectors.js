@@ -7,7 +7,7 @@ const getAdjascentSectorIDs = (centerX, centerY) => {
 
   for (let x = -1; x <= 1; x++) {
     for (let y = -1; y <= 1; y++) {
-      sectorIDs.push(`${centerX + x},${centerY + y}`);
+      sectorIDs.push(`${centerX + x*100},${centerY + y*100}`);
     }
   }
 

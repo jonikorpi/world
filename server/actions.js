@@ -26,13 +26,14 @@ actions.spawn = async userID => {
   const y = Math.sin(angle) * radius;
   const roundedX = Math.round(x);
   const roundedY = Math.round(y);
+  const sectorX = Math.floor(roundedX / 100) * 100;
+  const sectorY = Math.floor(roundedY / 100) * 100;
+  const sectorID = sectorX + "," + sectorY;
 
   // Create player
   const now = firebase.database.ServerValue.TIMESTAMP;
   const updates = {
     [`players/${userID}`]: {
-      // sectorID: `${roundedX},${roundedY}`,
-      sectorID: "0,0",
       state: {
         health: 10,
         immuneUntil: Date.now() + 10 * 1000,
@@ -46,12 +47,14 @@ actions.spawn = async userID => {
         vy: 0,
         t: now,
         "~x": roundedX,
-        "~y": roundedY
+        "~y": roundedY,
+        "~xy": roundedX + "," + roundedY,
+        "~~x": sectorX,
+        "~~y": sectorY,
+        "~~xy": sectorID
       }
     },
     [`playerSecrets/${userID}`]: true,
-    // [`sectorPlayers/${roundedX},${roundedY}/${userID}`]: true
-    [`sectorPlayers/0,0/${userID}`]: true
   };
 
   await database.ref().update(updates);
@@ -62,20 +65,6 @@ actions.spawn = async userID => {
 //
 // Self-destruct
 actions.selfDestruct = async userID => {
-  // Find all sectors that have indexed this player
-  const sectorsWithPlayer = await database
-    .ref("sectorPlayers")
-    .orderByChild(userID)
-    .startAt(true)
-    .once("value");
-
-  // Destroy all of those indexes
-  if (sectorsWithPlayer.numChildren() > 0) {
-    sectorsWithPlayer.forEach(sector => {
-      sector.child(userID).ref.remove();
-    });
-  }
-
   // Remove player
   const updates = {
     [`players/${userID}`]: null,

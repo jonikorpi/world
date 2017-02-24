@@ -74,13 +74,22 @@ export default class UserBody extends PureComponent {
   }
 
   updateFirebase = (x, y, vx, vy) => {
+    const roundedX = Math.round(x);
+    const roundedY = Math.round(y);
+    const sectorX = Math.floor(roundedX / 100) * 100;
+    const sectorY = Math.floor(roundedY / 100) * 100;
+
     const state = {
       x: x,
       y: y,
       vx: Math.abs(vx) > 0.001 ? vx : 0,
       vy: Math.abs(vy) > 0.001 ? vy : 0,
-      "~x": Math.round(x),
-      "~y": Math.round(y),
+      "~x": roundedX,
+      "~y": roundedY,
+      "~xy": roundedX + "," + roundedY,
+      "~~x": sectorX,
+      "~~y": sectorY,
+      "~~xy": sectorX + "," + sectorY,
       t: firebase.database.ServerValue.TIMESTAMP,
     };
 
