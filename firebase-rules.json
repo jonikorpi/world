@@ -11,26 +11,14 @@
           ".write": "auth.uid === $playerID",
           // TODO:
           // - validate
-          //   newData.exists() for all
-          //
-          //   (~x % 1) === 0 && (~y % 1) === 0
-          //   && (x <= ~x && x >= ~x-1)
-          //   && (y <= ~y && y >= ~y-1)
-          //   && ~xy === (~x + "," + ~y)
-          //
-          //   && (~~x % 100) === 0 && (~~y % 100) === 0
-          //   && (x*100 <= ~~x && x*100 >= ~~x-100)
-          //   && (y*100 <= ~~y && y*100 >= ~~y-100)
-          //   && ~~xy === (~~x + "," + ~~y)
-          //
           //   && !player.sector.collidables.hasChild("" + ~x + "," + ~y)
           //
           //   && ((oldX - newX) * (oldX - newX))^2 <= ((oldTime - newTime) / 1000 * maxV)^2
           //   && (v <= player.maxV) // maybe try to delay this if maxV has changed recently
           //
-          //   && (oldTime - newTime < 5000)
-          //   || (newX === oldX && newY === oldY && newV === oldV && new~X === old~X && new~Y === old~Y)
-          //   // can skip velocities
+          // Ensure all fields are set
+          // Require updates within 5s or an updateless refresh
+          ".validate": "newData.hasChildren(['x', 'y', 'vx', 'vy', 't', '~x', '~y', '~xy', '~~x', '~~y', '~~xy']) && (( (newData.child('t').val() - data.child('t').val() < 5000) || (data.child('x').val()===newData.child('x').val() && data.child('y').val()===newData.child('y').val() && data.child('~x').val()===newData.child('~x').val() && data.child('~y').val()===newData.child('~y').val() && data.child('~xy').val()===newData.child('~xy').val() && data.child('~~x').val()===newData.child('~~x').val() && data.child('~~y').val()===newData.child('~~y').val() && data.child('~~xy').val()===newData.child('~~xy').val()) ))",
           "x": {
             ".validate": "newData.isNumber()"
           },
@@ -46,23 +34,29 @@
           "t": {
             ".validate": "newData.val() === now"
           },
+          // Ensure ~x is a rounded x
+          // Ensure ~y is a rounded y
           "~x": {
-            ".validate": "newData.isNumber()"
+            ".validate": "newData.isNumber() && newData.val() % 1 === 0 && (newData.parent().child('x').val() >= newData.val() && newData.parent().child('x').val() <= newData.val()+1)"
           },
           "~y": {
-            ".validate": "newData.isNumber()"
+            ".validate": "newData.isNumber() && newData.val() % 1 === 0 && (newData.parent().child('y').val() >= newData.val() && newData.parent().child('y').val() <= newData.val()+1)"
           },
+          // Ensure ~xy = ~x,~y
           "~xy": {
-            ".validate": "newData.isString()"
+            ".validate": "newData.isString() && newData.val() === (newData.parent().child('~x').val() + ',' + newData.parent().child('~y').val())"
           },
+          // Ensure ~~x is a rounded x * 100
+          // Ensure ~~y is a rounded y * 100
           "~~x": {
-            ".validate": "newData.isNumber()"
+            ".validate": "newData.isNumber() && newData.val() % 100 === 0 && (newData.parent().child('x').val() >= newData.val() && newData.parent().child('x').val() <= newData.val()+100)"
           },
           "~~y": {
-            ".validate": "newData.isNumber()"
+            ".validate": "newData.isNumber() && newData.val() % 100 === 0 && (newData.parent().child('y').val() >= newData.val() && newData.parent().child('y').val() <= newData.val()+100)"
           },
+          // Ensure ~~xy = ~~x,~~y
           "~~xy": {
-            ".validate": "newData.isString()"
+            ".validate": "newData.isString() && newData.val() === (newData.parent().child('~~x').val() + ',' + newData.parent().child('~~y').val())"
           },
           "$other": {
             ".validate": "false"

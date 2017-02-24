@@ -49,10 +49,12 @@ export default class UserBody extends PureComponent {
       const {x, y} = { ...position.val() };
 
       Matter.Body.setPosition(body, { x: x, y: y });
+      Matter.Body.setVelocity(body, { x: 0, y: 0 });
+      this.updateFirebase(x, y, 0, 0);
 
       if (!this.initialFetchDone) {
-        this.initialFetchDone = true;
         this.previousState = { x: 0, y: 0 };
+        this.initialFetchDone = true;
       }
     });
   }
@@ -74,8 +76,8 @@ export default class UserBody extends PureComponent {
   }
 
   updateFirebase = (x, y, vx, vy) => {
-    const roundedX = Math.round(x);
-    const roundedY = Math.round(y);
+    const roundedX = Math.floor(x);
+    const roundedY = Math.floor(y);
     const sectorX = Math.floor(roundedX / 100) * 100;
     const sectorY = Math.floor(roundedY / 100) * 100;
 
