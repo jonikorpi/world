@@ -4,9 +4,6 @@
       ".read": "auth != null",
       ".indexOn": "position/~~xy",
       "$playerID": {
-        // TODO:
-        // - read if auth.uid === $playerID
-        // - read if playerID.sectorID is same or adjascent sector as userID.sectorID
         "position": {
           ".write": "auth.uid === $playerID",
           // TODO:
@@ -128,8 +125,6 @@
     "sectorEntities": {
       "$sectorID": {
         ".read": "auth != null",
-        // TODO:
-        // - read if playerID.sector is this or adjascent sector
         "$positionID": {
           "type": {
             ".validate": "newData.isString()"
@@ -145,9 +140,6 @@
     "entities": {
       "$entityID": {
         ".read": "auth != null",
-        // TODO:
-        // - read if auth.uid === $playerID
-        // - read if entityID.sector is same or adjascent sector as userID.sector
         "sectorID": {
           ".validate": "newData.isString()"
         },
