@@ -5,7 +5,7 @@ import Sectors from "../components/Sectors";
 import UserState from "../components/UserState";
 
 const maxScale = 0.5;
-const minScale = 0.1;
+const minScale = maxScale / 10;
 
 export default class WorldContainer extends PureComponent {
   constructor(props) {
