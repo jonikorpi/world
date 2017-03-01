@@ -9,7 +9,9 @@ export default class Player extends PureComponent {
 
     return (
       <div id={`player-${this.props[".key"]}`} className="player">
-        <style jsx>{`
+        <style jsx>
+          {
+            `
           .playerModel {
             position: absolute;
             width:  5vmin;
@@ -35,13 +37,15 @@ export default class Player extends PureComponent {
             transform-origin: -5vmin -5vmin;
             transform: translate(5vmin, 5vmin) scale(var(--worldScale));
           }
-        `}</style>
+        `
+          }
+        </style>
 
         <div
           className="playerModel"
           style={{
             color: isSelf || immune ? colors.bright : "red",
-            borderColor: inRangedRange ? (inMeleeRange ? "red" : "yellow") : "transparent",
+            borderColor: inRangedRange ? inMeleeRange ? "red" : "yellow" : "transparent",
           }}
         />
 

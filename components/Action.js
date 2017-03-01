@@ -123,7 +123,9 @@ export default class Action extends PureComponent {
           color: color,
         }}
       >
-        <style jsx>{`
+        <style jsx>
+          {
+            `
           .action {
             pointer-events: all;
             position: absolute;
@@ -149,7 +151,9 @@ export default class Action extends PureComponent {
             white-space: nowrap;
             transform: translate(-50%, -0.382rem);
           }
-        `}</style>
+        `
+          }
+        </style>
 
         <div className="actionLabel">
           {texts[this.props.data.action]}

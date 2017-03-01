@@ -4,7 +4,7 @@ export default class MovementReticle extends PureComponent {
   render() {
     const xTransform = `calc( ((${this.props.x} * 10vmin) - (10vmin * var(--userPositionX))) * var(--worldScale) )`;
     const yTransform = `calc( ((${this.props.y} * 10vmin) - (10vmin * var(--userPositionY))) * var(--worldScale) )`;
-    const transform = `translate3d(${xTransform}, ${yTransform}, 0) translate(-50%, -50%)`
+    const transform = `translate3d(${xTransform}, ${yTransform}, 0) translate(-50%, -50%)`;
 
     return (
       <div
@@ -14,7 +14,9 @@ export default class MovementReticle extends PureComponent {
           transform: transform,
         }}
       >
-        <style jsx>{`
+        <style jsx>
+          {
+            `
           .movementReticle {
             width:  2vmin;
             height: 2vmin;
@@ -24,7 +26,9 @@ export default class MovementReticle extends PureComponent {
             position: fixed;
             left: 50%; top: 50%;
           }
-        `}</style>
+        `
+          }
+        </style>
       </div>
     );
   }

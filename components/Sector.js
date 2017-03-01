@@ -28,17 +28,13 @@ export default class Sector extends Component {
       error => {
         console.log(error);
         this.setState({ sectorPlayers: undefined });
-      },
+      }
     );
 
-    this.bindAsObject(
-      firebase.database().ref(`sectorEntities/${sectorID}`),
-      "sectorEntities",
-      error => {
-        console.log(error);
-        this.setState({ sectorEntities: undefined });
-      },
-    );
+    this.bindAsObject(firebase.database().ref(`sectorEntities/${sectorID}`), "sectorEntities", error => {
+      console.log(error);
+      this.setState({ sectorEntities: undefined });
+    });
   };
 
   render() {
@@ -55,25 +51,12 @@ export default class Sector extends Component {
               return null;
             }
 
-            return (
-              <PlayerState
-                key={playerID}
-                playerID={playerID}
-                {...this.props}
-              />
-            );
+            return <PlayerState key={playerID} playerID={playerID} {...this.props} />;
           })}
 
         {entities &&
           entities.map(positionID => {
-            return (
-              <Entity
-                key={positionID}
-                positionID={positionID}
-                {...sectorEntities[positionID]}
-                {...this.props}
-              />
-            );
+            return <Entity key={positionID} positionID={positionID} {...sectorEntities[positionID]} {...this.props} />;
           })}
 
       </div>

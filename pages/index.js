@@ -10,7 +10,7 @@ import colors from "../helpers/colors";
 
 let Tone, DuoSynth, Panner, Loop, FeedbackDelay;
 
-const env = process && process.env && process.env.NODE_ENV || "development";
+const env = (process && process.env && process.env.NODE_ENV) || "development";
 
 export default class Play extends PureComponent {
   constructor(props) {
@@ -92,10 +92,10 @@ export default class Play extends PureComponent {
             console.log(window.ReactPerf.printExclusive());
             console.log(window.ReactPerf.printWasted());
           },
-          8000,
+          8000
         );
       },
-      1,
+      1
     );
   };
 
@@ -177,7 +177,7 @@ export default class Play extends PureComponent {
         leftSynth.setNote("A5", "+19:3:0");
         leftSynth.setNote("G5", "+19:4:2");
       },
-      "34m",
+      "34m"
     ).start();
 
     new Loop(
@@ -195,7 +195,7 @@ export default class Play extends PureComponent {
         // Trigger G4 after 23 measures + two 1/4 notes. Hold for a half note.
         rightSynth.triggerAttackRelease("G4", "0:2", "+23:2");
       },
-      "37m",
+      "37m"
     ).start();
 
     Tone.Transport.start();
@@ -236,14 +236,14 @@ export default class Play extends PureComponent {
 
   signIn = () => {
     console.log("Signing in anonymously");
-    firebase.auth().signInAnonymously().catch(function (error) {
+    firebase.auth().signInAnonymously().catch(function(error) {
       console.log(error);
     });
   };
 
   signOut = () => {
     console.log("Signing out");
-    firebase.auth().signOut().catch(function (error) {
+    firebase.auth().signOut().catch(function(error) {
       console.log(error);
     });
   };
@@ -323,7 +323,9 @@ export default class Play extends PureComponent {
           this.container = ref;
         }}
       >
-        <style jsx>{`
+        <style jsx>
+          {
+            `
           :global(body) {
             background: ${colors.sea};
             color: ${colors.bright};
@@ -333,14 +335,15 @@ export default class Play extends PureComponent {
             overflow: hidden;
             width: 100%;
           }
-        `}</style>
+        `
+          }
+        </style>
 
         <Head />
 
         {this.state.clientSideRendered && this.state.userID && this.state.haveConnectedOnce
           ? <Lobby {...this.state} {...props} />
-          : <Loading />
-        }
+          : <Loading />}
 
         {!this.state.fullScreen &&
           !this.state.mouseLock &&

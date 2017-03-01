@@ -12,7 +12,7 @@ import maths from "../helpers/maths";
 
 export default class UserBody extends PureComponent {
   static contextTypes = {
-    engine: PropTypes.object
+    engine: PropTypes.object,
   };
 
   constructor(props) {
@@ -46,7 +46,7 @@ export default class UserBody extends PureComponent {
     const body = this.body.body;
 
     this.positionRef.once("value").then(position => {
-      const {x, y} = { ...position.val() };
+      const { x, y } = { ...position.val() };
 
       Matter.Body.setPosition(body, { x: x, y: y });
       Matter.Body.setVelocity(body, { x: 0, y: 0 });
@@ -57,23 +57,17 @@ export default class UserBody extends PureComponent {
         this.initialFetchDone = true;
       }
     });
-  }
+  };
 
   tryUpdatingFirebase = (x, y, vx, vy) => {
     if (
-      this.initialFetchDone
-      && (
-        Math.abs(vx) > 0.001
-        || Math.abs(vy) > 0.001
-      )
-      && (
-        Math.abs(this.previousState.x - x) > 0.001
-        || Math.abs(this.previousState.y - y) > 0.001
-      )
+      this.initialFetchDone &&
+      (Math.abs(vx) > 0.001 || Math.abs(vy) > 0.001) &&
+      (Math.abs(this.previousState.x - x) > 0.001 || Math.abs(this.previousState.y - y) > 0.001)
     ) {
       this.updateFirebaseHandler(x, y, vx, vy);
     }
-  }
+  };
 
   updateFirebase = (x, y, vx, vy) => {
     const roundedX = Math.floor(x);
@@ -97,12 +91,12 @@ export default class UserBody extends PureComponent {
 
     this.previousState = state;
 
-    this.positionRef.set(state, (error) => {
+    this.positionRef.set(state, error => {
       if (error) {
         this.fetchPosition();
       }
     });
-  }
+  };
 
   handleEngineBeforeUpdate = () => {
     const body = this.body.body;
@@ -113,15 +107,9 @@ export default class UserBody extends PureComponent {
       const speedLimit = 1;
       const magnitudeLimit = speedLimit / 60 / body.mass;
 
-      const targetAngle = Matter.Vector.angle(
-        { x: target.x, y: target.y },
-        body.position
-      );
+      const targetAngle = Matter.Vector.angle({ x: target.x, y: target.y }, body.position);
 
-      Matter.Body.setAngle(
-        body,
-        rendering.angleLerp(body.angle, targetAngle, 4 / 60)
-      );
+      Matter.Body.setAngle(body, rendering.angleLerp(body.angle, targetAngle, 4 / 60));
 
       const forceVector = {
         x: (target.x - body.position.x) / body.mass,
@@ -130,25 +118,16 @@ export default class UserBody extends PureComponent {
 
       const clampedForceVector = maths.clampSpeed(forceVector, magnitudeLimit);
 
-      Matter.Body.applyForce(
-        body,
-        body.position,
-        Matter.Vector.rotate(clampedForceVector, body.angle - targetAngle),
-      );
+      Matter.Body.applyForce(body, body.position, Matter.Vector.rotate(clampedForceVector, body.angle - targetAngle));
     }
-  }
+  };
 
   handleEngineAfterUpdate = () => {
     const body = this.body.body;
     const position = body && body.position;
     const velocity = body && body.velocity;
 
-    this.tryUpdatingFirebase(
-      position.x,
-      position.y,
-      velocity.x,
-      velocity.y,
-    );
+    this.tryUpdatingFirebase(position.x, position.y, velocity.x, velocity.y);
 
     this.props.setWorldAttributes({
       "--userPositionX": position.x,
@@ -156,7 +135,7 @@ export default class UserBody extends PureComponent {
       "--playerVelocity": Math.abs(velocity.x) + Math.abs(velocity.y),
       "--playerAngle": body.angle - 1.5708 + "rad",
     });
-  }
+  };
 
   moveTowards = (relativeX, relativeY) => {
     const body = this.body.body;
@@ -167,31 +146,32 @@ export default class UserBody extends PureComponent {
         y: body.position.y + relativeY,
       },
     });
-  }
+  };
 
   render() {
     return (
       <div id="userBody">
         <Body
-          args={[0, 0, 1, 0.5, {
-            density: 106,
-            frictionStatic: 0.01,
-            frictionAir: 0.1,
-            angle: 90 * (Math.PI / 180),
-          }]}
-          ref={(c) => this.body = c}
+          args={[
+            0,
+            0,
+            1,
+            0.5,
+            {
+              density: 106,
+              frictionStatic: 0.01,
+              frictionAir: 0.1,
+              angle: 90 * (Math.PI / 180),
+            },
+          ]}
+          ref={c => this.body = c}
         >
           <div />
         </Body>
 
-        <MovementPlane
-          moveTowards={this.moveTowards}
-          worldRef={this.worldRef}
-        />
+        <MovementPlane moveTowards={this.moveTowards} worldRef={this.worldRef} />
 
-        {this.state.target.x && (
-          <MovementReticle {...this.state.target} />
-        )}
+        {this.state.target.x && <MovementReticle {...this.state.target} />}
       </div>
     );
   }

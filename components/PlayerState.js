@@ -36,9 +36,7 @@ export default class PlayerState extends Component {
       return null;
     }
 
-    return (
-      <PlayerPosition {...this.props} {...player} />
-    );
+    return <PlayerPosition {...this.props} {...player} />;
   }
 }
 

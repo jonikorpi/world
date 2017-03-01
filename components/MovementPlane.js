@@ -6,30 +6,25 @@ export default class MovementPlane extends PureComponent {
     const width = worldRef.clientWidth;
     const height = worldRef.clientHeight;
     const center = [width / 2, height / 2];
-    const scale = +window.getComputedStyle(worldRef).getPropertyValue("--worldScale") / 10;
+    const scale = (+window.getComputedStyle(worldRef).getPropertyValue("--worldScale")) / 10;
     const scaleDimension = width < height ? width : height;
     const unit = scaleDimension * scale;
 
-    this.props.moveTowards(
-      (x - center[0]) / unit,
-      (y - center[1]) / unit,
-    );
-  }
+    this.props.moveTowards((x - center[0]) / unit, (y - center[1]) / unit);
+  };
 
-  handleClick = (reactEvent) => {
+  handleClick = reactEvent => {
     const event = reactEvent.nativeEvent;
 
     this.moveTowards(event.clientX, event.clientY);
-  }
+  };
 
   render() {
     return (
-      <button
-        id="movementPlane"
-        type="button"
-        onClick={this.handleClick}
-      >
-        <style jsx>{`
+      <button id="movementPlane" type="button" onClick={this.handleClick}>
+        <style jsx>
+          {
+            `
           #movementPlane {
             display: block;
             position: fixed;
@@ -39,7 +34,9 @@ export default class MovementPlane extends PureComponent {
             cursor: crosshair;
             pointer-events: all;
           }
-        `}</style>
+        `
+          }
+        </style>
       </button>
     );
   }

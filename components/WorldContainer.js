@@ -14,7 +14,7 @@ export default class WorldContainer extends PureComponent {
     this.state = {
       userMeleeRange: 0,
       userRangedRange: 0,
-    }
+    };
   }
 
   componentDidMount() {
@@ -27,37 +27,39 @@ export default class WorldContainer extends PureComponent {
 
   handleScroll = () => {
     requestAnimationFrame(this.updateScale);
-  }
+  };
 
   updateScale = () => {
-    const scrolled = 1 - (window.pageYOffset / (document.body.clientHeight - window.innerHeight));
+    const scrolled = 1 - window.pageYOffset / (document.body.clientHeight - window.innerHeight);
     const scale = scrolled * (maxScale - minScale) + minScale;
-    this.setWorldAttributes({"--worldScale": scale});
-  }
+    this.setWorldAttributes({ "--worldScale": scale });
+  };
 
-  setWorldAttributes = (attributes) => {
+  setWorldAttributes = attributes => {
     if (this.worldRef) {
       Object.keys(attributes).map(prop => {
         return this.worldRef.style.setProperty(prop, attributes[prop]);
       });
     }
-  }
+  };
 
   setUserRanges = (melee, ranged) => {
     this.setState({
       userMeleeRange: melee,
       userRangedRange: ranged,
-    })
-  }
+    });
+  };
 
-  handleWorldInit = (engine) => {
+  handleWorldInit = engine => {
     // engine.enableSleeping = true;
-  }
+  };
 
   render() {
     return (
       <div id="world" ref={c => this.worldRef = c}>
-        <style jsx>{`
+        <style jsx>
+          {
+            `
           #world {
             user-select: none;
             pointer-events: none;
@@ -70,9 +72,11 @@ export default class WorldContainer extends PureComponent {
             --playerAngle: 0rad;
             --worldScale: ${maxScale};
           }
-        `}</style>
+        `
+          }
+        </style>
         <Loop>
-          <World gravity={{ x: 0, y: 0, }} onInit={this.handleWorldInit}>
+          <World gravity={{ x: 0, y: 0 }} onInit={this.handleWorldInit}>
             <UserState
               userID={this.props.userID}
               userToken={this.props.userToken}

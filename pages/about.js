@@ -14,7 +14,9 @@ export default class Play extends PureComponent {
   render() {
     return (
       <div id="about">
-        <style jsx>{`
+        <style jsx>
+          {
+            `
           :global(body) {
             background: ${colors.sea};
             color: ${colors.bright};
@@ -24,7 +26,9 @@ export default class Play extends PureComponent {
             overflow: hidden;
             width: 100%;
           }
-        `}</style>
+        `
+          }
+        </style>
 
         <Head />
         <Navigation pathname={this.props.url.pathname} />

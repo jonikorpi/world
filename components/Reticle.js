@@ -24,35 +24,41 @@ export default class Reticle extends PureComponent {
     }
 
     this.setState({ targeted: true });
-  }
+  };
 
   handleUntarget = () => {
     this.timer = setTimeout(this.untarget, 1618);
     // this.untarget();
-  }
+  };
 
   untarget = () => {
     if (this.mounted) {
       this.setState({ targeted: false });
     }
-  }
+  };
 
-  handleMouseEnter = () => { this.target(); }
-  handleMouseLeave = () => { this.untarget(); }
-  handleTouchEnd = () => { this.handleUntarget(); }
+  handleMouseEnter = () => {
+    this.target();
+  };
+  handleMouseLeave = () => {
+    this.untarget();
+  };
+  handleTouchEnd = () => {
+    this.handleUntarget();
+  };
 
-  handleTouchStart = (event) => {
+  handleTouchStart = event => {
     if (!this.state.targeted) {
       event.preventDefault();
       this.target();
     }
-  }
+  };
 
   render() {
     const { size, transform, hideBorders } = { ...this.props };
     const { targeted } = { ...this.state };
 
-    const reticleSize = `calc(var(--worldScale) * ${size * 2}vmin)`
+    const reticleSize = `calc(var(--worldScale) * ${size * 2}vmin)`;
 
     return (
       <div
@@ -62,7 +68,9 @@ export default class Reticle extends PureComponent {
           transform: transform,
         }}
       >
-        <style jsx>{`
+        <style jsx>
+          {
+            `
           .reticleContainer {
             position: absolute;
             left: 0; top: 0;
@@ -89,7 +97,9 @@ export default class Reticle extends PureComponent {
             transform: translate(-50%, -50%);
             opacity: 1;
           }
-        `}</style>
+        `
+          }
+        </style>
 
         <div
           className="reticle"

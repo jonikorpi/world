@@ -51,8 +51,8 @@ actions.spawn = async userID => {
         "~xy": roundedX + "," + roundedY,
         "~~x": sectorX,
         "~~y": sectorY,
-        "~~xy": sectorID
-      }
+        "~~xy": sectorID,
+      },
     },
     [`playerSecrets/${userID}`]: true,
   };
@@ -68,7 +68,7 @@ actions.selfDestruct = async userID => {
   // Remove player
   const updates = {
     [`players/${userID}`]: null,
-    [`playerSecrets/${userID}`]: null
+    [`playerSecrets/${userID}`]: null,
   };
 
   await database.ref().update(updates);
@@ -82,22 +82,17 @@ actions.attack = async (userID, request, rangeType, damageModifier) => {
   const attackerFetch = await database.ref(`players/${userID}`).once("value");
   const attacker = attackerFetch.val();
 
-  const attackTransaction = await database.ref(`players/${request.playerID}`).transaction((player) => {
+  const attackTransaction = await database.ref(`players/${request.playerID}`).transaction(player => {
     if (player === null) {
       return null;
     }
 
     if (
-      maths.distanceBetween(
-        attacker.position.x, attacker.position.y,
-        player.position.x, player.position.y
-      )
-      >
+      maths.distanceBetween(attacker.position.x, attacker.position.y, player.position.x, player.position.y) >
       attacker.state[rangeType]
     ) {
       return;
-    }
-    else {
+    } else {
       player.state.health -= 1 * damageModifier;
       return player;
     }
@@ -108,17 +103,17 @@ actions.attack = async (userID, request, rangeType, damageModifier) => {
   }
 
   return;
-}
+};
 
 actions.meleeAttack = async (userID, request) => {
   await actions.attack(userID, request, "meleeRange", 2);
   return;
-}
+};
 
 actions.rangedAttack = async (userID, request) => {
   await actions.attack(userID, request, "rangedRange", 1);
   return;
-}
+};
 
 //
 // Move

@@ -5,7 +5,7 @@ const serviceAccount = require("./.secret.json");
 
 firebase.initializeApp({
   credential: firebase.credential.cert(serviceAccount),
-  databaseURL: "https://valtameri-e1fd0.firebaseio.com"
+  databaseURL: "https://valtameri-e1fd0.firebaseio.com",
 });
 
 //
@@ -28,7 +28,7 @@ server.use(bodyParser.json());
 const rollbar = require("rollbar");
 server.use(
   rollbar.errorHandler("22fca22d3936434eb8b69cc0c453d040", {
-    environment: process.env.NODE_ENV || "development"
+    environment: process.env.NODE_ENV || "development",
   })
 );
 
@@ -49,10 +49,9 @@ const processRequest = async request => {
     throw new Error("You are not authenticated as this player.");
   }
 
-  if ( typeof actions[request.action] === typeof Function ) {
+  if (typeof actions[request.action] === typeof Function) {
     await actions[request.action](userID, request);
-  }
-  else {
+  } else {
     throw new Error("Unknown action type.");
   }
 

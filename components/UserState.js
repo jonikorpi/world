@@ -36,22 +36,14 @@ export default class UserState extends Component {
   }
 
   bindFirebase = userID => {
-    this.bindAsObject(
-      firebase.database().ref(`playerSettings/${userID}`),
-      "playerSettings",
-      error => {
-        console.log(error);
-        this.setState({ playerSettings: undefined });
-      }
-    );
-    this.bindAsObject(
-      firebase.database().ref(`playerSecrets/${userID}`),
-      "playerSecrets",
-      error => {
-        console.log(error);
-        this.setState({ playerSecrets: undefined });
-      }
-    );
+    this.bindAsObject(firebase.database().ref(`playerSettings/${userID}`), "playerSettings", error => {
+      console.log(error);
+      this.setState({ playerSettings: undefined });
+    });
+    this.bindAsObject(firebase.database().ref(`playerSecrets/${userID}`), "playerSecrets", error => {
+      console.log(error);
+      this.setState({ playerSecrets: undefined });
+    });
 
     this.bindAsObject(firebase.database().ref(`players/${userID}/state`), "player", error => {
       console.log(error);
@@ -80,21 +72,22 @@ export default class UserState extends Component {
           />
 
           <div id="userCenterer">
-            <style jsx>{`
+            <style jsx>
+              {
+                `
               #userCenterer {
                 position: fixed;
                 left: 50%; top: 50%;
               }
-            `}</style>
+            `
+              }
+            </style>
 
-            <Player
-              {...player}
-              isSelf={true}
-            />
+            <Player {...player} isSelf={true} />
 
             <Reticle size={10} hideBorders>
-              <RangeIndicator range={meleeRange}/>
-              <RangeIndicator range={rangedRange}/>
+              <RangeIndicator range={meleeRange} />
+              <RangeIndicator range={rangedRange} />
             </Reticle>
           </div>
         </div>

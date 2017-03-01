@@ -33,29 +33,23 @@ export default class Limbo extends Component {
   }
 
   bindFirebase = userID => {
-    this.bindAsObject(
-      firebase.database().ref(`playerSettings/${userID}`),
-      "playerSettings",
-      error => {
-        console.log(error);
-        this.setState({ playerSettings: undefined });
-      },
-    );
+    this.bindAsObject(firebase.database().ref(`playerSettings/${userID}`), "playerSettings", error => {
+      console.log(error);
+      this.setState({ playerSettings: undefined });
+    });
 
-    this.bindAsObject(
-      firebase.database().ref(`playerSecrets/${userID}`),
-      "playerSecrets",
-      error => {
-        console.log(error);
-        this.setState({ playerSecrets: undefined });
-      },
-    );
+    this.bindAsObject(firebase.database().ref(`playerSecrets/${userID}`), "playerSecrets", error => {
+      console.log(error);
+      this.setState({ playerSecrets: undefined });
+    });
   };
 
   render() {
     return (
       <div id="limbo">
-        <style jsx>{`
+        <style jsx>
+          {
+            `
           #limbo {
             position: fixed;
             left: 50%; top: 50%;
@@ -64,7 +58,9 @@ export default class Limbo extends Component {
             transform: translate(-50%, -50%);
             border: 1px solid white;
           }
-        `}</style>
+        `
+          }
+        </style>
 
         <Action
           {...this.props}
