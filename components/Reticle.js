@@ -1,68 +1,17 @@
 import React, { PureComponent } from "react";
 
-const reticleThickness = 0.125;
-const reticleColor = "red";
-
 export default class Reticle extends PureComponent {
-  componentDidMount() {
-    this.mounted = true;
-
-    this.state = {};
-  }
-
-  componentWillUnmount() {
-    this.mounted = false;
-
-    if (this.timer) {
-      clearTimeout(this.timer);
-    }
-  }
-
-  target = () => {
-    if (this.timer) {
-      clearTimeout(this.timer);
-    }
-
-    this.setState({ targeted: true });
-  };
-
-  handleUntarget = () => {
-    this.timer = setTimeout(this.untarget, 1618);
-    // this.untarget();
-  };
-
-  untarget = () => {
-    if (this.mounted) {
-      this.setState({ targeted: false });
-    }
-  };
-
-  handleMouseEnter = () => {
-    this.target();
-  };
-  handleMouseLeave = () => {
-    this.untarget();
-  };
-  handleTouchEnd = () => {
-    this.handleUntarget();
-  };
-
-  handleTouchStart = event => {
-    if (!this.state.targeted) {
-      event.preventDefault();
-      this.target();
-    }
-  };
-
   render() {
-    const { size, transform, hideBorders } = { ...this.props };
-    const { targeted } = { ...this.state };
+    const xTransform = `calc( ((${this.props.x} * 10vmin) - (10vmin * var(--cameraPositionX))) * var(--worldScale) )`;
+    const yTransform = `calc( ((${this.props.y} * 10vmin) - (10vmin * var(--cameraPositionY))) * var(--worldScale) )`;
+    const transform = `translate3d(${xTransform}, ${yTransform}, 0) translate(-50%, -50%)`;
 
-    const reticleSize = `calc(var(--worldScale) * ${size * 2}vmin)`;
+    const scale = this.props.scale || 0.5;
+    const iconTransform = `scale(${scale})`;
 
     return (
       <div
-        className={`reticleContainer ${targeted ? "targeted" : "not-targeted"}`}
+        className="reticle"
         style={{
           WebkitTransform: transform,
           transform: transform,
@@ -71,51 +20,32 @@ export default class Reticle extends PureComponent {
         <style jsx>
           {
             `
-          .reticleContainer {
-            position: absolute;
-            left: 0; top: 0;
-            z-index: 3;
-          }
-
-          .targeted {
-            z-index: 4;
-          }
-
           .reticle {
-            pointer-events: all;
-            position: absolute;
+            width:  3vmin;
+            height: 3vmin;
             will-change: transform;
-            border: 0 solid transparent;
-            transition: 162ms ease-in-out;
-            transition-property: border-color, transform, opacity;
-            transform: translate(-50%, -50%) scale(0.5);
-            opacity: 0;
+            position: fixed;
+            left: 50%; top: 50%;
           }
 
-          .targeted .reticle {
-            border-color: ${reticleColor};
-            transform: translate(-50%, -50%);
-            opacity: 1;
+          .icon {
+            width: 100%;
+            height: 100%;
+            will-change: transform;
+            border-radius: 50%;
+            border: 0.618vmin solid yellow;
           }
         `
           }
         </style>
 
         <div
-          className="reticle"
+          className="icon"
           style={{
-            width: reticleSize,
-            height: reticleSize,
-            borderWidth: hideBorders ? 0 : reticleThickness,
+            WebkitTransform: iconTransform,
+            transform: iconTransform,
           }}
-          onMouseEnter={this.handleMouseEnter}
-          onMouseLeave={this.handleMouseLeave}
-          onTouchStart={this.handleTouchStart}
-          onTouchEnd={this.handleTouchEnd}
-          onClick={this.handleClick}
-        >
-          {targeted && this.props.children}
-        </div>
+        />
       </div>
     );
   }

@@ -4,8 +4,8 @@ import { Body } from "react-game-kit";
 import Matter from "matter-js";
 import throttle from "lodash.throttle";
 
-import MovementPlane from "../components/MovementPlane";
-import MovementReticle from "../components/MovementReticle";
+import ActionPlane from "../components/ActionPlane";
+import Reticle from "../components/Reticle";
 
 import rendering from "../helpers/rendering";
 import maths from "../helpers/maths";
@@ -179,9 +179,9 @@ export default class UserBody extends PureComponent {
           <div />
         </Body>
 
-        <MovementPlane moveTowards={this.moveTowards} worldRef={this.worldRef} />
+        <ActionPlane moveTowards={this.moveTowards} worldRef={this.worldRef} />
 
-        {this.state.target.x && <MovementReticle {...this.state.target} />}
+        {this.state.target.x && <Reticle {...this.state.target} />}
       </div>
     );
   }

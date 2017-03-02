@@ -4,9 +4,8 @@ import Matter from "matter-js";
 import firebase from "firebase";
 import throttle from "lodash.throttle";
 
-// import MovementReticle from "../components/MovementReticle";
 import Player from "../components/Player";
-import Reticle from "../components/Reticle";
+import Tooltip from "../components/Tooltip";
 import RangeIndicator from "../components/RangeIndicator";
 import Action from "../components/Action";
 
@@ -179,13 +178,11 @@ export default class PlayerBody extends Component {
           <div />
         </Body>
 
-        {/*<MovementReticle x={x} y={y} />*/}
-
         <div className="playerPosition">
           <Player {...this.props} {...this.state} />
         </div>
 
-        <Reticle size={10} transform={transform}>
+        <Tooltip size={10} transform={transform}>
           <RangeIndicator range={meleeRange} />
           <RangeIndicator range={rangedRange} />
 
@@ -207,7 +204,7 @@ export default class PlayerBody extends Component {
               }}
               {...actionProps}
             />}
-        </Reticle>
+        </Tooltip>
       </div>
     );
   }

@@ -5,7 +5,6 @@ import reactFire from "reactfire";
 
 import Player from "../components/Player";
 import UserBody from "../components/UserBody";
-import Reticle from "../components/Reticle";
 import RangeIndicator from "../components/RangeIndicator";
 
 const xTransform = `calc( ((var(--userPositionX) * 10vmin) - (10vmin * var(--cameraPositionX))) * var(--worldScale) )`;
@@ -89,11 +88,7 @@ export default class UserState extends Component {
             </style>
 
             <Player {...player} isSelf={true} />
-
-            <Reticle size={10} hideBorders>
-              <RangeIndicator range={meleeRange} />
-              <RangeIndicator range={rangedRange} />
-            </Reticle>
+            <RangeIndicator range={rangedRange} />
           </div>
         </div>
       );
