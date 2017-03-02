@@ -2,12 +2,16 @@ import React, { PureComponent } from "react";
 
 export default class Reticle extends PureComponent {
   render() {
-    const xTransform = `calc( ((${this.props.x} * 10vmin) - (10vmin * var(--cameraPositionX))) * var(--worldScale) )`;
-    const yTransform = `calc( ((${this.props.y} * 10vmin) - (10vmin * var(--cameraPositionY))) * var(--worldScale) )`;
-    const transform = `translate3d(${xTransform}, ${yTransform}, 0) translate(-50%, -50%)`;
+    const { x, y, screenSpace } = { ...this.props };
 
-    const scale = this.props.scale || 0.5;
-    const iconTransform = `scale(${scale})`;
+    const xTransform = screenSpace
+      ? `calc( ${x}px - 50vw )`
+      : `calc( ((${x} * 10vmin) - (10vmin * var(--cameraPositionX))) * var(--worldScale) )`;
+    const yTransform = screenSpace
+      ? `calc( ${y}px - 50vh )`
+      : `calc( ((${y} * 10vmin) - (10vmin * var(--cameraPositionY))) * var(--worldScale) )`;
+
+    const transform = `translate3d(${xTransform}, ${yTransform}, 0)`;
 
     return (
       <div
@@ -21,20 +25,37 @@ export default class Reticle extends PureComponent {
           {
             `
           .reticle {
-            width:  3vmin;
-            height: 3vmin;
             will-change: transform;
             position: fixed;
             left: 50%; top: 50%;
           }
 
           .icon {
-            width: 100%;
-            height: 100%;
+            width: 5rem;
+            height: 5rem;
             will-change: transform;
             border-radius: 50%;
             border: 0.618vmin solid yellow;
+            animation: worldSpace 600ms ease-out;
           }
+
+          @keyframes worldSpace {
+            0% {
+              transform: scale(1) translate(-50%, -50%);
+            }
+            100% {
+              transform: scale(0.125) translate(-50%, -50%);
+            }
+          };
+
+          @keyframes screenSpace {
+            0% {
+              transform: scale(0.125) translate(-50%, -50%);
+            }
+            100% {
+              transform: scale(1) translate(-50%, -50%);
+            }
+          };
         `
           }
         </style>
@@ -42,8 +63,8 @@ export default class Reticle extends PureComponent {
         <div
           className="icon"
           style={{
-            WebkitTransform: iconTransform,
-            transform: iconTransform,
+            WebkitAnimationName: screenSpace ? "screenSpace" : "worldSpace",
+            animationName: screenSpace ? "screenSpace" : "worldSpace",
           }}
         />
       </div>
