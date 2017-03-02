@@ -169,6 +169,9 @@ export default class UserBody extends PureComponent {
               frictionStatic: 0.01,
               frictionAir: 0.1,
               angle: 90 * (Math.PI / 180),
+              collisionFilter: {
+                mask: 0x0001,
+              },
             },
           ]}
           ref={c => this.body = c}

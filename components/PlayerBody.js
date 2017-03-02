@@ -168,6 +168,10 @@ export default class PlayerBody extends Component {
               frictionAir: 0.1,
               velocity: { x: vx, y: vy },
               angle: Matter.Vector.angle({ x: x, y: y }, { x: x + vx, y: y + vy }),
+              collisionFilter: {
+                category: 0x0002,
+                mask: 0,
+              },
             },
           ]}
           ref={c => this.body = c}
