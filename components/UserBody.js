@@ -129,8 +129,8 @@ export default class UserBody extends PureComponent {
     const velocity = body && body.velocity;
 
     const cameraPosition = {
-      x: rendering.lerp(this.cameraPosition.x, position.x, 1 / 60),
-      y: rendering.lerp(this.cameraPosition.y, position.y, 1 / 60),
+      x: rendering.lerp(this.cameraPosition.x, position.x, 2 / 60),
+      y: rendering.lerp(this.cameraPosition.y, position.y, 2 / 60),
     };
 
     this.props.setWorldAttributes({
