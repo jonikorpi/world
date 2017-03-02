@@ -2,8 +2,8 @@ import React, { PureComponent } from "react";
 
 export default class MovementReticle extends PureComponent {
   render() {
-    const xTransform = `calc( ((${this.props.x} * 10vmin) - (10vmin * var(--userPositionX))) * var(--worldScale) )`;
-    const yTransform = `calc( ((${this.props.y} * 10vmin) - (10vmin * var(--userPositionY))) * var(--worldScale) )`;
+    const xTransform = `calc( ((${this.props.x} * 10vmin) - (10vmin * var(--cameraPositionX))) * var(--worldScale) )`;
+    const yTransform = `calc( ((${this.props.y} * 10vmin) - (10vmin * var(--cameraPositionY))) * var(--worldScale) )`;
     const transform = `translate3d(${xTransform}, ${yTransform}, 0) translate(-50%, -50%)`;
 
     return (

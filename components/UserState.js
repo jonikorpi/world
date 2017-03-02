@@ -8,6 +8,10 @@ import UserBody from "../components/UserBody";
 import Reticle from "../components/Reticle";
 import RangeIndicator from "../components/RangeIndicator";
 
+const xTransform = `calc( ((var(--userPositionX) * 10vmin) - (10vmin * var(--cameraPositionX))) * var(--worldScale) )`;
+const yTransform = `calc( ((var(--userPositionY) * 10vmin) - (10vmin * var(--cameraPositionY))) * var(--worldScale) )`;
+const transform = `translate3d(${xTransform}, ${yTransform}, 0)`;
+
 export default class UserState extends Component {
   constructor(props) {
     super(props);
@@ -78,6 +82,7 @@ export default class UserState extends Component {
               #userCenterer {
                 position: fixed;
                 left: 50%; top: 50%;
+                transform: ${transform};
               }
             `
               }

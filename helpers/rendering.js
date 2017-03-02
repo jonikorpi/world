@@ -10,4 +10,8 @@ rendering.angleLerp = (a0, a1, t) => {
   return a0 + rendering.shortAngleDist(a0, a1) * t;
 };
 
+rendering.lerp = (a, b, t) => {
+  return a + (b - a) * t;
+};
+
 export default rendering;

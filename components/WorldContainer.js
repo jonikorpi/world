@@ -66,6 +66,8 @@ export default class WorldContainer extends PureComponent {
             width: 100%;
             height: 100vh;
             margin-bottom: 50vh;
+            --cameraPositionX: 0;
+            --cameraPositionY: 0;
             --userPositionX: 0;
             --userPositionY: 0;
             --playerVelocity: 0;

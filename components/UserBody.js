@@ -23,6 +23,7 @@ export default class UserBody extends PureComponent {
     };
 
     this.initialFetchDone = false;
+    this.cameraPosition = { x: 0, y: 0 };
     this.updateFirebaseHandler = throttle(this.updateFirebase, 1000);
   }
 
@@ -127,23 +128,29 @@ export default class UserBody extends PureComponent {
     const position = body && body.position;
     const velocity = body && body.velocity;
 
-    this.tryUpdatingFirebase(position.x, position.y, velocity.x, velocity.y);
+    const cameraPosition = {
+      x: rendering.lerp(this.cameraPosition.x, position.x, 1 / 60),
+      y: rendering.lerp(this.cameraPosition.y, position.y, 1 / 60),
+    };
 
     this.props.setWorldAttributes({
+      "--cameraPositionX": cameraPosition.x,
+      "--cameraPositionY": cameraPosition.y,
       "--userPositionX": position.x,
       "--userPositionY": position.y,
       "--playerVelocity": Math.abs(velocity.x) + Math.abs(velocity.y),
       "--playerAngle": body.angle - 1.5708 + "rad",
     });
+
+    this.cameraPosition = cameraPosition;
+    this.tryUpdatingFirebase(position.x, position.y, velocity.x, velocity.y);
   };
 
   moveTowards = (relativeX, relativeY) => {
-    const body = this.body.body;
-
     this.setState({
       target: {
-        x: body.position.x + relativeX,
-        y: body.position.y + relativeY,
+        x: this.cameraPosition.x + relativeX,
+        y: this.cameraPosition.y + relativeY,
       },
     });
   };

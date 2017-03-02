@@ -13,13 +13,13 @@ import Action from "../components/Action";
 import rendering from "../helpers/rendering";
 import maths from "../helpers/maths";
 
-const xTransform = `calc( ((var(--playerPositionX) * 10vmin) - (10vmin * var(--userPositionX))) * var(--worldScale) )`;
-const yTransform = `calc( ((var(--playerPositionY) * 10vmin) - (10vmin * var(--userPositionY))) * var(--worldScale) )`;
+const xTransform = `calc( ((var(--playerPositionX) * 10vmin) - (10vmin * var(--cameraPositionX))) * var(--worldScale) )`;
+const yTransform = `calc( ((var(--playerPositionY) * 10vmin) - (10vmin * var(--cameraPositionY))) * var(--worldScale) )`;
 const transform = `translate3d(${xTransform}, ${yTransform}, 0)`;
 
 export default class PlayerBody extends Component {
   static contextTypes = {
-    engine: PropTypes.object
+    engine: PropTypes.object,
   };
 
   constructor(props) {
@@ -33,7 +33,7 @@ export default class PlayerBody extends Component {
 
   componentWillMount() {
     this.worldRef = document.querySelector("#world");
-    firebase.database().ref("/.info/serverTimeOffset").on("value", (value) => {
+    firebase.database().ref("/.info/serverTimeOffset").on("value", value => {
       this.clockSkew = value.val();
     });
   }
@@ -56,8 +56,8 @@ export default class PlayerBody extends Component {
     const maxAllowedPositionSkew = 1.5;
 
     if (
-      Math.abs(this.props.x - body.position.x) > maxAllowedPositionSkew
-      || Math.abs(this.props.y - body.position.y) > maxAllowedPositionSkew
+      Math.abs(this.props.x - body.position.x) > maxAllowedPositionSkew ||
+      Math.abs(this.props.y - body.position.y) > maxAllowedPositionSkew
     ) {
       Matter.Body.setPosition(body, {
         x: this.props.x,
@@ -72,10 +72,13 @@ export default class PlayerBody extends Component {
       const elapsedSeconds = (Date.now() - this.props.t + this.clockSkew) / 1000;
       const reckoning = elapsedSeconds > 1.15 ? 0 : (4 + elapsedSeconds) * 60;
 
-      const velocityVector = Matter.Vector.mult({
-        x: this.props.vx,
-        y: this.props.vy,
-      }, 1 + reckoning);
+      const velocityVector = Matter.Vector.mult(
+        {
+          x: this.props.vx,
+          y: this.props.vy,
+        },
+        1 + reckoning
+      );
 
       let positionVector = {
         x: this.props.x + velocityVector.x,
@@ -89,19 +92,13 @@ export default class PlayerBody extends Component {
 
       const clampedForceVector = maths.clampSpeed(forceVector, magnitudeLimit);
 
-      const targetAngle = Matter.Vector.angle(
-        positionVector,
-        body.position,
-      );
+      const targetAngle = Matter.Vector.angle(positionVector, body.position);
 
       Matter.Body.applyForce(body, body.position, clampedForceVector);
 
-      Matter.Body.setAngle(
-        body,
-        rendering.angleLerp(body.angle, targetAngle, 3 / 60),
-      );
+      Matter.Body.setAngle(body, rendering.angleLerp(body.angle, targetAngle, 3 / 60));
     }
-  }
+  };
 
   handleEngineAfterUpdate = () => {
     const { body } = { ...this.body };
@@ -114,9 +111,9 @@ export default class PlayerBody extends Component {
     this.positionRef.style.setProperty("--playerAngle", body.angle - 1.5708 + "rad");
 
     this.updateRangesHandler(position);
-  }
+  };
 
-  updateRanges = (position) => {
+  updateRanges = position => {
     const styles = window.getComputedStyle(this.worldRef);
     const userX = styles.getPropertyValue("--userPositionX");
     const userY = styles.getPropertyValue("--userPositionY");
@@ -130,11 +127,11 @@ export default class PlayerBody extends Component {
         inRangedRange: this.props.userRangedRange - distance >= 0,
       });
     }
-  }
+  };
 
   render() {
-    const {x, y, vx, vy, userID, userToken, playerID, meleeRange, rangedRange} = { ...this.props };
-    const {inMeleeRange, inRangedRange} = { ...this.state };
+    const { x, y, vx, vy, userID, userToken, playerID, meleeRange, rangedRange } = { ...this.props };
+    const { inMeleeRange, inRangedRange } = { ...this.state };
 
     const actionProps = {
       userID: userID,
@@ -142,8 +139,10 @@ export default class PlayerBody extends Component {
     };
 
     return (
-      <div className="playerBody" ref={(c) => this.positionRef = c}>
-        <style jsx>{`
+      <div className="playerBody" ref={c => this.positionRef = c}>
+        <style jsx>
+          {
+            `
           .playerPosition {
             position: absolute;
             left: 0; top: 0;
@@ -151,22 +150,27 @@ export default class PlayerBody extends Component {
             transform: ${transform};
             z-index: 2;
           }
-        `}</style>
+        `
+          }
+        </style>
 
         <Body
-          args={[x, y, 1, 0.5, {
-            //isStatic: true,
-            inertia: Infinity,
-            density: 106,
-            frictionStatic: 0.01,
-            frictionAir: 0.1,
-            velocity: { x: vx, y: vy },
-            angle: Matter.Vector.angle(
-              { x: x, y: y },
-              { x: x + vx, y: y + vy }
-            ),
-          }]}
-          ref={(c) => this.body = c}
+          args={[
+            x,
+            y,
+            1,
+            0.5,
+            {
+              //isStatic: true,
+              inertia: Infinity,
+              density: 106,
+              frictionStatic: 0.01,
+              frictionAir: 0.1,
+              velocity: { x: vx, y: vy },
+              angle: Matter.Vector.angle({ x: x, y: y }, { x: x + vx, y: y + vy }),
+            },
+          ]}
+          ref={c => this.body = c}
         >
           <div />
         </Body>
@@ -174,35 +178,31 @@ export default class PlayerBody extends Component {
         {/*<MovementReticle x={x} y={y} />*/}
 
         <div className="playerPosition">
-          <Player
-            {...this.props}
-            {...this.state}
-          />
+          <Player {...this.props} {...this.state} />
         </div>
 
         <Reticle size={10} transform={transform}>
           <RangeIndicator range={meleeRange} />
           <RangeIndicator range={rangedRange} />
 
-          {(inRangedRange && !inMeleeRange) && (
+          {inRangedRange &&
+            !inMeleeRange &&
             <Action
               data={{
                 action: "rangedAttack",
-                playerID: playerID
+                playerID: playerID,
               }}
               {...actionProps}
-            />
-          )}
+            />}
 
-          {(inMeleeRange) && (
+          {inMeleeRange &&
             <Action
               data={{
                 action: "meleeAttack",
-                playerID: playerID
+                playerID: playerID,
               }}
               {...actionProps}
-            />
-          )}
+            />}
         </Reticle>
       </div>
     );
