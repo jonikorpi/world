@@ -47,7 +47,7 @@ export default class ActionPlane extends PureComponent {
 
       if (heldDownFor < 300) {
         this.triggerMovement();
-      } else if (heldDownFor > 600) {
+      } else if (heldDownFor >= 500) {
         this.triggerAction();
       }
 
