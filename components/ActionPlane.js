@@ -136,7 +136,7 @@ export default class ActionPlane extends PureComponent {
           onTouchEnd={this.handleTouchEnd}
         />
 
-        {holdingDown && <Reticle x={x} y={y} screenSpace />}
+        {holdingDown && <Reticle x={x} y={y} radius={2} screenSpace />}
       </div>
     );
   }

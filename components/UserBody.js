@@ -181,7 +181,8 @@ export default class UserBody extends PureComponent {
 
         <ActionPlane moveTowards={this.moveTowards} worldRef={this.worldRef} />
 
-        {this.state.target.x && <Reticle {...this.state.target} />}
+        {this.state.target.x &&
+          <Reticle key={`${this.state.target.x},${this.state.target.y}`} {...this.state.target} />}
       </div>
     );
   }

@@ -2,7 +2,7 @@ import React, { PureComponent } from "react";
 
 export default class Reticle extends PureComponent {
   render() {
-    const { x, y, screenSpace } = { ...this.props };
+    const { x, y, screenSpace, radius } = { ...this.props };
 
     const xTransform = screenSpace
       ? `calc( ${x}px - 50vw )`
@@ -25,35 +25,46 @@ export default class Reticle extends PureComponent {
           {
             `
           .reticle {
-            will-change: transform;
             position: fixed;
             left: 50%; top: 50%;
           }
 
           .icon {
-            width: 5rem;
-            height: 5rem;
-            will-change: transform;
             border-radius: 50%;
-            border: 0.618vmin solid yellow;
-            animation: worldSpace 600ms ease-out;
+            border: 0.236rem solid yellow;
+            animation: none 500ms ease-out;
+            animation-fill-mode: forwards;
+          }
+
+          .screenSpace {
+            animation-name: screenSpace;
+          }
+
+          .worldSpace {
+            animation-name: worldSpace;
+            animation-duration: 162ms;
           }
 
           @keyframes worldSpace {
             0% {
-              transform: scale(1) translate(-50%, -50%);
+              transform: translate3d(-50%, -50%, 0) scale(1);
             }
             100% {
-              transform: scale(0.125) translate(-50%, -50%);
+              transform: translate3d(-50%, -50%, 0) scale(0.5);
             }
           };
 
           @keyframes screenSpace {
             0% {
-              transform: scale(0.125) translate(-50%, -50%);
+              transform: translate3d(-50%, -50%, 0) scale(0);
+              border-color: white;
+            }
+            91% {
+              border-color: white;
             }
             100% {
-              transform: scale(1) translate(-50%, -50%);
+              transform: translate3d(-50%, -50%, 0) scale(1);
+              border-color: yellow;
             }
           };
         `
@@ -61,10 +72,10 @@ export default class Reticle extends PureComponent {
         </style>
 
         <div
-          className="icon"
+          className={`icon ${screenSpace ? "screenSpace" : "worldSpace"}`}
           style={{
-            WebkitAnimationName: screenSpace ? "screenSpace" : "worldSpace",
-            animationName: screenSpace ? "screenSpace" : "worldSpace",
+            width: radius ? `${radius * 10 * 2}vmin` : "5vmin",
+            height: radius ? `${radius * 10 * 2}vmin` : "5vmin",
           }}
         />
       </div>
