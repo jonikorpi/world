@@ -85,8 +85,13 @@ export default class ActionPlane extends PureComponent {
 
   handleTouchStart = reactEvent => {
     const event = reactEvent.nativeEvent;
-    this.startHolding();
-    this.updatePosition(event.changedTouches[0].clientX, event.changedTouches[0].clientY);
+
+    if (this.state.holdingDown) {
+      this.cancel();
+    } else {
+      this.startHolding();
+      this.updatePosition(event.changedTouches[0].clientX, event.changedTouches[0].clientY);
+    }
   };
 
   handleTouchMove = reactEvent => {

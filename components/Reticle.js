@@ -30,40 +30,41 @@ export default class Reticle extends PureComponent {
           }
 
           .icon {
+            position: absolute;
             border-radius: 50%;
             border: 0.236rem solid yellow;
             animation: none 500ms ease-out;
             animation-fill-mode: forwards;
           }
 
-          .screenSpace {
+          .icon.screenSpace {
             animation-name: screenSpace;
           }
 
-          .worldSpace {
+          .icon.worldSpace {
             animation-name: worldSpace;
             animation-duration: 162ms;
           }
 
           @keyframes worldSpace {
             0% {
-              transform: translate3d(-50%, -50%, 0) scale(calc( var(--worldScale) * 1 ));
+              transform: scale(calc( var(--worldScale) * 1 ));
             }
             100% {
-              transform: translate3d(-50%, -50%, 0) scale(calc( var(--worldScale) * 0.5 ));
+              transform: scale(calc( var(--worldScale) * 0.5 ));
             }
           };
 
           @keyframes screenSpace {
             0% {
-              transform: translate3d(-50%, -50%, 0) scale(calc( var(--worldScale) * 0 ));
+              transform: scale(calc( var(--worldScale) * 0 ));
               border-color: white;
             }
             91% {
               border-color: white;
             }
             100% {
-              transform: translate3d(-50%, -50%, 0) scale(calc( var(--worldScale) * 1 ));
+              transform: scale(calc( var(--worldScale) * 1 ));
               border-color: yellow;
             }
           };
@@ -76,6 +77,8 @@ export default class Reticle extends PureComponent {
           style={{
             width: radius ? `${radius * 10 * 2}vmin` : "10vmin",
             height: radius ? `${radius * 10 * 2}vmin` : "10vmin",
+            left: radius ? `-${radius * 10}vmin` : "-5vmin",
+            top: radius ? `-${radius * 10}vmin` : "-5vmin",
           }}
         />
       </div>
