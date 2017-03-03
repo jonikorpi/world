@@ -13,6 +13,22 @@ export default class ActionPlane extends PureComponent {
     };
   }
 
+  componentWillMount() {
+    document.addEventListener("keyup", this.handleKeyboard, false);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("keyup", this.handleKeyboard);
+  }
+
+  handleKeyboard = event => {
+    if (this.state.holdingDown) {
+      this.cancel();
+      event.stopPropagation();
+      event.preventDefault();
+    }
+  };
+
   triggerMovement = () => {
     const { x, y } = { ...this.state };
 
