@@ -63,8 +63,13 @@ export default class ActionPlane extends PureComponent {
 
   handleMouseDown = reactEvent => {
     const event = reactEvent.nativeEvent;
-    this.startHolding();
-    this.updatePosition(event.clientX, event.clientY);
+
+    if (event.button === 0) {
+      this.startHolding();
+      this.updatePosition(event.clientX, event.clientY);
+    } else {
+      this.cancel();
+    }
   };
 
   handleMouseMove = reactEvent => {
