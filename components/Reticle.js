@@ -47,23 +47,23 @@ export default class Reticle extends PureComponent {
 
           @keyframes worldSpace {
             0% {
-              transform: translate3d(-50%, -50%, 0) scale(1);
+              transform: translate3d(-50%, -50%, 0) scale(calc( var(--worldScale) * 1 ));
             }
             100% {
-              transform: translate3d(-50%, -50%, 0) scale(0.5);
+              transform: translate3d(-50%, -50%, 0) scale(calc( var(--worldScale) * 0.5 ));
             }
           };
 
           @keyframes screenSpace {
             0% {
-              transform: translate3d(-50%, -50%, 0) scale(0);
+              transform: translate3d(-50%, -50%, 0) scale(calc( var(--worldScale) * 0 ));
               border-color: white;
             }
             91% {
               border-color: white;
             }
             100% {
-              transform: translate3d(-50%, -50%, 0) scale(1);
+              transform: translate3d(-50%, -50%, 0) scale(calc( var(--worldScale) * 1 ));
               border-color: yellow;
             }
           };
