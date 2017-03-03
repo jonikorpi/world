@@ -7,6 +7,7 @@ export default class ActionPlane extends PureComponent {
 
     this.state = {
       holdingDown: false,
+      probablyNotScrolling: false,
       startedHoldingAt: undefined,
       x: undefined,
       y: undefined,
@@ -51,13 +52,13 @@ export default class ActionPlane extends PureComponent {
         this.triggerAction();
       }
 
-      this.setState({ holdingDown: false, startedHoldingAt: undefined });
+      this.cancel();
     }
   };
 
   cancel = () => {
     if (this.state.holdingDown) {
-      this.setState({ holdingDown: false, startedHoldingAt: undefined });
+      this.setState({ holdingDown: false, startedHoldingAt: undefined, probablyNotScrolling: false });
     }
   };
 
@@ -86,16 +87,36 @@ export default class ActionPlane extends PureComponent {
     const event = reactEvent.nativeEvent;
     this.startHolding();
     this.updatePosition(event.changedTouches[0].clientX, event.changedTouches[0].clientY);
-    reactEvent.nativeEvent.preventDefault();
   };
 
   handleTouchMove = reactEvent => {
     const event = reactEvent.nativeEvent;
-    this.updatePosition(event.changedTouches[0].clientX, event.changedTouches[0].clientY);
+
+    if (this.state.probablyNotScrolling) {
+      this.updatePosition(event.changedTouches[0].clientX, event.changedTouches[0].clientY);
+    } else {
+      const heldDownFor = Date.now() - this.state.startedHoldingAt;
+      const traversed = Math.abs(event.changedTouches[0].clientY - this.state.y);
+
+      if (heldDownFor > 100 && traversed < 30) {
+        this.setState({ probablyNotScrolling: true });
+        reactEvent.nativeEvent.preventDefault();
+      } else if (traversed < 5) {
+        reactEvent.nativeEvent.preventDefault();
+      }
+    }
+  };
+
+  handleTouchCancel = () => {
+    this.cancel();
   };
 
   handleTouchEnd = reactEvent => {
-    this.letGo();
+    if (this.state.probablyNotScrolling) {
+      this.letGo();
+    } else {
+      this.cancel();
+    }
   };
 
   render() {
@@ -139,6 +160,7 @@ export default class ActionPlane extends PureComponent {
           onTouchStart={this.handleTouchStart}
           onTouchMove={this.handleTouchMove}
           onTouchEnd={this.handleTouchEnd}
+          onTouchCancel={this.handleTouchCancel}
         />
 
         {holdingDown && <Reticle x={x} y={y} radius={2} screenSpace />}

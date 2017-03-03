@@ -74,8 +74,8 @@ export default class Reticle extends PureComponent {
         <div
           className={`icon ${screenSpace ? "screenSpace" : "worldSpace"}`}
           style={{
-            width: radius ? `${radius * 10 * 2}vmin` : "5vmin",
-            height: radius ? `${radius * 10 * 2}vmin` : "5vmin",
+            width: radius ? `${radius * 10 * 2}vmin` : "10vmin",
+            height: radius ? `${radius * 10 * 2}vmin` : "10vmin",
           }}
         />
       </div>
