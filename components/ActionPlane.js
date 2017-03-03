@@ -7,7 +7,6 @@ export default class ActionPlane extends PureComponent {
 
     this.state = {
       holdingDown: false,
-      probablyNotScrolling: false,
       startedHoldingAt: undefined,
       x: undefined,
       y: undefined,
@@ -58,7 +57,7 @@ export default class ActionPlane extends PureComponent {
 
   cancel = () => {
     if (this.state.holdingDown) {
-      this.setState({ holdingDown: false, startedHoldingAt: undefined, probablyNotScrolling: false });
+      this.setState({ holdingDown: false, startedHoldingAt: undefined });
     }
   };
 
@@ -85,6 +84,7 @@ export default class ActionPlane extends PureComponent {
 
   handleTouchStart = reactEvent => {
     const event = reactEvent.nativeEvent;
+    reactEvent.nativeEvent.preventDefault();
 
     if (this.state.holdingDown) {
       this.cancel();
@@ -96,20 +96,7 @@ export default class ActionPlane extends PureComponent {
 
   handleTouchMove = reactEvent => {
     const event = reactEvent.nativeEvent;
-
-    if (this.state.probablyNotScrolling) {
-      this.updatePosition(event.changedTouches[0].clientX, event.changedTouches[0].clientY);
-    } else {
-      const heldDownFor = Date.now() - this.state.startedHoldingAt;
-      const traversed = Math.abs(event.changedTouches[0].clientY - this.state.y);
-
-      if (heldDownFor > 100 && traversed < 30) {
-        this.setState({ probablyNotScrolling: true });
-        reactEvent.nativeEvent.preventDefault();
-      } else if (traversed < 5) {
-        reactEvent.nativeEvent.preventDefault();
-      }
-    }
+    this.updatePosition(event.changedTouches[0].clientX, event.changedTouches[0].clientY);
   };
 
   handleTouchCancel = () => {
@@ -117,11 +104,7 @@ export default class ActionPlane extends PureComponent {
   };
 
   handleTouchEnd = reactEvent => {
-    if (this.state.probablyNotScrolling) {
-      this.letGo();
-    } else {
-      this.cancel();
-    }
+    this.letGo();
   };
 
   render() {
