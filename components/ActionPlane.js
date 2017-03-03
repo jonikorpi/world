@@ -102,7 +102,12 @@ export default class ActionPlane extends PureComponent {
     const { holdingDown, x, y } = { ...this.state };
 
     return (
-      <div id="actionPlaneContainer">
+      <div
+        id="actionPlaneContainer"
+        style={{
+          zIndex: holdingDown ? 10 : 0,
+        }}
+      >
         <style jsx>
           {
             `
