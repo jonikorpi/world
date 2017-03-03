@@ -74,9 +74,9 @@ export default class ActionPlane extends PureComponent {
     }
   };
 
-  handleMouseOut = () => {
-    this.cancel();
-  };
+  // handleMouseOut = () => {
+  //   this.cancel();
+  // };
 
   handleMouseUp = reactEvent => {
     this.letGo();
@@ -130,7 +130,7 @@ export default class ActionPlane extends PureComponent {
           onMouseDown={this.handleMouseDown}
           onMouseUp={this.handleMouseUp}
           onMouseMove={this.handleMouseMove}
-          onMouseOut={this.handleMouseOut}
+          //onMouseOut={this.handleMouseOut}
           onTouchStart={this.handleTouchStart}
           onTouchMove={this.handleTouchMove}
           onTouchEnd={this.handleTouchEnd}
