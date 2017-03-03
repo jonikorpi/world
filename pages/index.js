@@ -326,7 +326,7 @@ export default class Play extends PureComponent {
         <style jsx>
           {
             `
-          :global(body) {
+          :global(html) {
             background: ${colors.sea};
             color: ${colors.bright};
           }
